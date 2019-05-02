@@ -43,9 +43,9 @@ void SkimerBoost::Loop(TString outputName, int skm)
     fChain->SetBranchStatus("mc*",1);
     fChain->SetBranchStatus("pfMET*",1);
     fChain->SetBranchStatus("n*",1);
-//    fChain->SetBranchStatus("c*",1);
+    fChain->SetBranchStatus("c*",1);
     fChain->SetBranchStatus("jet*",1);
-//    fChain->SetBranchStatus("AK8*",1);
+    fChain->SetBranchStatus("AK8*",1);
     fChain->SetBranchStatus("ele*",1);
     fChain->SetBranchStatus("mu*",1);
 //    fChain->SetBranchStatus("pho",0);
@@ -79,14 +79,14 @@ void SkimerBoost::Loop(TString outputName, int skm)
         auto BoostedIsoTau(0);
         TLorentzVector BoostedTau4Momentum, Jet4Momentum;
         for (int ijet = 0; ijet < nJet; ++ijet){
-            if (jetPt->at(ijet) > 500 &&  fabs(jetEta->at(ijet)) < 3.0 ){
+            if (jetPt->at(ijet) > 200 &&  fabs(jetEta->at(ijet)) < 3.0 ){
                 Jet4Momentum.SetPtEtaPhiM(jetPt->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
                 for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                     if (boostedTauPt->at(ibtau) > 30 && fabs(boostedTauEta->at(ibtau)) < 2.5  ){
                         BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
-                        if(BoostedTau4Momentum.DeltaR(Jet4Momentum) > 2){
+                        if(1){
                             BoostedTau++;
-                            if (boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau)){
+                            if (1){
                                 BoostedIsoTau++;
                             }
                         }
@@ -95,7 +95,7 @@ void SkimerBoost::Loop(TString outputName, int skm)
             }
         }
         
-        if(BoostedTau < 2 || BoostedIsoTau < 1) continue;
+        if(BoostedTau < 2) continue;
         hcount->Fill(3);
         
         
@@ -141,6 +141,7 @@ int main(int argc, char* argv[]){
     t.Loop(outputName, 0);
     return 0;
 }
+
 
 
 
