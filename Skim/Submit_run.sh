@@ -46,7 +46,7 @@ setenv SCRAM_ARCH slc6_amd64_gcc530
 xrdcp root://cmseos.fnal.gov//store/user/abdollah/CMSSW_9_4_13.tar.gz   .
 tar -xf CMSSW_9_4_13.tar.gz
 rm CMSSW_9_4_13.tar.gz
-cd CMSSW_9_4_13/src/
+cd CMSSW_9_4_13/src/BoostedHTT/Skim/
 scramv1 b ProjectRename
 eval `scramv1 runtime -sh` 
 ls
