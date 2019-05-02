@@ -135,7 +135,8 @@ int main(int argc, char* argv[]){
     cout<<" outputName is ---> "<<outputName<<"\n";
     cout<<" FinaName is ---> "<<FinaName<<"\n";
     
-    SkimerBoost t("root://cmsxrootd.fnal.gov//store/user/abdollah/BoostedH/An2017/"+FinaName);
+//    SkimerBoost t("root://cmsxrootd.fnal.gov//store/user/abdollah/BoostedH/An2017/"+FinaName);
+    SkimerBoost t("root://cmsxrootd.fnal.gov//store/user/tmitchel/BoostedH/An2017/"+FinaName);
     //FinaName.erase(FinaName.begin(),FinaName.end()-10);
     //  SkimerBoost t("root://cmsxrootd.fnal.gov//"+FinaName);
     t.Loop(outputName, 0);
