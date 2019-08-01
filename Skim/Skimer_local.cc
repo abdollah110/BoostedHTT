@@ -96,12 +96,12 @@ void SkimerBoost::Loop(TString outputName, int skm)
             }
         }
         
-        cout<< numMuTau <<" numMuTau " <<"\n";
+//        cout<< numMuTau <<" numMuTau " <<"\n";
         if(numMuTau < 1) continue;
         hcount->Fill(3);
         
         float MT =TMass_F(Mu4Momentum.Pt(),Mu4Momentum.Px(),Mu4Momentum.Py(),pfMET,pfMETPhi);
-        cout<< MT <<" MT " <<"\n";
+//        cout<< MT <<" MT " <<"\n";
         if(MT < 40) continue;
         hcount->Fill(4);
         
