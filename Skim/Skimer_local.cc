@@ -90,21 +90,22 @@ void SkimerBoost::Loop(TString outputName, int skm)
                         BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                         if(BoostedTau4Momentum.DeltaR(Mu4Momentum) < 0.8){
                             numMuTau++;
-                            break;
                         }
                     }
                 }
             }
         }
         
+        cout<< numMuTau <<" numMuTau " <<"\n";
         if(numMuTau < 1) continue;
         hcount->Fill(3);
         
         float MT =TMass_F(Mu4Momentum.Pt(),Mu4Momentum.Px(),Mu4Momentum.Py(),pfMET,pfMETPhi);
+        cout<< MT <<" MT " <<"\n";
         if(MT < 40) continue;
         hcount->Fill(4);
         
-//        
+//
 //        auto BoostedTau(0);
 //        auto BoostedIsoTau(0);
 //        TLorentzVector BoostedTau4Momentum, Jet4Momentum;
