@@ -75,6 +75,20 @@ void SkimerBoost::Loop(TString outputName, int skm)
         hcount->Fill(1);
         hcount->Fill(2,genWeight);
         
+        
+        auto numMu(0);
+        for (int imu = 0; imu < nMu; ++imu){
+            if (muPt->at(imu) > 50){
+                numMu++;
+            }
+        }
+        if  (!numMu) continue;
+        hcount->Fill(3);
+        
+        if(pfMET < 50) continue;
+        hcount->Fill(4);
+        
+        
         auto BoostedTau(0);
         auto BoostedIsoTau(0);
         TLorentzVector BoostedTau4Momentum, Jet4Momentum;
@@ -84,7 +98,7 @@ void SkimerBoost::Loop(TString outputName, int skm)
                 for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                     if (boostedTauPt->at(ibtau) > 30 && fabs(boostedTauEta->at(ibtau)) < 2.5  ){
                         BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
-                        if(1){
+                        if(BoostedTau4Momentum.DeltaR(Jet4Momentum) > 0.5){
                             BoostedTau++;
                             if (1){
                                 BoostedIsoTau++;
@@ -96,7 +110,7 @@ void SkimerBoost::Loop(TString outputName, int skm)
         }
         
         if(BoostedTau < 2) continue;
-        hcount->Fill(3);
+        hcount->Fill(5);
         
         
         MyNewTree->Fill();
