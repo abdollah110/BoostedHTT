@@ -69,7 +69,7 @@ rootNumber=$(($PROCESS % $SplitingNumber))
 #xrdfs root://cmseos.fnal.gov ls "/eos/uscms/store/user/snyderc3/DM_Electron/"$DataSetName | grep $rootNumber.root | while read FullDataSetName
 #xrdfs root://cmseos.fnal.gov ls "/eos/uscms/store/user/abdollah/BoostedH/An2017/"$DataSetName | grep $rootNumber.root | while read FullDataSetName
 ###xrdfs root://cmseos.fnal.gov ls "/eos/uscms/store/user/tmitchel/BoostedH/An2017/"$DataSetName | grep $rootNumber.root | while read FullDataSetName
-xrdfs root://cmseos.fnal.gov ls "/eos/uscms/"$DataSetName | grep $rootNumber.root | while read FullDataSetName
+xrdfs root://cmseos.fnal.gov ls $DataSetName | grep $rootNumber.root | while read FullDataSetName
 
 ############  Here is where the Skimmer is running     ############
 do
