@@ -87,6 +87,7 @@ ShortName=${FullDataSetName##*crab_}
 IFS="/"
 set $ShortName
 FinalOutName=$1_$2_$3_$rootNumber".root"
+IFS=""
 
 echo "FinalOutName is " $FinalOutName
 
