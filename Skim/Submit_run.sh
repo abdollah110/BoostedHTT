@@ -72,13 +72,13 @@ rootNumber=$(($PROCESS % $SplitingNumber))
 xrdfs root://cmseos.fnal.gov ls $DataSetName | grep $rootNumber.root | while read FullDataSetName
 
 ############  Here is where the Skimmer is running     ############
+FinalOutName=""
 do
 # file=`echo $FullDataSetName`
 # ShortName=${file##*DM_Electron}  # This removes all the string before Moriond18 (including Moriond18)
 ### ShortName=${file##*An2017}  # This removes all the string before An2017 (including An2017)
  echo "####### Here is the file Name   ------>" $FullDataSetName
 
- QQQ=$FullDataSetName
  ShortName=${FullDataSetName##*crab_}
  IFS="/"
  set $ShortName
@@ -86,14 +86,13 @@ do
  FinalOutName=$1_$2_$3_$rootNumber".root"
  outName="skimed_"$1_$2_$3_$4
  #echo $OutName
+ IFS=""
 
- echo "####### Here is the QQQ   ------>" $QQQ
-
- echo "input is " $QQQ
+ echo "input is " $FullDataSetName
  echo "output is " $outName
  echo "FinalOutName is " $FinalOutName
 
- ./SkimerBoost  $QQQ$outName
+ ./SkimerBoost  $FullDataSetName $outName
 done
 ############  Here is where the Skimmer ends          ############
 
