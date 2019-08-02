@@ -73,26 +73,26 @@ xrdfs root://cmseos.fnal.gov ls $DataSetName | grep $rootNumber.root | while rea
 
 ############  Here is where the Skimmer is running     ############
 do
- file=`echo $FullDataSetName`
+# file=`echo $FullDataSetName`
 # ShortName=${file##*DM_Electron}  # This removes all the string before Moriond18 (including Moriond18)
 ### ShortName=${file##*An2017}  # This removes all the string before An2017 (including An2017)
- echo "\n\nHere is the file Name   ------>" $file
+ echo "####### Here is the file Name   ------>" $FullDataSetName
 
 
- ShortName=${file##*crab_}
+ ShortName=${FullDataSetName##*crab_}
  IFS="/"
  set $ShortName
  #OutName=$1$2$rootNumber".root"  # this makes the 4th and 6th pieces of the
  FinalOutName=$1_$2_$3_$rootNumber".root"
- outName="skimed_"$1_$2_$3_".root"
+ outName="skimed_"$1_$2_$3_$4
  #echo $OutName
 
 
- echo "input is " $file
+ echo "input is " $FullDataSetName
  echo "output is " $outName
  echo "FinalOutName is " $FinalOutName
 
- ./SkimerBoost  $file $outName
+ ./SkimerBoost  $FullDataSetName $outName
 done
 ############  Here is where the Skimmer ends          ############
 
@@ -106,7 +106,7 @@ hadd -f $FinalOutName "skimed_"*.root
 ##########  remove the unneccesat files
 #rm skim*root  Skimmer.cc  Skimmer.h  Makefile  InputSamples.txt
 echo "Done execution ..."
-xrdcp -f $FinalOutName  root://cmseos.fnal.gov//store/user/abdollah/boostggNtuple/mc_v1/$FinalOutName
+xrdcp -f $FinalOutName  root://cmseos.fnal.gov//store/user/abdollah/boostggNtuple/testtest2/$FinalOutName
 xrdcp *.stdout *.stderr *.condor  root://cmseos.fnal.gov//store/user/abdollah/CONDOR/
 
 
