@@ -84,12 +84,13 @@ do
 done
 ############  Here is where the Skimmer ends          ############
 
-ShortName2=${QQQ##*crab_}
-IFS="/"
-set $ShortName2
-FinalOutName=$1_$2_$3_$rootNumber".root"
-IFS=""
+#ShortName2=${QQQ##*crab_}
+#IFS="/"
+#set $ShortName2
+#FinalOutName=$1_$2_$3_$rootNumber".root"
+#IFS=""
 
+FinalOutName="FinalOutName.root"
 echo "FinalOutName is " $FinalOutName
 
 hadd -f $FinalOutName "skimed_"*.root
