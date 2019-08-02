@@ -50,20 +50,10 @@ cd CMSSW_9_4_13/src/BoostedHTT/Skim/
 scramv1 b ProjectRename
 eval `scramv1 runtime -sh` 
 ls
+########### complie the Skimmer
 make
 
 ## cmsenv is an alias not on the workers
-
- 
-
-###### Copy the neccessary files for running the Skim
-#cp $RUNPATH/Skimmer.cc .
-#cp $RUNPATH/Skimmer.h .
-#cp $RUNPATH/Makefile .
-#cp $RUNPATH/InputSamples.txt .
-
-
-
 
 
 #########  Smaple/Job splitting
@@ -74,32 +64,38 @@ DataSetName=${DataSetArray[$PROCESS / $SplitingNumber]}
 rootNumber=$(($PROCESS % $SplitingNumber))
 #DataSetName=DataSetName_.replace("/store/user/abdollah/Moriond18/","")
 
-########### complie the Skimmer
-make
-
 
 ########### loop over all root file in a dataset directory
 #xrdfs root://cmseos.fnal.gov ls "/eos/uscms/store/user/snyderc3/DM_Electron/"$DataSetName | grep $rootNumber.root | while read FullDataSetName
 #xrdfs root://cmseos.fnal.gov ls "/eos/uscms/store/user/abdollah/BoostedH/An2017/"$DataSetName | grep $rootNumber.root | while read FullDataSetName
-xrdfs root://cmseos.fnal.gov ls "/eos/uscms/store/user/tmitchel/BoostedH/An2017/"$DataSetName | grep $rootNumber.root | while read FullDataSetName
+###xrdfs root://cmseos.fnal.gov ls "/eos/uscms/store/user/tmitchel/BoostedH/An2017/"$DataSetName | grep $rootNumber.root | while read FullDataSetName
+xrdfs root://cmseos.fnal.gov ls "/eos/uscms/"$DataSetName | grep $rootNumber.root | while read FullDataSetName
 
 ############  Here is where the Skimmer is running     ############
 do
  file=`echo $FullDataSetName`
 # ShortName=${file##*DM_Electron}  # This removes all the string before Moriond18 (including Moriond18)
- ShortName=${file##*An2017}  # This removes all the string before An2017 (including An2017)
- echo "Here is the short Name   ------>" $ShortName
- ./SkimerBoost  $ShortName
+### ShortName=${file##*An2017}  # This removes all the string before An2017 (including An2017)
+ echo "\n\nHere is the file Name   ------>" $file
+
+
+ShortName=${file##*crab_}
+IFS="/"
+set $ShortName
+#OutName=$1$2$rootNumber".root"  # this makes the 4th and 6th pieces of the
+FinalOutName=$1_$2_$3_$rootNumber".root"
+outName="skimed_"$1_$2_$3_".root"
+#echo $OutName
+
+
+
+ ./SkimerBoost  $file $outName
 done
 ############  Here is where the Skimmer ends          ############
 
 
 
-IFS="/"
-set $DataSetName
-OutName=$4$5$6$rootNumber".root"  # this makes the 4th and 6th pieces of the
-echo $OutName
-hadd -f $OutName "skimed_"*.root
+hadd -f $FinalOutName "skimed_"*.root
 
 
 
@@ -107,7 +103,7 @@ hadd -f $OutName "skimed_"*.root
 ##########  remove the unneccesat files
 #rm skim*root  Skimmer.cc  Skimmer.h  Makefile  InputSamples.txt
 echo "Done execution ..."
-xrdcp -f $OutName  root://cmseos.fnal.gov//store/user/abdollah/boostggNtuple/mc_v1/$OutName
+xrdcp -f $FinalOutName  root://cmseos.fnal.gov//store/user/abdollah/boostggNtuple/mc_v1/$FinalOutName
 xrdcp *.stdout *.stderr *.condor  root://cmseos.fnal.gov//store/user/abdollah/CONDOR/
 
 

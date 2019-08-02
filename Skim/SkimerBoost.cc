@@ -145,28 +145,30 @@ void SkimerBoost::Loop(TString outputName, int skm)
 int main(int argc, char* argv[]){
     
     string FinaName=argv[1];
-    stringstream ss(FinaName);
+    string outputName=argv[2];
+//    stringstream ss(FinaName);
+//    
+//    string token;
+//    string M;
+//    int count=0;
+//    string realName;
+//    while (getline(ss,token, '/'))
+//    {
+//        count++;
+//        cout<< token <<endl;
+//        if (count == 5) {
+//            cout<<"   ----->    5   "<<token<<"  _____   \n";
+//            realName=token;
+//        }
+//        M=token;
+//    }
+//    
+//    TString outputName = "skimed_"+realName+M;
+//    cout<<" outputName is ---> "<<outputName<<"\n";
+//    cout<<" FinaName is ---> "<<FinaName<<"\n";
     
-    string token;
-    string M;
-    int count=0;
-    string realName;
-    while (getline(ss,token, '/'))
-    {
-        count++;
-        cout<< token <<endl;
-        if (count == 5) {
-            cout<<"   ----->    5   "<<token<<"  _____   \n";
-            realName=token;
-        }
-        M=token;
-    }
-    
-    TString outputName = "skimed_"+realName+M;
-    cout<<" outputName is ---> "<<outputName<<"\n";
-    cout<<" FinaName is ---> "<<FinaName<<"\n";
-    
-    SkimerBoost t("root://cmsxrootd.fnal.gov//store/user/abdollah/BoostedH/An2017/"+FinaName);
+//    SkimerBoost t("root://cmsxrootd.fnal.gov//store/user/abdollah/BoostedH/An2017/"+FinaName);
+    SkimerBoost t("root://cmsxrootd.fnal.gov/"+FinaName);
     //FinaName.erase(FinaName.begin(),FinaName.end()-10);
     //  SkimerBoost t("root://cmsxrootd.fnal.gov//"+FinaName);
     t.Loop(outputName, 0);
