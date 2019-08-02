@@ -66,37 +66,29 @@ rootNumber=$(($PROCESS % $SplitingNumber))
 
 
 ########### loop over all root file in a dataset directory
-#xrdfs root://cmseos.fnal.gov ls "/eos/uscms/store/user/snyderc3/DM_Electron/"$DataSetName | grep $rootNumber.root | while read FullDataSetName
-#xrdfs root://cmseos.fnal.gov ls "/eos/uscms/store/user/abdollah/BoostedH/An2017/"$DataSetName | grep $rootNumber.root | while read FullDataSetName
-###xrdfs root://cmseos.fnal.gov ls "/eos/uscms/store/user/tmitchel/BoostedH/An2017/"$DataSetName | grep $rootNumber.root | while read FullDataSetName
 xrdfs root://cmseos.fnal.gov ls $DataSetName | grep $rootNumber.root | while read FullDataSetName
 
 ############  Here is where the Skimmer is running     ############
-FinalOutName=""
 do
-# file=`echo $FullDataSetName`
-# ShortName=${file##*DM_Electron}  # This removes all the string before Moriond18 (including Moriond18)
-### ShortName=${file##*An2017}  # This removes all the string before An2017 (including An2017)
- echo "####### Here is the file Name   ------>" $FullDataSetName
-
  ShortName=${FullDataSetName##*crab_}
  IFS="/"
  set $ShortName
- #OutName=$1$2$rootNumber".root"  # this makes the 4th and 6th pieces of the
- FinalOutName=$1_$2_$3_$rootNumber".root"
  outName="skimed_"$1_$2_$3_$4
- #echo $OutName
  IFS=""
 
  echo "input is " $FullDataSetName
  echo "output is " $outName
- echo "FinalOutName is " $FinalOutName
 
  ./SkimerBoost  $FullDataSetName $outName
 done
 ############  Here is where the Skimmer ends          ############
 
+ShortName=${FullDataSetName##*crab_}
+IFS="/"
+set $ShortName
+FinalOutName=$1_$2_$3_$rootNumber".root"
 
+echo "FinalOutName is " $FinalOutName
 
 hadd -f $FinalOutName "skimed_"*.root
 

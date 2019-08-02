@@ -13,7 +13,7 @@
 using namespace std;
 
 
-void SkimerBoost::Loop(TString outputName, int skm)
+void SkimerBoost::Loop(TString OutputFile, int skm)
 {
     
     
@@ -22,7 +22,7 @@ void SkimerBoost::Loop(TString outputName, int skm)
     TH1F* hPU     = (TH1F*)gDirectory->Get("ggNtuplizer/hPU");
     TH1F* hPUTrue = (TH1F*)gDirectory->Get("ggNtuplizer/hPUTrue");
     
-    TFile* file = TFile::Open(outputName, "RECREATE");
+    TFile* file = TFile::Open(OutputFile, "RECREATE");
     TTree* MyNewTree = fChain->CloneTree(0);
     
     fChain->SetBranchStatus("*",0);
@@ -144,36 +144,14 @@ void SkimerBoost::Loop(TString outputName, int skm)
 
 int main(int argc, char* argv[]){
     
-    string FinaName=argv[1];
-    string outputName=argv[2];
+    string InputFile=argv[1];
+    string OutputFile=argv[2];
     
-    cout<< "\n\n input is "<<FinaName  <<"  and output is "<<outputName<<"\n\n";
-//    stringstream ss(FinaName);
-//
-//    string token;
-//    string M;
-//    int count=0;
-//    string realName;
-//    while (getline(ss,token, '/'))
-//    {
-//        count++;
-//        cout<< token <<endl;
-//        if (count == 5) {
-//            cout<<"   ----->    5   "<<token<<"  _____   \n";
-//            realName=token;
-//        }
-//        M=token;
-//    }
-//
-//    TString outputName = "skimed_"+realName+M;
-//    cout<<" outputName is ---> "<<outputName<<"\n";
-//    cout<<" FinaName is ---> "<<FinaName<<"\n";
+    cout<< "\n===\n input is "<<InputFile  <<"  and output is "<<OutputFile<<"\n===\n";
     
-//    SkimerBoost t("root://cmsxrootd.fnal.gov//store/user/abdollah/BoostedH/An2017/"+FinaName);
-    SkimerBoost t("root://cmsxrootd.fnal.gov/"+FinaName);
-    //FinaName.erase(FinaName.begin(),FinaName.end()-10);
-    //  SkimerBoost t("root://cmsxrootd.fnal.gov//"+FinaName);
-    t.Loop(outputName, 0);
+    SkimerBoost t("root://cmsxrootd.fnal.gov/"+InputFile);
+    t.Loop(OutputFile, 0);
+
     return 0;
 }
 
