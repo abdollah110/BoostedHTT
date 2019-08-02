@@ -78,7 +78,7 @@ do
 ### ShortName=${file##*An2017}  # This removes all the string before An2017 (including An2017)
  echo "####### Here is the file Name   ------>" $FullDataSetName
 
-
+ QQQ=$FullDataSetName
  ShortName=${FullDataSetName##*crab_}
  IFS="/"
  set $ShortName
@@ -87,12 +87,13 @@ do
  outName="skimed_"$1_$2_$3_$4
  #echo $OutName
 
+ echo "####### Here is the QQQ   ------>" $QQQ
 
- echo "input is " $FullDataSetName
+ echo "input is " $QQQ
  echo "output is " $outName
  echo "FinalOutName is " $FinalOutName
 
- ./SkimerBoost  $FullDataSetName $outName
+ ./SkimerBoost  $QQQ$outName
 done
 ############  Here is where the Skimmer ends          ############
 
