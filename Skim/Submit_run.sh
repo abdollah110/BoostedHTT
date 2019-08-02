@@ -79,15 +79,18 @@ do
  echo "\n\nHere is the file Name   ------>" $file
 
 
-ShortName=${file##*crab_}
-IFS="/"
-set $ShortName
-#OutName=$1$2$rootNumber".root"  # this makes the 4th and 6th pieces of the
-FinalOutName=$1_$2_$3_$rootNumber".root"
-outName="skimed_"$1_$2_$3_".root"
-#echo $OutName
+ ShortName=${file##*crab_}
+ IFS="/"
+ set $ShortName
+ #OutName=$1$2$rootNumber".root"  # this makes the 4th and 6th pieces of the
+ FinalOutName=$1_$2_$3_$rootNumber".root"
+ outName="skimed_"$1_$2_$3_".root"
+ #echo $OutName
 
 
+ echo "input is " $file
+ echo "output is " $outName
+ echo "FinalOutName is " $FinalOutName
 
  ./SkimerBoost  $file $outName
 done

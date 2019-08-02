@@ -146,8 +146,10 @@ int main(int argc, char* argv[]){
     
     string FinaName=argv[1];
     string outputName=argv[2];
+    
+    cout<< "\n\n input is "<<FinaName  <<"  and output is "<<outputName<<"\n\n";
 //    stringstream ss(FinaName);
-//    
+//
 //    string token;
 //    string M;
 //    int count=0;
@@ -162,7 +164,7 @@ int main(int argc, char* argv[]){
 //        }
 //        M=token;
 //    }
-//    
+//
 //    TString outputName = "skimed_"+realName+M;
 //    cout<<" outputName is ---> "<<outputName<<"\n";
 //    cout<<" FinaName is ---> "<<FinaName<<"\n";
