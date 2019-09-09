@@ -69,7 +69,7 @@ rootNumber=$(($PROCESS % $SplitingNumber))
 xrdfs root://cmseos.fnal.gov ls $DataSetName | grep $rootNumber.root | while read FullDataSetName
 
 ############  Here is where the Skimmer is running     ############
-QQQ=$FullDataSetName
+#QQQ=$FullDataSetName   FFFFFFF
 do
  ShortName=${FullDataSetName##*crab_}
  IFS="/"
