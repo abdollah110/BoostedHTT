@@ -8,10 +8,10 @@ OUTPATH=$4
 
 
 #########For running locally uncommnet this line
-#CLUSTER=""
-#PROCESS=5
-#RUNPATH="/uscms_data/d3/abdollah/Analysis/LQ2016/CMSSW_8_0_11/src/Skim_ggNtuple"
-#OUTPATH=""
+CLUSTER=""
+PROCESS=5
+RUNPATH="/uscms_data/d3/abdollah/Analysis/LQ2016/CMSSW_8_0_11/src/Skim_ggNtuple"
+OUTPATH=""
 
 
 echo ""
@@ -21,12 +21,12 @@ echo ""
 START_TIME=`/bin/date`
 echo "started at $START_TIME"
 
-echo ""
-echo "parameter set:"
-echo "CLUSTER: $CLUSTER"
-echo "PROCESS: $PROCESS"
-echo "RUNPATH: $RUNPATH"
-echo "OUTPATH: $OUTPATH"
+#echo ""
+#echo "parameter set:"
+#echo "CLUSTER: $CLUSTER"
+#echo "PROCESS: $PROCESS"
+#echo "RUNPATH: $RUNPATH"
+#echo "OUTPATH: $OUTPATH"
 
 source /cvmfs/cms.cern.ch/cmsset_default.sh
 
@@ -64,7 +64,6 @@ DataSetName=${DataSetArray[$PROCESS / $SplitingNumber]}
 rootNumber=$(($PROCESS % $SplitingNumber))
 #DataSetName=DataSetName_.replace("/store/user/abdollah/Moriond18/","")
 
-
 ########### loop over all root file in a dataset directory
 xrdfs root://cmseos.fnal.gov ls $DataSetName | grep $rootNumber.root | while read FullDataSetName
 
@@ -84,13 +83,13 @@ do
 done
 ############  Here is where the Skimmer ends          ############
 
-#ShortName2=${QQQ##*crab_}
-#IFS="/"
-#set $ShortName2
-#FinalOutName=$1_$2_$3_$rootNumber".root"
-#IFS=""
+ShortName2=${DataSetName##*crab_}
+IFS="/"
+set $ShortName2
+FinalOutName=$1_$2_$3_$rootNumber".root"
+IFS=""
 
-FinalOutName="FinalOutName.root"
+#FinalOutName="FinalOutName.root"
 echo "FinalOutName is " $FinalOutName
 
 hadd -f $FinalOutName "skimed_"*.root
