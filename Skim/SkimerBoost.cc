@@ -45,7 +45,7 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
     fChain->SetBranchStatus("n*",1);
     //    fChain->SetBranchStatus("c*",1);
     fChain->SetBranchStatus("jet*",1);
-    //    fChain->SetBranchStatus("AK8*",1);
+        fChain->SetBranchStatus("AK8*",1);
     fChain->SetBranchStatus("ele*",1);
     fChain->SetBranchStatus("mu*",1);
     //    fChain->SetBranchStatus("pho",0);
@@ -85,7 +85,7 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
                 Mu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),muEn->at(imu));
                 
                 for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
-                    if (boostedTauPt->at(ibtau) > 20 && fabs(boostedTauEta->at(ibtau)) < 2.3 ){
+                    if (boostedTauPt->at(ibtau) > 30 && fabs(boostedTauEta->at(ibtau)) < 2.3 ){
                         BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                         if(BoostedTau4Momentum.DeltaR(Mu4Momentum) < 0.8 && BoostedTau4Momentum.DeltaR(Mu4Momentum) > 0.1){
                             numMuTau++;

@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Thu Apr 11 15:21:02 2019 by ROOT version 6.06/04
+// Mon Sep  9 14:04:37 2019 by ROOT version 6.16/00
 // from TTree EventTree/Event data (tag V09_04_13_01)
-// found on file: DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8.root
+// found on file: ggtree_mc_10.root
 //////////////////////////////////////////////////////////
 
 #ifndef SkimerBoost_h
@@ -19,7 +19,6 @@
 #include "vector"
 #include "vector"
 #include "vector"
-
 
 using namespace std;
 
@@ -68,9 +67,6 @@ public :
    vector<float>   *puTrue;
    Int_t           nMC;
    vector<int>     *mcPID;
-   vector<float>   *mcVtx;
-   vector<float>   *mcVty;
-   vector<float>   *mcVtz;
    vector<float>   *mcPt;
    vector<float>   *mcMass;
    vector<float>   *mcEta;
@@ -86,10 +82,6 @@ public :
    vector<unsigned short> *mcStatusFlag;
    vector<int>     *mcParentage;
    vector<int>     *mcStatus;
-   vector<float>   *mcCalIsoDR03;
-   vector<float>   *mcTrkIsoDR03;
-   vector<float>   *mcCalIsoDR04;
-   vector<float>   *mcTrkIsoDR04;
    Float_t         genMET;
    Float_t         genMETPhi;
    Int_t           metFilters;
@@ -120,23 +112,8 @@ public :
    vector<float>   *elePtError;
    vector<float>   *eleEta;
    vector<float>   *elePhi;
-   vector<float>   *eleR9;
-   vector<float>   *eleCalibPt;
-   vector<float>   *eleCalibEn;
    vector<float>   *eleSCEta;
    vector<float>   *eleSCPhi;
-   vector<float>   *eleSCRawEn;
-   vector<float>   *eleSCEtaWidth;
-   vector<float>   *eleSCPhiWidth;
-   vector<float>   *eleHoverE;
-   vector<float>   *eleEoverP;
-   vector<float>   *eleEoverPout;
-   vector<float>   *eleEoverPInv;
-   vector<float>   *eleBrem;
-   vector<float>   *eledEtaAtVtx;
-   vector<float>   *eledPhiAtVtx;
-   vector<float>   *eleSigmaIEtaIEtaFull5x5;
-   vector<float>   *eleSigmaIPhiIPhiFull5x5;
    vector<int>     *eleConvVeto;
    vector<int>     *eleMissHits;
    vector<float>   *eleESEffSigmaRR;
@@ -148,36 +125,10 @@ public :
    vector<float>   *elePFClusHcalIso;
    vector<float>   *eleIDMVAIso;
    vector<float>   *eleIDMVANoIso;
-   vector<float>   *eleR9Full5x5;
-   vector<int>     *eleEcalDrivenSeed;
-   vector<float>   *eleTrkdxy;
-   vector<float>   *eleKFHits;
-   vector<float>   *eleKFChi2;
-   vector<float>   *eleGSFChi2;
-   vector<vector<float> > *eleGSFPt;
-   vector<vector<float> > *eleGSFEta;
-   vector<vector<float> > *eleGSFPhi;
-   vector<vector<float> > *eleGSFCharge;
-   vector<vector<int> > *eleGSFHits;
-   vector<vector<int> > *eleGSFMissHits;
-   vector<vector<int> > *eleGSFNHitsMax;
-   vector<vector<float> > *eleGSFVtxProb;
-   vector<vector<float> > *eleGSFlxyPV;
-   vector<vector<float> > *eleGSFlxyBS;
    vector<ULong64_t> *eleFiredSingleTrgs;
    vector<ULong64_t> *eleFiredDoubleTrgs;
    vector<ULong64_t> *eleFiredL1Trgs;
    vector<unsigned short> *eleIDbit;
-   vector<float>   *eleScale_stat_up;
-   vector<float>   *eleScale_stat_dn;
-   vector<float>   *eleScale_syst_up;
-   vector<float>   *eleScale_syst_dn;
-   vector<float>   *eleScale_gain_up;
-   vector<float>   *eleScale_gain_dn;
-   vector<float>   *eleResol_rho_up;
-   vector<float>   *eleResol_rho_dn;
-   vector<float>   *eleResol_phi_up;
-   vector<float>   *eleResol_phi_dn;
    Int_t           nMu;
    vector<float>   *muPt;
    vector<float>   *muEn;
@@ -192,9 +143,6 @@ public :
    vector<float>   *muChi2NDF;
    vector<float>   *muInnerD0;
    vector<float>   *muInnerDz;
-   vector<int>     *muTrkLayers;
-   vector<int>     *muPixelLayers;
-   vector<int>     *muPixelHits;
    vector<int>     *muMuonHits;
    vector<int>     *muStations;
    vector<int>     *muMatches;
@@ -210,13 +158,6 @@ public :
    vector<float>   *muPFPUIso03;
    vector<ULong64_t> *muFiredTrgs;
    vector<ULong64_t> *muFiredL1Trgs;
-   vector<float>   *muInnervalidFraction;
-   vector<float>   *musegmentCompatibility;
-   vector<float>   *muchi2LocalPosition;
-   vector<float>   *mutrkKink;
-   vector<float>   *muBestTrkPtError;
-   vector<float>   *muBestTrkPt;
-   vector<int>     *muBestTrkType;
    Int_t           nTau;
    vector<bool>    *taupfTausDiscriminationByDecayModeFinding;
    vector<bool>    *taupfTausDiscriminationByDecayModeFindingNewDMs;
@@ -233,28 +174,16 @@ public :
    vector<float>   *tauCombinedIsolationDeltaBetaCorrRaw3Hits;
    vector<float>   *tauByIsolationMVArun2v1DBnewDMwLTraw;
    vector<float>   *tauByIsolationMVArun2v1DBoldDMwLTraw;
-   vector<float>   *tauByIsolationMVArun2v1PWnewDMwLTraw;
-   vector<float>   *tauByIsolationMVArun2v1PWoldDMwLTraw;
    vector<bool>    *tauByVTightIsolationMVArun2v1DBnewDMwLT;
    vector<bool>    *tauByVTightIsolationMVArun2v1DBoldDMwLT;
-   vector<bool>    *tauByVTightIsolationMVArun2v1PWnewDMwLT;
-   vector<bool>    *tauByVTightIsolationMVArun2v1PWoldDMwLT;
    vector<bool>    *tauByTightIsolationMVArun2v1DBnewDMwLT;
    vector<bool>    *tauByTightIsolationMVArun2v1DBoldDMwLT;
-   vector<bool>    *tauByTightIsolationMVArun2v1PWnewDMwLT;
-   vector<bool>    *tauByTightIsolationMVArun2v1PWoldDMwLT;
    vector<bool>    *tauByMediumIsolationMVArun2v1DBnewDMwLT;
    vector<bool>    *tauByMediumIsolationMVArun2v1DBoldDMwLT;
-   vector<bool>    *tauByMediumIsolationMVArun2v1PWnewDMwLT;
-   vector<bool>    *tauByMediumIsolationMVArun2v1PWoldDMwLT;
    vector<bool>    *tauByLooseIsolationMVArun2v1DBnewDMwLT;
    vector<bool>    *tauByLooseIsolationMVArun2v1DBoldDMwLT;
-   vector<bool>    *tauByLooseIsolationMVArun2v1PWnewDMwLT;
-   vector<bool>    *tauByLooseIsolationMVArun2v1PWoldDMwLT;
    vector<bool>    *tauByVLooseIsolationMVArun2v1DBnewDMwLT;
    vector<bool>    *tauByVLooseIsolationMVArun2v1DBoldDMwLT;
-   vector<bool>    *tauByVLooseIsolationMVArun2v1PWnewDMwLT;
-   vector<bool>    *tauByVLooseIsolationMVArun2v1PWoldDMwLT;
    vector<float>   *tauEta;
    vector<float>   *tauPhi;
    vector<float>   *tauPt;
@@ -289,6 +218,12 @@ public :
    vector<float>   *tauphotonPtSumOutsideSignalCone;
    vector<float>   *taudz;
    vector<float>   *taudxy;
+   vector<float>   *tauByIsolationMVArun2v2DBoldDMwLTraw;
+   vector<bool>    *tauByVTightIsolationMVArun2v2DBoldDMwLT;
+   vector<bool>    *tauByTightIsolationMVArun2v2DBoldDMwLT;
+   vector<bool>    *tauByMediumIsolationMVArun2v2DBoldDMwLT;
+   vector<bool>    *tauByLooseIsolationMVArun2v2DBoldDMwLT;
+   vector<bool>    *tauByVLooseIsolationMVArun2v2DBoldDMwLT;
    Int_t           nJet;
    vector<float>   *jetPt;
    vector<float>   *jetEn;
@@ -312,19 +247,6 @@ public :
    vector<float>   *jetDeepCSVTags_udsg;
    vector<int>     *jetPartonID;
    vector<int>     *jetHadFlvr;
-   vector<float>   *jetGenJetEn;
-   vector<float>   *jetGenJetPt;
-   vector<float>   *jetGenJetEta;
-   vector<float>   *jetGenJetPhi;
-   vector<int>     *jetGenPartonID;
-   vector<float>   *jetGenEn;
-   vector<float>   *jetGenPt;
-   vector<float>   *jetGenEta;
-   vector<float>   *jetGenPhi;
-   vector<int>     *jetGenPartonMomID;
-   vector<float>   *jetP4Smear;
-   vector<float>   *jetP4SmearUp;
-   vector<float>   *jetP4SmearDo;
    vector<bool>    *jetPFLooseId;
    vector<int>     *jetID;
    vector<float>   *jetPUID;
@@ -338,70 +260,73 @@ public :
    vector<int>     *jetNCH;
    vector<int>     *jetNNP;
    vector<float>   *jetMUF;
-   vector<float>   *jetVtxPt;
-   vector<float>   *jetVtxMass;
-   vector<float>   *jetVtxNtrks;
-   vector<float>   *jetVtx3DVal;
-   vector<float>   *jetVtx3DSig;
-    
-    Int_t           nAK8Jet;
-    vector<float>   *AK8JetPt;
-    vector<float>   *AK8JetEn;
-    vector<float>   *AK8JetRawPt;
-    vector<float>   *AK8JetRawEn;
-    vector<float>   *AK8JetEta;
-    vector<float>   *AK8JetPhi;
-    vector<float>   *AK8JetMass;
-    vector<float>   *AK8Jet_tau1;
-    vector<float>   *AK8Jet_tau2;
-    vector<float>   *AK8Jet_tau3;
-    vector<float>   *AK8JetCHF;
-    vector<float>   *AK8JetNHF;
-    vector<float>   *AK8JetCEF;
-    vector<float>   *AK8JetNEF;
-    vector<int>     *AK8JetNCH;
-    vector<int>     *AK8JetNNP;
-    vector<float>   *AK8JetMUF;
-    vector<int>     *AK8Jetnconstituents;
-    vector<bool>    *AK8JetPFLooseId;
-    vector<bool>    *AK8JetPFTightLepVetoId;
-    vector<float>   *AK8JetSoftDropMass;
-    vector<float>   *AK8JetSoftDropMassCorr;
-    vector<float>   *AK8JetPrunedMass;
-    vector<float>   *AK8JetPrunedMassCorr;
-    vector<float>   *AK8JetpfBoostedDSVBTag;
-    vector<float>   *AK8JetDSVnewV4;
-    vector<float>   *AK8JetCSV;
-    vector<float>   *AK8JetJECUnc;
-    vector<float>   *AK8JetL2L3corr;
-    vector<float>   *AK8puppiPt;
-    vector<float>   *AK8puppiMass;
-    vector<float>   *AK8puppiEta;
-    vector<float>   *AK8puppiPhi;
-    vector<float>   *AK8puppiSDL2L3corr;
-    vector<float>   *AK8puppiSDMass;
-    vector<float>   *AK8puppiSDMassL2L3Corr;
-    vector<int>     *nAK8SDSJ;
-    vector<vector<float> > *AK8SDSJPt;
-    vector<vector<float> > *AK8SDSJEta;
-    vector<vector<float> > *AK8SDSJPhi;
-    vector<vector<float> > *AK8SDSJMass;
-    vector<vector<float> > *AK8SDSJE;
-    vector<vector<int> > *AK8SDSJCharge;
-    vector<vector<int> > *AK8SDSJFlavour;
-    vector<vector<float> > *AK8SDSJCSV;
-    vector<int>     *nAK8puppiSDSJ;
-    vector<vector<float> > *AK8puppiSDSJPt;
-    vector<vector<float> > *AK8puppiSDSJEta;
-    vector<vector<float> > *AK8puppiSDSJPhi;
-    vector<vector<float> > *AK8puppiSDSJMass;
-    vector<vector<float> > *AK8puppiSDSJE;
-    vector<vector<int> > *AK8puppiSDSJCharge;
-    vector<vector<int> > *AK8puppiSDSJFlavour;
-    vector<vector<float> > *AK8puppiSDSJCSV;
-    
-    
-    
+   Int_t           nAK8Jet;
+   vector<float>   *AK8JetPt;
+   vector<float>   *AK8JetEn;
+   vector<float>   *AK8JetRawPt;
+   vector<float>   *AK8JetRawEn;
+   vector<float>   *AK8JetEta;
+   vector<float>   *AK8JetPhi;
+   vector<float>   *AK8JetMass;
+   vector<float>   *AK8Jet_tau1;
+   vector<float>   *AK8Jet_tau2;
+   vector<float>   *AK8Jet_tau3;
+   vector<float>   *AK8JetCHF;
+   vector<float>   *AK8JetNHF;
+   vector<float>   *AK8JetCEF;
+   vector<float>   *AK8JetNEF;
+   vector<int>     *AK8JetNCH;
+   vector<int>     *AK8JetNNP;
+   vector<float>   *AK8JetMUF;
+   vector<int>     *AK8Jetnconstituents;
+   vector<bool>    *AK8JetPFLooseId;
+   vector<bool>    *AK8JetPFTightLepVetoId;
+   vector<float>   *AK8JetSoftDropMass;
+   vector<float>   *AK8JetSoftDropMassCorr;
+   vector<float>   *AK8JetPrunedMass;
+   vector<float>   *AK8JetPrunedMassCorr;
+   vector<float>   *AK8JetpfBoostedDSVBTag;
+   vector<float>   *AK8JetCSV;
+   vector<float>   *AK8JetJECUnc;
+   vector<float>   *AK8JetL2L3corr;
+   vector<float>   *AK8puppiPt;
+   vector<float>   *AK8puppiMass;
+   vector<float>   *AK8puppiEta;
+   vector<float>   *AK8puppiPhi;
+   vector<float>   *AK8puppiSDL2L3corr;
+   vector<float>   *AK8puppiSDMass;
+   vector<float>   *AK8puppiSDMassL2L3Corr;
+   vector<int>     *AK8JetPartonID;
+   vector<int>     *AK8JetHadFlvr;
+   vector<int>     *AK8JetGenJetIndex;
+   vector<float>   *AK8JetGenJetEn;
+   vector<float>   *AK8JetGenJetPt;
+   vector<float>   *AK8JetGenJetEta;
+   vector<float>   *AK8JetGenJetPhi;
+   vector<int>     *AK8JetGenPartonID;
+   vector<float>   *AK8JetGenEn;
+   vector<float>   *AK8JetGenPt;
+   vector<float>   *AK8JetGenEta;
+   vector<float>   *AK8JetGenPhi;
+   vector<int>     *AK8JetGenPartonMomID;
+   vector<int>     *nAK8SDSJ;
+   vector<vector<float> > *AK8SDSJPt;
+   vector<vector<float> > *AK8SDSJEta;
+   vector<vector<float> > *AK8SDSJPhi;
+   vector<vector<float> > *AK8SDSJMass;
+   vector<vector<float> > *AK8SDSJE;
+   vector<vector<int> > *AK8SDSJCharge;
+   vector<vector<int> > *AK8SDSJFlavour;
+   vector<vector<float> > *AK8SDSJCSV;
+   vector<int>     *nAK8puppiSDSJ;
+   vector<vector<float> > *AK8puppiSDSJPt;
+   vector<vector<float> > *AK8puppiSDSJEta;
+   vector<vector<float> > *AK8puppiSDSJPhi;
+   vector<vector<float> > *AK8puppiSDSJMass;
+   vector<vector<float> > *AK8puppiSDSJE;
+   vector<vector<int> > *AK8puppiSDSJCharge;
+   vector<vector<int> > *AK8puppiSDSJFlavour;
+   vector<vector<float> > *AK8puppiSDSJCSV;
    Int_t           nBoostedTau;
    vector<bool>    *boostedTaupfTausDiscriminationByDecayModeFinding;
    vector<bool>    *boostedTaupfTausDiscriminationByDecayModeFindingNewDMs;
@@ -515,9 +440,6 @@ public :
    TBranch        *b_puTrue;   //!
    TBranch        *b_nMC;   //!
    TBranch        *b_mcPID;   //!
-   TBranch        *b_mcVtx;   //!
-   TBranch        *b_mcVty;   //!
-   TBranch        *b_mcVtz;   //!
    TBranch        *b_mcPt;   //!
    TBranch        *b_mcMass;   //!
    TBranch        *b_mcEta;   //!
@@ -533,10 +455,6 @@ public :
    TBranch        *b_mcStatusFlag;   //!
    TBranch        *b_mcParentage;   //!
    TBranch        *b_mcStatus;   //!
-   TBranch        *b_mcCalIsoDR03;   //!
-   TBranch        *b_mcTrkIsoDR03;   //!
-   TBranch        *b_mcCalIsoDR04;   //!
-   TBranch        *b_mcTrkIsoDR04;   //!
    TBranch        *b_genMET;   //!
    TBranch        *b_genMETPhi;   //!
    TBranch        *b_metFilters;   //!
@@ -567,23 +485,8 @@ public :
    TBranch        *b_elePtError;   //!
    TBranch        *b_eleEta;   //!
    TBranch        *b_elePhi;   //!
-   TBranch        *b_eleR9;   //!
-   TBranch        *b_eleCalibPt;   //!
-   TBranch        *b_eleCalibEn;   //!
    TBranch        *b_eleSCEta;   //!
    TBranch        *b_eleSCPhi;   //!
-   TBranch        *b_eleSCRawEn;   //!
-   TBranch        *b_eleSCEtaWidth;   //!
-   TBranch        *b_eleSCPhiWidth;   //!
-   TBranch        *b_eleHoverE;   //!
-   TBranch        *b_eleEoverP;   //!
-   TBranch        *b_eleEoverPout;   //!
-   TBranch        *b_eleEoverPInv;   //!
-   TBranch        *b_eleBrem;   //!
-   TBranch        *b_eledEtaAtVtx;   //!
-   TBranch        *b_eledPhiAtVtx;   //!
-   TBranch        *b_eleSigmaIEtaIEtaFull5x5;   //!
-   TBranch        *b_eleSigmaIPhiIPhiFull5x5;   //!
    TBranch        *b_eleConvVeto;   //!
    TBranch        *b_eleMissHits;   //!
    TBranch        *b_eleESEffSigmaRR;   //!
@@ -595,36 +498,10 @@ public :
    TBranch        *b_elePFClusHcalIso;   //!
    TBranch        *b_eleIDMVAIso;   //!
    TBranch        *b_eleIDMVANoIso;   //!
-   TBranch        *b_eleR9Full5x5;   //!
-   TBranch        *b_eleEcalDrivenSeed;   //!
-   TBranch        *b_eleTrkdxy;   //!
-   TBranch        *b_eleKFHits;   //!
-   TBranch        *b_eleKFChi2;   //!
-   TBranch        *b_eleGSFChi2;   //!
-   TBranch        *b_eleGSFPt;   //!
-   TBranch        *b_eleGSFEta;   //!
-   TBranch        *b_eleGSFPhi;   //!
-   TBranch        *b_eleGSFCharge;   //!
-   TBranch        *b_eleGSFHits;   //!
-   TBranch        *b_eleGSFMissHits;   //!
-   TBranch        *b_eleGSFNHitsMax;   //!
-   TBranch        *b_eleGSFVtxProb;   //!
-   TBranch        *b_eleGSFlxyPV;   //!
-   TBranch        *b_eleGSFlxyBS;   //!
    TBranch        *b_eleFiredSingleTrgs;   //!
    TBranch        *b_eleFiredDoubleTrgs;   //!
    TBranch        *b_eleFiredL1Trgs;   //!
    TBranch        *b_eleIDbit;   //!
-   TBranch        *b_eleScale_stat_up;   //!
-   TBranch        *b_eleScale_stat_dn;   //!
-   TBranch        *b_eleScale_syst_up;   //!
-   TBranch        *b_eleScale_syst_dn;   //!
-   TBranch        *b_eleScale_gain_up;   //!
-   TBranch        *b_eleScale_gain_dn;   //!
-   TBranch        *b_eleResol_rho_up;   //!
-   TBranch        *b_eleResol_rho_dn;   //!
-   TBranch        *b_eleResol_phi_up;   //!
-   TBranch        *b_eleResol_phi_dn;   //!
    TBranch        *b_nMu;   //!
    TBranch        *b_muPt;   //!
    TBranch        *b_muEn;   //!
@@ -639,9 +516,6 @@ public :
    TBranch        *b_muChi2NDF;   //!
    TBranch        *b_muInnerD0;   //!
    TBranch        *b_muInnerDz;   //!
-   TBranch        *b_muTrkLayers;   //!
-   TBranch        *b_muPixelLayers;   //!
-   TBranch        *b_muPixelHits;   //!
    TBranch        *b_muMuonHits;   //!
    TBranch        *b_muStations;   //!
    TBranch        *b_muMatches;   //!
@@ -657,13 +531,6 @@ public :
    TBranch        *b_muPFPUIso03;   //!
    TBranch        *b_muFiredTrgs;   //!
    TBranch        *b_muFiredL1Trgs;   //!
-   TBranch        *b_muInnervalidFraction;   //!
-   TBranch        *b_musegmentCompatibility;   //!
-   TBranch        *b_muchi2LocalPosition;   //!
-   TBranch        *b_mutrkKink;   //!
-   TBranch        *b_muBestTrkPtError;   //!
-   TBranch        *b_muBestTrkPt;   //!
-   TBranch        *b_muBestTrkType;   //!
    TBranch        *b_nTau;   //!
    TBranch        *b_taupfTausDiscriminationByDecayModeFinding;   //!
    TBranch        *b_taupfTausDiscriminationByDecayModeFindingNewDMs;   //!
@@ -680,28 +547,16 @@ public :
    TBranch        *b_tauCombinedIsolationDeltaBetaCorrRaw3Hits;   //!
    TBranch        *b_tauByIsolationMVArun2v1DBnewDMwLTraw;   //!
    TBranch        *b_tauByIsolationMVArun2v1DBoldDMwLTraw;   //!
-   TBranch        *b_tauByIsolationMVArun2v1PWnewDMwLTraw;   //!
-   TBranch        *b_tauByIsolationMVArun2v1PWoldDMwLTraw;   //!
    TBranch        *b_tauByVTightIsolationMVArun2v1DBnewDMwLT;   //!
    TBranch        *b_tauByVTightIsolationMVArun2v1DBoldDMwLT;   //!
-   TBranch        *b_tauByVTightIsolationMVArun2v1PWnewDMwLT;   //!
-   TBranch        *b_tauByVTightIsolationMVArun2v1PWoldDMwLT;   //!
    TBranch        *b_tauByTightIsolationMVArun2v1DBnewDMwLT;   //!
    TBranch        *b_tauByTightIsolationMVArun2v1DBoldDMwLT;   //!
-   TBranch        *b_tauByTightIsolationMVArun2v1PWnewDMwLT;   //!
-   TBranch        *b_tauByTightIsolationMVArun2v1PWoldDMwLT;   //!
    TBranch        *b_tauByMediumIsolationMVArun2v1DBnewDMwLT;   //!
    TBranch        *b_tauByMediumIsolationMVArun2v1DBoldDMwLT;   //!
-   TBranch        *b_tauByMediumIsolationMVArun2v1PWnewDMwLT;   //!
-   TBranch        *b_tauByMediumIsolationMVArun2v1PWoldDMwLT;   //!
    TBranch        *b_tauByLooseIsolationMVArun2v1DBnewDMwLT;   //!
    TBranch        *b_tauByLooseIsolationMVArun2v1DBoldDMwLT;   //!
-   TBranch        *b_tauByLooseIsolationMVArun2v1PWnewDMwLT;   //!
-   TBranch        *b_tauByLooseIsolationMVArun2v1PWoldDMwLT;   //!
    TBranch        *b_tauByVLooseIsolationMVArun2v1DBnewDMwLT;   //!
    TBranch        *b_tauByVLooseIsolationMVArun2v1DBoldDMwLT;   //!
-   TBranch        *b_tauByVLooseIsolationMVArun2v1PWnewDMwLT;   //!
-   TBranch        *b_tauByVLooseIsolationMVArun2v1PWoldDMwLT;   //!
    TBranch        *b_tauEta;   //!
    TBranch        *b_tauPhi;   //!
    TBranch        *b_tauPt;   //!
@@ -736,6 +591,12 @@ public :
    TBranch        *b_tauphotonPtSumOutsideSignalCone;   //!
    TBranch        *b_taudz;   //!
    TBranch        *b_taudxy;   //!
+   TBranch        *b_tauByIsolationMVArun2v2DBoldDMwLTraw;   //!
+   TBranch        *b_tauByVTightIsolationMVArun2v2DBoldDMwLT;   //!
+   TBranch        *b_tauByTightIsolationMVArun2v2DBoldDMwLT;   //!
+   TBranch        *b_tauByMediumIsolationMVArun2v2DBoldDMwLT;   //!
+   TBranch        *b_tauByLooseIsolationMVArun2v2DBoldDMwLT;   //!
+   TBranch        *b_tauByVLooseIsolationMVArun2v2DBoldDMwLT;   //!
    TBranch        *b_nJet;   //!
    TBranch        *b_jetPt;   //!
    TBranch        *b_jetEn;   //!
@@ -759,19 +620,6 @@ public :
    TBranch        *b_jetDeepCSVTags_udsg;   //!
    TBranch        *b_jetPartonID;   //!
    TBranch        *b_jetHadFlvr;   //!
-   TBranch        *b_jetGenJetEn;   //!
-   TBranch        *b_jetGenJetPt;   //!
-   TBranch        *b_jetGenJetEta;   //!
-   TBranch        *b_jetGenJetPhi;   //!
-   TBranch        *b_jetGenPartonID;   //!
-   TBranch        *b_jetGenEn;   //!
-   TBranch        *b_jetGenPt;   //!
-   TBranch        *b_jetGenEta;   //!
-   TBranch        *b_jetGenPhi;   //!
-   TBranch        *b_jetGenPartonMomID;   //!
-   TBranch        *b_jetP4Smear;   //!
-   TBranch        *b_jetP4SmearUp;   //!
-   TBranch        *b_jetP4SmearDo;   //!
    TBranch        *b_jetPFLooseId;   //!
    TBranch        *b_jetID;   //!
    TBranch        *b_jetPUID;   //!
@@ -785,69 +633,73 @@ public :
    TBranch        *b_jetNCH;   //!
    TBranch        *b_jetNNP;   //!
    TBranch        *b_jetMUF;   //!
-   TBranch        *b_jetVtxPt;   //!
-   TBranch        *b_jetVtxMass;   //!
-   TBranch        *b_jetVtxNtrks;   //!
-   TBranch        *b_jetVtx3DVal;   //!
-   TBranch        *b_jetVtx3DSig;   //!
-    
-    TBranch        *b_nAK8Jet;   //!
-    TBranch        *b_AK8JetPt;   //!
-    TBranch        *b_AK8JetEn;   //!
-    TBranch        *b_AK8JetRawPt;   //!
-    TBranch        *b_AK8JetRawEn;   //!
-    TBranch        *b_AK8JetEta;   //!
-    TBranch        *b_AK8JetPhi;   //!
-    TBranch        *b_AK8JetMass;   //!
-    TBranch        *b_AK8Jet_tau1;   //!
-    TBranch        *b_AK8Jet_tau2;   //!
-    TBranch        *b_AK8Jet_tau3;   //!
-    TBranch        *b_AK8JetCHF;   //!
-    TBranch        *b_AK8JetNHF;   //!
-    TBranch        *b_AK8JetCEF;   //!
-    TBranch        *b_AK8JetNEF;   //!
-    TBranch        *b_AK8JetNCH;   //!
-    TBranch        *b_AK8JetNNP;   //!
-    TBranch        *b_AK8JetMUF;   //!
-    TBranch        *b_AK8Jetnconstituents;   //!
-    TBranch        *b_AK8JetPFLooseId;   //!
-    TBranch        *b_AK8JetPFTightLepVetoId;   //!
-    TBranch        *b_AK8JetSoftDropMass;   //!
-    TBranch        *b_AK8JetSoftDropMassCorr;   //!
-    TBranch        *b_AK8JetPrunedMass;   //!
-    TBranch        *b_AK8JetPrunedMassCorr;   //!
-    TBranch        *b_AK8JetpfBoostedDSVBTag;   //!
-    TBranch        *b_AK8JetDSVnewV4;   //!
-    TBranch        *b_AK8JetCSV;   //!
-    TBranch        *b_AK8JetJECUnc;   //!
-    TBranch        *b_AK8JetL2L3corr;   //!
-    TBranch        *b_AK8puppiPt;   //!
-    TBranch        *b_AK8puppiMass;   //!
-    TBranch        *b_AK8puppiEta;   //!
-    TBranch        *b_AK8puppiPhi;   //!
-    TBranch        *b_AK8puppiSDL2L3corr;   //!
-    TBranch        *b_AK8puppiSDMass;   //!
-    TBranch        *b_AK8puppiSDMassL2L3Corr;   //!
-    TBranch        *b_nAK8SDSJ;   //!
-    TBranch        *b_AK8SDSJPt;   //!
-    TBranch        *b_AK8SDSJEta;   //!
-    TBranch        *b_AK8SDSJPhi;   //!
-    TBranch        *b_AK8SDSJMass;   //!
-    TBranch        *b_AK8SDSJE;   //!
-    TBranch        *b_AK8SDSJCharge;   //!
-    TBranch        *b_AK8SDSJFlavour;   //!
-    TBranch        *b_AK8SDSJCSV;   //!
-    TBranch        *b_nAK8puppiSDSJ;   //!
-    TBranch        *b_AK8puppiSDSJPt;   //!
-    TBranch        *b_AK8puppiSDSJEta;   //!
-    TBranch        *b_AK8puppiSDSJPhi;   //!
-    TBranch        *b_AK8puppiSDSJMass;   //!
-    TBranch        *b_AK8puppiSDSJE;   //!
-    TBranch        *b_AK8puppiSDSJCharge;   //!
-    TBranch        *b_AK8puppiSDSJFlavour;   //!
-    TBranch        *b_AK8puppiSDSJCSV;   //!
-    
-    
+   TBranch        *b_nAK8Jet;   //!
+   TBranch        *b_AK8JetPt;   //!
+   TBranch        *b_AK8JetEn;   //!
+   TBranch        *b_AK8JetRawPt;   //!
+   TBranch        *b_AK8JetRawEn;   //!
+   TBranch        *b_AK8JetEta;   //!
+   TBranch        *b_AK8JetPhi;   //!
+   TBranch        *b_AK8JetMass;   //!
+   TBranch        *b_AK8Jet_tau1;   //!
+   TBranch        *b_AK8Jet_tau2;   //!
+   TBranch        *b_AK8Jet_tau3;   //!
+   TBranch        *b_AK8JetCHF;   //!
+   TBranch        *b_AK8JetNHF;   //!
+   TBranch        *b_AK8JetCEF;   //!
+   TBranch        *b_AK8JetNEF;   //!
+   TBranch        *b_AK8JetNCH;   //!
+   TBranch        *b_AK8JetNNP;   //!
+   TBranch        *b_AK8JetMUF;   //!
+   TBranch        *b_AK8Jetnconstituents;   //!
+   TBranch        *b_AK8JetPFLooseId;   //!
+   TBranch        *b_AK8JetPFTightLepVetoId;   //!
+   TBranch        *b_AK8JetSoftDropMass;   //!
+   TBranch        *b_AK8JetSoftDropMassCorr;   //!
+   TBranch        *b_AK8JetPrunedMass;   //!
+   TBranch        *b_AK8JetPrunedMassCorr;   //!
+   TBranch        *b_AK8JetpfBoostedDSVBTag;   //!
+   TBranch        *b_AK8JetCSV;   //!
+   TBranch        *b_AK8JetJECUnc;   //!
+   TBranch        *b_AK8JetL2L3corr;   //!
+   TBranch        *b_AK8puppiPt;   //!
+   TBranch        *b_AK8puppiMass;   //!
+   TBranch        *b_AK8puppiEta;   //!
+   TBranch        *b_AK8puppiPhi;   //!
+   TBranch        *b_AK8puppiSDL2L3corr;   //!
+   TBranch        *b_AK8puppiSDMass;   //!
+   TBranch        *b_AK8puppiSDMassL2L3Corr;   //!
+   TBranch        *b_AK8JetPartonID;   //!
+   TBranch        *b_AK8JetHadFlvr;   //!
+   TBranch        *b_AK8JetGenJetIndex;   //!
+   TBranch        *b_AK8JetGenJetEn;   //!
+   TBranch        *b_AK8JetGenJetPt;   //!
+   TBranch        *b_AK8JetGenJetEta;   //!
+   TBranch        *b_AK8JetGenJetPhi;   //!
+   TBranch        *b_AK8JetGenPartonID;   //!
+   TBranch        *b_AK8JetGenEn;   //!
+   TBranch        *b_AK8JetGenPt;   //!
+   TBranch        *b_AK8JetGenEta;   //!
+   TBranch        *b_AK8JetGenPhi;   //!
+   TBranch        *b_AK8JetGenPartonMomID;   //!
+   TBranch        *b_nAK8SDSJ;   //!
+   TBranch        *b_AK8SDSJPt;   //!
+   TBranch        *b_AK8SDSJEta;   //!
+   TBranch        *b_AK8SDSJPhi;   //!
+   TBranch        *b_AK8SDSJMass;   //!
+   TBranch        *b_AK8SDSJE;   //!
+   TBranch        *b_AK8SDSJCharge;   //!
+   TBranch        *b_AK8SDSJFlavour;   //!
+   TBranch        *b_AK8SDSJCSV;   //!
+   TBranch        *b_nAK8puppiSDSJ;   //!
+   TBranch        *b_AK8puppiSDSJPt;   //!
+   TBranch        *b_AK8puppiSDSJEta;   //!
+   TBranch        *b_AK8puppiSDSJPhi;   //!
+   TBranch        *b_AK8puppiSDSJMass;   //!
+   TBranch        *b_AK8puppiSDSJE;   //!
+   TBranch        *b_AK8puppiSDSJCharge;   //!
+   TBranch        *b_AK8puppiSDSJFlavour;   //!
+   TBranch        *b_AK8puppiSDSJCSV;   //!
    TBranch        *b_nBoostedTau;   //!
    TBranch        *b_boostedTaupfTausDiscriminationByDecayModeFinding;   //!
    TBranch        *b_boostedTaupfTausDiscriminationByDecayModeFindingNewDMs;   //!
@@ -953,8 +805,6 @@ SkimerBoost::SkimerBoost(TString fileName) : fChain(0)
     Init(tree);
 }
 
-
-
 SkimerBoost::~SkimerBoost()
 {
    if (!fChain) return;
@@ -997,9 +847,6 @@ void SkimerBoost::Init(TTree *tree)
    puBX = 0;
    puTrue = 0;
    mcPID = 0;
-   mcVtx = 0;
-   mcVty = 0;
-   mcVtz = 0;
    mcPt = 0;
    mcMass = 0;
    mcEta = 0;
@@ -1015,10 +862,6 @@ void SkimerBoost::Init(TTree *tree)
    mcStatusFlag = 0;
    mcParentage = 0;
    mcStatus = 0;
-   mcCalIsoDR03 = 0;
-   mcTrkIsoDR03 = 0;
-   mcCalIsoDR04 = 0;
-   mcTrkIsoDR04 = 0;
    eleCharge = 0;
    eleChargeConsistent = 0;
    eleEn = 0;
@@ -1033,23 +876,8 @@ void SkimerBoost::Init(TTree *tree)
    elePtError = 0;
    eleEta = 0;
    elePhi = 0;
-   eleR9 = 0;
-   eleCalibPt = 0;
-   eleCalibEn = 0;
    eleSCEta = 0;
    eleSCPhi = 0;
-   eleSCRawEn = 0;
-   eleSCEtaWidth = 0;
-   eleSCPhiWidth = 0;
-   eleHoverE = 0;
-   eleEoverP = 0;
-   eleEoverPout = 0;
-   eleEoverPInv = 0;
-   eleBrem = 0;
-   eledEtaAtVtx = 0;
-   eledPhiAtVtx = 0;
-   eleSigmaIEtaIEtaFull5x5 = 0;
-   eleSigmaIPhiIPhiFull5x5 = 0;
    eleConvVeto = 0;
    eleMissHits = 0;
    eleESEffSigmaRR = 0;
@@ -1061,36 +889,10 @@ void SkimerBoost::Init(TTree *tree)
    elePFClusHcalIso = 0;
    eleIDMVAIso = 0;
    eleIDMVANoIso = 0;
-   eleR9Full5x5 = 0;
-   eleEcalDrivenSeed = 0;
-   eleTrkdxy = 0;
-   eleKFHits = 0;
-   eleKFChi2 = 0;
-   eleGSFChi2 = 0;
-   eleGSFPt = 0;
-   eleGSFEta = 0;
-   eleGSFPhi = 0;
-   eleGSFCharge = 0;
-   eleGSFHits = 0;
-   eleGSFMissHits = 0;
-   eleGSFNHitsMax = 0;
-   eleGSFVtxProb = 0;
-   eleGSFlxyPV = 0;
-   eleGSFlxyBS = 0;
    eleFiredSingleTrgs = 0;
    eleFiredDoubleTrgs = 0;
    eleFiredL1Trgs = 0;
    eleIDbit = 0;
-   eleScale_stat_up = 0;
-   eleScale_stat_dn = 0;
-   eleScale_syst_up = 0;
-   eleScale_syst_dn = 0;
-   eleScale_gain_up = 0;
-   eleScale_gain_dn = 0;
-   eleResol_rho_up = 0;
-   eleResol_rho_dn = 0;
-   eleResol_phi_up = 0;
-   eleResol_phi_dn = 0;
    muPt = 0;
    muEn = 0;
    muEta = 0;
@@ -1104,9 +906,6 @@ void SkimerBoost::Init(TTree *tree)
    muChi2NDF = 0;
    muInnerD0 = 0;
    muInnerDz = 0;
-   muTrkLayers = 0;
-   muPixelLayers = 0;
-   muPixelHits = 0;
    muMuonHits = 0;
    muStations = 0;
    muMatches = 0;
@@ -1122,13 +921,6 @@ void SkimerBoost::Init(TTree *tree)
    muPFPUIso03 = 0;
    muFiredTrgs = 0;
    muFiredL1Trgs = 0;
-   muInnervalidFraction = 0;
-   musegmentCompatibility = 0;
-   muchi2LocalPosition = 0;
-   mutrkKink = 0;
-   muBestTrkPtError = 0;
-   muBestTrkPt = 0;
-   muBestTrkType = 0;
    taupfTausDiscriminationByDecayModeFinding = 0;
    taupfTausDiscriminationByDecayModeFindingNewDMs = 0;
    tauByMVA6VLooseElectronRejection = 0;
@@ -1144,28 +936,16 @@ void SkimerBoost::Init(TTree *tree)
    tauCombinedIsolationDeltaBetaCorrRaw3Hits = 0;
    tauByIsolationMVArun2v1DBnewDMwLTraw = 0;
    tauByIsolationMVArun2v1DBoldDMwLTraw = 0;
-   tauByIsolationMVArun2v1PWnewDMwLTraw = 0;
-   tauByIsolationMVArun2v1PWoldDMwLTraw = 0;
    tauByVTightIsolationMVArun2v1DBnewDMwLT = 0;
    tauByVTightIsolationMVArun2v1DBoldDMwLT = 0;
-   tauByVTightIsolationMVArun2v1PWnewDMwLT = 0;
-   tauByVTightIsolationMVArun2v1PWoldDMwLT = 0;
    tauByTightIsolationMVArun2v1DBnewDMwLT = 0;
    tauByTightIsolationMVArun2v1DBoldDMwLT = 0;
-   tauByTightIsolationMVArun2v1PWnewDMwLT = 0;
-   tauByTightIsolationMVArun2v1PWoldDMwLT = 0;
    tauByMediumIsolationMVArun2v1DBnewDMwLT = 0;
    tauByMediumIsolationMVArun2v1DBoldDMwLT = 0;
-   tauByMediumIsolationMVArun2v1PWnewDMwLT = 0;
-   tauByMediumIsolationMVArun2v1PWoldDMwLT = 0;
    tauByLooseIsolationMVArun2v1DBnewDMwLT = 0;
    tauByLooseIsolationMVArun2v1DBoldDMwLT = 0;
-   tauByLooseIsolationMVArun2v1PWnewDMwLT = 0;
-   tauByLooseIsolationMVArun2v1PWoldDMwLT = 0;
    tauByVLooseIsolationMVArun2v1DBnewDMwLT = 0;
    tauByVLooseIsolationMVArun2v1DBoldDMwLT = 0;
-   tauByVLooseIsolationMVArun2v1PWnewDMwLT = 0;
-   tauByVLooseIsolationMVArun2v1PWoldDMwLT = 0;
    tauEta = 0;
    tauPhi = 0;
    tauPt = 0;
@@ -1200,6 +980,12 @@ void SkimerBoost::Init(TTree *tree)
    tauphotonPtSumOutsideSignalCone = 0;
    taudz = 0;
    taudxy = 0;
+   tauByIsolationMVArun2v2DBoldDMwLTraw = 0;
+   tauByVTightIsolationMVArun2v2DBoldDMwLT = 0;
+   tauByTightIsolationMVArun2v2DBoldDMwLT = 0;
+   tauByMediumIsolationMVArun2v2DBoldDMwLT = 0;
+   tauByLooseIsolationMVArun2v2DBoldDMwLT = 0;
+   tauByVLooseIsolationMVArun2v2DBoldDMwLT = 0;
    jetPt = 0;
    jetEn = 0;
    jetEta = 0;
@@ -1222,19 +1008,6 @@ void SkimerBoost::Init(TTree *tree)
    jetDeepCSVTags_udsg = 0;
    jetPartonID = 0;
    jetHadFlvr = 0;
-   jetGenJetEn = 0;
-   jetGenJetPt = 0;
-   jetGenJetEta = 0;
-   jetGenJetPhi = 0;
-   jetGenPartonID = 0;
-   jetGenEn = 0;
-   jetGenPt = 0;
-   jetGenEta = 0;
-   jetGenPhi = 0;
-   jetGenPartonMomID = 0;
-   jetP4Smear = 0;
-   jetP4SmearUp = 0;
-   jetP4SmearDo = 0;
    jetPFLooseId = 0;
    jetID = 0;
    jetPUID = 0;
@@ -1248,68 +1021,72 @@ void SkimerBoost::Init(TTree *tree)
    jetNCH = 0;
    jetNNP = 0;
    jetMUF = 0;
-   jetVtxPt = 0;
-   jetVtxMass = 0;
-   jetVtxNtrks = 0;
-   jetVtx3DVal = 0;
-   jetVtx3DSig = 0;
-    
-    AK8JetPt = 0;
-    AK8JetEn = 0;
-    AK8JetRawPt = 0;
-    AK8JetRawEn = 0;
-    AK8JetEta = 0;
-    AK8JetPhi = 0;
-    AK8JetMass = 0;
-    AK8Jet_tau1 = 0;
-    AK8Jet_tau2 = 0;
-    AK8Jet_tau3 = 0;
-    AK8JetCHF = 0;
-    AK8JetNHF = 0;
-    AK8JetCEF = 0;
-    AK8JetNEF = 0;
-    AK8JetNCH = 0;
-    AK8JetNNP = 0;
-    AK8JetMUF = 0;
-    AK8Jetnconstituents = 0;
-    AK8JetPFLooseId = 0;
-    AK8JetPFTightLepVetoId = 0;
-    AK8JetSoftDropMass = 0;
-    AK8JetSoftDropMassCorr = 0;
-    AK8JetPrunedMass = 0;
-    AK8JetPrunedMassCorr = 0;
-    AK8JetpfBoostedDSVBTag = 0;
-    AK8JetDSVnewV4 = 0;
-    AK8JetCSV = 0;
-    AK8JetJECUnc = 0;
-    AK8JetL2L3corr = 0;
-    AK8puppiPt = 0;
-    AK8puppiMass = 0;
-    AK8puppiEta = 0;
-    AK8puppiPhi = 0;
-    AK8puppiSDL2L3corr = 0;
-    AK8puppiSDMass = 0;
-    AK8puppiSDMassL2L3Corr = 0;
-    nAK8SDSJ = 0;
-    AK8SDSJPt = 0;
-    AK8SDSJEta = 0;
-    AK8SDSJPhi = 0;
-    AK8SDSJMass = 0;
-    AK8SDSJE = 0;
-    AK8SDSJCharge = 0;
-    AK8SDSJFlavour = 0;
-    AK8SDSJCSV = 0;
-    nAK8puppiSDSJ = 0;
-    AK8puppiSDSJPt = 0;
-    AK8puppiSDSJEta = 0;
-    AK8puppiSDSJPhi = 0;
-    AK8puppiSDSJMass = 0;
-    AK8puppiSDSJE = 0;
-    AK8puppiSDSJCharge = 0;
-    AK8puppiSDSJFlavour = 0;
-    AK8puppiSDSJCSV = 0;
-    
-    
+   AK8JetPt = 0;
+   AK8JetEn = 0;
+   AK8JetRawPt = 0;
+   AK8JetRawEn = 0;
+   AK8JetEta = 0;
+   AK8JetPhi = 0;
+   AK8JetMass = 0;
+   AK8Jet_tau1 = 0;
+   AK8Jet_tau2 = 0;
+   AK8Jet_tau3 = 0;
+   AK8JetCHF = 0;
+   AK8JetNHF = 0;
+   AK8JetCEF = 0;
+   AK8JetNEF = 0;
+   AK8JetNCH = 0;
+   AK8JetNNP = 0;
+   AK8JetMUF = 0;
+   AK8Jetnconstituents = 0;
+   AK8JetPFLooseId = 0;
+   AK8JetPFTightLepVetoId = 0;
+   AK8JetSoftDropMass = 0;
+   AK8JetSoftDropMassCorr = 0;
+   AK8JetPrunedMass = 0;
+   AK8JetPrunedMassCorr = 0;
+   AK8JetpfBoostedDSVBTag = 0;
+   AK8JetCSV = 0;
+   AK8JetJECUnc = 0;
+   AK8JetL2L3corr = 0;
+   AK8puppiPt = 0;
+   AK8puppiMass = 0;
+   AK8puppiEta = 0;
+   AK8puppiPhi = 0;
+   AK8puppiSDL2L3corr = 0;
+   AK8puppiSDMass = 0;
+   AK8puppiSDMassL2L3Corr = 0;
+   AK8JetPartonID = 0;
+   AK8JetHadFlvr = 0;
+   AK8JetGenJetIndex = 0;
+   AK8JetGenJetEn = 0;
+   AK8JetGenJetPt = 0;
+   AK8JetGenJetEta = 0;
+   AK8JetGenJetPhi = 0;
+   AK8JetGenPartonID = 0;
+   AK8JetGenEn = 0;
+   AK8JetGenPt = 0;
+   AK8JetGenEta = 0;
+   AK8JetGenPhi = 0;
+   AK8JetGenPartonMomID = 0;
+   nAK8SDSJ = 0;
+   AK8SDSJPt = 0;
+   AK8SDSJEta = 0;
+   AK8SDSJPhi = 0;
+   AK8SDSJMass = 0;
+   AK8SDSJE = 0;
+   AK8SDSJCharge = 0;
+   AK8SDSJFlavour = 0;
+   AK8SDSJCSV = 0;
+   nAK8puppiSDSJ = 0;
+   AK8puppiSDSJPt = 0;
+   AK8puppiSDSJEta = 0;
+   AK8puppiSDSJPhi = 0;
+   AK8puppiSDSJMass = 0;
+   AK8puppiSDSJE = 0;
+   AK8puppiSDSJCharge = 0;
+   AK8puppiSDSJFlavour = 0;
+   AK8puppiSDSJCSV = 0;
    boostedTaupfTausDiscriminationByDecayModeFinding = 0;
    boostedTaupfTausDiscriminationByDecayModeFindingNewDMs = 0;
    boostedTauByMVA6VLooseElectronRejection = 0;
@@ -1426,9 +1203,6 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("puTrue", &puTrue, &b_puTrue);
    fChain->SetBranchAddress("nMC", &nMC, &b_nMC);
    fChain->SetBranchAddress("mcPID", &mcPID, &b_mcPID);
-   fChain->SetBranchAddress("mcVtx", &mcVtx, &b_mcVtx);
-   fChain->SetBranchAddress("mcVty", &mcVty, &b_mcVty);
-   fChain->SetBranchAddress("mcVtz", &mcVtz, &b_mcVtz);
    fChain->SetBranchAddress("mcPt", &mcPt, &b_mcPt);
    fChain->SetBranchAddress("mcMass", &mcMass, &b_mcMass);
    fChain->SetBranchAddress("mcEta", &mcEta, &b_mcEta);
@@ -1444,10 +1218,6 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("mcStatusFlag", &mcStatusFlag, &b_mcStatusFlag);
    fChain->SetBranchAddress("mcParentage", &mcParentage, &b_mcParentage);
    fChain->SetBranchAddress("mcStatus", &mcStatus, &b_mcStatus);
-   fChain->SetBranchAddress("mcCalIsoDR03", &mcCalIsoDR03, &b_mcCalIsoDR03);
-   fChain->SetBranchAddress("mcTrkIsoDR03", &mcTrkIsoDR03, &b_mcTrkIsoDR03);
-   fChain->SetBranchAddress("mcCalIsoDR04", &mcCalIsoDR04, &b_mcCalIsoDR04);
-   fChain->SetBranchAddress("mcTrkIsoDR04", &mcTrkIsoDR04, &b_mcTrkIsoDR04);
    fChain->SetBranchAddress("genMET", &genMET, &b_genMET);
    fChain->SetBranchAddress("genMETPhi", &genMETPhi, &b_genMETPhi);
    fChain->SetBranchAddress("metFilters", &metFilters, &b_metFilters);
@@ -1478,23 +1248,8 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("elePtError", &elePtError, &b_elePtError);
    fChain->SetBranchAddress("eleEta", &eleEta, &b_eleEta);
    fChain->SetBranchAddress("elePhi", &elePhi, &b_elePhi);
-   fChain->SetBranchAddress("eleR9", &eleR9, &b_eleR9);
-   fChain->SetBranchAddress("eleCalibPt", &eleCalibPt, &b_eleCalibPt);
-   fChain->SetBranchAddress("eleCalibEn", &eleCalibEn, &b_eleCalibEn);
    fChain->SetBranchAddress("eleSCEta", &eleSCEta, &b_eleSCEta);
    fChain->SetBranchAddress("eleSCPhi", &eleSCPhi, &b_eleSCPhi);
-   fChain->SetBranchAddress("eleSCRawEn", &eleSCRawEn, &b_eleSCRawEn);
-   fChain->SetBranchAddress("eleSCEtaWidth", &eleSCEtaWidth, &b_eleSCEtaWidth);
-   fChain->SetBranchAddress("eleSCPhiWidth", &eleSCPhiWidth, &b_eleSCPhiWidth);
-   fChain->SetBranchAddress("eleHoverE", &eleHoverE, &b_eleHoverE);
-   fChain->SetBranchAddress("eleEoverP", &eleEoverP, &b_eleEoverP);
-   fChain->SetBranchAddress("eleEoverPout", &eleEoverPout, &b_eleEoverPout);
-   fChain->SetBranchAddress("eleEoverPInv", &eleEoverPInv, &b_eleEoverPInv);
-   fChain->SetBranchAddress("eleBrem", &eleBrem, &b_eleBrem);
-   fChain->SetBranchAddress("eledEtaAtVtx", &eledEtaAtVtx, &b_eledEtaAtVtx);
-   fChain->SetBranchAddress("eledPhiAtVtx", &eledPhiAtVtx, &b_eledPhiAtVtx);
-   fChain->SetBranchAddress("eleSigmaIEtaIEtaFull5x5", &eleSigmaIEtaIEtaFull5x5, &b_eleSigmaIEtaIEtaFull5x5);
-   fChain->SetBranchAddress("eleSigmaIPhiIPhiFull5x5", &eleSigmaIPhiIPhiFull5x5, &b_eleSigmaIPhiIPhiFull5x5);
    fChain->SetBranchAddress("eleConvVeto", &eleConvVeto, &b_eleConvVeto);
    fChain->SetBranchAddress("eleMissHits", &eleMissHits, &b_eleMissHits);
    fChain->SetBranchAddress("eleESEffSigmaRR", &eleESEffSigmaRR, &b_eleESEffSigmaRR);
@@ -1506,36 +1261,10 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("elePFClusHcalIso", &elePFClusHcalIso, &b_elePFClusHcalIso);
    fChain->SetBranchAddress("eleIDMVAIso", &eleIDMVAIso, &b_eleIDMVAIso);
    fChain->SetBranchAddress("eleIDMVANoIso", &eleIDMVANoIso, &b_eleIDMVANoIso);
-   fChain->SetBranchAddress("eleR9Full5x5", &eleR9Full5x5, &b_eleR9Full5x5);
-   fChain->SetBranchAddress("eleEcalDrivenSeed", &eleEcalDrivenSeed, &b_eleEcalDrivenSeed);
-   fChain->SetBranchAddress("eleTrkdxy", &eleTrkdxy, &b_eleTrkdxy);
-   fChain->SetBranchAddress("eleKFHits", &eleKFHits, &b_eleKFHits);
-   fChain->SetBranchAddress("eleKFChi2", &eleKFChi2, &b_eleKFChi2);
-   fChain->SetBranchAddress("eleGSFChi2", &eleGSFChi2, &b_eleGSFChi2);
-   fChain->SetBranchAddress("eleGSFPt", &eleGSFPt, &b_eleGSFPt);
-   fChain->SetBranchAddress("eleGSFEta", &eleGSFEta, &b_eleGSFEta);
-   fChain->SetBranchAddress("eleGSFPhi", &eleGSFPhi, &b_eleGSFPhi);
-   fChain->SetBranchAddress("eleGSFCharge", &eleGSFCharge, &b_eleGSFCharge);
-   fChain->SetBranchAddress("eleGSFHits", &eleGSFHits, &b_eleGSFHits);
-   fChain->SetBranchAddress("eleGSFMissHits", &eleGSFMissHits, &b_eleGSFMissHits);
-   fChain->SetBranchAddress("eleGSFNHitsMax", &eleGSFNHitsMax, &b_eleGSFNHitsMax);
-   fChain->SetBranchAddress("eleGSFVtxProb", &eleGSFVtxProb, &b_eleGSFVtxProb);
-   fChain->SetBranchAddress("eleGSFlxyPV", &eleGSFlxyPV, &b_eleGSFlxyPV);
-   fChain->SetBranchAddress("eleGSFlxyBS", &eleGSFlxyBS, &b_eleGSFlxyBS);
    fChain->SetBranchAddress("eleFiredSingleTrgs", &eleFiredSingleTrgs, &b_eleFiredSingleTrgs);
    fChain->SetBranchAddress("eleFiredDoubleTrgs", &eleFiredDoubleTrgs, &b_eleFiredDoubleTrgs);
    fChain->SetBranchAddress("eleFiredL1Trgs", &eleFiredL1Trgs, &b_eleFiredL1Trgs);
    fChain->SetBranchAddress("eleIDbit", &eleIDbit, &b_eleIDbit);
-   fChain->SetBranchAddress("eleScale_stat_up", &eleScale_stat_up, &b_eleScale_stat_up);
-   fChain->SetBranchAddress("eleScale_stat_dn", &eleScale_stat_dn, &b_eleScale_stat_dn);
-   fChain->SetBranchAddress("eleScale_syst_up", &eleScale_syst_up, &b_eleScale_syst_up);
-   fChain->SetBranchAddress("eleScale_syst_dn", &eleScale_syst_dn, &b_eleScale_syst_dn);
-   fChain->SetBranchAddress("eleScale_gain_up", &eleScale_gain_up, &b_eleScale_gain_up);
-   fChain->SetBranchAddress("eleScale_gain_dn", &eleScale_gain_dn, &b_eleScale_gain_dn);
-   fChain->SetBranchAddress("eleResol_rho_up", &eleResol_rho_up, &b_eleResol_rho_up);
-   fChain->SetBranchAddress("eleResol_rho_dn", &eleResol_rho_dn, &b_eleResol_rho_dn);
-   fChain->SetBranchAddress("eleResol_phi_up", &eleResol_phi_up, &b_eleResol_phi_up);
-   fChain->SetBranchAddress("eleResol_phi_dn", &eleResol_phi_dn, &b_eleResol_phi_dn);
    fChain->SetBranchAddress("nMu", &nMu, &b_nMu);
    fChain->SetBranchAddress("muPt", &muPt, &b_muPt);
    fChain->SetBranchAddress("muEn", &muEn, &b_muEn);
@@ -1550,9 +1279,6 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("muChi2NDF", &muChi2NDF, &b_muChi2NDF);
    fChain->SetBranchAddress("muInnerD0", &muInnerD0, &b_muInnerD0);
    fChain->SetBranchAddress("muInnerDz", &muInnerDz, &b_muInnerDz);
-   fChain->SetBranchAddress("muTrkLayers", &muTrkLayers, &b_muTrkLayers);
-   fChain->SetBranchAddress("muPixelLayers", &muPixelLayers, &b_muPixelLayers);
-   fChain->SetBranchAddress("muPixelHits", &muPixelHits, &b_muPixelHits);
    fChain->SetBranchAddress("muMuonHits", &muMuonHits, &b_muMuonHits);
    fChain->SetBranchAddress("muStations", &muStations, &b_muStations);
    fChain->SetBranchAddress("muMatches", &muMatches, &b_muMatches);
@@ -1568,13 +1294,6 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("muPFPUIso03", &muPFPUIso03, &b_muPFPUIso03);
    fChain->SetBranchAddress("muFiredTrgs", &muFiredTrgs, &b_muFiredTrgs);
    fChain->SetBranchAddress("muFiredL1Trgs", &muFiredL1Trgs, &b_muFiredL1Trgs);
-   fChain->SetBranchAddress("muInnervalidFraction", &muInnervalidFraction, &b_muInnervalidFraction);
-   fChain->SetBranchAddress("musegmentCompatibility", &musegmentCompatibility, &b_musegmentCompatibility);
-   fChain->SetBranchAddress("muchi2LocalPosition", &muchi2LocalPosition, &b_muchi2LocalPosition);
-   fChain->SetBranchAddress("mutrkKink", &mutrkKink, &b_mutrkKink);
-   fChain->SetBranchAddress("muBestTrkPtError", &muBestTrkPtError, &b_muBestTrkPtError);
-   fChain->SetBranchAddress("muBestTrkPt", &muBestTrkPt, &b_muBestTrkPt);
-   fChain->SetBranchAddress("muBestTrkType", &muBestTrkType, &b_muBestTrkType);
    fChain->SetBranchAddress("nTau", &nTau, &b_nTau);
    fChain->SetBranchAddress("taupfTausDiscriminationByDecayModeFinding", &taupfTausDiscriminationByDecayModeFinding, &b_taupfTausDiscriminationByDecayModeFinding);
    fChain->SetBranchAddress("taupfTausDiscriminationByDecayModeFindingNewDMs", &taupfTausDiscriminationByDecayModeFindingNewDMs, &b_taupfTausDiscriminationByDecayModeFindingNewDMs);
@@ -1591,28 +1310,16 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("tauCombinedIsolationDeltaBetaCorrRaw3Hits", &tauCombinedIsolationDeltaBetaCorrRaw3Hits, &b_tauCombinedIsolationDeltaBetaCorrRaw3Hits);
    fChain->SetBranchAddress("tauByIsolationMVArun2v1DBnewDMwLTraw", &tauByIsolationMVArun2v1DBnewDMwLTraw, &b_tauByIsolationMVArun2v1DBnewDMwLTraw);
    fChain->SetBranchAddress("tauByIsolationMVArun2v1DBoldDMwLTraw", &tauByIsolationMVArun2v1DBoldDMwLTraw, &b_tauByIsolationMVArun2v1DBoldDMwLTraw);
-   fChain->SetBranchAddress("tauByIsolationMVArun2v1PWnewDMwLTraw", &tauByIsolationMVArun2v1PWnewDMwLTraw, &b_tauByIsolationMVArun2v1PWnewDMwLTraw);
-   fChain->SetBranchAddress("tauByIsolationMVArun2v1PWoldDMwLTraw", &tauByIsolationMVArun2v1PWoldDMwLTraw, &b_tauByIsolationMVArun2v1PWoldDMwLTraw);
    fChain->SetBranchAddress("tauByVTightIsolationMVArun2v1DBnewDMwLT", &tauByVTightIsolationMVArun2v1DBnewDMwLT, &b_tauByVTightIsolationMVArun2v1DBnewDMwLT);
    fChain->SetBranchAddress("tauByVTightIsolationMVArun2v1DBoldDMwLT", &tauByVTightIsolationMVArun2v1DBoldDMwLT, &b_tauByVTightIsolationMVArun2v1DBoldDMwLT);
-   fChain->SetBranchAddress("tauByVTightIsolationMVArun2v1PWnewDMwLT", &tauByVTightIsolationMVArun2v1PWnewDMwLT, &b_tauByVTightIsolationMVArun2v1PWnewDMwLT);
-   fChain->SetBranchAddress("tauByVTightIsolationMVArun2v1PWoldDMwLT", &tauByVTightIsolationMVArun2v1PWoldDMwLT, &b_tauByVTightIsolationMVArun2v1PWoldDMwLT);
    fChain->SetBranchAddress("tauByTightIsolationMVArun2v1DBnewDMwLT", &tauByTightIsolationMVArun2v1DBnewDMwLT, &b_tauByTightIsolationMVArun2v1DBnewDMwLT);
    fChain->SetBranchAddress("tauByTightIsolationMVArun2v1DBoldDMwLT", &tauByTightIsolationMVArun2v1DBoldDMwLT, &b_tauByTightIsolationMVArun2v1DBoldDMwLT);
-   fChain->SetBranchAddress("tauByTightIsolationMVArun2v1PWnewDMwLT", &tauByTightIsolationMVArun2v1PWnewDMwLT, &b_tauByTightIsolationMVArun2v1PWnewDMwLT);
-   fChain->SetBranchAddress("tauByTightIsolationMVArun2v1PWoldDMwLT", &tauByTightIsolationMVArun2v1PWoldDMwLT, &b_tauByTightIsolationMVArun2v1PWoldDMwLT);
    fChain->SetBranchAddress("tauByMediumIsolationMVArun2v1DBnewDMwLT", &tauByMediumIsolationMVArun2v1DBnewDMwLT, &b_tauByMediumIsolationMVArun2v1DBnewDMwLT);
    fChain->SetBranchAddress("tauByMediumIsolationMVArun2v1DBoldDMwLT", &tauByMediumIsolationMVArun2v1DBoldDMwLT, &b_tauByMediumIsolationMVArun2v1DBoldDMwLT);
-   fChain->SetBranchAddress("tauByMediumIsolationMVArun2v1PWnewDMwLT", &tauByMediumIsolationMVArun2v1PWnewDMwLT, &b_tauByMediumIsolationMVArun2v1PWnewDMwLT);
-   fChain->SetBranchAddress("tauByMediumIsolationMVArun2v1PWoldDMwLT", &tauByMediumIsolationMVArun2v1PWoldDMwLT, &b_tauByMediumIsolationMVArun2v1PWoldDMwLT);
    fChain->SetBranchAddress("tauByLooseIsolationMVArun2v1DBnewDMwLT", &tauByLooseIsolationMVArun2v1DBnewDMwLT, &b_tauByLooseIsolationMVArun2v1DBnewDMwLT);
    fChain->SetBranchAddress("tauByLooseIsolationMVArun2v1DBoldDMwLT", &tauByLooseIsolationMVArun2v1DBoldDMwLT, &b_tauByLooseIsolationMVArun2v1DBoldDMwLT);
-   fChain->SetBranchAddress("tauByLooseIsolationMVArun2v1PWnewDMwLT", &tauByLooseIsolationMVArun2v1PWnewDMwLT, &b_tauByLooseIsolationMVArun2v1PWnewDMwLT);
-   fChain->SetBranchAddress("tauByLooseIsolationMVArun2v1PWoldDMwLT", &tauByLooseIsolationMVArun2v1PWoldDMwLT, &b_tauByLooseIsolationMVArun2v1PWoldDMwLT);
    fChain->SetBranchAddress("tauByVLooseIsolationMVArun2v1DBnewDMwLT", &tauByVLooseIsolationMVArun2v1DBnewDMwLT, &b_tauByVLooseIsolationMVArun2v1DBnewDMwLT);
    fChain->SetBranchAddress("tauByVLooseIsolationMVArun2v1DBoldDMwLT", &tauByVLooseIsolationMVArun2v1DBoldDMwLT, &b_tauByVLooseIsolationMVArun2v1DBoldDMwLT);
-   fChain->SetBranchAddress("tauByVLooseIsolationMVArun2v1PWnewDMwLT", &tauByVLooseIsolationMVArun2v1PWnewDMwLT, &b_tauByVLooseIsolationMVArun2v1PWnewDMwLT);
-   fChain->SetBranchAddress("tauByVLooseIsolationMVArun2v1PWoldDMwLT", &tauByVLooseIsolationMVArun2v1PWoldDMwLT, &b_tauByVLooseIsolationMVArun2v1PWoldDMwLT);
    fChain->SetBranchAddress("tauEta", &tauEta, &b_tauEta);
    fChain->SetBranchAddress("tauPhi", &tauPhi, &b_tauPhi);
    fChain->SetBranchAddress("tauPt", &tauPt, &b_tauPt);
@@ -1647,6 +1354,12 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("tauphotonPtSumOutsideSignalCone", &tauphotonPtSumOutsideSignalCone, &b_tauphotonPtSumOutsideSignalCone);
    fChain->SetBranchAddress("taudz", &taudz, &b_taudz);
    fChain->SetBranchAddress("taudxy", &taudxy, &b_taudxy);
+   fChain->SetBranchAddress("tauByIsolationMVArun2v2DBoldDMwLTraw", &tauByIsolationMVArun2v2DBoldDMwLTraw, &b_tauByIsolationMVArun2v2DBoldDMwLTraw);
+   fChain->SetBranchAddress("tauByVTightIsolationMVArun2v2DBoldDMwLT", &tauByVTightIsolationMVArun2v2DBoldDMwLT, &b_tauByVTightIsolationMVArun2v2DBoldDMwLT);
+   fChain->SetBranchAddress("tauByTightIsolationMVArun2v2DBoldDMwLT", &tauByTightIsolationMVArun2v2DBoldDMwLT, &b_tauByTightIsolationMVArun2v2DBoldDMwLT);
+   fChain->SetBranchAddress("tauByMediumIsolationMVArun2v2DBoldDMwLT", &tauByMediumIsolationMVArun2v2DBoldDMwLT, &b_tauByMediumIsolationMVArun2v2DBoldDMwLT);
+   fChain->SetBranchAddress("tauByLooseIsolationMVArun2v2DBoldDMwLT", &tauByLooseIsolationMVArun2v2DBoldDMwLT, &b_tauByLooseIsolationMVArun2v2DBoldDMwLT);
+   fChain->SetBranchAddress("tauByVLooseIsolationMVArun2v2DBoldDMwLT", &tauByVLooseIsolationMVArun2v2DBoldDMwLT, &b_tauByVLooseIsolationMVArun2v2DBoldDMwLT);
    fChain->SetBranchAddress("nJet", &nJet, &b_nJet);
    fChain->SetBranchAddress("jetPt", &jetPt, &b_jetPt);
    fChain->SetBranchAddress("jetEn", &jetEn, &b_jetEn);
@@ -1670,19 +1383,6 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("jetDeepCSVTags_udsg", &jetDeepCSVTags_udsg, &b_jetDeepCSVTags_udsg);
    fChain->SetBranchAddress("jetPartonID", &jetPartonID, &b_jetPartonID);
    fChain->SetBranchAddress("jetHadFlvr", &jetHadFlvr, &b_jetHadFlvr);
-   fChain->SetBranchAddress("jetGenJetEn", &jetGenJetEn, &b_jetGenJetEn);
-   fChain->SetBranchAddress("jetGenJetPt", &jetGenJetPt, &b_jetGenJetPt);
-   fChain->SetBranchAddress("jetGenJetEta", &jetGenJetEta, &b_jetGenJetEta);
-   fChain->SetBranchAddress("jetGenJetPhi", &jetGenJetPhi, &b_jetGenJetPhi);
-   fChain->SetBranchAddress("jetGenPartonID", &jetGenPartonID, &b_jetGenPartonID);
-   fChain->SetBranchAddress("jetGenEn", &jetGenEn, &b_jetGenEn);
-   fChain->SetBranchAddress("jetGenPt", &jetGenPt, &b_jetGenPt);
-   fChain->SetBranchAddress("jetGenEta", &jetGenEta, &b_jetGenEta);
-   fChain->SetBranchAddress("jetGenPhi", &jetGenPhi, &b_jetGenPhi);
-   fChain->SetBranchAddress("jetGenPartonMomID", &jetGenPartonMomID, &b_jetGenPartonMomID);
-   fChain->SetBranchAddress("jetP4Smear", &jetP4Smear, &b_jetP4Smear);
-   fChain->SetBranchAddress("jetP4SmearUp", &jetP4SmearUp, &b_jetP4SmearUp);
-   fChain->SetBranchAddress("jetP4SmearDo", &jetP4SmearDo, &b_jetP4SmearDo);
    fChain->SetBranchAddress("jetPFLooseId", &jetPFLooseId, &b_jetPFLooseId);
    fChain->SetBranchAddress("jetID", &jetID, &b_jetID);
    fChain->SetBranchAddress("jetPUID", &jetPUID, &b_jetPUID);
@@ -1696,69 +1396,73 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("jetNCH", &jetNCH, &b_jetNCH);
    fChain->SetBranchAddress("jetNNP", &jetNNP, &b_jetNNP);
    fChain->SetBranchAddress("jetMUF", &jetMUF, &b_jetMUF);
-   fChain->SetBranchAddress("jetVtxPt", &jetVtxPt, &b_jetVtxPt);
-   fChain->SetBranchAddress("jetVtxMass", &jetVtxMass, &b_jetVtxMass);
-   fChain->SetBranchAddress("jetVtxNtrks", &jetVtxNtrks, &b_jetVtxNtrks);
-   fChain->SetBranchAddress("jetVtx3DVal", &jetVtx3DVal, &b_jetVtx3DVal);
-   fChain->SetBranchAddress("jetVtx3DSig", &jetVtx3DSig, &b_jetVtx3DSig);
-    
-    fChain->SetBranchAddress("nAK8Jet", &nAK8Jet, &b_nAK8Jet);
-    fChain->SetBranchAddress("AK8JetPt", &AK8JetPt, &b_AK8JetPt);
-    fChain->SetBranchAddress("AK8JetEn", &AK8JetEn, &b_AK8JetEn);
-    fChain->SetBranchAddress("AK8JetRawPt", &AK8JetRawPt, &b_AK8JetRawPt);
-    fChain->SetBranchAddress("AK8JetRawEn", &AK8JetRawEn, &b_AK8JetRawEn);
-    fChain->SetBranchAddress("AK8JetEta", &AK8JetEta, &b_AK8JetEta);
-    fChain->SetBranchAddress("AK8JetPhi", &AK8JetPhi, &b_AK8JetPhi);
-    fChain->SetBranchAddress("AK8JetMass", &AK8JetMass, &b_AK8JetMass);
-    fChain->SetBranchAddress("AK8Jet_tau1", &AK8Jet_tau1, &b_AK8Jet_tau1);
-    fChain->SetBranchAddress("AK8Jet_tau2", &AK8Jet_tau2, &b_AK8Jet_tau2);
-    fChain->SetBranchAddress("AK8Jet_tau3", &AK8Jet_tau3, &b_AK8Jet_tau3);
-    fChain->SetBranchAddress("AK8JetCHF", &AK8JetCHF, &b_AK8JetCHF);
-    fChain->SetBranchAddress("AK8JetNHF", &AK8JetNHF, &b_AK8JetNHF);
-    fChain->SetBranchAddress("AK8JetCEF", &AK8JetCEF, &b_AK8JetCEF);
-    fChain->SetBranchAddress("AK8JetNEF", &AK8JetNEF, &b_AK8JetNEF);
-    fChain->SetBranchAddress("AK8JetNCH", &AK8JetNCH, &b_AK8JetNCH);
-    fChain->SetBranchAddress("AK8JetNNP", &AK8JetNNP, &b_AK8JetNNP);
-    fChain->SetBranchAddress("AK8JetMUF", &AK8JetMUF, &b_AK8JetMUF);
-    fChain->SetBranchAddress("AK8Jetnconstituents", &AK8Jetnconstituents, &b_AK8Jetnconstituents);
-    fChain->SetBranchAddress("AK8JetPFLooseId", &AK8JetPFLooseId, &b_AK8JetPFLooseId);
-    fChain->SetBranchAddress("AK8JetPFTightLepVetoId", &AK8JetPFTightLepVetoId, &b_AK8JetPFTightLepVetoId);
-    fChain->SetBranchAddress("AK8JetSoftDropMass", &AK8JetSoftDropMass, &b_AK8JetSoftDropMass);
-    fChain->SetBranchAddress("AK8JetSoftDropMassCorr", &AK8JetSoftDropMassCorr, &b_AK8JetSoftDropMassCorr);
-    fChain->SetBranchAddress("AK8JetPrunedMass", &AK8JetPrunedMass, &b_AK8JetPrunedMass);
-    fChain->SetBranchAddress("AK8JetPrunedMassCorr", &AK8JetPrunedMassCorr, &b_AK8JetPrunedMassCorr);
-    fChain->SetBranchAddress("AK8JetpfBoostedDSVBTag", &AK8JetpfBoostedDSVBTag, &b_AK8JetpfBoostedDSVBTag);
-    fChain->SetBranchAddress("AK8JetDSVnewV4", &AK8JetDSVnewV4, &b_AK8JetDSVnewV4);
-    fChain->SetBranchAddress("AK8JetCSV", &AK8JetCSV, &b_AK8JetCSV);
-    fChain->SetBranchAddress("AK8JetJECUnc", &AK8JetJECUnc, &b_AK8JetJECUnc);
-    fChain->SetBranchAddress("AK8JetL2L3corr", &AK8JetL2L3corr, &b_AK8JetL2L3corr);
-    fChain->SetBranchAddress("AK8puppiPt", &AK8puppiPt, &b_AK8puppiPt);
-    fChain->SetBranchAddress("AK8puppiMass", &AK8puppiMass, &b_AK8puppiMass);
-    fChain->SetBranchAddress("AK8puppiEta", &AK8puppiEta, &b_AK8puppiEta);
-    fChain->SetBranchAddress("AK8puppiPhi", &AK8puppiPhi, &b_AK8puppiPhi);
-    fChain->SetBranchAddress("AK8puppiSDL2L3corr", &AK8puppiSDL2L3corr, &b_AK8puppiSDL2L3corr);
-    fChain->SetBranchAddress("AK8puppiSDMass", &AK8puppiSDMass, &b_AK8puppiSDMass);
-    fChain->SetBranchAddress("AK8puppiSDMassL2L3Corr", &AK8puppiSDMassL2L3Corr, &b_AK8puppiSDMassL2L3Corr);
-    fChain->SetBranchAddress("nAK8SDSJ", &nAK8SDSJ, &b_nAK8SDSJ);
-    fChain->SetBranchAddress("AK8SDSJPt", &AK8SDSJPt, &b_AK8SDSJPt);
-    fChain->SetBranchAddress("AK8SDSJEta", &AK8SDSJEta, &b_AK8SDSJEta);
-    fChain->SetBranchAddress("AK8SDSJPhi", &AK8SDSJPhi, &b_AK8SDSJPhi);
-    fChain->SetBranchAddress("AK8SDSJMass", &AK8SDSJMass, &b_AK8SDSJMass);
-    fChain->SetBranchAddress("AK8SDSJE", &AK8SDSJE, &b_AK8SDSJE);
-    fChain->SetBranchAddress("AK8SDSJCharge", &AK8SDSJCharge, &b_AK8SDSJCharge);
-    fChain->SetBranchAddress("AK8SDSJFlavour", &AK8SDSJFlavour, &b_AK8SDSJFlavour);
-    fChain->SetBranchAddress("AK8SDSJCSV", &AK8SDSJCSV, &b_AK8SDSJCSV);
-    fChain->SetBranchAddress("nAK8puppiSDSJ", &nAK8puppiSDSJ, &b_nAK8puppiSDSJ);
-    fChain->SetBranchAddress("AK8puppiSDSJPt", &AK8puppiSDSJPt, &b_AK8puppiSDSJPt);
-    fChain->SetBranchAddress("AK8puppiSDSJEta", &AK8puppiSDSJEta, &b_AK8puppiSDSJEta);
-    fChain->SetBranchAddress("AK8puppiSDSJPhi", &AK8puppiSDSJPhi, &b_AK8puppiSDSJPhi);
-    fChain->SetBranchAddress("AK8puppiSDSJMass", &AK8puppiSDSJMass, &b_AK8puppiSDSJMass);
-    fChain->SetBranchAddress("AK8puppiSDSJE", &AK8puppiSDSJE, &b_AK8puppiSDSJE);
-    fChain->SetBranchAddress("AK8puppiSDSJCharge", &AK8puppiSDSJCharge, &b_AK8puppiSDSJCharge);
-    fChain->SetBranchAddress("AK8puppiSDSJFlavour", &AK8puppiSDSJFlavour, &b_AK8puppiSDSJFlavour);
-    fChain->SetBranchAddress("AK8puppiSDSJCSV", &AK8puppiSDSJCSV, &b_AK8puppiSDSJCSV);
-    
-    
+   fChain->SetBranchAddress("nAK8Jet", &nAK8Jet, &b_nAK8Jet);
+   fChain->SetBranchAddress("AK8JetPt", &AK8JetPt, &b_AK8JetPt);
+   fChain->SetBranchAddress("AK8JetEn", &AK8JetEn, &b_AK8JetEn);
+   fChain->SetBranchAddress("AK8JetRawPt", &AK8JetRawPt, &b_AK8JetRawPt);
+   fChain->SetBranchAddress("AK8JetRawEn", &AK8JetRawEn, &b_AK8JetRawEn);
+   fChain->SetBranchAddress("AK8JetEta", &AK8JetEta, &b_AK8JetEta);
+   fChain->SetBranchAddress("AK8JetPhi", &AK8JetPhi, &b_AK8JetPhi);
+   fChain->SetBranchAddress("AK8JetMass", &AK8JetMass, &b_AK8JetMass);
+   fChain->SetBranchAddress("AK8Jet_tau1", &AK8Jet_tau1, &b_AK8Jet_tau1);
+   fChain->SetBranchAddress("AK8Jet_tau2", &AK8Jet_tau2, &b_AK8Jet_tau2);
+   fChain->SetBranchAddress("AK8Jet_tau3", &AK8Jet_tau3, &b_AK8Jet_tau3);
+   fChain->SetBranchAddress("AK8JetCHF", &AK8JetCHF, &b_AK8JetCHF);
+   fChain->SetBranchAddress("AK8JetNHF", &AK8JetNHF, &b_AK8JetNHF);
+   fChain->SetBranchAddress("AK8JetCEF", &AK8JetCEF, &b_AK8JetCEF);
+   fChain->SetBranchAddress("AK8JetNEF", &AK8JetNEF, &b_AK8JetNEF);
+   fChain->SetBranchAddress("AK8JetNCH", &AK8JetNCH, &b_AK8JetNCH);
+   fChain->SetBranchAddress("AK8JetNNP", &AK8JetNNP, &b_AK8JetNNP);
+   fChain->SetBranchAddress("AK8JetMUF", &AK8JetMUF, &b_AK8JetMUF);
+   fChain->SetBranchAddress("AK8Jetnconstituents", &AK8Jetnconstituents, &b_AK8Jetnconstituents);
+   fChain->SetBranchAddress("AK8JetPFLooseId", &AK8JetPFLooseId, &b_AK8JetPFLooseId);
+   fChain->SetBranchAddress("AK8JetPFTightLepVetoId", &AK8JetPFTightLepVetoId, &b_AK8JetPFTightLepVetoId);
+   fChain->SetBranchAddress("AK8JetSoftDropMass", &AK8JetSoftDropMass, &b_AK8JetSoftDropMass);
+   fChain->SetBranchAddress("AK8JetSoftDropMassCorr", &AK8JetSoftDropMassCorr, &b_AK8JetSoftDropMassCorr);
+   fChain->SetBranchAddress("AK8JetPrunedMass", &AK8JetPrunedMass, &b_AK8JetPrunedMass);
+   fChain->SetBranchAddress("AK8JetPrunedMassCorr", &AK8JetPrunedMassCorr, &b_AK8JetPrunedMassCorr);
+   fChain->SetBranchAddress("AK8JetpfBoostedDSVBTag", &AK8JetpfBoostedDSVBTag, &b_AK8JetpfBoostedDSVBTag);
+   fChain->SetBranchAddress("AK8JetCSV", &AK8JetCSV, &b_AK8JetCSV);
+   fChain->SetBranchAddress("AK8JetJECUnc", &AK8JetJECUnc, &b_AK8JetJECUnc);
+   fChain->SetBranchAddress("AK8JetL2L3corr", &AK8JetL2L3corr, &b_AK8JetL2L3corr);
+   fChain->SetBranchAddress("AK8puppiPt", &AK8puppiPt, &b_AK8puppiPt);
+   fChain->SetBranchAddress("AK8puppiMass", &AK8puppiMass, &b_AK8puppiMass);
+   fChain->SetBranchAddress("AK8puppiEta", &AK8puppiEta, &b_AK8puppiEta);
+   fChain->SetBranchAddress("AK8puppiPhi", &AK8puppiPhi, &b_AK8puppiPhi);
+   fChain->SetBranchAddress("AK8puppiSDL2L3corr", &AK8puppiSDL2L3corr, &b_AK8puppiSDL2L3corr);
+   fChain->SetBranchAddress("AK8puppiSDMass", &AK8puppiSDMass, &b_AK8puppiSDMass);
+   fChain->SetBranchAddress("AK8puppiSDMassL2L3Corr", &AK8puppiSDMassL2L3Corr, &b_AK8puppiSDMassL2L3Corr);
+   fChain->SetBranchAddress("AK8JetPartonID", &AK8JetPartonID, &b_AK8JetPartonID);
+   fChain->SetBranchAddress("AK8JetHadFlvr", &AK8JetHadFlvr, &b_AK8JetHadFlvr);
+   fChain->SetBranchAddress("AK8JetGenJetIndex", &AK8JetGenJetIndex, &b_AK8JetGenJetIndex);
+   fChain->SetBranchAddress("AK8JetGenJetEn", &AK8JetGenJetEn, &b_AK8JetGenJetEn);
+   fChain->SetBranchAddress("AK8JetGenJetPt", &AK8JetGenJetPt, &b_AK8JetGenJetPt);
+   fChain->SetBranchAddress("AK8JetGenJetEta", &AK8JetGenJetEta, &b_AK8JetGenJetEta);
+   fChain->SetBranchAddress("AK8JetGenJetPhi", &AK8JetGenJetPhi, &b_AK8JetGenJetPhi);
+   fChain->SetBranchAddress("AK8JetGenPartonID", &AK8JetGenPartonID, &b_AK8JetGenPartonID);
+   fChain->SetBranchAddress("AK8JetGenEn", &AK8JetGenEn, &b_AK8JetGenEn);
+   fChain->SetBranchAddress("AK8JetGenPt", &AK8JetGenPt, &b_AK8JetGenPt);
+   fChain->SetBranchAddress("AK8JetGenEta", &AK8JetGenEta, &b_AK8JetGenEta);
+   fChain->SetBranchAddress("AK8JetGenPhi", &AK8JetGenPhi, &b_AK8JetGenPhi);
+   fChain->SetBranchAddress("AK8JetGenPartonMomID", &AK8JetGenPartonMomID, &b_AK8JetGenPartonMomID);
+   fChain->SetBranchAddress("nAK8SDSJ", &nAK8SDSJ, &b_nAK8SDSJ);
+   fChain->SetBranchAddress("AK8SDSJPt", &AK8SDSJPt, &b_AK8SDSJPt);
+   fChain->SetBranchAddress("AK8SDSJEta", &AK8SDSJEta, &b_AK8SDSJEta);
+   fChain->SetBranchAddress("AK8SDSJPhi", &AK8SDSJPhi, &b_AK8SDSJPhi);
+   fChain->SetBranchAddress("AK8SDSJMass", &AK8SDSJMass, &b_AK8SDSJMass);
+   fChain->SetBranchAddress("AK8SDSJE", &AK8SDSJE, &b_AK8SDSJE);
+   fChain->SetBranchAddress("AK8SDSJCharge", &AK8SDSJCharge, &b_AK8SDSJCharge);
+   fChain->SetBranchAddress("AK8SDSJFlavour", &AK8SDSJFlavour, &b_AK8SDSJFlavour);
+   fChain->SetBranchAddress("AK8SDSJCSV", &AK8SDSJCSV, &b_AK8SDSJCSV);
+   fChain->SetBranchAddress("nAK8puppiSDSJ", &nAK8puppiSDSJ, &b_nAK8puppiSDSJ);
+   fChain->SetBranchAddress("AK8puppiSDSJPt", &AK8puppiSDSJPt, &b_AK8puppiSDSJPt);
+   fChain->SetBranchAddress("AK8puppiSDSJEta", &AK8puppiSDSJEta, &b_AK8puppiSDSJEta);
+   fChain->SetBranchAddress("AK8puppiSDSJPhi", &AK8puppiSDSJPhi, &b_AK8puppiSDSJPhi);
+   fChain->SetBranchAddress("AK8puppiSDSJMass", &AK8puppiSDSJMass, &b_AK8puppiSDSJMass);
+   fChain->SetBranchAddress("AK8puppiSDSJE", &AK8puppiSDSJE, &b_AK8puppiSDSJE);
+   fChain->SetBranchAddress("AK8puppiSDSJCharge", &AK8puppiSDSJCharge, &b_AK8puppiSDSJCharge);
+   fChain->SetBranchAddress("AK8puppiSDSJFlavour", &AK8puppiSDSJFlavour, &b_AK8puppiSDSJFlavour);
+   fChain->SetBranchAddress("AK8puppiSDSJCSV", &AK8puppiSDSJCSV, &b_AK8puppiSDSJCSV);
    fChain->SetBranchAddress("nBoostedTau", &nBoostedTau, &b_nBoostedTau);
    fChain->SetBranchAddress("boostedTaupfTausDiscriminationByDecayModeFinding", &boostedTaupfTausDiscriminationByDecayModeFinding, &b_boostedTaupfTausDiscriminationByDecayModeFinding);
    fChain->SetBranchAddress("boostedTaupfTausDiscriminationByDecayModeFindingNewDMs", &boostedTaupfTausDiscriminationByDecayModeFindingNewDMs, &b_boostedTaupfTausDiscriminationByDecayModeFindingNewDMs);

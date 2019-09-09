@@ -8,10 +8,10 @@ OUTPATH=$4
 
 
 #########For running locally uncommnet this line
-CLUSTER=""
-PROCESS=5
-RUNPATH="/uscms_data/d3/abdollah/Analysis/LQ2016/CMSSW_8_0_11/src/Skim_ggNtuple"
-OUTPATH=""
+#CLUSTER=""
+#PROCESS=5
+#RUNPATH=""
+#OUTPATH=""
 
 
 echo ""
@@ -21,21 +21,15 @@ echo ""
 START_TIME=`/bin/date`
 echo "started at $START_TIME"
 
-#echo ""
-#echo "parameter set:"
-#echo "CLUSTER: $CLUSTER"
-#echo "PROCESS: $PROCESS"
-#echo "RUNPATH: $RUNPATH"
-#echo "OUTPATH: $OUTPATH"
+echo ""
+echo "parameter set:"
+echo "CLUSTER: $CLUSTER"
+echo "PROCESS: $PROCESS"
+echo "RUNPATH: $RUNPATH"
+echo "OUTPATH: $OUTPATH"
 
 source /cvmfs/cms.cern.ch/cmsset_default.sh
 
-
-#echo $PWD
-#cd $RUNPATH
-#eval `scram runtime -sh`
-#echo $PWD , "for cmsenv"
-#ls 
 echo "check whether eos is working here"
 echo ${_CONDOR_SCRATCH_DIR}
 cd ${_CONDOR_SCRATCH_DIR}
@@ -53,9 +47,6 @@ ls
 ########### complie the Skimmer
 make
 
-## cmsenv is an alias not on the workers
-
-
 #########  Smaple/Job splitting
 SplitingNumber=10
 DataSetArray=($(cat InputSamples.txt)) # array of the input datadets
@@ -68,7 +59,6 @@ rootNumber=$(($PROCESS % $SplitingNumber))
 xrdfs root://cmseos.fnal.gov ls $DataSetName | grep $rootNumber.root | while read FullDataSetName
 
 ############  Here is where the Skimmer is running     ############
-#QQQ=$FullDataSetName   FFFFFFF
 do
  ShortName=${FullDataSetName##*crab_}
  IFS="/"
@@ -89,12 +79,8 @@ set $ShortName2
 FinalOutName=$1_$2_$3_$rootNumber".root"
 IFS=""
 
-#FinalOutName="FinalOutName.root"
 echo "FinalOutName is " $FinalOutName
-
 hadd -f $FinalOutName "skimed_"*.root
-
-
 
 
 ##########  remove the unneccesat files
