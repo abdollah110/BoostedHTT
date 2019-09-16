@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Wed Sep 11 17:55:09 2019 by ROOT version 6.16/00
+// Mon Sep  9 14:04:37 2019 by ROOT version 6.16/00
 // from TTree EventTree/Event data (tag V09_04_13_01)
-// found on file: ggtree_data_1992.root
+// found on file: ggtree_mc_10.root
 //////////////////////////////////////////////////////////
 
 #ifndef SkimerBoost_h
@@ -14,6 +14,7 @@
 
 // Header file for the classes stored in the TTree if any.
 #include "vector"
+#include "TString.h"
 #include "vector"
 #include "vector"
 #include "vector"
@@ -24,7 +25,6 @@ using namespace std;
 float TMass_F(float pt3lep, float px3lep, float py3lep, float met, float metPhi) {
     return sqrt(pow(pt3lep + met, 2) - pow(px3lep + met * cos(metPhi), 2) - pow(py3lep + met * sin(metPhi), 2));
 }
-
 
 class SkimerBoost {
 public :
@@ -53,7 +53,37 @@ public :
    ULong64_t       HLTEleMuXIsPrescaled;
    ULong64_t       HLTPhoIsPrescaled;
    ULong64_t       HLTJetIsPrescaled;
-   vector<int>     *phoPrescale;
+   vector<float>   *pdf;
+   Float_t         pthat;
+   Float_t         processID;
+   Float_t         genWeight;
+   Float_t         genHT;
+   Float_t         genPho1;
+   Float_t         genPho2;
+   TString         *EventTag;
+   Int_t           nPUInfo;
+   vector<int>     *nPU;
+   vector<int>     *puBX;
+   vector<float>   *puTrue;
+   Int_t           nMC;
+   vector<int>     *mcPID;
+   vector<float>   *mcPt;
+   vector<float>   *mcMass;
+   vector<float>   *mcEta;
+   vector<float>   *mcPhi;
+   vector<float>   *mcE;
+   vector<float>   *mcEt;
+   vector<int>     *mcGMomPID;
+   vector<int>     *mcMomPID;
+   vector<float>   *mcMomPt;
+   vector<float>   *mcMomMass;
+   vector<float>   *mcMomEta;
+   vector<float>   *mcMomPhi;
+   vector<unsigned short> *mcStatusFlag;
+   vector<int>     *mcParentage;
+   vector<int>     *mcStatus;
+   Float_t         genMET;
+   Float_t         genMETPhi;
    Int_t           metFilters;
    Float_t         pfMET;
    Float_t         pfMETPhi;
@@ -215,6 +245,8 @@ public :
    vector<float>   *jetDeepCSVTags_bb;
    vector<float>   *jetDeepCSVTags_c;
    vector<float>   *jetDeepCSVTags_udsg;
+   vector<int>     *jetPartonID;
+   vector<int>     *jetHadFlvr;
    vector<bool>    *jetPFLooseId;
    vector<int>     *jetID;
    vector<float>   *jetPUID;
@@ -264,6 +296,19 @@ public :
    vector<float>   *AK8puppiSDL2L3corr;
    vector<float>   *AK8puppiSDMass;
    vector<float>   *AK8puppiSDMassL2L3Corr;
+   vector<int>     *AK8JetPartonID;
+   vector<int>     *AK8JetHadFlvr;
+   vector<int>     *AK8JetGenJetIndex;
+   vector<float>   *AK8JetGenJetEn;
+   vector<float>   *AK8JetGenJetPt;
+   vector<float>   *AK8JetGenJetEta;
+   vector<float>   *AK8JetGenJetPhi;
+   vector<int>     *AK8JetGenPartonID;
+   vector<float>   *AK8JetGenEn;
+   vector<float>   *AK8JetGenPt;
+   vector<float>   *AK8JetGenEta;
+   vector<float>   *AK8JetGenPhi;
+   vector<int>     *AK8JetGenPartonMomID;
    vector<int>     *nAK8SDSJ;
    vector<vector<float> > *AK8SDSJPt;
    vector<vector<float> > *AK8SDSJEta;
@@ -381,7 +426,37 @@ public :
    TBranch        *b_HLTEleMuXIsPrescaled;   //!
    TBranch        *b_HLTPhoIsPrescaled;   //!
    TBranch        *b_HLTJetIsPrescaled;   //!
-   TBranch        *b_phoPrescale;   //!
+   TBranch        *b_pdf;   //!
+   TBranch        *b_pthat;   //!
+   TBranch        *b_processID;   //!
+   TBranch        *b_genWeight;   //!
+   TBranch        *b_genHT;   //!
+   TBranch        *b_genPho1;   //!
+   TBranch        *b_genPho2;   //!
+   TBranch        *b_EventTag;   //!
+   TBranch        *b_nPUInfo;   //!
+   TBranch        *b_nPU;   //!
+   TBranch        *b_puBX;   //!
+   TBranch        *b_puTrue;   //!
+   TBranch        *b_nMC;   //!
+   TBranch        *b_mcPID;   //!
+   TBranch        *b_mcPt;   //!
+   TBranch        *b_mcMass;   //!
+   TBranch        *b_mcEta;   //!
+   TBranch        *b_mcPhi;   //!
+   TBranch        *b_mcE;   //!
+   TBranch        *b_mcEt;   //!
+   TBranch        *b_mcGMomPID;   //!
+   TBranch        *b_mcMomPID;   //!
+   TBranch        *b_mcMomPt;   //!
+   TBranch        *b_mcMomMass;   //!
+   TBranch        *b_mcMomEta;   //!
+   TBranch        *b_mcMomPhi;   //!
+   TBranch        *b_mcStatusFlag;   //!
+   TBranch        *b_mcParentage;   //!
+   TBranch        *b_mcStatus;   //!
+   TBranch        *b_genMET;   //!
+   TBranch        *b_genMETPhi;   //!
    TBranch        *b_metFilters;   //!
    TBranch        *b_pfMET;   //!
    TBranch        *b_pfMETPhi;   //!
@@ -543,6 +618,8 @@ public :
    TBranch        *b_jetDeepCSVTags_bb;   //!
    TBranch        *b_jetDeepCSVTags_c;   //!
    TBranch        *b_jetDeepCSVTags_udsg;   //!
+   TBranch        *b_jetPartonID;   //!
+   TBranch        *b_jetHadFlvr;   //!
    TBranch        *b_jetPFLooseId;   //!
    TBranch        *b_jetID;   //!
    TBranch        *b_jetPUID;   //!
@@ -592,6 +669,19 @@ public :
    TBranch        *b_AK8puppiSDL2L3corr;   //!
    TBranch        *b_AK8puppiSDMass;   //!
    TBranch        *b_AK8puppiSDMassL2L3Corr;   //!
+   TBranch        *b_AK8JetPartonID;   //!
+   TBranch        *b_AK8JetHadFlvr;   //!
+   TBranch        *b_AK8JetGenJetIndex;   //!
+   TBranch        *b_AK8JetGenJetEn;   //!
+   TBranch        *b_AK8JetGenJetPt;   //!
+   TBranch        *b_AK8JetGenJetEta;   //!
+   TBranch        *b_AK8JetGenJetPhi;   //!
+   TBranch        *b_AK8JetGenPartonID;   //!
+   TBranch        *b_AK8JetGenEn;   //!
+   TBranch        *b_AK8JetGenPt;   //!
+   TBranch        *b_AK8JetGenEta;   //!
+   TBranch        *b_AK8JetGenPhi;   //!
+   TBranch        *b_AK8JetGenPartonMomID;   //!
    TBranch        *b_nAK8SDSJ;   //!
    TBranch        *b_AK8SDSJPt;   //!
    TBranch        *b_AK8SDSJEta;   //!
@@ -751,7 +841,27 @@ void SkimerBoost::Init(TTree *tree)
    // (once per file to be processed).
 
    // Set object pointer
-   phoPrescale = 0;
+   pdf = 0;
+   EventTag = 0;
+   nPU = 0;
+   puBX = 0;
+   puTrue = 0;
+   mcPID = 0;
+   mcPt = 0;
+   mcMass = 0;
+   mcEta = 0;
+   mcPhi = 0;
+   mcE = 0;
+   mcEt = 0;
+   mcGMomPID = 0;
+   mcMomPID = 0;
+   mcMomPt = 0;
+   mcMomMass = 0;
+   mcMomEta = 0;
+   mcMomPhi = 0;
+   mcStatusFlag = 0;
+   mcParentage = 0;
+   mcStatus = 0;
    eleCharge = 0;
    eleChargeConsistent = 0;
    eleEn = 0;
@@ -896,6 +1006,8 @@ void SkimerBoost::Init(TTree *tree)
    jetDeepCSVTags_bb = 0;
    jetDeepCSVTags_c = 0;
    jetDeepCSVTags_udsg = 0;
+   jetPartonID = 0;
+   jetHadFlvr = 0;
    jetPFLooseId = 0;
    jetID = 0;
    jetPUID = 0;
@@ -944,6 +1056,19 @@ void SkimerBoost::Init(TTree *tree)
    AK8puppiSDL2L3corr = 0;
    AK8puppiSDMass = 0;
    AK8puppiSDMassL2L3Corr = 0;
+   AK8JetPartonID = 0;
+   AK8JetHadFlvr = 0;
+   AK8JetGenJetIndex = 0;
+   AK8JetGenJetEn = 0;
+   AK8JetGenJetPt = 0;
+   AK8JetGenJetEta = 0;
+   AK8JetGenJetPhi = 0;
+   AK8JetGenPartonID = 0;
+   AK8JetGenEn = 0;
+   AK8JetGenPt = 0;
+   AK8JetGenEta = 0;
+   AK8JetGenPhi = 0;
+   AK8JetGenPartonMomID = 0;
    nAK8SDSJ = 0;
    AK8SDSJPt = 0;
    AK8SDSJEta = 0;
@@ -1064,7 +1189,37 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("HLTEleMuXIsPrescaled", &HLTEleMuXIsPrescaled, &b_HLTEleMuXIsPrescaled);
    fChain->SetBranchAddress("HLTPhoIsPrescaled", &HLTPhoIsPrescaled, &b_HLTPhoIsPrescaled);
    fChain->SetBranchAddress("HLTJetIsPrescaled", &HLTJetIsPrescaled, &b_HLTJetIsPrescaled);
-   fChain->SetBranchAddress("phoPrescale", &phoPrescale, &b_phoPrescale);
+   fChain->SetBranchAddress("pdf", &pdf, &b_pdf);
+   fChain->SetBranchAddress("pthat", &pthat, &b_pthat);
+   fChain->SetBranchAddress("processID", &processID, &b_processID);
+   fChain->SetBranchAddress("genWeight", &genWeight, &b_genWeight);
+   fChain->SetBranchAddress("genHT", &genHT, &b_genHT);
+   fChain->SetBranchAddress("genPho1", &genPho1, &b_genPho1);
+   fChain->SetBranchAddress("genPho2", &genPho2, &b_genPho2);
+   fChain->SetBranchAddress("EventTag", &EventTag, &b_EventTag);
+   fChain->SetBranchAddress("nPUInfo", &nPUInfo, &b_nPUInfo);
+   fChain->SetBranchAddress("nPU", &nPU, &b_nPU);
+   fChain->SetBranchAddress("puBX", &puBX, &b_puBX);
+   fChain->SetBranchAddress("puTrue", &puTrue, &b_puTrue);
+   fChain->SetBranchAddress("nMC", &nMC, &b_nMC);
+   fChain->SetBranchAddress("mcPID", &mcPID, &b_mcPID);
+   fChain->SetBranchAddress("mcPt", &mcPt, &b_mcPt);
+   fChain->SetBranchAddress("mcMass", &mcMass, &b_mcMass);
+   fChain->SetBranchAddress("mcEta", &mcEta, &b_mcEta);
+   fChain->SetBranchAddress("mcPhi", &mcPhi, &b_mcPhi);
+   fChain->SetBranchAddress("mcE", &mcE, &b_mcE);
+   fChain->SetBranchAddress("mcEt", &mcEt, &b_mcEt);
+   fChain->SetBranchAddress("mcGMomPID", &mcGMomPID, &b_mcGMomPID);
+   fChain->SetBranchAddress("mcMomPID", &mcMomPID, &b_mcMomPID);
+   fChain->SetBranchAddress("mcMomPt", &mcMomPt, &b_mcMomPt);
+   fChain->SetBranchAddress("mcMomMass", &mcMomMass, &b_mcMomMass);
+   fChain->SetBranchAddress("mcMomEta", &mcMomEta, &b_mcMomEta);
+   fChain->SetBranchAddress("mcMomPhi", &mcMomPhi, &b_mcMomPhi);
+   fChain->SetBranchAddress("mcStatusFlag", &mcStatusFlag, &b_mcStatusFlag);
+   fChain->SetBranchAddress("mcParentage", &mcParentage, &b_mcParentage);
+   fChain->SetBranchAddress("mcStatus", &mcStatus, &b_mcStatus);
+   fChain->SetBranchAddress("genMET", &genMET, &b_genMET);
+   fChain->SetBranchAddress("genMETPhi", &genMETPhi, &b_genMETPhi);
    fChain->SetBranchAddress("metFilters", &metFilters, &b_metFilters);
    fChain->SetBranchAddress("pfMET", &pfMET, &b_pfMET);
    fChain->SetBranchAddress("pfMETPhi", &pfMETPhi, &b_pfMETPhi);
@@ -1226,6 +1381,8 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("jetDeepCSVTags_bb", &jetDeepCSVTags_bb, &b_jetDeepCSVTags_bb);
    fChain->SetBranchAddress("jetDeepCSVTags_c", &jetDeepCSVTags_c, &b_jetDeepCSVTags_c);
    fChain->SetBranchAddress("jetDeepCSVTags_udsg", &jetDeepCSVTags_udsg, &b_jetDeepCSVTags_udsg);
+   fChain->SetBranchAddress("jetPartonID", &jetPartonID, &b_jetPartonID);
+   fChain->SetBranchAddress("jetHadFlvr", &jetHadFlvr, &b_jetHadFlvr);
    fChain->SetBranchAddress("jetPFLooseId", &jetPFLooseId, &b_jetPFLooseId);
    fChain->SetBranchAddress("jetID", &jetID, &b_jetID);
    fChain->SetBranchAddress("jetPUID", &jetPUID, &b_jetPUID);
@@ -1275,6 +1432,19 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("AK8puppiSDL2L3corr", &AK8puppiSDL2L3corr, &b_AK8puppiSDL2L3corr);
    fChain->SetBranchAddress("AK8puppiSDMass", &AK8puppiSDMass, &b_AK8puppiSDMass);
    fChain->SetBranchAddress("AK8puppiSDMassL2L3Corr", &AK8puppiSDMassL2L3Corr, &b_AK8puppiSDMassL2L3Corr);
+   fChain->SetBranchAddress("AK8JetPartonID", &AK8JetPartonID, &b_AK8JetPartonID);
+   fChain->SetBranchAddress("AK8JetHadFlvr", &AK8JetHadFlvr, &b_AK8JetHadFlvr);
+   fChain->SetBranchAddress("AK8JetGenJetIndex", &AK8JetGenJetIndex, &b_AK8JetGenJetIndex);
+   fChain->SetBranchAddress("AK8JetGenJetEn", &AK8JetGenJetEn, &b_AK8JetGenJetEn);
+   fChain->SetBranchAddress("AK8JetGenJetPt", &AK8JetGenJetPt, &b_AK8JetGenJetPt);
+   fChain->SetBranchAddress("AK8JetGenJetEta", &AK8JetGenJetEta, &b_AK8JetGenJetEta);
+   fChain->SetBranchAddress("AK8JetGenJetPhi", &AK8JetGenJetPhi, &b_AK8JetGenJetPhi);
+   fChain->SetBranchAddress("AK8JetGenPartonID", &AK8JetGenPartonID, &b_AK8JetGenPartonID);
+   fChain->SetBranchAddress("AK8JetGenEn", &AK8JetGenEn, &b_AK8JetGenEn);
+   fChain->SetBranchAddress("AK8JetGenPt", &AK8JetGenPt, &b_AK8JetGenPt);
+   fChain->SetBranchAddress("AK8JetGenEta", &AK8JetGenEta, &b_AK8JetGenEta);
+   fChain->SetBranchAddress("AK8JetGenPhi", &AK8JetGenPhi, &b_AK8JetGenPhi);
+   fChain->SetBranchAddress("AK8JetGenPartonMomID", &AK8JetGenPartonMomID, &b_AK8JetGenPartonMomID);
    fChain->SetBranchAddress("nAK8SDSJ", &nAK8SDSJ, &b_nAK8SDSJ);
    fChain->SetBranchAddress("AK8SDSJPt", &AK8SDSJPt, &b_AK8SDSJPt);
    fChain->SetBranchAddress("AK8SDSJEta", &AK8SDSJEta, &b_AK8SDSJEta);
