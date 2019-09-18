@@ -76,20 +76,22 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
         hcount->Fill(1);
         hcount->Fill(2,genWeight);
         
+        if (pfMET < 75) continue;
+        hcount->Fill(3);
+        
         TLorentzVector BoostedTau4Momentum, ele4Momentum;
         
         auto numeleTau(0);
         for (int iele = 0; iele < nEle; ++iele){
-            if (elePt->at(iele) > 115 && fabs(eleEta->at(iele)) < 2.5){
+            if (elePt->at(iele) > 40 && fabs(eleEta->at(iele)) < 2.5){
                 
                 ele4Momentum.SetPtEtaPhiM(elePt->at(iele),eleEta->at(iele),elePhi->at(iele),eleEn->at(iele));
                 
                 for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
-                    if (boostedTauPt->at(ibtau) > 30 && fabs(boostedTauEta->at(ibtau)) < 2.3 ){
+                    if (boostedTauPt->at(ibtau) > 20 && fabs(boostedTauEta->at(ibtau)) < 2.3 ){
                         BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
-                        if(BoostedTau4Momentum.DeltaR(ele4Momentum) < 0.8 && BoostedTau4Momentum.DeltaR(ele4Momentum) > 0.1){
+                        if(BoostedTau4Momentum.DeltaR(ele4Momentum) < 0.8 && BoostedTau4Momentum.DeltaR(ele4Momentum) > 0.4){
                             numeleTau++;
-//                            break;
                         }
                     }
                 }
@@ -97,11 +99,11 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
         }
         
         if(numeleTau < 1) continue;
-        hcount->Fill(3);
+        hcount->Fill(4);
         
         float MT =TMass_F(ele4Momentum.Pt(),ele4Momentum.Px(),ele4Momentum.Py(),pfMET,pfMETPhi);
-        if(MT < 40) continue;
-        hcount->Fill(4);
+        if(MT > 40) continue;
+        hcount->Fill(5);
         
 
         MyNewTree->Fill();

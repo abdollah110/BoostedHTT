@@ -76,20 +76,22 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
         hcount->Fill(1);
         hcount->Fill(2,genWeight);
         
+        if (pfMET < 75) continue;
+        hcount->Fill(3);
+        
         TLorentzVector BoostedTau4Momentum, Mu4Momentum;
         
         auto numMuTau(0);
         for (int imu = 0; imu < nMu; ++imu){
-            if (muPt->at(imu) > 50 && fabs(muEta->at(imu)) < 2.4){
+            if (muPt->at(imu) > 30 && fabs(muEta->at(imu)) < 2.4){
                 
                 Mu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),muEn->at(imu));
                 
                 for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
-                    if (boostedTauPt->at(ibtau) > 30 && fabs(boostedTauEta->at(ibtau)) < 2.3 ){
+                    if (boostedTauPt->at(ibtau) > 20 && fabs(boostedTauEta->at(ibtau)) < 2.3 ){
                         BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
-                        if(BoostedTau4Momentum.DeltaR(Mu4Momentum) < 0.8 && BoostedTau4Momentum.DeltaR(Mu4Momentum) > 0.1){
+                        if(BoostedTau4Momentum.DeltaR(Mu4Momentum) < 0.8 && BoostedTau4Momentum.DeltaR(Mu4Momentum) > 0.4){
                             numMuTau++;
-//                            break;
                         }
                     }
                 }
@@ -97,37 +99,12 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
         }
         
         if(numMuTau < 1) continue;
-        hcount->Fill(3);
-        
-        float MT =TMass_F(Mu4Momentum.Pt(),Mu4Momentum.Px(),Mu4Momentum.Py(),pfMET,pfMETPhi);
-        if(MT < 40) continue;
         hcount->Fill(4);
         
+        float MT =TMass_F(Mu4Momentum.Pt(),Mu4Momentum.Px(),Mu4Momentum.Py(),pfMET,pfMETPhi);
+        if(MT > 40) continue;
+        hcount->Fill(5);
         
-        //
-        //
-        //        auto BoostedTau(0);
-        //        auto BoostedIsoTau(0);
-        //        TLorentzVector BoostedTau4Momentum, Jet4Momentum;
-        //        for (int ijet = 0; ijet < nJet; ++ijet){
-        //            if (jetPt->at(ijet) > 500 &&  fabs(jetEta->at(ijet)) < 3.0 ){
-        //                Jet4Momentum.SetPtEtaPhiM(jetPt->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
-        //                for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
-        //                    if (boostedTauPt->at(ibtau) > 30 && fabs(boostedTauEta->at(ibtau)) < 2.5  ){
-        //                        BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
-        //                        if(BoostedTau4Momentum.DeltaR(Jet4Momentum) > 2){
-        //                            BoostedTau++;
-        //                            if (boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau)){
-        //                                BoostedIsoTau++;
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //
-        //        if(BoostedTau < 2 || BoostedIsoTau < 1) continue;
-        //        hcount->Fill(3);
         
         
         MyNewTree->Fill();
