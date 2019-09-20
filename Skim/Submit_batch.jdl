@@ -14,7 +14,7 @@ Error  = $(runPath)/$(myLogFolder)/batch_$(cluster)_$(process).stderr
 Log    = $(runPath)/$(myLogFolder)/batch_$(cluster)_$(process).condor
 x509userproxy = $ENV(X509_USER_PROXY)
 Arguments = $(cluster) $(process) $(runPath) $(outPath)
-Queue 60
+Queue 330
 
 
 

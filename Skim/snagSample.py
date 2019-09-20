@@ -4,6 +4,6 @@
 #The last txt file should be renamed as InputSamples.txt 
 import os
 import sys
-os.system('cat  %s | xargs -n 1 -I {} echo "xrdfs root://cmseos.fnal.gov ls {}" > %s'%(sys.argv[1],"tmp.txt" ))
-os.system('bash %s > %s'%("tmp.txt", sys.argv[2]))
-
+for i in xrange(1,4):
+    os.system('cat  %s | xargs -n 1 -I {} echo "xrdfs root://cmseos.fnal.gov ls {}" > %s'%(sys.argv[1],"tmp.txt" ))
+    os.system('bash %s > %s'%("tmp.txt", sys.argv[1]))

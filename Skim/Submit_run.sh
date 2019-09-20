@@ -69,8 +69,8 @@ do
  echo "input is " $FullDataSetName
  echo "output is " $outName
 
-# ./SkimerBoost_mt  $FullDataSetName $outName
- ./SkimerBoost_et  $FullDataSetName $outName
+ ./SkimerBoost_mt  $FullDataSetName $outName
+# ./SkimerBoost_et  $FullDataSetName $outName
 done
 ############  Here is where the Skimmer ends          ############
 
@@ -87,7 +87,7 @@ hadd -f $FinalOutName "skimed_"*.root
 ##########  remove the unneccesat files
 #rm skim*root  Skimmer.cc  Skimmer.h  Makefile  InputSamples.txt
 echo "Done execution ..."
-xrdcp -f $FinalOutName  root://cmseos.fnal.gov//store/user/abdollah/SkimBoost/et/v1/$FinalOutName
+xrdcp -f $FinalOutName  root://cmseos.fnal.gov//store/user/abdollah/SkimBoost/mt/v3/$FinalOutName
 xrdcp *.stdout *.stderr *.condor  root://cmseos.fnal.gov//store/user/abdollah/CONDOR/
 
 

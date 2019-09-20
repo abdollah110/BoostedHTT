@@ -85,7 +85,7 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
         for (int iele = 0; iele < nEle; ++iele){
             if (elePt->at(iele) > 40 && fabs(eleEta->at(iele)) < 2.5){
                 
-                ele4Momentum.SetPtEtaPhiM(elePt->at(iele),eleEta->at(iele),elePhi->at(iele),eleEn->at(iele));
+                ele4Momentum.SetPtEtaPhiM(elePt->at(iele),eleEta->at(iele),elePhi->at(iele),eleMass);
                 
                 for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                     if (boostedTauPt->at(ibtau) > 20 && fabs(boostedTauEta->at(ibtau)) < 2.3 ){

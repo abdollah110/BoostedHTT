@@ -59,7 +59,8 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
     
     Long64_t nentries = fChain->GetEntriesFast();
     Long64_t nbytes = 0, nb = 0;
-    
+    float MuMass= 0.10565837;
+    float eleMass= 0.000511;
     
     
     
@@ -85,7 +86,7 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
         for (int imu = 0; imu < nMu; ++imu){
             if (muPt->at(imu) > 30 && fabs(muEta->at(imu)) < 2.4){
                 
-                Mu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),muEn->at(imu));
+                Mu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
                 
                 for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                     if (boostedTauPt->at(ibtau) > 20 && fabs(boostedTauEta->at(ibtau)) < 2.3 ){
