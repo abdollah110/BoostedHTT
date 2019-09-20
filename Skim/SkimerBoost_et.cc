@@ -59,7 +59,8 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
     
     Long64_t nentries = fChain->GetEntriesFast();
     Long64_t nbytes = 0, nb = 0;
-    
+    float MuMass= 0.10565837;
+    float eleMass= 0.000511;
     
     
     
