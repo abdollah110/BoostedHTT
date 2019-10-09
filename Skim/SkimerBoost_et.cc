@@ -45,7 +45,7 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
     fChain->SetBranchStatus("n*",1);
     //    fChain->SetBranchStatus("c*",1);
     fChain->SetBranchStatus("jet*",1);
-        fChain->SetBranchStatus("AK8*",1);
+    fChain->SetBranchStatus("AK8*",1);
     fChain->SetBranchStatus("ele*",1);
     fChain->SetBranchStatus("mu*",1);
     //    fChain->SetBranchStatus("pho",0);
@@ -53,7 +53,7 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
     fChain->SetBranchStatus("m*",1);
     fChain->SetBranchStatus("b*",1);
     
-    TH1F* hcount = new TH1F("hcount", "", 5, 1, 5);
+    TH1F* hcount = new TH1F("hcount", "", 10, 0, 10);
     
     if (fChain == 0) return;
     
@@ -84,29 +84,25 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
         
         auto numeleTau(0);
         for (int iele = 0; iele < nEle; ++iele){
-            if (elePt->at(iele) > 40 && fabs(eleEta->at(iele)) < 2.5){
-                
-                ele4Momentum.SetPtEtaPhiM(elePt->at(iele),eleEta->at(iele),elePhi->at(iele),eleMass);
-                
-                for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
-                    if (boostedTauPt->at(ibtau) > 20 && fabs(boostedTauEta->at(ibtau)) < 2.3 ){
-                        BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
-                        if(BoostedTau4Momentum.DeltaR(ele4Momentum) < 0.8 && BoostedTau4Momentum.DeltaR(ele4Momentum) > 0.4){
-                            numeleTau++;
-                        }
-                    }
-                }
+            if (elePt->at(iele) < 40 || fabs(eleEta->at(iele)) > 2.5) continue;
+            
+            ele4Momentum.SetPtEtaPhiM(elePt->at(iele),eleEta->at(iele),elePhi->at(iele),eleMass);
+            
+            float MT =TMass_F(ele4Momentum.Pt(),ele4Momentum.Px(),ele4Momentum.Py(),pfMET,pfMETPhi);
+            if(MT > 40) continue;
+                        
+            for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
+                if (boostedTauPt->at(ibtau) < 20 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
+                BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
+                if(BoostedTau4Momentum.DeltaR(ele4Momentum) > 0.8 || BoostedTau4Momentum.DeltaR(ele4Momentum) < 0.4) continue;
+                numeleTau++;                                
             }
         }
         
         if(numeleTau < 1) continue;
         hcount->Fill(4);
+                
         
-        float MT =TMass_F(ele4Momentum.Pt(),ele4Momentum.Px(),ele4Momentum.Py(),pfMET,pfMETPhi);
-        if(MT > 40) continue;
-        hcount->Fill(5);
-        
-
         MyNewTree->Fill();
     }
     
@@ -128,7 +124,7 @@ int main(int argc, char* argv[]){
     
     SkimerBoost t("root://cmsxrootd.fnal.gov/"+InputFile);
     t.Loop(OutputFile, 0);
-
+    
     return 0;
 }
 

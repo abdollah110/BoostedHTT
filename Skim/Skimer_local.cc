@@ -53,7 +53,7 @@ void SkimerBoost::Loop(TString outputName, int skm)
     fChain->SetBranchStatus("m*",1);
     fChain->SetBranchStatus("b*",1);
     
-    TH1F* hcount = new TH1F("hcount", "", 10, 1, 10);
+    TH1F* hcount = new TH1F("hcount", "", 10, 0, 10);
     
     if (fChain == 0) return;
     
