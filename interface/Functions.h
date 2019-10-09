@@ -243,6 +243,39 @@ TTree *  Xttree( TFile * f_Double){
     Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBoldDMwLT",&boostedTauByLooseIsolationMVArun2v1DBoldDMwLT);
     Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v2DBoldDMwLT",&boostedTauByLooseIsolationMVArun2v2DBoldDMwLT);
 
+Run_Tree->SetBranchAddress("boostedTaupfTausDiscriminationByDecayModeFinding",&boostedTaupfTausDiscriminationByDecayModeFinding);
+    Run_Tree->SetBranchAddress("boostedTauByMVA6VLooseElectronRejection",&boostedTauByMVA6VLooseElectronRejection);
+    Run_Tree->SetBranchAddress("boostedTauByTightMuonRejection3",&boostedTauByTightMuonRejection3);
+
+    
+    Run_Tree->SetBranchAddress("boostedTauByTightIsolationMVArun2v1DBoldDMwLT",&boostedTauByTightIsolationMVArun2v1DBoldDMwLT);
+    Run_Tree->SetBranchAddress("boostedTauByMediumIsolationMVArun2v1DBoldDMwLT",&boostedTauByMediumIsolationMVArun2v1DBoldDMwLT);
+    Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBoldDMwLT",&boostedTauByLooseIsolationMVArun2v1DBoldDMwLT);
+    Run_Tree->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT",&boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT);
+//
+//    Run_Tree->SetBranchAddress("boostedTauByMediumIsolationMVArun2v1DBnewDMwLT;
+//    Run_Tree->SetBranchAddress("boostedTauByMediumIsolationMVArun2v1DBoldDMwLT;
+//    Run_Tree->SetBranchAddress("boostedTauByMediumIsolationMVArun2v1PWnewDMwLT;
+//    Run_Tree->SetBranchAddress("boostedTauByMediumIsolationMVArun2v1PWoldDMwLT;
+//    Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBnewDMwLT;
+//    Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBoldDMwLT;
+//    Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1PWnewDMwLT;
+//    Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1PWoldDMwLT;
+//    Run_Tree->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v1DBnewDMwLT;
+//    Run_Tree->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT;
+//    Run_Tree->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v1PWnewDMwLT;
+//    Run_Tree->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v1PWoldDMwLT;
+//    vector<float>   *boostedTauByIsolationMVArun2v2DBoldDMwLTraw;
+//    Run_Tree->SetBranchAddress("boostedTauByVTightIsolationMVArun2v2DBoldDMwLT;
+//    Run_Tree->SetBranchAddress("boostedTauByTightIsolationMVArun2v2DBoldDMwLT;
+//    Run_Tree->SetBranchAddress("boostedTauByMediumIsolationMVArun2v2DBoldDMwLT;
+//    Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v2DBoldDMwLT;
+//    Run_Tree->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v2DBoldDMwLT;
+//
+//
+
+
+
     //    Run_Tree->SetBranchAddress("",&);
 //
 //
