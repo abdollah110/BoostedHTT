@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
     float SimpleJetPtCut=30;
     float ElectronPtCut_=15;
     //    float CSVCut=   0.9535   ;                  //  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
-    float CSVCut=   0.9693   ;                  //  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
+    float CSVCut=   0.8838   ;                  //  medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
     float LeptonIsoCut=0.15;
     bool debug= false;
     //########################################################################################################################################################
@@ -104,7 +104,8 @@ int main(int argc, char** argv) {
                     plotFill("_HLT",qq,60,0,60);
             }
             
-//            int numBJet=numBJets(BJetPtCut,CSVCut);
+            int numBJet=numBJets(BJetPtCut,CSVCut);
+            if (numBJet > 0) continue;
             //############################################################################################
             //###########       Loop over MuJet events   #################################################
             //############################################################################################
@@ -163,6 +164,8 @@ int main(int argc, char** argv) {
                                 plotFill("muDz",fabs(muDz->at(imu)) ,100,0,2);
                                 plotFill("ZMass",ZCandida.M() ,30,0,300);
                                 plotFill("tmass",tmass ,10,0,100);
+                                plotFill("numBJet",numBJet ,10,0,10);
+                                
                                 
                                 if (debug) cout<< "test 5\n";
                                 
