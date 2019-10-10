@@ -60,7 +60,7 @@ InputBKg=[
             ['DYJetsToLL.root','DYJetsToLL*.root'],
             ['WJetsToLNu.root','WJetsToLNu*.root'],
             ['TTJets.root','TTJets*.root'],
-            ['VV.root','ZZ*.root, WZ*.root, WW*.root'],
+            ['VV.root','ZZ*.root', 'WZ*.root', 'WW*.root'],
             ['SingleTop.root','ST_*.root'],
             ['Data.root','Data.root'],
 ]
