@@ -190,8 +190,10 @@ else if (OutName.find("WW") != string::npos) return  75.88 ;
     //SingleTop
     else if (OutName.find("ST_t-channel_antitop") != string::npos) return 80.95;
     else if (OutName.find("ST_t-channel_top") != string::npos) return 136.02;
-    else if (OutName.find("ST_tW_antitop_5f") != string::npos) return 35.6;
-    else if (OutName.find("ST_tW_top_5f") != string::npos) return 35.6;
+    
+    else if (OutName.find("ST_tW_antitop") != string::npos) return 35.6;
+    else if (OutName.find("ST_tW_top") != string::npos) return 35.6;
+    
     else if (OutName.find("ST_s_channel") != string::npos) return 3.36 ;
     
     
