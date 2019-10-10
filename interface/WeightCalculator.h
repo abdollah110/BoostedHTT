@@ -18,7 +18,7 @@ using namespace std;
 
 
 float WScaleFactor= 1.21 ;
-float DYScaleFactor=1.17; 
+float DYScaleFactor=1.17;
 //float TTScaleFactor=0.91;
 //float WScaleFactor=1.22;
 //float TTScaleFactor=0.856;
@@ -47,14 +47,14 @@ float XSection(std::string OutName) {
 //    if (OutName.find("Data") != string::npos) return 1;   // As we have large cut at Skim, this one is not
     
     if (OutName.find("WJetsToLNu_Inc") != string::npos) return 50690;   // As we have large cut at Skim, this one is not needed
-    else if (OutName.find("WJetsToLNu_HT-70to100") != string::npos) return 1372 * WScaleFactor;
-    else if (OutName.find("WJetsToLNu_HT-100to200") != string::npos) return 1343* WScaleFactor;
-    else if (OutName.find("WJetsToLNu_HT-200to400") != string::npos) return 359.6* WScaleFactor;
-    else if (OutName.find("WJetsToLNu_HT-400to600") != string::npos) return 48.85* WScaleFactor;
-    else if (OutName.find("WJetsToLNu_HT-600to800") != string::npos) return 12.05* WScaleFactor;
-    else if (OutName.find("WJetsToLNu_HT-800to1200") != string::npos) return 5.501* WScaleFactor;
-    else if (OutName.find("WJetsToLNu_HT-1200to2500") != string::npos) return 1.329* WScaleFactor;
-    else if (OutName.find("WJetsToLNu_HT-2500toInf") != string::npos) return 0.03216* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-70To100") != string::npos) return 1372 * WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-100To200") != string::npos) return 1343* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-200To400") != string::npos) return 359.6* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-400To600") != string::npos) return 48.85* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-600To800") != string::npos) return 12.05* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-800To1200") != string::npos) return 5.501* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-1200To2500") != string::npos) return 1.329* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-2500ToInf") != string::npos) return 0.03216* WScaleFactor;
     
 //    else if (OutName.find("W1JetsToLNu") != string::npos) return 9644.5;
 //    else if (OutName.find("W2JetsToLNu") != string::npos) return 3144.5;
