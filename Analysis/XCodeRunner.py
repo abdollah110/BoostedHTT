@@ -130,10 +130,10 @@ outF.write("\n cp out%s.txt %s/."%(dirName,dirName))
 
 for sam in range(0,len(InputBKg)):
 
-    outF.write("\n./%s.exe   %s/%s      %s%s "%(args.codex,dirName,InputBKg[sam][0],SampleLoc, InputBKg[sam][1] ))
-#    if len(InputBKg[sam])==2: outF.write("\n./%s.exe   %s/%s      %s%s "%(args.codex,dirName,InputBKg[sam][0],SampleLoc, InputBKg[sam][1] ))
-#    if len(InputBKg[sam])==3: outF.write("\n./%s.exe   %s/%s    %s%s %s%s"%(args.codex,dirName,InputBKg[sam][0],SampleLoc, InputBKg[sam][1], SampleLoc,InputBKg[sam][2] ))
-#    if len(InputBKg[sam])==4: outF.write("\n./%s.exe   %s/%s  %s%s %s%s %s%s"%(args.codex,dirName,InputBKg[sam][0],SampleLoc, InputBKg[sam][1], SampleLoc,InputBKg[sam][2], SampleLoc,InputBKg[sam][3] ))
+#    outF.write("\n./%s.exe   %s/%s      %s%s "%(args.codex,dirName,InputBKg[sam][0],SampleLoc, InputBKg[sam][1] ))
+    if len(InputBKg[sam])==2: outF.write("\n./%s.exe   %s/%s      %s%s "%(args.codex,dirName,InputBKg[sam][0],SampleLoc, InputBKg[sam][1] ))
+    if len(InputBKg[sam])==3: outF.write("\n./%s.exe   %s/%s    %s%s %s%s"%(args.codex,dirName,InputBKg[sam][0],SampleLoc, InputBKg[sam][1], SampleLoc,InputBKg[sam][2] ))
+    if len(InputBKg[sam])==4: outF.write("\n./%s.exe   %s/%s  %s%s %s%s %s%s"%(args.codex,dirName,InputBKg[sam][0],SampleLoc, InputBKg[sam][1], SampleLoc,InputBKg[sam][2], SampleLoc,InputBKg[sam][3] ))
 
 
 #if not args.RunFullSample:
