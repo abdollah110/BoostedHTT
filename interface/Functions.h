@@ -240,12 +240,13 @@ TTree *  Xttree( TFile * f_Double){
     Run_Tree->SetBranchAddress("boostedTauPhi",&boostedTauPhi);
     Run_Tree->SetBranchAddress("boostedTauMass",&boostedTauMass);
     Run_Tree->SetBranchAddress("boostedTauDecayMode",&boostedTauDecayMode);
-    Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBoldDMwLT",&boostedTauByLooseIsolationMVArun2v1DBoldDMwLT);
-    Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v2DBoldDMwLT",&boostedTauByLooseIsolationMVArun2v2DBoldDMwLT);
+    Run_Tree->SetBranchAddress("boostedTauCharge",&boostedTauCharge);
+Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v2DBoldDMwLT",&boostedTauByLooseIsolationMVArun2v2DBoldDMwLT);
 
 Run_Tree->SetBranchAddress("boostedTaupfTausDiscriminationByDecayModeFinding",&boostedTaupfTausDiscriminationByDecayModeFinding);
     Run_Tree->SetBranchAddress("boostedTauByMVA6VLooseElectronRejection",&boostedTauByMVA6VLooseElectronRejection);
     Run_Tree->SetBranchAddress("boostedTauByTightMuonRejection3",&boostedTauByTightMuonRejection3);
+    Run_Tree->SetBranchAddress("boostedTauByLooseMuonRejection3",&boostedTauByLooseMuonRejection3);
 
     
     Run_Tree->SetBranchAddress("boostedTauByTightIsolationMVArun2v1DBoldDMwLT",&boostedTauByTightIsolationMVArun2v1DBoldDMwLT);
@@ -890,6 +891,15 @@ int numJets( float SimpleJetPtCut){
     return numJet;
 }
 
+//###########       HT   ###########################################################
+float getHT( float SimpleJetPtCut){
+    float HT=0;
+    for (int ijet= 0 ; ijet < nJet ; ijet++){
+        if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 3.0 )
+          HT += jetPt->at(ijet);
+    }
+    return HT;
+}
 
 //###########       W PDF + alpha s   ###########################################################
 

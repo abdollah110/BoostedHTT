@@ -36,14 +36,15 @@ int main(int argc, char** argv) {
     float eleMass= 0.000511;
     float LeptonPtCut_=60;
     float TauPtCut_=20;
-    float JetPtCut=500;
+    float JetPtCut=30;
     float BJetPtCut=20;
-    float SimpleJetPtCut=30;
+
     float ElectronPtCut_=15;
     //    float CSVCut=   0.9535   ;                  //  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
     float CSVCut=   0.8838   ;                  //  medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
-    float LeptonIsoCut=0.15;
+    float LeptonIsoCut=0.20;
     bool debug= false;
+    float luminosity=    35867;
     //########################################################################################################################################################
     //########################################################################################################################################################
     //########################################################################################################################################################
@@ -84,7 +85,7 @@ int main(int argc, char** argv) {
             //###############################################################################################
             std::vector<string> HistNamesFilled;
             HistNamesFilled.clear();
-            
+            if (debug) cout<< "test 0\n";
             //            //###############################################################################################
             //            //  Lumi, GEN & PileUp Weight
             //            //###############################################################################################
@@ -93,19 +94,36 @@ int main(int argc, char** argv) {
             float GetGenWeight=1;
             float PUWeight = 1;
             
-            //            if (!isData){
+                        if (!isData){
             //                //
             //                //                //######################## Lumi Weight
-            //                if (HistoTot) LumiWeight = weightCalc(HistoTot, InputROOT,genHT, W_HTBinROOTFiles, WBosonMass, WMuNu_MassBinROOTFiles,WTauNu_MassBinROOTFiles);
+            
+            stringstream ss(InputROOT);
+            
+            string token;
+            string M;
+            while (getline(ss,token, '/'))  M=token;
+            
+            std::string FirstPart = "";
+            std::string LastPart = ".root";
+            std::string newOut = M.substr(FirstPart.size());
+            newOut = newOut.substr(0, newOut.size() - LastPart.size());
+
+            LumiWeight = luminosity * XSection(newOut)*1.0 / HistoTot->GetBinContent(2);
+//  weightCalc(HistoTot, InputROOT,genHT, W_HTBinROOTFiles, WBosonMass, WMuNu_MassBinROOTFiles,WTauNu_MassBinROOTFiles);
             //                //                //######################## Gen Weight
-            //            }
+                        }
             for (int qq=0; qq < 60;qq++){
                 if ((HLTEleMuX >> qq & 1) == 1)
                     plotFill("_HLT",qq,60,0,60);
             }
-            
+            plotFill("cutFlow",1 ,15,0,15);
             int numBJet=numBJets(BJetPtCut,CSVCut);
             if (numBJet > 0) continue;
+            plotFill("cutFlow",2 ,15,0,15);
+            float ht= getHT(JetPtCut);
+            if (ht < 200) continue;
+            plotFill("cutFlow",3 ,15,0,15);
             //############################################################################################
             //###########       Loop over MuJet events   #################################################
             //############################################################################################
@@ -120,77 +138,145 @@ int main(int argc, char** argv) {
             auto numMuTau(0);
             for (int imu = 0; imu < nMu; ++imu){
                 if (EventPass) break;
-                if (muPt->at(imu) > 30 && fabs(muEta->at(imu)) < 2.4){
+                
+//                plotFill("cutFlow",3 ,15,0,15);
+                
+                if (muPt->at(imu) <= 30 || fabs(muEta->at(imu)) >= 2.4) continue;
+                plotFill("cutFlow",4 ,15,0,15);
+                
+                Mu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
+                
+                
+                float IsoMu=muPFChIso->at(imu)/muPt->at(imu);
+                if ( (muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu) )  > 0.0)
+                    IsoMu= ( muPFChIso->at(imu) + muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu))/muPt->at(imu);
+                
+                bool MuId=( (muIDbit->at(imu) >> 2 & 1)  && fabs(muD0->at(imu)) < 0.045 && fabs(muDz->at(imu)) < 0.2); //Tight Muon Id
+                
+                
+                if (!MuId ) continue;
+                plotFill("cutFlow",5 ,15,0,15);
+                
+//                                if (IsoMu > 0.2) continue;
+//                                plotFill("cutFlow",6 ,15,0,15);
+                
+                
+                
+                float tmass = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  pfMET,  pfMETPhi);
+                
+                
+                
+                for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
+                    if (boostedTauPt->at(ibtau) <= 20 || fabs(boostedTauEta->at(ibtau)) >= 2.3 ) continue;
+                    plotFill("cutFlow",8 ,15,0,15);
                     
-                    Mu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
-                    if (debug) cout<< "test 2\n";
-                    float IsoMu=muPFChIso->at(imu)/muPt->at(imu);
-                    if ( (muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu) )  > 0.0)
-                        IsoMu= ( muPFChIso->at(imu) + muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu))/muPt->at(imu);
-                    //
-                    bool MuPtCut = muPt->at(imu) > LeptonPtCut_ && fabs(muEta->at(imu)) < 2.4 ;
-                    bool MuId=( (muIDbit->at(imu) >> 2 & 1)  && fabs(muD0->at(imu)) < 0.045 && fabs(muDz->at(imu)) < 0.2); //Tight Muon Id
-                    
-                    if (!MuId || !IsoMu) continue;
-                    
-                    
-                    float tmass = TMass_F(muPt->at(imu), muPt->at(imu)* cos(muPhi->at(imu)), muPt->at(imu)* sin(muPhi->at(imu)),  pfMET,  pfMETPhi);
-                    if (tmass > 40)  continue;
+                    if (debug) cout<< "test 3\n";
                     
                     
                     
-                    for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
-                        if (boostedTauPt->at(ibtau) > 20 && fabs(boostedTauEta->at(ibtau)) < 2.3 ){
-                            if (debug) cout<< "test 3\n";
-                                                        
-                            if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau)  ) continue;
-                            if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) ) continue;
-                            if (boostedTauByTightMuonRejection3->at(ibtau) ) continue;
-                            if (boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) ) continue;
-                            
-                            
-                            BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
-                            if(BoostedTau4Momentum.DeltaR(Mu4Momentum) < 0.8 && BoostedTau4Momentum.DeltaR(Mu4Momentum) > 0.4){
-                                
-                                if (debug) cout<< "test 3.5\n";
-                                ZCandida=BoostedTau4Momentum+Mu4Momentum;
-                                numMuTau++;
-                                
-                                if (debug) cout<< "test 4\n";
-                                plotFill("dR",BoostedTau4Momentum.DeltaR(Mu4Momentum) ,100,0,1);
-                                plotFill("IsoMu",IsoMu ,100,0,2);
-                                plotFill("MuId",MuId ,2,0,2);
-                                plotFill("muD0",fabs(muD0->at(imu)) ,100,0,1);
-                                plotFill("muDz",fabs(muDz->at(imu)) ,100,0,2);
-                                plotFill("ZMass",ZCandida.M() ,30,0,300);
-                                plotFill("tmass",tmass ,10,0,100);
-                                plotFill("numBJet",numBJet ,10,0,10);
-                                
-                                
-                                if (debug) cout<< "test 5\n";
-                                
-                                EventPass= true;
-                                break;
+                    
+                    if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
+                    plotFill("cutFlow",9 ,15,0,15);
+//                    if (boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ) continue;
+//                    plotFill("cutFlow",10 ,15,0,15);
+                    if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
+                    plotFill("cutFlow",11 ,15,0,15);
+                    if (boostedTauByTightMuonRejection3->at(ibtau) < 0.5) continue;
+                    plotFill("cutFlow",12 ,15,0,15);
+                    
+                    
+                    BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
+                    
+                    if(BoostedTau4Momentum.DeltaR(Mu4Momentum) > 0.8 || BoostedTau4Momentum.DeltaR(Mu4Momentum) < 0.4) continue;
+                    
+                    
+                    ZCandida=BoostedTau4Momentum+Mu4Momentum;
+                    
+                                        
+                    plotFill("ZMass",ZCandida.M() ,30,0,300);
+                    
+
+                    //###############################################################################################
+                    //  BoostedTau Isolation Categorization
+                    //###############################################################################################
+                    
+                    const int size_tauCat = 2;
+                    bool Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
+                    bool Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
+                    
+                    bool Tau_category[size_tauCat] = {Pass, Fail};
+                    std::string Tau_Cat[size_tauCat] = {"_Pass", "_Fail"};
+                    
+                    //###############################################################################################
+                    //  lepton Isolation Categorization
+                    //###############################################################################################
+                    bool LepPassIsolation= IsoMu < LeptonIsoCut;
+                    
+                    const int size_isoCat = 2;
+                    bool Isolation = LepPassIsolation;
+                    bool AntiIsolation =  !LepPassIsolation;
+                    
+                    bool Iso_category[size_isoCat] = {Isolation, AntiIsolation};
+                    std::string iso_Cat[size_isoCat] = {"_Iso", "_AntiIso"};
+                    
+                    
+                    
+                    //###############################################################################################
+                    //  Charge Categorization
+                    //###############################################################################################
+                    float chargelt= muCharge->at(imu) * boostedTauCharge->at(ibtau);
+                    
+                    const int size_q = 2;
+                    bool q_OS = chargelt < 0;
+                    bool q_SS =  chargelt > 0;
+                    
+                    bool Q_category[size_q] = {q_OS, q_SS};
+                    std::string Q_Cat[size_q] = {"_OS", "_SS"};
+                    
+                    
+                    //###############################################################################################
+
+                    for (int tt = 0; tt < size_tauCat; tt++) {
+                        if (Tau_category[tt]) {
+                    for (int iso = 0; iso < size_isoCat; iso++) {
+                        if (Iso_category[iso]) {
+                            for (int iq = 0; iq < size_q; iq++) {
+                                if (Q_category[iq]) {
+                                    
+                                    
+                            float FullWeight = LumiWeight;
+                                    std::string FullStringName = Tau_Cat[tt] +iso_Cat[iso] + Q_Cat[iq] ;
+                                    
+                                    //                                This check is used to make sure that each event is just filled once for any of the categories ==> No doube-counting of events  (this is specially important for ttbar events where we have many jets and leptons)
+                                    if (!( std::find(HistNamesFilled.begin(), HistNamesFilled.end(), FullStringName) != HistNamesFilled.end())){
+                                        HistNamesFilled.push_back(FullStringName);
+                                        
+                                        
+                                        
+                                        plotFill("dR"+FullStringName,BoostedTau4Momentum.DeltaR(Mu4Momentum) ,100,0,1,FullWeight);
+                                        plotFill("IsoMu"+FullStringName,IsoMu ,100,0,2,FullWeight);
+                                        plotFill("ZMass"+FullStringName,ZCandida.M() ,30,0,300,FullWeight);
+                                        plotFill("tmass"+FullStringName,tmass ,5,0,50,FullWeight);
+                                        plotFill("ht"+FullStringName,ht ,100,0,1000,FullWeight);
+                                        
+                                        
+                                        
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
-                }
-            }
-            
-            
-            
-            //            std::string CHL="";
-            //
-            //
-            //            plotFill(CHL+"_boostedTauPt",leadingBoostedTauPt,200,0,2000,1);
-            
+                    
+                    
+                }//boostedTau loop
+            }//muon loop
             
             
             //###############################################################################################
             //  Doing EleTau Analysis
             //###############################################################################################
-            //                }
-            
         } //End of Tree
     }//End of file
     //##############  end of dielectron

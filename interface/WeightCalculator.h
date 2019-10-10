@@ -17,7 +17,8 @@
 using namespace std;
 
 
-float WScaleFactor=1.0; // computed on Apr 20th
+float WScaleFactor= 1.21 ; // computed on Apr 20th
+float DYScaleFactor=1.23; // computed on Apr 20th
 //float TTScaleFactor=0.91;
 //float WScaleFactor=1.22;
 //float TTScaleFactor=0.856;
@@ -43,52 +44,52 @@ float XSection(std::string OutName) {
     
     
     
-    
+//    if (OutName.find("Data") != string::npos) return 1;   // As we have large cut at Skim, this one is not
     
     if (OutName.find("WJetsToLNu_Inc") != string::npos) return 50690;   // As we have large cut at Skim, this one is not needed
-    else if (OutName.find("WJetsToLNu_HT-70to100") != string::npos) return 1372;
-    else if (OutName.find("WJetsToLNu_HT-100to200") != string::npos) return 1343;
-    else if (OutName.find("WJetsToLNu_HT-200to400") != string::npos) return 359.6;
-    else if (OutName.find("WJetsToLNu_HT-400to600") != string::npos) return 48.85;
-    else if (OutName.find("WJetsToLNu_HT-600to800") != string::npos) return 12.05;
-    else if (OutName.find("WJetsToLNu_HT-800to1200") != string::npos) return 5.501;
-    else if (OutName.find("WJetsToLNu_HT-1200to2500") != string::npos) return 1.329;
-    else if (OutName.find("WJetsToLNu_HT-2500toInf") != string::npos) return 0.03216;
+    else if (OutName.find("WJetsToLNu_HT-70to100") != string::npos) return 1372 * WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-100to200") != string::npos) return 1343* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-200to400") != string::npos) return 359.6* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-400to600") != string::npos) return 48.85* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-600to800") != string::npos) return 12.05* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-800to1200") != string::npos) return 5.501* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-1200to2500") != string::npos) return 1.329* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-2500toInf") != string::npos) return 0.03216* WScaleFactor;
     
-    else if (OutName.find("W1JetsToLNu") != string::npos) return 9644.5;
-    else if (OutName.find("W2JetsToLNu") != string::npos) return 3144.5;
-    else if (OutName.find("W3JetsToLNu") != string::npos) return 954.8;
-    else if (OutName.find("W4JetsToLNu") != string::npos) return 485.6;
-    
-    
-    
-    //http://cms.cern.ch/iCMS/jsp/db_notes/noteInfo.jsp?cmsnoteid=CMS%20AN-2016/204
-    else if (OutName.find("WToMuNu_M-100_") != string::npos) return 163.15;
-    else if (OutName.find("WToMuNu_M-200_") != string::npos) return 6.236;
-    else if (OutName.find("WToMuNu_M-500_") != string::npos) return 0.2138;
-    else if (OutName.find("WToMuNu_M-1000_") != string::npos) return 0.01281;
-    else if (OutName.find("WToMuNu_M-2000_") != string::npos) return 5.56e-04;
-//    else if (OutName.find("WToMuNu_M-3000_") != string::npos) return 2.904e-05;
-    
-    
-    
-    else if (OutName.find("WToTauNu_M-100_") != string::npos) return 163.15;
-    else if (OutName.find("WToTauNu_M-200_") != string::npos) return 6.236;
-    else if (OutName.find("WToTauNu_M-500_") != string::npos) return 0.2138;
-    else if (OutName.find("WToTauNu_M-1000_") != string::npos) return 0.01281;
-    else if (OutName.find("WToTauNu_M-2000_") != string::npos) return 5.56e-04;
+//    else if (OutName.find("W1JetsToLNu") != string::npos) return 9644.5;
+//    else if (OutName.find("W2JetsToLNu") != string::npos) return 3144.5;
+//    else if (OutName.find("W3JetsToLNu") != string::npos) return 954.8;
+//    else if (OutName.find("W4JetsToLNu") != string::npos) return 485.6;
+//
+//
+//
+//    //http://cms.cern.ch/iCMS/jsp/db_notes/noteInfo.jsp?cmsnoteid=CMS%20AN-2016/204
+//    else if (OutName.find("WToMuNu_M-100_") != string::npos) return 163.15;
+//    else if (OutName.find("WToMuNu_M-200_") != string::npos) return 6.236;
+//    else if (OutName.find("WToMuNu_M-500_") != string::npos) return 0.2138;
+//    else if (OutName.find("WToMuNu_M-1000_") != string::npos) return 0.01281;
+//    else if (OutName.find("WToMuNu_M-2000_") != string::npos) return 5.56e-04;
+////    else if (OutName.find("WToMuNu_M-3000_") != string::npos) return 2.904e-05;
+//
+//
+//
+//    else if (OutName.find("WToTauNu_M-100_") != string::npos) return 163.15;
+//    else if (OutName.find("WToTauNu_M-200_") != string::npos) return 6.236;
+//    else if (OutName.find("WToTauNu_M-500_") != string::npos) return 0.2138;
+//    else if (OutName.find("WToTauNu_M-1000_") != string::npos) return 0.01281;
+//    else if (OutName.find("WToTauNu_M-2000_") != string::npos) return 5.56e-04;
     
     
     
     //    else if (OutName.find("DYJetsToLL_Inc") != string::npos) return 4895 * 1.012; // As we have large cut at Skim, this one is not needed
-    else if (OutName.find("DYJetsToLL_M-50_HT-70to100") != string::npos) return 175.3; // from 	EXO-16-049
-    else if (OutName.find("DYJetsToLL_M-50_HT-100to200") != string::npos) return 148;
-    else if (OutName.find("DYJetsToLL_M-50_HT-200to400") != string::npos) return 40.94;
-    else if (OutName.find("DYJetsToLL_M-50_HT-400to600") != string::npos) return 5.497;
-    else if (OutName.find("DYJetsToLL_M-50_HT-600to800") != string::npos) return 1.354;
-    else if (OutName.find("DYJetsToLL_M-50_HT-800to1200") != string::npos) return 0.625;
-    else if (OutName.find("DYJetsToLL_M-50_HT-1200to2500") != string::npos) return 0.151;
-    else if (OutName.find("DYJetsToLL_M-50_HT-2500toInf") != string::npos) return 0.003647;
+    else if (OutName.find("DYJetsToLL_M-50_HT-70to100") != string::npos) return 175.3 * DYScaleFactor; // from 	EXO-16-049
+    else if (OutName.find("DYJetsToLL_M-50_HT-100to200") != string::npos) return 148* DYScaleFactor;
+    else if (OutName.find("DYJetsToLL_M-50_HT-200to400") != string::npos) return 40.94* DYScaleFactor;
+    else if (OutName.find("DYJetsToLL_M-50_HT-400to600") != string::npos) return 5.497* DYScaleFactor;
+    else if (OutName.find("DYJetsToLL_M-50_HT-600to800") != string::npos) return 1.354* DYScaleFactor;
+    else if (OutName.find("DYJetsToLL_M-50_HT-800to1200") != string::npos) return 0.625* DYScaleFactor;
+    else if (OutName.find("DYJetsToLL_M-50_HT-1200to2500") != string::npos) return 0.151* DYScaleFactor;
+    else if (OutName.find("DYJetsToLL_M-50_HT-2500toInf") != string::npos) return 0.003647* DYScaleFactor;
     
     
     //Di-boson   Pythia is not useful in this analysis
@@ -117,7 +118,47 @@ float XSection(std::string OutName) {
     
 
 
-    
+//    {"Tbar-tW", 35.6},
+//    {"T-tW", 35.6},
+//    {"T-tW_v2", 35.6},
+//    {"Tbar-tchan", 26.23},
+//    {"Tbar-tchan_v2", 26.23},
+//    {"T-tchan", 44.07},
+//    {"TT", 831.76},
+//    {"TTHad", 377.96},
+//    {"TTToHadronic", 377.96},
+//    {"TTHad_v2", 377.96},
+//    {"TTLep", 88.29},
+//    {"TTTo2L2Nu", 88.29},
+//    {"TTSemi", 365.35},
+//    {"TTToSemiLeptonic", 365.35},
+//    {"TTSemi_v2", 365.35},
+//    {"VV2l2nu", 11.95},
+//    {"WJets", 61526.7},
+//    {"WJets_ext1", 61526.7},
+//    {"WJets1", 61526.7},
+//    {"WJets2", 61526.7},
+//    {"WJets3", 61526.7},
+//    {"WJets4", 61526.7},
+//    {"WW1l1nu2q", 49.997},
+//    {"WZ1l1nu2q", 10.71},
+//    {"WZ1l1nu2q_v2", 10.71},
+//    {"WZ1l3nu", 3.05},
+//    {"WZ2l2Q", 5.595},
+//    {"WZ3l1nu", 4.708},
+//    {"WW", 75.88},
+//    {"WZ", 27.57},
+//    {"ZZ", 12.14},
+//    {"ZZ2l2q", 3.22},
+//    {"ZZ4l", 1.212},
+//    {"ZZ4l_ext1", 1.212},
+//    {"ZZ4l_v2", 1.212},
+//    {"data", 1.0},
+
+
+else if (OutName.find("ZZ") != string::npos) return  12.14 ;
+else if (OutName.find("WZ") != string::npos) return  27.57 ;
+else if (OutName.find("WW") != string::npos) return  75.88 ;
 
     
     
@@ -154,9 +195,9 @@ float XSection(std::string OutName) {
     else if (OutName.find("ST_s_channel") != string::npos) return 3.36 ;
     
     
-    else if (OutName.find("TTJets_DiLeptonic") != string::npos) return (831.76*TT_FulLep_BR);
-    else if (OutName.find("TTJets_Hadronic") != string::npos) return (831.76*TT_Had_BR);
-    else if (OutName.find("TTJets_SemiLeptonic") != string::npos) return (831.76*TT_SemiLep_BR);
+    else if (OutName.find("TTTo2L2Nu") != string::npos) return (831.76*TT_FulLep_BR);
+    else if (OutName.find("TTToHadronic") != string::npos) return (831.76*TT_Had_BR);
+    else if (OutName.find("TTToSemiLeptonic") != string::npos) return (831.76*TT_SemiLep_BR);
     
 //    else if (OutName.find("TTJets") != string::npos) return (831.76);
     

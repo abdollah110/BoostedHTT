@@ -16,3 +16,5 @@ class GeneralizedEndpoint {
 
  };
 #endif /* GENERALIZEDENDPOINT_H_ */
+
+
