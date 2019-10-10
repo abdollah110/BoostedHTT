@@ -40,7 +40,7 @@ SampleLoc=''
 
 print 'This is what we are runinng on .....',args.sample
 if args.sample=='Mu':
-    SampleLoc='/uscms_data/d3/abdollah/Analysis/BoostedH/CMSSW_9_4_13/src/BoostedHTT/InputSample'
+    SampleLoc='/uscms_data/d3/abdollah/Analysis/BoostedH/CMSSW_9_4_13/src/BoostedHTT/InputSample/'
 
 #if args.sample=='SingleEle':
 #    SampleLoc='/Users/abdollah1/GIT_abdollah110/DM2018/ROOT94X/SampleLQ1/'
@@ -57,10 +57,10 @@ if not os.path.exists(dirName):
 
 
 InputBKg=[
-            ['DYJetsToLL.root','DYJetsToLL_M-50*.root'],
-            ['WJetsToLNu.root','*JetsToLNu*.root','WTo*root'],
+            ['DYJetsToLL.root','DYJetsToLL*.root'],
+            ['WJetsToLNu.root','WJetsToLNu*.root'],
             ['TTJets.root','TTJets*.root'],
-            ['VV.root','ZZ*.root','WZ*.root','WW*.root'],
+            ['VV.root','ZZ*.root WZ*.root WW*.root'],
             ['SingleTop.root','ST_*.root'],
             ['Data.root','Data.root'],
 ]
@@ -130,9 +130,10 @@ outF.write("\n cp out%s.txt %s/."%(dirName,dirName))
 
 for sam in range(0,len(InputBKg)):
 
-    if len(InputBKg[sam])==2: outF.write("\n./%s.exe   %s/%s      %s%s "%(args.codex,dirName,InputBKg[sam][0],SampleLoc, InputBKg[sam][1] ))
-    if len(InputBKg[sam])==3: outF.write("\n./%s.exe   %s/%s    %s%s %s%s"%(args.codex,dirName,InputBKg[sam][0],SampleLoc, InputBKg[sam][1], SampleLoc,InputBKg[sam][2] ))
-    if len(InputBKg[sam])==4: outF.write("\n./%s.exe   %s/%s  %s%s %s%s %s%s"%(args.codex,dirName,InputBKg[sam][0],SampleLoc, InputBKg[sam][1], SampleLoc,InputBKg[sam][2], SampleLoc,InputBKg[sam][3] ))
+    outF.write("\n./%s.exe   %s/%s      %s%s "%(args.codex,dirName,InputBKg[sam][0],SampleLoc, InputBKg[sam][1] ))
+#    if len(InputBKg[sam])==2: outF.write("\n./%s.exe   %s/%s      %s%s "%(args.codex,dirName,InputBKg[sam][0],SampleLoc, InputBKg[sam][1] ))
+#    if len(InputBKg[sam])==3: outF.write("\n./%s.exe   %s/%s    %s%s %s%s"%(args.codex,dirName,InputBKg[sam][0],SampleLoc, InputBKg[sam][1], SampleLoc,InputBKg[sam][2] ))
+#    if len(InputBKg[sam])==4: outF.write("\n./%s.exe   %s/%s  %s%s %s%s %s%s"%(args.codex,dirName,InputBKg[sam][0],SampleLoc, InputBKg[sam][1], SampleLoc,InputBKg[sam][2], SampleLoc,InputBKg[sam][3] ))
 
 
 #if not args.RunFullSample:
