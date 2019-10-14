@@ -77,31 +77,33 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
         hcount->Fill(1);
         hcount->Fill(2,genWeight);
         
-        if (pfMET < 75) continue;
-        hcount->Fill(3);
         
-        TLorentzVector BoostedTau4Momentum, ele4Momentum;
+        TLorentzVector LeadMu4Momentum, SubMu4Momentum;
         
-        auto numeleTau(0);
-        for (int iele = 0; iele < nEle; ++iele){
-            if (elePt->at(iele) < 35 || fabs(eleEta->at(iele)) > 2.5) continue;
+        auto numDiMu(0);
+        for (int imu = 0; imu < nMu; ++imu){
+            if (muPt->at(imu) < 30 || fabs(muEta->at(imu)) > 2.4) continue;
             
-            ele4Momentum.SetPtEtaPhiM(elePt->at(iele),eleEta->at(iele),elePhi->at(iele),eleMass);
+            LeadMu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
-            float MT =TMass_F(ele4Momentum.Pt(),ele4Momentum.Px(),ele4Momentum.Py(),pfMET,pfMETPhi);
-            if(MT > 40) continue;
-                        
-            for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
-                if (boostedTauPt->at(ibtau) < 20 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
-                BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
-                if(BoostedTau4Momentum.DeltaR(ele4Momentum) > 0.8 || BoostedTau4Momentum.DeltaR(ele4Momentum) < 0.4) continue;
-                numeleTau++;                                
+            
+            for (int jmu = imu+1; jmu < nMu; ++jmu){
+                if (muPt->at(jmu) < 10 || fabs(muEta->at(jmu)) > 2.4) continue;
+                
+                SubMu4Momentum.SetPtEtaPhiM(muPt->at(jmu),muEta->at(jmu),muPhi->at(jmu),MuMass);
+                
+                
+                if(LeadMu4Momentum.DeltaR(SubMu4Momentum) > 1.0 ) continue;
+                numDiMu++;
+                
+                
             }
         }
         
-        if(numeleTau < 1) continue;
-        hcount->Fill(4);
-                
+        if(numDiMu < 1) continue;
+        hcount->Fill(3);
+        
+        
         
         MyNewTree->Fill();
     }
