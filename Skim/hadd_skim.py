@@ -1,12 +1,21 @@
 import glob
 import os
-files='/eos/uscms/store/user/abdollah/SkimBoost/mm/v4'
-HaddLoc=files+'_Hadd'
 
-for gl in glob.glob('/eos/uscms/store/user/tmitchel/BoostedH/An2017/MC/*/*'):
-    name=gl.rpartition('/')[-1].replace('crab_','')
-#    os.system('hadd $s/%s.root    $s/%s*.root'%(HaddLoc,name,files,name))
-    print 'hadd %s/%s.root    %s/%s*.root'%(HaddLoc,name,files,name)
+ggNtupleFiles='/eos/uscms/store/user/tmitchel/BoostedH/An2017/MC/*/*'
+skimFiles='/eos/uscms/store/user/abdollah/SkimBoost/mm/v4'
+HaddLoc=skimFiles+'_Hadd'
+
+if not os.path.exists(HaddLoc):
+    os.makedirs(HaddLoc)
+
+outFile=open('_run_to_hadd.sh','w')
+for gl in glob.glob(ggNtupleFiles):
+    sample=gl.rpartition('/')[-1].replace('crab_','')
+    outFile.write('hadd %s/%s.root    %s/%s*.root \n'%(HaddLoc,sample,skimFiles,sample))
+#    os.system('hadd %s/%s.root    %s/%s*.root'%(HaddLoc,sample,skimFiles,sample))
+
+outFile.close()
     
-    
+
+
 
