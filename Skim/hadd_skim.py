@@ -3,7 +3,7 @@ import os
 
 ggNtupleFiles='/eos/uscms/store/user/tmitchel/BoostedH/An2017/MC/*/*'
 skimFiles='/eos/uscms/store/user/abdollah/SkimBoost/mm/v4'
-HaddLoc=skimFiles+'_Hadd'
+HaddLoc='root://cmseos.fnal.gov:/'+skimFiles.replace('/eos/uscms','')+'_Hadd'
 
 if not os.path.exists(HaddLoc):
     os.makedirs(HaddLoc)

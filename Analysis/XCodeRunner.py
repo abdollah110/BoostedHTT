@@ -59,7 +59,7 @@ if not os.path.exists(dirName):
 InputBKg=[
             ['DYJetsToLL.root','DYJetsToLL*.root'],
             ['WJetsToLNu.root','WJetsToLNu*.root'],
-            ['TTJets.root','TTJets*.root'],
+            ['TTJets.root','TT*.root'],
             ['VV.root','ZZ*.root', 'WZ*.root', 'WW*.root'],
             ['SingleTop.root','ST_*.root'],
             ['Data.root','Data.root'],
@@ -69,54 +69,6 @@ InputBKg=[
 #InputSignal=[
 #             ['Codex_1200.root','Codex_1200_DM_500_X_550.root']
 #]
-#
-#FullSignal=[
-#            ['Codex_1.root' , 'Codex_1000_DM_300_X_330.root'],
-#            ['Codex_2.root' , 'Codex_1000_DM_350_X_385.root'],
-#            ['Codex_3.root' , 'Codex_1000_DM_400_X_440.root'],
-#            ['Codex_4.root' , 'Codex_1000_DM_450_X_495.root'],
-#            ['Codex_5.root' , 'Codex_1100_DM_300_X_330.root'],
-#            ['Codex_6.root' , 'Codex_1100_DM_350_X_385.root'],
-#            ['Codex_7.root' , 'Codex_1100_DM_400_X_440.root'],
-#            ['Codex_8.root' , 'Codex_1100_DM_450_X_495.root'],
-#            ['Codex_9.root' , 'Codex_1100_DM_500_X_550.root'],
-#            ['Codex_10.root' , 'Codex_1200_DM_300_X_330.root'],
-#            ['Codex_11.root' , 'Codex_1200_DM_350_X_385.root'],
-#            ['Codex_12.root' , 'Codex_1200_DM_400_X_440.root'],
-#            ['Codex_13.root' , 'Codex_1200_DM_450_X_495.root'],
-#            ['Codex_14.root' , 'Codex_1200_DM_500_X_550.root'],
-#            ['Codex_15.root' , 'Codex_1200_DM_550_X_605.root'],
-#            ['Codex_16.root' , 'Codex_1300_DM_300_X_330.root'],
-#            ['Codex_17.root' , 'Codex_1300_DM_350_X_385.root'],
-#            ['Codex_18.root' , 'Codex_1300_DM_400_X_440.root'],
-#            ['Codex_19.root' , 'Codex_1300_DM_450_X_495.root'],
-#            ['Codex_20.root' , 'Codex_1300_DM_500_X_550.root'],
-#            ['Codex_21.root' , 'Codex_1300_DM_550_X_605.root'],
-#            ['Codex_22.root' , 'Codex_1300_DM_600_X_660.root'],
-#            ['Codex_23.root' , 'Codex_1400_DM_300_X_330.root'],
-#            ['Codex_24.root' , 'Codex_1400_DM_350_X_385.root'],
-#            ['Codex_25.root' , 'Codex_1400_DM_400_X_440.root'],
-#            ['Codex_26.root' , 'Codex_1400_DM_450_X_495.root'],
-#            ['Codex_27.root' , 'Codex_1400_DM_500_X_550.root'],
-#            ['Codex_28.root' , 'Codex_1400_DM_550_X_605.root'],
-#            ['Codex_29.root' , 'Codex_1400_DM_600_X_660.root'],
-#            ['Codex_30.root' , 'Codex_1400_DM_650_X_715.root'],
-#            ['Codex_31.root' , 'Codex_1500_DM_300_X_330.root'],
-#            ['Codex_32.root' , 'Codex_1500_DM_350_X_385.root'],
-#            ['Codex_33.root' , 'Codex_1500_DM_400_X_440.root'],
-#            ['Codex_34.root' , 'Codex_1500_DM_450_X_495.root'],
-#            ['Codex_35.root' , 'Codex_1500_DM_500_X_550.root'],
-#            ['Codex_36.root' , 'Codex_1500_DM_550_X_605.root'],
-#            ['Codex_37.root' , 'Codex_1500_DM_600_X_660.root'],
-#            ['Codex_38.root' , 'Codex_1500_DM_650_X_715.root'],
-#            ['Codex_39.root' , 'Codex_1500_DM_700_X_770.root'],
-#            ['Codex_40.root' , 'Codex_800_DM_300_X_330.root'],
-#            ['Codex_41.root' , 'Codex_800_DM_350_X_385.root'],
-#            ['Codex_42.root' , 'Codex_900_DM_300_X_330.root'],
-#            ['Codex_43.root' , 'Codex_900_DM_350_X_385.root'],
-#            ['Codex_44.root' , 'Codex_900_DM_400_X_440.root'],
-#]
-
 
 #['Codex_15.root' , 'Codex_1200_DM_550_X_595.root'],
 
