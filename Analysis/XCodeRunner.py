@@ -39,8 +39,11 @@ dirName=('%s%s_%s'%(preName,args.codex,args.extra)).replace('CodexAnalyzer_','')
 SampleLoc=''
 
 print 'This is what we are runinng on .....',args.sample
-if args.sample=='Mu':
+if args.sample=='MuTau':
     SampleLoc='/uscms_data/d3/abdollah/Analysis/BoostedH/CMSSW_9_4_13/src/BoostedHTT/InputSample/'
+if args.sample=='DiMu':
+    SampleLoc='/eos/uscms/store/user/abdollah/SkimBoost/mm/v4_Hadd/'
+    
 
 #if args.sample=='SingleEle':
 #    SampleLoc='/Users/abdollah1/GIT_abdollah110/DM2018/ROOT94X/SampleLQ1/'
@@ -53,6 +56,8 @@ CodexSignal='/Users/abdollah1/GIT_abdollah110/DM2018/ROOT94X/2017/NEWSIG2018/'
 
 if not os.path.exists(dirName):
     os.makedirs(dirName)
+
+
 
 
 
