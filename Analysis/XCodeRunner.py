@@ -40,7 +40,8 @@ SampleLoc=''
 
 print 'This is what we are runinng on .....',args.sample
 if args.sample=='MuTau':
-    SampleLoc='/uscms_data/d3/abdollah/Analysis/BoostedH/CMSSW_9_4_13/src/BoostedHTT/InputSample/'
+#    SampleLoc='/uscms_data/d3/abdollah/Analysis/BoostedH/CMSSW_9_4_13/src/BoostedHTT/InputSample/'
+    SampleLoc='/uscms_data/d3/abdollah/Analysis/BoostedH/BBNTUPLE/ggNtuple_skim_2017_mt/'
 if args.sample=='DiMu':
     SampleLoc='/eos/uscms/store/user/abdollah/SkimBoost/mm/v4_Hadd/'
     
