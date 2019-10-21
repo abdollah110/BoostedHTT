@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
     float TauPtCut_=20;
     float JetPtCut=30;
     float BJetPtCut=20;
-
+    
     float ElectronPtCut_=15;
     //    float CSVCut=   0.9535   ;                  //  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
     float CSVCut=   0.8838   ;                  //  medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
@@ -79,6 +79,9 @@ int main(int argc, char** argv) {
             if (i % 10000 == 0) fprintf(stdout, "\r  Processed events: %8d of %8d ", i, nentries_wtn);
             fflush(stdout);
             
+            bool PassTrigger = ((HLTEleMuX >> 19 & 1)==1); //         else if (name.find("HLT_IsoMu24_v")   != string::npos) bitEleMuX = 19;
+            if (! PassTrigger) continue;
+            
             
             //###############################################################################################
             //  This part is to avoid of the duplicate of mu-j pair from one events
@@ -94,25 +97,25 @@ int main(int argc, char** argv) {
             float GetGenWeight=1;
             float PUWeight = 1;
             
-                        if (!isData){
-            //                //
-            //                //                //######################## Lumi Weight
-            
-            stringstream ss(InputROOT);
-            
-            string token;
-            string M;
-            while (getline(ss,token, '/'))  M=token;
-            
-            std::string FirstPart = "";
-            std::string LastPart = ".root";
-            std::string newOut = M.substr(FirstPart.size());
-            newOut = newOut.substr(0, newOut.size() - LastPart.size());
-
-            LumiWeight = luminosity * XSection(newOut)*1.0 / HistoTot->GetBinContent(2);
-//  weightCalc(HistoTot, InputROOT,genHT, W_HTBinROOTFiles, WBosonMass, WMuNu_MassBinROOTFiles,WTauNu_MassBinROOTFiles);
-            //                //                //######################## Gen Weight
-                        }
+            if (!isData){
+                //                //
+                //                //                //######################## Lumi Weight
+                
+                stringstream ss(InputROOT);
+                
+                string token;
+                string M;
+                while (getline(ss,token, '/'))  M=token;
+                
+                std::string FirstPart = "";
+                std::string LastPart = ".root";
+                std::string newOut = M.substr(FirstPart.size());
+                newOut = newOut.substr(0, newOut.size() - LastPart.size());
+                
+                LumiWeight = luminosity * XSection(newOut)*1.0 / HistoTot->GetBinContent(2);
+                //  weightCalc(HistoTot, InputROOT,genHT, W_HTBinROOTFiles, WBosonMass, WMuNu_MassBinROOTFiles,WTauNu_MassBinROOTFiles);
+                //                //                //######################## Gen Weight
+            }
             for (int qq=0; qq < 60;qq++){
                 if ((HLTEleMuX >> qq & 1) == 1)
                     plotFill("_HLT",qq,60,0,60);
@@ -139,7 +142,7 @@ int main(int argc, char** argv) {
             for (int imu = 0; imu < nMu; ++imu){
                 if (EventPass) break;
                 
-//                plotFill("cutFlow",3 ,15,0,15);
+                //                plotFill("cutFlow",3 ,15,0,15);
                 
                 if (muPt->at(imu) <= 30 || fabs(muEta->at(imu)) >= 2.4) continue;
                 plotFill("cutFlow",4 ,15,0,15);
@@ -157,8 +160,8 @@ int main(int argc, char** argv) {
                 if (!MuId ) continue;
                 plotFill("cutFlow",5 ,15,0,15);
                 
-//                                if (IsoMu > 0.2) continue;
-//                                plotFill("cutFlow",6 ,15,0,15);
+                //                                if (IsoMu > 0.2) continue;
+                //                                plotFill("cutFlow",6 ,15,0,15);
                 
                 
                 
@@ -177,8 +180,8 @@ int main(int argc, char** argv) {
                     
                     if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
                     plotFill("cutFlow",9 ,15,0,15);
-//                    if (boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ) continue;
-//                    plotFill("cutFlow",10 ,15,0,15);
+                    //                    if (boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ) continue;
+                    //                    plotFill("cutFlow",10 ,15,0,15);
                     if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
                     plotFill("cutFlow",11 ,15,0,15);
                     if (boostedTauByTightMuonRejection3->at(ibtau) < 0.5) continue;
@@ -192,10 +195,10 @@ int main(int argc, char** argv) {
                     
                     ZCandida=BoostedTau4Momentum+Mu4Momentum;
                     
-                                        
+                    
                     plotFill("ZMass",ZCandida.M() ,30,0,300);
                     
-
+                    
                     //###############################################################################################
                     //  BoostedTau Isolation Categorization
                     //###############################################################################################
@@ -235,32 +238,32 @@ int main(int argc, char** argv) {
                     
                     
                     //###############################################################################################
-
+                    
                     for (int tt = 0; tt < size_tauCat; tt++) {
                         if (Tau_category[tt]) {
-                    for (int iso = 0; iso < size_isoCat; iso++) {
-                        if (Iso_category[iso]) {
-                            for (int iq = 0; iq < size_q; iq++) {
-                                if (Q_category[iq]) {
-                                    
-                                    
-                            float FullWeight = LumiWeight;
-                                    std::string FullStringName = Tau_Cat[tt] +iso_Cat[iso] + Q_Cat[iq] ;
-                                    
-                                    //                                This check is used to make sure that each event is just filled once for any of the categories ==> No doube-counting of events  (this is specially important for ttbar events where we have many jets and leptons)
-                                    if (!( std::find(HistNamesFilled.begin(), HistNamesFilled.end(), FullStringName) != HistNamesFilled.end())){
-                                        HistNamesFilled.push_back(FullStringName);
-                                        
-                                        
-                                        
-                                        plotFill("dR"+FullStringName,BoostedTau4Momentum.DeltaR(Mu4Momentum) ,100,0,1,FullWeight);
-                                        plotFill("IsoMu"+FullStringName,IsoMu ,100,0,2,FullWeight);
-                                        plotFill("ZMass"+FullStringName,ZCandida.M() ,30,0,300,FullWeight);
-                                        plotFill("tmass"+FullStringName,tmass ,5,0,50,FullWeight);
-                                        plotFill("ht"+FullStringName,ht ,100,0,1000,FullWeight);
-                                        
-                                        
-                                        
+                            for (int iso = 0; iso < size_isoCat; iso++) {
+                                if (Iso_category[iso]) {
+                                    for (int iq = 0; iq < size_q; iq++) {
+                                        if (Q_category[iq]) {
+                                            
+                                            
+                                            float FullWeight = LumiWeight;
+                                            std::string FullStringName = Tau_Cat[tt] +iso_Cat[iso] + Q_Cat[iq] ;
+                                            
+                                            //                                This check is used to make sure that each event is just filled once for any of the categories ==> No doube-counting of events  (this is specially important for ttbar events where we have many jets and leptons)
+                                            if (!( std::find(HistNamesFilled.begin(), HistNamesFilled.end(), FullStringName) != HistNamesFilled.end())){
+                                                HistNamesFilled.push_back(FullStringName);
+                                                
+                                                
+                                                
+                                                plotFill("dR"+FullStringName,BoostedTau4Momentum.DeltaR(Mu4Momentum) ,100,0,1,FullWeight);
+                                                plotFill("IsoMu"+FullStringName,IsoMu ,100,0,2,FullWeight);
+                                                plotFill("ZMass"+FullStringName,ZCandida.M() ,40,0,200,FullWeight);
+                                                plotFill("tmass"+FullStringName,tmass ,5,0,50,FullWeight);
+                                                plotFill("ht"+FullStringName,ht ,100,0,1000,FullWeight);
+                                                
+                                                
+                                                
                                             }
                                         }
                                     }
