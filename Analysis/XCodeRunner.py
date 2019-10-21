@@ -63,8 +63,8 @@ if not os.path.exists(dirName):
 
 
 InputBKg=[
-            ['DYJetsToLL.root','DYJetsToLL*.root'],
-            ['WJetsToLNu.root','WJetsToLNu*.root'],
+            ['DYJetsToLL.root','DYJetsToLL_M-50_HT*.root'],
+            ['WJetsToLNu.root','WJetsToLNu_HT-*.root'],
             ['TTJets.root','TT*.root'],
             ['VV.root','ZZ*.root', 'WZ*.root', 'WW*.root'],
             ['SingleTop.root','ST_*.root'],

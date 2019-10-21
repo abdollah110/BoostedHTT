@@ -284,7 +284,7 @@ else if (OutName.find("WW") != string::npos) return  75.88 ;
     
     else {
         cout<<"\n\n*********\nNot Listed in XSection menu !!!! Watch cout    "<<OutName<< "\n\n*********\n";
-        return 1;
+        return 0;
     }
 }
 
