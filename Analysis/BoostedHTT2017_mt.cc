@@ -79,11 +79,10 @@ int main(int argc, char** argv) {
             if (i % 10000 == 0) fprintf(stdout, "\r  Processed events: %8d of %8d ", i, nentries_wtn);
             fflush(stdout);
             
-            
-            
             bool PassTrigger = ((HLTEleMuX >> 19 & 1)==1); //         else if (name.find("HLT_IsoMu24_v")   != string::npos) bitEleMuX = 19;
             if (! PassTrigger) continue;
-
+            
+            
             //###############################################################################################
             //  This part is to avoid of the duplicate of mu-j pair from one events
             //###############################################################################################
@@ -134,7 +133,7 @@ int main(int argc, char** argv) {
             float leadingBoostedTauPt=0;
             bool onLeadTau = false;
             
-            TLorentzVector Mu4Momentum, Mu4Momentum_sub, ZCandida;
+            TLorentzVector Mu4Momentum, Jet4Momentum,KJet4Momentum,BoostTau4Momentum,Mu24Momentum,BoostedTau4Momentum, ZCandida;
             
             if (debug) cout<< "test 1\n";
             
@@ -143,11 +142,14 @@ int main(int argc, char** argv) {
             for (int imu = 0; imu < nMu; ++imu){
                 if (EventPass) break;
                 
+                //                plotFill("cutFlow",3 ,15,0,15);
                 
                 if (muPt->at(imu) <= 30 || fabs(muEta->at(imu)) >= 2.4) continue;
+                plotFill("cutFlow",4 ,15,0,15);
                 
                 Mu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
-                                
+                
+                
                 float IsoMu=muPFChIso->at(imu)/muPt->at(imu);
                 if ( (muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu) )  > 0.0)
                     IsoMu= ( muPFChIso->at(imu) + muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu))/muPt->at(imu);
@@ -156,101 +158,147 @@ int main(int argc, char** argv) {
                 
                 
                 if (!MuId ) continue;
-                if (IsoMu > 0.2 ) continue;
+                plotFill("cutFlow",5 ,15,0,15);
+                
+                //                                if (IsoMu > 0.2) continue;
+                //                                plotFill("cutFlow",6 ,15,0,15);
                 
                 
-                for (int jmu = imu+1; jmu < nMu; ++jmu){
-                    if (muPt->at(jmu) <= 10 || fabs(muEta->at(jmu)) >= 2.4) continue;
+                
+                float tmass = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  pfMET,  pfMETPhi);
+                
+                
+                
+                for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
+                    if (boostedTauPt->at(ibtau) <= 20 || fabs(boostedTauEta->at(ibtau)) >= 2.3 ) continue;
+                    plotFill("cutFlow",8 ,15,0,15);
                     
-                    Mu4Momentum_sub.SetPtEtaPhiM(muPt->at(jmu),muEta->at(jmu),muPhi->at(jmu),MuMass);
+                    if (debug) cout<< "test 3\n";
                     
                     
-                    float IsoMu_sub=muPFChIso->at(jmu)/muPt->at(jmu);
-                    if ( (muPFNeuIso->at(jmu) + muPFPhoIso->at(jmu) - 0.5* muPFPUIso->at(jmu) )  > 0.0)
-                        IsoMu_sub= ( muPFChIso->at(jmu) + muPFNeuIso->at(jmu) + muPFPhoIso->at(jmu) - 0.5* muPFPUIso->at(jmu))/muPt->at(jmu);
-                    
-                    bool MuId_sub=( (muIDbit->at(jmu) >> 2 & 1)  && fabs(muD0->at(jmu)) < 0.045 && fabs(muDz->at(jmu)) < 0.2); //Tight Muon Id
                     
                     
-                    if (!MuId_sub ) continue;
-                    if (IsoMu_sub > 0.2 ) continue;
+                    if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
+                    plotFill("cutFlow",9 ,15,0,15);
+                    //                    if (boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ) continue;
+                    //                    plotFill("cutFlow",10 ,15,0,15);
+                    if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
+                    plotFill("cutFlow",11 ,15,0,15);
+                    if (boostedTauByTightMuonRejection3->at(ibtau) < 0.5) continue;
+                    plotFill("cutFlow",12 ,15,0,15);
                     
-                    if(Mu4Momentum_sub.DeltaR(Mu4Momentum) > 1.0 ) continue;
-                    ZCandida=Mu4Momentum_sub+Mu4Momentum;
-            
-            
-                    if (ZCandida.M() < 40) continue;
-
-            
-            
-            
-            //###############################################################################################
-            //  Charge Categorization
-            //###############################################################################################
-            float chargelt= muCharge->at(imu) * muCharge->at(jmu);
-            
-            const int size_q = 2;
-            bool q_OS = chargelt < 0;
-            bool q_SS =  chargelt > 0;
-            
-            bool Q_category[size_q] = {q_OS, q_SS};
-            std::string Q_Cat[size_q] = {"_OS", "_SS"};
-            
-            
-            //###############################################################################################
-            
-                            for (int iq = 0; iq < size_q; iq++) {
-                                if (Q_category[iq]) {
-                                    
-                                    
-                                    float FullWeight = LumiWeight;
-                                    std::string FullStringName = Q_Cat[iq] ;
-                                    
-                                    //                                This check is used to make sure that each event is just filled once for any of the categories ==> No doube-counting of events  (this is specially important for ttbar events where we have many jets and leptons)
-                                    if (!( std::find(HistNamesFilled.begin(), HistNamesFilled.end(), FullStringName) != HistNamesFilled.end())){
-                                        HistNamesFilled.push_back(FullStringName);
-                                        
-                                        
-                                        
-                                        plotFill("dR"+FullStringName,Mu4Momentum_sub.DeltaR(Mu4Momentum) ,100,0,1,FullWeight);
-                                        plotFill("IsoMu"+FullStringName,IsoMu ,100,0,2,FullWeight);
-                                        plotFill("ZMass"+FullStringName,ZCandida.M() ,40,0,200,FullWeight);
-                                        plotFill("ht"+FullStringName,ht ,100,0,1000,FullWeight);
-                                        
-                                        
+                    
+                    BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
+                    
+                    if(BoostedTau4Momentum.DeltaR(Mu4Momentum) > 0.8 || BoostedTau4Momentum.DeltaR(Mu4Momentum) < 0.4) continue;
+                    
+                    
+                    ZCandida=BoostedTau4Momentum+Mu4Momentum;
+                    
+                    
+                    plotFill("ZMass",ZCandida.M() ,30,0,300);
+                    
+                    
+                    //###############################################################################################
+                    //  BoostedTau Isolation Categorization
+                    //###############################################################################################
+                    
+                    const int size_tauCat = 2;
+                    bool Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
+                    bool Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
+                    
+                    bool Tau_category[size_tauCat] = {Pass, Fail};
+                    std::string Tau_Cat[size_tauCat] = {"_Pass", "_Fail"};
+                    
+                    //###############################################################################################
+                    //  lepton Isolation Categorization
+                    //###############################################################################################
+                    bool LepPassIsolation= IsoMu < LeptonIsoCut;
+                    
+                    const int size_isoCat = 2;
+                    bool Isolation = LepPassIsolation;
+                    bool AntiIsolation =  !LepPassIsolation;
+                    
+                    bool Iso_category[size_isoCat] = {Isolation, AntiIsolation};
+                    std::string iso_Cat[size_isoCat] = {"_Iso", "_AntiIso"};
+                    
+                    
+                    
+                    //###############################################################################################
+                    //  Charge Categorization
+                    //###############################################################################################
+                    float chargelt= muCharge->at(imu) * boostedTauCharge->at(ibtau);
+                    
+                    const int size_q = 2;
+                    bool q_OS = chargelt < 0;
+                    bool q_SS =  chargelt > 0;
+                    
+                    bool Q_category[size_q] = {q_OS, q_SS};
+                    std::string Q_Cat[size_q] = {"_OS", "_SS"};
+                    
+                    
+                    //###############################################################################################
+                    
+                    for (int tt = 0; tt < size_tauCat; tt++) {
+                        if (Tau_category[tt]) {
+                            for (int iso = 0; iso < size_isoCat; iso++) {
+                                if (Iso_category[iso]) {
+                                    for (int iq = 0; iq < size_q; iq++) {
+                                        if (Q_category[iq]) {
+                                            
+                                            
+                                            float FullWeight = LumiWeight;
+                                            std::string FullStringName = Tau_Cat[tt] +iso_Cat[iso] + Q_Cat[iq] ;
+                                            
+                                            //                                This check is used to make sure that each event is just filled once for any of the categories ==> No doube-counting of events  (this is specially important for ttbar events where we have many jets and leptons)
+                                            if (!( std::find(HistNamesFilled.begin(), HistNamesFilled.end(), FullStringName) != HistNamesFilled.end())){
+                                                HistNamesFilled.push_back(FullStringName);
+                                                
+                                                
+                                                
+                                                plotFill("dR"+FullStringName,BoostedTau4Momentum.DeltaR(Mu4Momentum) ,100,0,1,FullWeight);
+                                                plotFill("ZMass"+FullStringName,ZCandida.M() ,40,0,200,FullWeight);
+                                                plotFill("tmass"+FullStringName,tmass ,5,0,50,FullWeight);
+                                                plotFill("ht"+FullStringName,ht ,100,0,1000,FullWeight);
+                                                
+                                                
+                                                
+                                            }
                                         }
-                                    
-                }
-            }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    
+                }//boostedTau loop
+            }//muon loop
             
             
-        }//boostedTau loop
-    }//muon loop
+            //###############################################################################################
+            //  Doing EleTau Analysis
+            //###############################################################################################
+        } //End of Tree
+    }//End of file
+    //##############  end of dielectron
     
     
-    //###############################################################################################
-    //  Doing EleTau Analysis
-    //###############################################################################################
-} //End of Tree
-}//End of file
-//##############  end of dielectron
-
-
-fout->cd();
-
-map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
-map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
-
-for (; iMap1 != jMap1; ++iMap1)
-nplot1(iMap1->first)->Write();
-
-map<string, TH2F*>::const_iterator iMap2 = myMap2->begin();
-map<string, TH2F*>::const_iterator jMap2 = myMap2->end();
-
-for (; iMap2 != jMap2; ++iMap2)
-nplot2(iMap2->first)->Write();
-
-fout->Close();
-
-
+    fout->cd();
+    
+    map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
+    map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
+    
+    for (; iMap1 != jMap1; ++iMap1)
+        nplot1(iMap1->first)->Write();
+    
+    map<string, TH2F*>::const_iterator iMap2 = myMap2->begin();
+    map<string, TH2F*>::const_iterator jMap2 = myMap2->end();
+    
+    for (; iMap2 != jMap2; ++iMap2)
+        nplot2(iMap2->first)->Write();
+    
+    fout->Close();
+    
+    
 }

@@ -17,7 +17,7 @@ parser.add_argument('-i','--in',dest='code', default='BoostedHTT2017',
                     help="Provide a code name")
 parser.add_argument('-x','--x',dest='extra', default='',
                     help="Provide extra name to be added in the Directory")
-parser.add_argument('-s','--s',dest='sample', default='SingleMu',
+parser.add_argument('-s','--s',dest='sample', default='MT',
                     help="Provide which dataset your are running")
 parser.add_argument('-f','--f',dest='RunFullSample', default=False,
                     help="Run Full Sample")
