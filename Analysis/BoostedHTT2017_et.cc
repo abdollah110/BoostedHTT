@@ -157,7 +157,7 @@ int main(int argc, char** argv) {
                 bool EleIdIso=eleMVAIdExtra_i; //Tight  Id
                 
                 
-                
+                Ele4Momentum.SetPtEtaPhiM(elePt->at(iele),eleEta->at(iele),elePhi->at(iele),eleMass);
                 
                 
                 float tmass = TMass_F(Ele4Momentum.Pt(), Ele4Momentum.Px(), Ele4Momentum.Py(),  pfMET,  pfMETPhi);
