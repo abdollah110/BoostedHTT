@@ -39,7 +39,7 @@ if args.sample=='MT':
 if args.sample=='MM':
     SampleLoc='/eos/uscms/store/user/abdollah/SkimBoost/mm/v4_Hadd/'
 if args.sample=='ET':
-    SampleLoc='/Users/abdollah1/GIT_abdollah110/DM2018/ROOT94X/SampleLQ1/'
+    SampleLoc='/eos/uscms/store/user/abdollah/SkimBoost/et/v4_Hadd/'
 
 if not os.path.exists(dirName):
     os.makedirs(dirName)
