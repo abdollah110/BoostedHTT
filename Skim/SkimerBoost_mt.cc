@@ -77,7 +77,7 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
         hcount->Fill(1);
         hcount->Fill(2,genWeight);
         
-        if (pfMET < 75) continue;
+        if (pfMET < 50) continue;
         hcount->Fill(3);
         
         TLorentzVector BoostedTau4Momentum, Mu4Momentum;
@@ -86,6 +86,11 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
         for (int imu = 0; imu < nMu; ++imu){
             if (muPt->at(imu) < 30 || fabs(muEta->at(imu)) > 2.4) continue;
             
+            
+            bool MuId=( (muIDbit->at(imu) >> 1 & 1)  && fabs(muD0->at(imu)) < 0.045 && fabs(muDz->at(imu)) < 0.2); //Medium Muon Id
+            
+            if (!MuId) continue;
+                            
             Mu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
             float MT =TMass_F(Mu4Momentum.Pt(),Mu4Momentum.Px(),Mu4Momentum.Py(),pfMET,pfMETPhi);
@@ -94,6 +99,8 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
             
             for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                 if (boostedTauPt->at(ibtau) < 20 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
+               
+               if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
                 BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                 if(BoostedTau4Momentum.DeltaR(Mu4Momentum) > 0.8 || BoostedTau4Momentum.DeltaR(Mu4Momentum) < 0.4) continue;
                 numMuTau++;

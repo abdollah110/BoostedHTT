@@ -77,7 +77,7 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
         hcount->Fill(1);
         hcount->Fill(2,genWeight);
         
-        if (pfMET < 75) continue;
+        if (pfMET < 50) continue;
         hcount->Fill(3);
         
         TLorentzVector BoostedTau4Momentum, ele4Momentum;
@@ -86,6 +86,15 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
         for (int iele = 0; iele < nEle; ++iele){
             if (elePt->at(iele) < 35 || fabs(eleEta->at(iele)) > 2.5) continue;
             
+            bool eleMVAIdExtra_i= false;
+            if (fabs (eleSCEta->at(iele)) <= 0.8 && eleIDMVAIso->at(iele) >    0.837   ) eleMVAIdExtra_i= true;
+            else if (fabs (eleSCEta->at(iele)) >  0.8 &&fabs (eleSCEta->at(iele)) <=  1.5 && eleIDMVAIso->at(iele) >    0.715   ) eleMVAIdExtra_i= true;
+            else if ( fabs (eleSCEta->at(iele)) >=  1.5 && eleIDMVAIso->at(iele) >   0.357   ) eleMVAIdExtra_i= true;
+            else eleMVAIdExtra_i= false;
+            
+            if (!eleMVAIdExtra_i) continue;
+            
+            
             ele4Momentum.SetPtEtaPhiM(elePt->at(iele),eleEta->at(iele),elePhi->at(iele),eleMass);
             
             float MT =TMass_F(ele4Momentum.Pt(),ele4Momentum.Px(),ele4Momentum.Py(),pfMET,pfMETPhi);
@@ -93,6 +102,7 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
                         
             for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                 if (boostedTauPt->at(ibtau) < 20 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
+               if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
                 BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                 if(BoostedTau4Momentum.DeltaR(ele4Momentum) > 0.8 || BoostedTau4Momentum.DeltaR(ele4Momentum) < 0.4) continue;
                 numeleTau++;                                
