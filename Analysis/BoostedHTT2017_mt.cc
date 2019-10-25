@@ -46,15 +46,7 @@ int main(int argc, char** argv) {
 //    TH2F * HistoEleMVAIdIso90= FuncHistEleMVAId("Tot");
 //    TH2F * HistoEleMVAIdIso90_EffMC= FuncHistEleMVAId("MC");
 //    TH2F * HistoEleMVAIdIso90_EffData= FuncHistEleMVAId("Data");
-    
-    // Tight WP of MVA Ele
-    float getCorrFactorMVA80WPElectron94X(bool isData, float pt, float eta,    TH2F * HistoEleSF , TGraphAsymmErrors ** Ele25Trg){
-        if (isData)
-            return 1;
-        else
-            return Cor94X_IDIso_Ele(pt,eta,HistoEleSF)*Cor94X_Trg_Ele25(pt,eta,Ele25Trg);
-    }
-    
+        
     
     //########################################
     // Btagging scale factor and uncertainties
