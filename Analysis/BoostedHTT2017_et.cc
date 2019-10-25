@@ -7,6 +7,7 @@
 // source RunFullSamples_PreSelection.sh
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "../interface/Functions.h"
+//#include "../interface/scalefactor.h"
 #include <string>
 #include <ostream>
 #include <vector>
@@ -32,6 +33,9 @@ int main(int argc, char** argv) {
     
     TH2F** HistoEleReco=FuncHistEleReco();
     TH2F** HistoEleId=FuncHistEleId();
+//    ScaleFactor el32_el35_trg_sf ;
+//    el32_el35_trg_sf.init_ScaleFactor(
+//        "../interface//EleSF/Electron_Ele32orEle35.root");
 
 
 
@@ -169,6 +173,8 @@ int main(int argc, char** argv) {
 
 
                 float EleCor=getCorrFactorElectron94X(isData,  eleSCEta->at(iele) , elePt->at(iele),HistoEleReco, HistoEleId );
+//                float EleCor=el32_el35_trg_sf->get_ScaleFactor(elePt->at(iele), eleSCEta->at(iele));
+//                float EleCor=1;
                 
 //                cout << "EleCor"<< EleCor <<"\n";
                 
