@@ -19,8 +19,8 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
     
     
     TH1F* hEvents = (TH1F*)gDirectory->Get("ggNtuplizer/hEvents");
-    TH1F* hPU     = (TH1F*)gDirectory->Get("ggNtuplizer/hPU");
-    TH1F* hPUTrue = (TH1F*)gDirectory->Get("ggNtuplizer/hPUTrue");
+//    TH1F* hPU     = (TH1F*)gDirectory->Get("ggNtuplizer/hPU");
+//    TH1F* hPUTrue = (TH1F*)gDirectory->Get("ggNtuplizer/hPUTrue");
     
     TFile* file = TFile::Open(OutputFile, "RECREATE");
     TTree* MyNewTree = fChain->CloneTree(0);
@@ -75,7 +75,8 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
         if(jentry % 10000 == 0) cout << "Processed " << jentry << " events out of " <<nentries<<endl;
         
         hcount->Fill(1);
-        hcount->Fill(2,genWeight);
+        if (!isData)
+            hcount->Fill(2,genWeight);
         
         if (pfMET < 50) continue;
         hcount->Fill(3);
@@ -120,8 +121,8 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
     MyNewTree->AutoSave();
     hEvents->Write();
     hcount->Write();
-    hPU->Write();
-    hPUTrue->Write();
+//    hPU->Write();
+//    hPUTrue->Write();
     file->Close();
 }
 
