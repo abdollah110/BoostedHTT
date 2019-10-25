@@ -3,33 +3,10 @@ import ROOT
 import re
 from array import array
 
-#................................................................................................................................
-#................................................................................................................................
-
-
-
-#InputFilesLocation = 'NewOutFiles_Preselection_/'
-#InputFilesLocation = 'NewOutFiles_Preselection_addPhi/'
-#InputFilesLocation = 'NewOutFiles_Preselection_Check3/'
-#InputFilesLocation = 'NewOutFiles_Preselection__Check4_vertex/'
-#InputFilesLocation = 'NewOutFiles_Preselection_RemoveBTag/'
-#InputFilesLocation = 'NewOutFiles_Preselection_addMetPhiRemoveBug/'
-#InputFilesLocation = 'NewOutFiles_Preselection_noPUReweighting/'
-#InputFilesLocation = 'NewOutFiles_Preselection__NewJEC/'
-#InputFilesLocation = 'NewOutFiles_Preselection_NewJECRemoveBTag/'
-#InputFilesLocation = 'NewOutFiles_Preselection_NewJECNewBTag/'
-#InputFilesLocation = 'NewOutFiles_Preselection_NewJECNewBTagRemoveBTag/'
-#InputFilesLocation = 'NewOutFiles_Preselection_newJECMC/'
-#InputFilesLocation = 'NewOutFiles_Preselection_FixLumi/'
-#InputFilesLocation = 'NewOutFiles_Preselection_FixLumiNoBtagVeto/'
-#InputFilesLocation = 'NewOutFiles_Preselection_FixBSF/'
-#InputFilesLocation = 'NewOutFiles_Preselection_Approval_V1/___WithTopPtRW/'
-InputFilesLocation = 'NewOutFiles_BoostedHTT2017_mm_/'
+#InputFilesLocation = 'NewOutFiles_BoostedHTT2017_mm_/'
 #InputFilesLocation = 'NewOutFiles_BoostedHTT2017_/'
+InputFilesLocation = 'NewOutFiles_BoostedHTT2017_et_/'
 
-
-#................................................................................................................................
-#................................................................................................................................
 ForAN=1
 RB_=20
 def add_lumi():
@@ -410,13 +387,13 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
 
     c.Modified()
     outName=((FileName.replace('TotalRootForLimit_PreSelection_MuJet','').replace('.root','')).replace('_HighDPhi_Iso','')).replace('_HighMT','_MT100')
-    c.SaveAs(InputFilesLocation+'_MuJet'+outName+".pdf")
+    c.SaveAs(InputFilesLocation+'_et'+outName+".pdf")
 
 
 FileNamesInfo=[
 #               ["_tmass_JetMet","M_{T}(jet,MET) (GeV)","",5,1],
-               ["ZMass","visible M_{#mu#tau} (GeV)","",1,.1],
-               ["dR","deltaR_{#mu#tau}","",5,.1],
+               ["ZMass","visible M_{e#tau} (GeV)","",1,.1],
+               ["dR","deltaR_{e#tau}","",5,.1],
 #               ["tmass","tmass{#mu,MET}","",1,.1],
                ["ht","jet HT (GeV)","",5,.1],
                
@@ -439,7 +416,7 @@ FileNamesInfo=[
 #              ["_recoHT","Jet HT  (GeV)","",10,1],
                ]
 
-Isolation=[""]
+Isolation=["_Iso"]
 
 
 logStat=[0]
@@ -452,8 +429,8 @@ logStat=[0]
 #    Charge= ["_OS","_SS"]
 #region= ["_Pass", "_Fail"]
 region= [
-['','pass'],
-#['_Fail','fail']
+['_Pass','pass'],
+['_Fail','fail']
 ]
 #region= ["_Fail"]
 Charge= ["_OS"]

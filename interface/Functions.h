@@ -342,9 +342,10 @@ TH1F *  HistPUMC(bool isData,TFile *f_Double){
 
 TH2F**  FuncHistMuId(){
 
+    
 
         TFile * MuCorrId_BCDEF= TFile::Open(("../interface/pileup-hists/RunBCDEF_SF_ID.root"));
-        TH2F * HistoMuId_BCDEF= (TH2F *) MuCorrId_BCDEF->Get("NUM_TightID_DEN_genTracks_pt_abseta");
+        TH2F * HistoMuId_BCDEF= (TH2F *) MuCorrId_BCDEF->Get("NUM_MediumID_DEN_genTracks_pt_abseta");
     
         static TH2F* HistoMuId[1]={HistoMuId_BCDEF};
     
@@ -355,7 +356,7 @@ TH2F**  FuncHistMuId(){
 TH2F**  FuncHistMuIso(){
 
     TFile * MuCorrIso_BCDEF= TFile::Open(("../interface/pileup-hists/RunBCDEF_SF_ISO.root"));
-    TH2F * HistoMuIso_BCDEF= (TH2F *) MuCorrIso_BCDEF->Get("NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta");
+    TH2F * HistoMuIso_BCDEF= (TH2F *) MuCorrIso_BCDEF->Get("NUM_LooseRelIso_DEN_MediumID_pt_abseta");
     
     static  TH2F* HistoMuIso[1]={HistoMuIso_BCDEF};
     
@@ -364,14 +365,15 @@ TH2F**  FuncHistMuIso(){
 
 
 
-TH1F**  FuncHistMuTrigger(){
+TH2F**  FuncHistMuTrigger(){
 
     TFile * MuCorrTrg_BCDEF= TFile::Open(("../interface/MuSF/EfficienciesAndSF_RunBtoF_Nov17Nov2017.root"));
 
-    TH1F * HistoMuTrg_BCDEF= (TH1F *) MuCorrTrg_BCDEF->Get("Mu50_EtaBins/eta_ratio");
+//    TH1F * HistoMuTrg_BCDEF= (TH1F *) MuCorrTrg_BCDEF->Get("Mu50_EtaBins/eta_ratio");
+    TH2F * HistoMuTrg_BCDEF= (TH2F *) MuCorrTrg_BCDEF->Get("IsoMu27_PtEtaBins/pt_abseta_ratio");
 
     
-    static TH1F* HistoMuTrg[2]={HistoMuTrg_BCDEF};
+    static TH2F* HistoMuTrg[2]={HistoMuTrg_BCDEF};
 
     
     return HistoMuTrg;
@@ -386,6 +388,36 @@ TGraphAsymmErrors * FuncHistMuTrack(){
     return HistoMuTrack;
 }
 
+
+
+
+
+
+
+TH2F** FuncHistEleReco(){
+
+    TFile * eleF= TFile::Open(("../interface/EleSF/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root"));
+    TH2F * HistoEle= (TH2F *) eleF->Get("EGamma_SF2D");
+    
+    static  TH2F* HistoElReco[1]={HistoEle};
+    
+    return HistoElReco;
+
+
+
+}
+
+TH2F** FuncHistEleId(){
+
+    TFile * eleIdF= TFile::Open(("../interface/EleSF/2017_ElectronMVA80.root"));
+    TH2F * eleIdHisto= (TH2F *) eleIdF->Get("EGamma_SF2D");
+    
+    static  TH2F* HistoElId[1]={eleIdHisto};
+    
+    return HistoElId;
+
+
+}
 
 
 

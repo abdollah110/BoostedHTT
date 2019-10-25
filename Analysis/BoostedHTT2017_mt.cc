@@ -29,6 +29,40 @@ int main(int argc, char** argv) {
         cout <<"INPUT NAME IS:   " << input[f - 2] << "\n";
     }
     
+    
+    
+    //########################################
+    // Muon Id, Iso, Trigger and Tracker Eff files
+    //########################################
+    TH2F** HistoMuId=FuncHistMuId();
+    TH2F** HistoMuIso=FuncHistMuIso();
+//    TH1F** HistoMuTrg=FuncHistMuTrigger();
+    TH2F** HistoMuTrg=FuncHistMuTrigger();
+    TGraphAsymmErrors * HistoMuTrack=FuncHistMuTrack();
+    
+    //########################################
+    // Electron MVA IdIso files
+    //########################################
+//    TH2F * HistoEleMVAIdIso90= FuncHistEleMVAId("Tot");
+//    TH2F * HistoEleMVAIdIso90_EffMC= FuncHistEleMVAId("MC");
+//    TH2F * HistoEleMVAIdIso90_EffData= FuncHistEleMVAId("Data");
+    
+    // Tight WP of MVA Ele
+    float getCorrFactorMVA80WPElectron94X(bool isData, float pt, float eta,    TH2F * HistoEleSF , TGraphAsymmErrors ** Ele25Trg){
+        if (isData)
+            return 1;
+        else
+            return Cor94X_IDIso_Ele(pt,eta,HistoEleSF)*Cor94X_Trg_Ele25(pt,eta,Ele25Trg);
+    }
+    
+    
+    //########################################
+    // Btagging scale factor and uncertainties
+    //########################################
+    TH2F ** Btagg_TT=FuncHistBTagSF();
+    
+    
+    
     //###############################################################################################
     //  Fix Parameters
     //###############################################################################################
@@ -160,9 +194,8 @@ int main(int argc, char** argv) {
                 if (!MuId ) continue;
                 plotFill("cutFlow",5 ,15,0,15);
                 
-                //                                if (IsoMu > 0.2) continue;
-                //                                plotFill("cutFlow",6 ,15,0,15);
-                
+                float MuonCor=getCorrFactorMuon94X(isData,  muPt->at(imu), muEta->at(imu) , HistoMuId,HistoMuIso,HistoMuTrg,HistoMuTrack);
+//                cout <<"MuonCor= "<<MuonCor<<"\n";
                 
                 
                 float tmass = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  pfMET,  pfMETPhi);
@@ -197,18 +230,23 @@ int main(int argc, char** argv) {
                     
                     
                     plotFill("ZMass",ZCandida.M() ,30,0,300);
-                    
+                    plotFill("MuonCor",MuonCor ,100,0,2);
                     
                     //###############################################################################################
                     //  BoostedTau Isolation Categorization
                     //###############################################################################################
                     
-                    const int size_tauCat = 2;
+                    const int size_tauCat = 6;
                     bool Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
                     bool Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
-                    
-                    bool Tau_category[size_tauCat] = {Pass, Fail};
-                    std::string Tau_Cat[size_tauCat] = {"_Pass", "_Fail"};
+                    bool PassM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
+                    bool FailM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
+                    bool PassT = boostedTauByTightIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
+                    bool FailT = boostedTauByTightIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
+
+
+                    bool Tau_category[size_tauCat] = {Pass, Fail,PassM, FailM,PassT, FailT};
+                    std::string Tau_Cat[size_tauCat] = {"_Pass", "_Fail","_PassM", "_FailM","_PassT", "_FailT"};
                     
                     //###############################################################################################
                     //  lepton Isolation Categorization
@@ -247,7 +285,7 @@ int main(int argc, char** argv) {
                                         if (Q_category[iq]) {
                                             
                                             
-                                            float FullWeight = LumiWeight;
+                                            float FullWeight = LumiWeight*MuonCor;
                                             std::string FullStringName = Tau_Cat[tt] +iso_Cat[iso] + Q_Cat[iq] ;
                                             
                                             //                                This check is used to make sure that each event is just filled once for any of the categories ==> No doube-counting of events  (this is specially important for ttbar events where we have many jets and leptons)
@@ -256,10 +294,12 @@ int main(int argc, char** argv) {
                                                 
                                                 
                                                 
-                                                plotFill("dR"+FullStringName,BoostedTau4Momentum.DeltaR(Mu4Momentum) ,100,0,1,FullWeight);
-                                                plotFill("ZMass"+FullStringName,ZCandida.M() ,40,0,200,FullWeight);
-                                                plotFill("tmass"+FullStringName,tmass ,5,0,50,FullWeight);
+                                                plotFill("ZMass"+FullStringName,ZCandida.M() ,24,0,120,FullWeight);
+                                                plotFill("tmass"+FullStringName,tmass ,10,0,50,FullWeight);
                                                 plotFill("ht"+FullStringName,ht ,100,0,1000,FullWeight);
+                                                plotFill("lepPt"+FullStringName,muPt->at(imu) ,40,0,400,FullWeight);
+                                                plotFill("tauPt"+FullStringName,boostedTauPt->at(ibtau) ,40,0,400,FullWeight);
+                                                plotFill("MET"+FullStringName,pfMET ,40,0,400,FullWeight);
                                                 
                                                 
                                                 

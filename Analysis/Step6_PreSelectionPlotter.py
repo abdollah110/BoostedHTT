@@ -6,52 +6,32 @@
 __author__ = "abdollahmohammadi"
 __date__ = "$Feb 23, 2013 10:39:33 PM$"
 
+import sys
 import math
 import ROOT
 from ROOT import *
-#from ROOT import TCanvas
-#from ROOT import TFile
-#from ROOT import TH1F
-#from ROOT import TH2F
-#from ROOT import TNtuple
-#from ROOT import TProfile
-#from ROOT import gBenchmark
-#from ROOT import gROOT
-#from ROOT import gRandom
-#from ROOT import gSystem
 from ctypes import *
 import ROOT as r
 import array
+import os
+
+InputFilesLocation=sys.argv[1]
 
 
 gROOT.Reset()
-import os
-
-
 ROOT.gROOT.SetBatch(True)
 
-InputFilesLocation = 'NewOutFiles_BoostedHTT2017_/'
-#InputFilesLocation = 'NewOutFiles_BoostedHTT2017_old/'
 
 verbos_ = True
 RB_=1
 
-#process=[
-#['VV','VV',-1],
-#['SingleTop','SingleTop',-1],
-#['TTJets','TT',-1],
-#['DYJetsToLL','ZTT',-1],
-#['WJetsToLNu','W',-1],
-#['Data','data_obs',+1],
-#]
-
 process=[
-['VV','Diboson',-1],
-['SingleTop','SingleTop',-1],
-['TTJets','ttbar',-1],
-['DYJetsToLL','DYJets125',-1],
-['WJetsToLNu','WJets',-1],
-['Data','data_obs',+1],
+    ['VV','Diboson',-1],
+    ['SingleTop','SingleTop',-1],
+    ['TTJets','ttbar',-1],
+    ['DYJetsToLL','DYJets125',-1],
+    ['WJetsToLNu','WJets',-1],
+    ['Data','data_obs',+1],
 ]
 
 
@@ -62,7 +42,6 @@ def getNormOfQCD(channel,NormMC):
         myfile = TFile(InputFilesLocation +'/'+ pro[0] + '.root')
         NormHisto =  myfile.Get(channel+NormMC)
         if not NormHisto: continue
-#        print "accesing the ", pro[0], channel+NormMC
         sum += NormHisto.Integral()*pro[2]
     return sum
 
@@ -76,30 +55,30 @@ def MakeTheHistogram(channel,NormMC,qcdOS,qcdSS,templateqcd,templateqcdShape,reg
 
     if region=='_Pass':CatName='pass'
     if region=='_Fail':CatName='fail'
-#    CatName=region
-#    CatName=region.replace('_Pass','pass')
-#    CatName=region.replace('_Fail','fail')
     tDirectory= OutFile.mkdir(CatName)
     print "catName=",CatName
     tDirectory.cd()
 
     allFiles=[]
     for pro in process:
-        ################################################
-        #  Filling SingleTop
-        ################################################
-        print "--------------------------------------------------->     Processing %s"%pro[0]
+        print "\t\t   ------>     Processing %s"%pro[0]
         tDirectory.cd()
     
         myfile = TFile(InputFilesLocation +'/'+ pro[0] + '.root')
         NormHisto =  myfile.Get(channel+NormMC )
                 
-        if NormHisto:
-            if not NormHisto:
-                raise Exception('Not valid %s'%pro[1])
-            else:
-                RebinedHist= NormHisto.Rebin(RB_)
-                tDirectory.WriteObject(RebinedHist,pro[1])
+
+        if not NormHisto:
+            print "\n\n\n\n\n\n", pro
+            myfile = TFile(InputFilesLocation +'/DYJetsToLL.root')
+            NormHisto =  myfile.Get(channel+NormMC )
+            NormHisto.Scale(0.001/NormHisto.Integral())
+            RebinedHist= NormHisto.Rebin(RB_)
+            tDirectory.WriteObject(RebinedHist,pro[1])
+            
+        else:
+            RebinedHist= NormHisto.Rebin(RB_)
+            tDirectory.WriteObject(RebinedHist,pro[1])
                 
                 
     ################################################
@@ -111,11 +90,12 @@ def MakeTheHistogram(channel,NormMC,qcdOS,qcdSS,templateqcd,templateqcdShape,reg
     getNormOfQCD_SS=getNormOfQCD(channel,qcdSS)
     print "getNormOfQCD_SS= ", getNormOfQCD_SS
     
-    print "os/ss is= ", getNormOfQCD_OS/getNormOfQCD_SS
+    OS_to_SS= getNormOfQCD_OS/getNormOfQCD_SS
+    print "os/ss is= ", OS_to_SS
     
 #    datass_file=TFile(InputFilesLocation +'/Data.root')
     
-    qcd_Norm=tDirectory.Get("ttbar")
+    qcd_Norm=tDirectory.Get("data_obs")
     qcd_Norm.Scale(0)
     qcd_Shape=qcd_Norm.Clone()
     
@@ -130,14 +110,29 @@ def MakeTheHistogram(channel,NormMC,qcdOS,qcdSS,templateqcd,templateqcdShape,reg
         if not NormHisto or not ShapeHisto: continue
         qcd_Norm.Add(NormHisto,pro[2])
         qcd_Shape.Add(ShapeHisto,pro[2])
+        print pro, " intg= ", NormHisto.Integral()
+#    OS_to_SS= 1.08
+    for bin in range(qcd_Shape.GetNbinsX()):
         
-    qcd_Norm.Scale(getNormOfQCD_OS/getNormOfQCD_SS)
-    qcd_Shape.Scale(qcd_Norm.Integral()/qcd_Shape.Integral())
+        if qcd_Shape.GetBinContent(bin) < 0:
+           print "\t before %s, bin %d is %f"%(NormMC, bin,qcd_Shape.GetBinContent(bin))
+           qcd_Shape.SetBinContent(bin, 0.0001)
+           qcd_Shape.SetBinError(bin, 0.0001)
+           print "%s, bin %d is %f"%(NormMC, bin,qcd_Shape.GetBinContent(bin))
+    
+
+
+    qcd_Norm.Scale(OS_to_SS)
+    NormQCD= qcd_Norm.Integral()
+    if  NormQCD < 0:  NormQCD=0.001
+    qcd_Shape.Scale(NormQCD/qcd_Shape.Integral())
     
     tDirectory.cd()
     tDirectory.WriteObject(qcd_Shape,"QCD")
     
-    
+    for bin in range(qcd_Shape.GetNbinsX()):
+        print "%s, bin %d is %f"%(NormMC, bin,qcd_Shape.GetBinContent(bin))
+
     OutFile.Close()
 
 
@@ -170,6 +165,6 @@ if __name__ == "__main__":
                     qcdOS=Norm+"_Fail"+"_AntiIso"+"_OS"
                     qcdSS=Norm+"_Fail"+"_AntiIso"+"_SS"
                     templateqcd=Norm+reg+iso+"_SS"
-                    templateqcdShape=Norm+reg+iso+"_SS"
+                    templateqcdShape=Norm+reg+"_AntiIso"+"_SS"
                 
                     MakeTheHistogram(channel,NormMC,qcdOS,qcdSS,templateqcd,templateqcdShape,reg)

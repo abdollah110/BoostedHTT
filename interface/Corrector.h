@@ -917,7 +917,7 @@ float Cor94X_Trg_Ele25(float pt,float eta,TGraphAsymmErrors **  Ele25Trg){
 
 
 
-float getCorrFactorMuon94X(bool isData, float pt, float eta, TH2F ** HistoId, TH2F ** HistoIso,TH1F ** HistoTrg, TGraphAsymmErrors * graph) {
+float getCorrFactorMuon94X(bool isData, float pt, float eta, TH2F ** HistoId, TH2F ** HistoIso,TH2F ** HistoTrg, TGraphAsymmErrors * graph) {
     if (isData)
         return 1;
     else{
@@ -926,8 +926,8 @@ float getCorrFactorMuon94X(bool isData, float pt, float eta, TH2F ** HistoId, TH
 
         float Weighted_IsoSF=Cor94X_Iso_Mu(pt,eta,HistoIso[0]);
 
-        float Weighted_TriggerSF=Cor94X_Trigger_Mu_onlyEta(eta,HistoTrg[0]);
-//        float Weighted_TriggerSF=Cor94X_Trigger_Mu_EtaPt(pt,eta,HistoTrg[0]);
+//        float Weighted_TriggerSF=Cor94X_Trigger_Mu_onlyEta(eta,HistoTrg[0]);
+        float Weighted_TriggerSF=Cor94X_Trigger_Mu_EtaPt(pt,fabs(eta),HistoTrg[0]);
         float Tracking_SF=Cor94X_TRK_Mu_Full2016(eta, graph);
                              
         return (Weighted_IDSF * Weighted_IsoSF * Tracking_SF * Weighted_TriggerSF);
@@ -976,7 +976,20 @@ float getEffVetoMVA90WPElectron94X(bool isData, float pt, float eta,    TH2F * H
 
 
 
+float getCorrFactorElectron94X  (bool isData, float scEta, float pt, TH2F** HistoEleReco, TH2F** HistoEleId){
 
+if (isData)
+    return 1;
+else
+{
+
+float recoWeight=HistoEleReco[0]->GetBinContent(  HistoEleReco[0]->GetXaxis()->FindBin(scEta),HistoEleReco[0]->GetYaxis()->FindBin(fabs(pt)));
+float IdWeight=HistoEleId[0]->GetBinContent(  HistoEleId[0]->GetXaxis()->FindBin(scEta),HistoEleId[0]->GetYaxis()->FindBin(fabs(pt)));
+
+return recoWeight * IdWeight;
+
+}
+}
 
 
 
