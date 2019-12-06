@@ -41,7 +41,7 @@ float XSection(std::string OutName) {
     
     
     
-//    if (OutName.find("Data") != string::npos) return 1;   // As we have large cut at Skim, this one is not
+    if (OutName.find("Data") != string::npos) return 1;   // As we have large cut at Skim, this one is not
     
     if (OutName.find("WJetsToLNu_Inc") != string::npos) return 50690;   // As we have large cut at Skim, this one is not needed
     else if (OutName.find("WJetsToLNu_HT-70To100") != string::npos) return 1372 * WScaleFactor;
