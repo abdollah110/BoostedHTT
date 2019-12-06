@@ -86,7 +86,7 @@ void SkimerBoost::Loop(TString OutputFile)
             if (muPt->at(imu) < 30 || fabs(muEta->at(imu)) > 2.4) continue;
             
             
-            bool MuId=( (muIDbit->at(imu) >> 3 & 1); //Tight Muon Id
+            bool MuId=( (muIDbit->at(imu) >> 2 & 1); //(iMu->passed(reco::Muon::CutBasedIdMediumPrompt)) tmpmuIDbit += pow(2,  2);
             
             if (!MuId) continue;
                             
