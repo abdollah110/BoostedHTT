@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
     Run_Tree= Xttree(fin);
     
 //    auto HistoTot = reinterpret_cast<TH1D*>(fin->Get("ggNtuplizer/hEvents"));
-    TH1F * HistoTot = (TH1F*) myFile->Get("hcount");
+    TH1F * HistoTot = (TH1F*) fin->Get("hcount");
     auto fout = new TFile(filename.c_str(), "RECREATE");
     
     myMap1 = new std::map<std::string, TH1F*>();

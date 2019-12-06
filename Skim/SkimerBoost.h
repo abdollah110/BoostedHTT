@@ -832,8 +832,8 @@ SkimerBoost::SkimerBoost(TString fileName) : fChain(0)
     TFile* file = TFile::Open(fileName);
     //    file->cd(fileName + ":/ggNtuplizer");
     //    lllll
-    TTree* tree = (TTree*)gDirectory->Get("EventTree");
-//    TTree* tree = (TTree*)gDirectory->Get("ggNtuplizer/EventTree");
+//    TTree* tree = (TTree*)gDirectory->Get("EventTree");
+    TTree* tree = (TTree*)gDirectory->Get("ggNtuplizer/EventTree");
     Init(tree);
 }
 
