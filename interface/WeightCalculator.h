@@ -33,11 +33,8 @@ float TT_Had_BR= 0.4544;
 float XSection(std::string OutName) {
     
     
-    ////////////////////////////////////////////////////////////////
+
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
-    
-    ////////////////////////////////////////////////////////////////
-    
     //    https://docs.google.com/spreadsheets/d/1rWM3AlFKO8IJVaeoQkWZYWwSvicQ1QCXYSzH74QyZqE/edit?alt=json#gid=398123591
     
     
@@ -69,7 +66,7 @@ float XSection(std::string OutName) {
 //    else if (OutName.find("WToMuNu_M-500_") != string::npos) return 0.2138;
 //    else if (OutName.find("WToMuNu_M-1000_") != string::npos) return 0.01281;
 //    else if (OutName.find("WToMuNu_M-2000_") != string::npos) return 5.56e-04;
-////    else if (OutName.find("WToMuNu_M-3000_") != string::npos) return 2.904e-05;
+//    else if (OutName.find("WToMuNu_M-3000_") != string::npos) return 2.904e-05;
 //
 //
 //

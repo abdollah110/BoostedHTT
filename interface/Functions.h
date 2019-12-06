@@ -64,8 +64,8 @@ float dR_(float ieta, float iphi, float jeta, float jphi){
 
 TTree *  Xttree( TFile * f_Double){
     
-//            TTree *Run_Tree = (TTree*) f_Double->Get("ggNtuplizer/EventTree");
-    TTree *Run_Tree = (TTree*) f_Double->Get("EventTree");
+            TTree *Run_Tree = (TTree*) f_Double->Get("ggNtuplizer/EventTree");
+//    TTree *Run_Tree = (TTree*) f_Double->Get("EventTree");
     
     cout.setf(ios::fixed, ios::floatfield);
     cout.precision(6);
@@ -142,24 +142,24 @@ TTree *  Xttree( TFile * f_Double){
     Run_Tree->SetBranchAddress("elePt", &elePt);
     Run_Tree->SetBranchAddress("eleEta", &eleEta);
     Run_Tree->SetBranchAddress("elePhi", &elePhi);
-    Run_Tree->SetBranchAddress("eleR9", &eleR9);
-    Run_Tree->SetBranchAddress("eleCalibPt", &eleCalibPt);
-    Run_Tree->SetBranchAddress("eleCalibEn", &eleCalibEn);
+//    Run_Tree->SetBranchAddress("eleR9", &eleR9);
+//    Run_Tree->SetBranchAddress("eleCalibPt", &eleCalibPt);
+//    Run_Tree->SetBranchAddress("eleCalibEn", &eleCalibEn);
     Run_Tree->SetBranchAddress("eleSCEta", &eleSCEta);
-    Run_Tree->SetBranchAddress("eleSCPhi", &eleSCPhi);
-    Run_Tree->SetBranchAddress("eleSCRawEn", &eleSCRawEn);
-    Run_Tree->SetBranchAddress("eleSCEtaWidth", &eleSCEtaWidth);
-    Run_Tree->SetBranchAddress("eleSCPhiWidth", &eleSCPhiWidth);
-    Run_Tree->SetBranchAddress("eleHoverE", &eleHoverE);
-    Run_Tree->SetBranchAddress("eleEoverP", &eleEoverP);
-    Run_Tree->SetBranchAddress("eleEoverPout", &eleEoverPout);
-    Run_Tree->SetBranchAddress("eleEoverPInv", &eleEoverPInv);
-    Run_Tree->SetBranchAddress("eleBrem", &eleBrem);
-    Run_Tree->SetBranchAddress("eledEtaAtVtx", &eledEtaAtVtx);
-    Run_Tree->SetBranchAddress("eledPhiAtVtx", &eledPhiAtVtx);
-//    Run_Tree->SetBranchAddress("eledEtaAtCalo", &eledEtaAtCalo);
-    Run_Tree->SetBranchAddress("eleSigmaIEtaIEtaFull5x5", &eleSigmaIEtaIEtaFull5x5);
-    Run_Tree->SetBranchAddress("eleSigmaIPhiIPhiFull5x5", &eleSigmaIPhiIPhiFull5x5);
+//    Run_Tree->SetBranchAddress("eleSCPhi", &eleSCPhi);
+//    Run_Tree->SetBranchAddress("eleSCRawEn", &eleSCRawEn);
+//    Run_Tree->SetBranchAddress("eleSCEtaWidth", &eleSCEtaWidth);
+//    Run_Tree->SetBranchAddress("eleSCPhiWidth", &eleSCPhiWidth);
+//    Run_Tree->SetBranchAddress("eleHoverE", &eleHoverE);
+//    Run_Tree->SetBranchAddress("eleEoverP", &eleEoverP);
+//    Run_Tree->SetBranchAddress("eleEoverPout", &eleEoverPout);
+//    Run_Tree->SetBranchAddress("eleEoverPInv", &eleEoverPInv);
+//    Run_Tree->SetBranchAddress("eleBrem", &eleBrem);
+//    Run_Tree->SetBranchAddress("eledEtaAtVtx", &eledEtaAtVtx);
+//    Run_Tree->SetBranchAddress("eledPhiAtVtx", &eledPhiAtVtx);
+////    Run_Tree->SetBranchAddress("eledEtaAtCalo", &eledEtaAtCalo);
+//    Run_Tree->SetBranchAddress("eleSigmaIEtaIEtaFull5x5", &eleSigmaIEtaIEtaFull5x5);
+//    Run_Tree->SetBranchAddress("eleSigmaIPhiIPhiFull5x5", &eleSigmaIPhiIPhiFull5x5);
     Run_Tree->SetBranchAddress("eleConvVeto", &eleConvVeto);
     Run_Tree->SetBranchAddress("eleMissHits", &eleMissHits);
     Run_Tree->SetBranchAddress("eleESEffSigmaRR", &eleESEffSigmaRR);
@@ -205,24 +205,25 @@ TTree *  Xttree( TFile * f_Double){
     Run_Tree->SetBranchAddress("jetJECUnc",&jetJECUnc);
     Run_Tree->SetBranchAddress("jetRawEn",&jetRawEn);
     Run_Tree->SetBranchAddress("jetHadFlvr",&jetHadFlvr);
-    Run_Tree->SetBranchAddress("jetP4Smear",&jetP4Smear);
-    Run_Tree->SetBranchAddress("jetP4SmearUp",&jetP4SmearUp);
-    Run_Tree->SetBranchAddress("jetP4SmearDo",&jetP4SmearDo);
+//    Run_Tree->SetBranchAddress("jetP4Smear",&jetP4Smear);
+//    Run_Tree->SetBranchAddress("jetP4SmearUp",&jetP4SmearUp);
+//    Run_Tree->SetBranchAddress("jetP4SmearDo",&jetP4SmearDo);
     
     
     
     //########################################   MET Info
     Run_Tree->SetBranchAddress("pfMET",&pfMET);
-    Run_Tree->SetBranchAddress("pfMET_T1UESUp",&pfMET_T1UESUp);
-    Run_Tree->SetBranchAddress("pfMET_T1UESDo",&pfMET_T1UESDo);
-    Run_Tree->SetBranchAddress("pfMET_T1JESUp",&pfMET_T1JESUp);
-    Run_Tree->SetBranchAddress("pfMET_T1JESDo",&pfMET_T1JESDo);
+    Run_Tree->SetBranchAddress("met_JESUp",&met_JESUp);
+    Run_Tree->SetBranchAddress("met_JESDown",&met_JESDown);
+    Run_Tree->SetBranchAddress("met_UESUp",&met_UESUp);
+    Run_Tree->SetBranchAddress("met_UESDown",&met_UESDown);
+    
     
     Run_Tree->SetBranchAddress("pfMETPhi",&pfMETPhi);
-    Run_Tree->SetBranchAddress("pfMETPhi_T1UESUp",&pfMETPhi_T1UESUp);
-    Run_Tree->SetBranchAddress("pfMETPhi_T1UESDo",&pfMETPhi_T1UESDo);
-    Run_Tree->SetBranchAddress("pfMETPhi_T1JESUp",&pfMETPhi_T1JESUp);
-    Run_Tree->SetBranchAddress("pfMETPhi_T1JESDo",&pfMETPhi_T1JESDo);
+    Run_Tree->SetBranchAddress("metphi_JESUp",&metphi_JESUp);
+    Run_Tree->SetBranchAddress("metphi_JESDown",&metphi_JESDown);
+    Run_Tree->SetBranchAddress("metphi_UESUp",&metphi_UESUp);
+    Run_Tree->SetBranchAddress("metphi_UESDown",&metphi_UESDown);
     
     Run_Tree->SetBranchAddress("metFilters",&metFilters);
     Run_Tree->SetBranchAddress("genHT",&genHT);
@@ -254,28 +255,21 @@ Run_Tree->SetBranchAddress("boostedTaupfTausDiscriminationByDecayModeFinding",&b
     Run_Tree->SetBranchAddress("boostedTauByMediumIsolationMVArun2v1DBoldDMwLT",&boostedTauByMediumIsolationMVArun2v1DBoldDMwLT);
     Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBoldDMwLT",&boostedTauByLooseIsolationMVArun2v1DBoldDMwLT);
     Run_Tree->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT",&boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT);
-//
-//    Run_Tree->SetBranchAddress("boostedTauByMediumIsolationMVArun2v1DBnewDMwLT;
-//    Run_Tree->SetBranchAddress("boostedTauByMediumIsolationMVArun2v1DBoldDMwLT;
-//    Run_Tree->SetBranchAddress("boostedTauByMediumIsolationMVArun2v1PWnewDMwLT;
-//    Run_Tree->SetBranchAddress("boostedTauByMediumIsolationMVArun2v1PWoldDMwLT;
-//    Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBnewDMwLT;
-//    Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBoldDMwLT;
-//    Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1PWnewDMwLT;
-//    Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1PWoldDMwLT;
-//    Run_Tree->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v1DBnewDMwLT;
-//    Run_Tree->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT;
-//    Run_Tree->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v1PWnewDMwLT;
-//    Run_Tree->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v1PWoldDMwLT;
-//    vector<float>   *boostedTauByIsolationMVArun2v2DBoldDMwLTraw;
-//    Run_Tree->SetBranchAddress("boostedTauByVTightIsolationMVArun2v2DBoldDMwLT;
-//    Run_Tree->SetBranchAddress("boostedTauByTightIsolationMVArun2v2DBoldDMwLT;
-//    Run_Tree->SetBranchAddress("boostedTauByMediumIsolationMVArun2v2DBoldDMwLT;
-//    Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v2DBoldDMwLT;
-//    Run_Tree->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v2DBoldDMwLT;
-//
-//
 
+Run_Tree->SetBranchAddress("taudaugPt",&taudaugPt);
+Run_Tree->SetBranchAddress("taudaugEta",&taudaugEta);
+Run_Tree->SetBranchAddress("taudaugPhi",&taudaugPhi);
+Run_Tree->SetBranchAddress("taudaugMass",&taudaugMass);
+Run_Tree->SetBranchAddress("numGenTau",&numGenTau);
+
+
+
+    //    .push_back(vec.Pt());
+    //    .push_back(vec.Eta());
+    //    .push_back(vec.Phi());
+    //    .push_back(vec.mass());
+    
+    
 
 
     //    Run_Tree->SetBranchAddress("",&);
@@ -557,9 +551,6 @@ int getNumTau(){
 
 
 
-//###########       Electron Veto   ###########################################################
-
-
 //###########       electron  Veto   ###########################################################
 
 int getNumElectron(){
@@ -745,6 +736,7 @@ vector<float>  GeneratorInfo(){
     int modPDGId=-10;
     int AntimodPDGId=-10;
     float WBosonMass=0;
+    float ZBosonMass=0;
     
     TLorentzVector GenMu4Momentum,GenAntiMu4Momentum, WGEN4Momentum, MUGEN4Momentum, NUGEN4Momentum;
     
@@ -764,7 +756,7 @@ vector<float>  GeneratorInfo(){
         if ( fabs(mcPID->at(igen)) ==14  && mcStatus->at(igen) ==1)  {NUGEN4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));}
         
         //Z Pt
-        if (fabs(mcPID->at(igen)) ==23)  ZBosonPt= mcPt->at(igen); //FIXME somethime we do not have Z in the DY events
+        if (fabs(mcPID->at(igen)) ==23)  {ZBosonPt= mcPt->at(igen); ZBosonMass= mcMass->at(igen);} //FIXME somethime we do not have Z in the DY events
         if ( mcPID->at(igen) ==13  )  {GenMu4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen)); modPDGId=mcMomPID->at(igen);}
         if ( mcPID->at(igen) ==-13  )  {GenAntiMu4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen)); AntimodPDGId=mcMomPID->at(igen);}
         
@@ -774,8 +766,10 @@ vector<float>  GeneratorInfo(){
     
     TopPtReweighting=compTopPtWeight(GenTopPt, GenAntiTopPt);
     
-    if (ZBosonPt ==0)
+    if (ZBosonPt ==0){
         ZBosonPt=(GenMu4Momentum+GenAntiMu4Momentum).Pt();  //This is a temp solution to the above problem
+        ZBosonMass=(GenMu4Momentum+GenAntiMu4Momentum).M();  //This is a temp solution to the above problem
+        }
     
     if (WBosonPt==0)
         WBosonPt = (MUGEN4Momentum+NUGEN4Momentum).Pt();
@@ -792,7 +786,10 @@ vector<float>  GeneratorInfo(){
     
     //######################## W Mass
     infoGen.push_back(WBosonMass);
-    
+
+    //######################## Z Mass
+    infoGen.push_back(ZBosonMass);
+
     return infoGen;
     
 }
@@ -934,6 +931,24 @@ float getHT( float SimpleJetPtCut){
     return HT;
 }
 
+
+
+TLorentzVector getLeadJet(){
+TLorentzVector leadJet;
+float MaxJetPt=0;
+int leadJetPtIndex=0;
+    for (int ijet= 0 ; ijet < nJet ; ijet++){
+        if (jetPFLooseId->at(ijet) > 0.5 && fabs(jetEta->at(ijet)) < 3.0  && jetPt->at(ijet) > MaxJetPt ){
+        MaxJetPt=jetPt->at(ijet);
+        leadJetPtIndex=ijet;
+        }
+    }
+    leadJet.SetPtEtaPhiE(jetPt->at(leadJetPtIndex),jetEta->at(leadJetPtIndex),jetPhi->at(leadJetPtIndex),jetEn->at(leadJetPtIndex));
+    return leadJet;
+}
+
+
+
 //###########       W PDF + alpha s   ###########################################################
 
 
@@ -963,5 +978,147 @@ float W_PDFAlphaS(float wMass, float sign){
 }
 
 
+
+
+//bool checkGenRecodR(myGenobject const& Gen1, myGenobject const& Gen2, myobject const& Reco1, myobject const& Reco2) {
+//
+//    bool check_11_22 = dR(Gen1.eta, Gen1.phi, Reco1.eta, Reco1.phi) < 0.5 && dR(Gen2.eta, Gen2.phi, Reco2.eta, Reco2.phi) < 0.5;
+//    bool check_12_21 = dR(Gen1.eta, Gen1.phi, Reco2.eta, Reco2.phi) < 0.5 && dR(Gen2.eta, Gen2.phi, Reco1.eta, Reco1.phi) < 0.5;
+//
+//    if (check_11_22 || check_12_21)
+//        return true;
+//    else return false;
+//
+//}
+//
+
+
+//
+//                    for (int igen=0; igen < nMC; igen++){
+////
+//////                    Run_Tree->SetBranchAddress("nMC", &nMC);
+//////                    Run_Tree->SetBranchAddress("mcPID", &mcPID);
+//////                    Run_Tree->SetBranchAddress("mcStatus", &mcStatus);
+//////                    Run_Tree->SetBranchAddress("mcPt", &mcPt );
+//////                    Run_Tree->SetBranchAddress("mcEta", &mcEta );
+//////                    Run_Tree->SetBranchAddress("mcPhi", &mcPhi );
+//////                    Run_Tree->SetBranchAddress("mcE", &mcE );
+//////                    Run_Tree->SetBranchAddress("mcMass", &mcMass );
+//////                    Run_Tree->SetBranchAddress("mcMomPID", &mcMomPID );
+//////                    Run_Tree->SetBranchAddress("mcGMomPID", &mcGMomPID );
+//////                    Run_Tree->SetBranchAddress("mcStatusFlag",&mcStatusFlag);
+////
+////
+////
+////                    gen4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+////
+////                    if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 13 && gen4Momentum.DeltaR( Mu4Momentum) < 0.5) cout << "matched reco muon: pdgid= "<<mcPID->at(igen) <<" moder= "<<mcMomPID->at(igen)<< "  mcStatusFlag "<<mcStatusFlag->at(igen)<<"  "<<    (mcStatusFlag->at(igen) >> 0 & 1)<<(mcStatusFlag->at(igen) >> 1 & 1)<<(mcStatusFlag->at(igen) >> 2 & 1)<<(mcStatusFlag->at(igen) >> 3 & 1)<<(mcStatusFlag->at(igen) >> 4 & 1)<<(mcStatusFlag->at(igen) >> 5 & 1)<<(mcStatusFlag->at(igen) >> 6 & 1)<<(mcStatusFlag->at(igen) >> 7 & 1)<<(mcStatusFlag->at(igen) >> 8 & 1)<<"\n";
+////
+////                        if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 15 && gen4Momentum.DeltaR( BoostedTau4Momentum) < 0.5) cout << "\t matched reco muon: pdgid= "<<mcPID->at(igen) <<" moder= "<<mcMomPID->at(igen)<<"  mcStatusFlag "<<mcStatusFlag->at(igen)<< "  "<<    (mcStatusFlag->at(igen) >> 0 & 1)<<(mcStatusFlag->at(igen) >> 1 & 1)<<(mcStatusFlag->at(igen) >> 2 & 1)<<(mcStatusFlag->at(igen) >> 3 & 1)<<(mcStatusFlag->at(igen) >> 4 & 1)<<(mcStatusFlag->at(igen) >> 5 & 1)<<(mcStatusFlag->at(igen) >> 6 & 1)<<(mcStatusFlag->at(igen) >> 7 & 1)<<(mcStatusFlag->at(igen) >> 8 & 1)<<"\n";
+////
+////
+////                    }
+//
+
+
+
+int ZCategory(TLorentzVector tauCandidate) {
+    
+    for (int igen=0; igen < nMC; igen++){
+        TLorentzVector gen4Mom;
+        gen4Mom.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+        if (tauCandidate.DeltaR(gen4Mom) > 0.2 ) continue;
+        
+        if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 11 && mcStatusFlag->at(igen) >> 9 & 1) return 1;
+        if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 13 && mcStatusFlag->at(igen) >> 9 & 1) return 2;
+        if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 11 && mcStatusFlag->at(igen) >> 10 & 1) return 3;
+        if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 13 && mcStatusFlag->at(igen) >> 10 & 1) return 4;
+    }
+    TLorentzVector genTau;
+    for (int i=0; i < numGenTau  ; i++){
+        cout<<taudaugPt->at(i)<<" "<<taudaugEta->at(i)<<" "<<taudaugPhi->at(i)<<" "<<taudaugMass->at(i)<<"\n";
+//        cout<<taudaugMass->at(i)<<"\n";
+        genTau.SetPtEtaPhiM(taudaugPt->at(i),taudaugEta->at(i),taudaugPhi->at(i),taudaugMass->at(i));
+//        if (tauCandidate.DeltaR(genTau) < 0.2  && taudaugPt->at(i) > 15)
+        return 5;
+    }
+    return 6;
+}
+
+//
+//    if (genID == 11 && closest.pt() > 8 && closest.statusFlags().isPrompt() ) return 1.0;
+//    else if (genID == 13 && closest.pt() > 8 && closest.statusFlags().isPrompt() ) return 2.0;
+//    else if (genID == 11 && closest.pt() > 8 && closest.statusFlags().isDirectPromptTauDecayProduct() ) return 3.0;
+//    else if (genID == 13 && closest.pt() > 8 && closest.statusFlags().isDirectPromptTauDecayProduct() ) return 4.0;
+//    // If closest wasn't E / Mu, we need to rebuild taus and check them
+//    else {
+//
+//    taudaugPt.push_back(vec.Pt());
+//    taudaugEta.push_back(vec.Eta());
+//    taudaugPhi.push_back(vec.Phi());
+//    taudaugMass.push_back(vec.mass());
+//
+//
+//        // Get rebuilt gen taus w/o neutrino energy
+//        std::vector<reco::Candidate::LorentzVector> genTaus = buildGenTaus();
+//
+//        for ( auto vec : genTaus ) {
+//            double tmpDR2 = reco::deltaR( daughter(i)->p4(), vec );
+//            //std::cout << "DR: " << tmpDR2 << "   genTauPt: " << vec.Pt() <<std::endl;
+//            //std::cout << "DR: " << tmpDR2 << std::endl;
+//            if (tmpDR2 < 0.2) {
+//                //std::cout << " ~~~~~ Found Gen Tau " << std::endl;
+//
+//        }
+//        //std::cout << " - - - - No Gen Tau " << std::endl;
+//        return 6.0;
+//    }
+
+
+
+//int ZCategory(myevent *m, myobject const& obj1, myobject const& obj2) {
+//
+//    vector<myGenobject> genTausFromZ;
+//    vector<myGenobject> genMuFromZ;
+//    vector<myGenobject> genEleFromZ;
+//    vector<myGenobject> genLepFromTaus;
+//    genTausFromZ.clear();
+//    genMuFromZ.clear();
+//    genEleFromZ.clear();
+//    genLepFromTaus.clear();
+//    vector<myGenobject> genPar = m->RecGenParticle;
+//    int gen_ditau = 6;
+//    bool TherIsZGamma= 0;
+//    if (genPar.size() != 0) {
+//        for (int a = 0; a < genPar.size(); ++a) {
+//            if ((fabs(genPar[a].mod_pdgId) == 23 || fabs(genPar[a].mod_pdgId) == 22) && fabs(genPar[a].pdgId) == 15) genTausFromZ.push_back(genPar[a]);
+//            if (genPar[a].pt > 8.0 && (fabs(genPar[a].mod_pdgId) == 23 || fabs(genPar[a].mod_pdgId) == 22) && fabs(genPar[a].pdgId) == 13) genMuFromZ.push_back(genPar[a]);
+//            if (genPar[a].pt > 8.0 && (fabs(genPar[a].mod_pdgId) == 23 || fabs(genPar[a].mod_pdgId) == 22) && fabs(genPar[a].pdgId) == 11) genEleFromZ.push_back(genPar[a]);
+//            if (genPar[a].pt > 8.0 && fabs(genPar[a].mod_pdgId) == 15 &&  (fabs(genPar[a].Gmod_pdgId) == 15 || fabs(genPar[a].Gmod_pdgId) == 22|| fabs(genPar[a].Gmod_pdgId) == 23) &&(fabs(genPar[a].pdgId) == 11 || fabs(genPar[a].pdgId) == 13)) genLepFromTaus.push_back(genPar[a]);
+//            if (fabs(genPar[a].mod_pdgId) == 23 || fabs(genPar[a].mod_pdgId) == 22)  TherIsZGamma=1;
+//
+////    if(fabs(genPar[a].mod_pdgId) == 15) cout << "-------> genPar[a].pdgId "<<genPar[a].pdgId << "   genPar[a].Gmod_pdgId "<< genPar[a].Gmod_pdgId <<"\n";
+//        
+//    }
+//    }
+//    
+//
+//    
+//    if (genMuFromZ.size() == 2 && checkGenRecodR(genMuFromZ[0], genMuFromZ[1], obj1, obj2)) gen_ditau = 1; // THis is ZLL (ZMuMU)
+//    
+//    else if (genEleFromZ.size() == 2 && checkGenRecodR(genEleFromZ[0], genEleFromZ[1], obj1, obj2)) gen_ditau = 2; // THis is ZLL (ZEE)
+//    
+//    else if (genTausFromZ.size() == 2 && genLepFromTaus.size() == 1 && checkGenRecodR(genTausFromZ[0], genTausFromZ[1], obj1, obj2)) gen_ditau = 3; //This is ZTT (ZLepTau)
+//    
+//    else if (genTausFromZ.size() == 2 && genLepFromTaus.size() == 2 && checkGenRecodR(genLepFromTaus[0], genLepFromTaus[1], obj1, obj2)) gen_ditau = 4; //This is ZL (ZTauTau_LepLep)
+////    else if (genTausFromZ.size() == 2 && genLepFromTaus.size() == 2 && checkGenRecodR(genTausFromZ[0], genTausFromZ[1], obj1, obj2)) gen_ditau = 4; //This is ZL (ZTauTau_LepLep) BUG Found December 5th
+//    else gen_ditau = 5; //This is ZJ (ZTauTau_LepLep)
+//    return gen_ditau;
+//    // 1 or 2 will be  ZLL
+//    // 3 or  will be  ZTT
+//    // 4 or  will be  ZL
+//    //  5 will be  ZJ
+//}
+//
 
 

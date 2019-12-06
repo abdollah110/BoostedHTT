@@ -10,7 +10,7 @@ echo "====> Here are the libraries:" "\n" `root-config --cflags --glibs` -lTMVA 
 filename=`echo $1 | awk -F"." '{print $1}'`
 exefilename=${filename}.exe
 rm -f $exefilename
-g++ $1  -o $exefilename `root-config --cflags --glibs ` -lTMVA 
+g++ $1  -o $exefilename `root-config --cflags --glibs ` -lTMVA -lRooFit -lRooFitCore -I 
 echo ""
 if [ -e $exefilename ]; then
 echo "====> Created exe file : "

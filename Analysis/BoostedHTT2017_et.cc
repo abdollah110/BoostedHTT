@@ -7,7 +7,7 @@
 // source RunFullSamples_PreSelection.sh
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 #include "../interface/Functions.h"
-//#include "../interface/scalefactor.h"
+#include "../LeptonEff-interface/LepEffInterface/interface/ScaleFactor.h"
 #include <string>
 #include <ostream>
 #include <vector>
@@ -33,9 +33,8 @@ int main(int argc, char** argv) {
     
     TH2F** HistoEleReco=FuncHistEleReco();
     TH2F** HistoEleId=FuncHistEleId();
-//    ScaleFactor el32_el35_trg_sf ;
-//    el32_el35_trg_sf.init_ScaleFactor(
-//        "../interface//EleSF/Electron_Ele32orEle35.root");
+    ScaleFactor * el32_el35_trg_sf ;
+    el32_el35_trg_sf->init_ScaleFactor("../interface//EleSF/Electron_Ele32orEle35.root");
 
 
 
@@ -56,7 +55,28 @@ int main(int argc, char** argv) {
     bool debug= false;
     float luminosity=    35867;
     //########################################################################################################################################################
-    //########################################################################################################################################################
+   
+//   This is for muons
+   
+    
+    //########################################
+    // Muon Id, Iso, Trigger and Tracker Eff files
+    //########################################
+    //    TH2F** HistoMuId=FuncHistMuId();
+    //    TH2F** HistoMuIso=FuncHistMuIso();
+    ////    TH1F** HistoMuTrg=FuncHistMuTrigger();
+    //    TH2F** HistoMuTrg=FuncHistMuTrigger();
+    //    TGraphAsymmErrors * HistoMuTrack=FuncHistMuTrack();
+    
+    //########################################
+    // Btagging scale factor and uncertainties
+    //########################################
+    //    TH2F ** Btagg_TT=FuncHistBTagSF();
+    
+
+
+
+//########################################################################################################################################################
     //########################################################################################################################################################
     //                                                  Loop over inout ROOT files
     //########################################################################################################################################################

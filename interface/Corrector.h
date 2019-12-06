@@ -929,7 +929,8 @@ float getCorrFactorMuon94X(bool isData, float pt, float eta, TH2F ** HistoId, TH
 //        float Weighted_TriggerSF=Cor94X_Trigger_Mu_onlyEta(eta,HistoTrg[0]);
         float Weighted_TriggerSF=Cor94X_Trigger_Mu_EtaPt(pt,fabs(eta),HistoTrg[0]);
         float Tracking_SF=Cor94X_TRK_Mu_Full2016(eta, graph);
-                             
+                   
+//cout<< "Weighted_IDSF * Weighted_IsoSF * Tracking_SF * Weighted_TriggerSF "<<Weighted_IDSF <<" "<< Weighted_IsoSF <<" "<< Tracking_SF <<" "<< Weighted_TriggerSF<<"\n";
         return (Weighted_IDSF * Weighted_IsoSF * Tracking_SF * Weighted_TriggerSF);
     }
     
