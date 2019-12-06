@@ -17,9 +17,7 @@ int main(int argc, char* argv[]) {
     std::string path = parser.Option("-p");
     std::string output_dir = parser.Option("-d");
     std::string syst = parser.Option("-u");
-    std::string fname = path + sample + ".root";
-    bool isData = sample.find("data") != std::string::npos;
-    
+    std::string fname = path + sample + ".root";    
     
     std::string systname = "";
     if (!syst.empty()) {
