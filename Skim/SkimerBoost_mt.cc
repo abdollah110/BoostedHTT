@@ -13,7 +13,7 @@
 using namespace std;
 
 
-void SkimerBoost::Loop(TString OutputFile, int skm)
+void SkimerBoost::Loop(TString OutputFile)
 {
     
     
@@ -26,7 +26,6 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
     TTree* MyNewTree = fChain->CloneTree(0);
     
     fChain->SetBranchStatus("*",0);
-    //    fChain->SetBranchStatus("hasGoodVtx",1);
     fChain->SetBranchStatus("vt*",1);
     fChain->SetBranchStatus("EventTag",1);
     fChain->SetBranchStatus("run",1);
@@ -48,7 +47,6 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
     fChain->SetBranchStatus("AK8*",1);
     fChain->SetBranchStatus("ele*",1);
     fChain->SetBranchStatus("mu*",1);
-    //    fChain->SetBranchStatus("pho",0);
     fChain->SetBranchStatus("tau*",1);
     fChain->SetBranchStatus("m*",1);
     fChain->SetBranchStatus("b*",1);
@@ -78,7 +76,7 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
         if (!isData)
             hcount->Fill(2,genWeight);
         
-        if (pfMET < 50) continue;
+        if (pfMET < 45) continue;
         hcount->Fill(3);
         
         TLorentzVector BoostedTau4Momentum, Mu4Momentum;
@@ -88,22 +86,26 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
             if (muPt->at(imu) < 30 || fabs(muEta->at(imu)) > 2.4) continue;
             
             
-            bool MuId=( (muIDbit->at(imu) >> 1 & 1)  && fabs(muD0->at(imu)) < 0.045 && fabs(muDz->at(imu)) < 0.2); //Medium Muon Id
+            bool MuId=( (muIDbit->at(imu) >> 3 & 1); //Tight Muon Id
             
             if (!MuId) continue;
                             
             Mu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
             float MT =TMass_F(Mu4Momentum.Pt(),Mu4Momentum.Px(),Mu4Momentum.Py(),pfMET,pfMETPhi);
-            if(MT > 40) continue;
+            if(MT > 45) continue;
             
             
             for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
+            
                 if (boostedTauPt->at(ibtau) < 20 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
-               
-               if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
+                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
+                if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
+                if (boostedTauByTightMuonRejection3->at(ibtau) < 0.5) continue;
+
                 BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
-                if(BoostedTau4Momentum.DeltaR(Mu4Momentum) > 0.8 || BoostedTau4Momentum.DeltaR(Mu4Momentum) < 0.4) continue;
+                
+                if(BoostedTau4Momentum.DeltaR(Mu4Momentum) > 0.8 || BoostedTau4Momentum.DeltaR(Mu4Momentum) < 0.1) continue;
                 numMuTau++;
                 
             }
@@ -134,7 +136,7 @@ int main(int argc, char* argv[]){
     cout<< "\n===\n input is "<<InputFile  <<"  and output is "<<OutputFile<<"\n===\n";
     
     SkimerBoost t("root://cmsxrootd.fnal.gov/"+InputFile);
-    t.Loop(OutputFile, 0);
+    t.Loop(OutputFile);
     
     return 0;
 }

@@ -13,20 +13,17 @@
 using namespace std;
 
 
-void SkimerBoost::Loop(TString OutputFile, int skm)
+void SkimerBoost::Loop(TString OutputFile)
 {
-    
-    
-    
+            
     TH1F* hEvents = (TH1F*)gDirectory->Get("ggNtuplizer/hEvents");
-    TH1F* hPU     = (TH1F*)gDirectory->Get("ggNtuplizer/hPU");
-    TH1F* hPUTrue = (TH1F*)gDirectory->Get("ggNtuplizer/hPUTrue");
+//    TH1F* hPU     = (TH1F*)gDirectory->Get("ggNtuplizer/hPU");
+//    TH1F* hPUTrue = (TH1F*)gDirectory->Get("ggNtuplizer/hPUTrue");
     
     TFile* file = TFile::Open(OutputFile, "RECREATE");
     TTree* MyNewTree = fChain->CloneTree(0);
     
     fChain->SetBranchStatus("*",0);
-    //    fChain->SetBranchStatus("hasGoodVtx",1);
     fChain->SetBranchStatus("vt*",1);
     fChain->SetBranchStatus("EventTag",1);
     fChain->SetBranchStatus("run",1);
@@ -48,7 +45,6 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
     fChain->SetBranchStatus("AK8*",1);
     fChain->SetBranchStatus("ele*",1);
     fChain->SetBranchStatus("mu*",1);
-    //    fChain->SetBranchStatus("pho",0);
     fChain->SetBranchStatus("tau*",1);
     fChain->SetBranchStatus("m*",1);
     fChain->SetBranchStatus("b*",1);
@@ -75,7 +71,8 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
         if(jentry % 10000 == 0) cout << "Processed " << jentry << " events out of " <<nentries<<endl;
         
         hcount->Fill(1);
-        hcount->Fill(2,genWeight);
+        if (!isData)
+            hcount->Fill(2,genWeight);
         
         
         TLorentzVector LeadMu4Momentum, SubMu4Momentum;
@@ -91,12 +88,9 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
                 if (muPt->at(jmu) < 10 || fabs(muEta->at(jmu)) > 2.4) continue;
                 
                 SubMu4Momentum.SetPtEtaPhiM(muPt->at(jmu),muEta->at(jmu),muPhi->at(jmu),MuMass);
-                
-                
+                                
                 if(LeadMu4Momentum.DeltaR(SubMu4Momentum) > 1.0 ) continue;
                 numDiMu++;
-                
-                
             }
         }
         
@@ -120,12 +114,10 @@ void SkimerBoost::Loop(TString OutputFile, int skm)
 int main(int argc, char* argv[]){
     
     string InputFile=argv[1];
-    string OutputFile=argv[2];
-    
+    string OutputFile=argv[2];    
     cout<< "\n===\n input is "<<InputFile  <<"  and output is "<<OutputFile<<"\n===\n";
-    
     SkimerBoost t("root://cmsxrootd.fnal.gov/"+InputFile);
-    t.Loop(OutputFile, 0);
+    t.Loop(OutputFile);
     
     return 0;
 }
