@@ -13,7 +13,7 @@
 using namespace std;
 
 
-void SkimerBoost::Loop(TString OutputFile, int skm)
+void SkimerBoost::Loop(TString OutputFile)
 {
     
     
@@ -134,7 +134,7 @@ int main(int argc, char* argv[]){
     cout<< "\n===\n input is "<<InputFile  <<"  and output is "<<OutputFile<<"\n===\n";
     
     SkimerBoost t("root://cmsxrootd.fnal.gov/"+InputFile);
-    t.Loop(OutputFile, 0);
+    t.Loop(OutputFile);
     
     return 0;
 }
