@@ -1,0 +1,10 @@
+*root 
+*pdf
+*/*root 
+*/*pdf
+../*root 
+../*pdf
+../*/*root 
+../*/*pdf
+*exe 
+*/*exe
