@@ -125,9 +125,9 @@ int main(int argc, char* argv[]) {
     RooWorkspace *htt_sf = reinterpret_cast<RooWorkspace*>(htt_sf_file.Get("w"));
     htt_sf_file.Close();
     
-    //    // Z-pT reweighting
-    //    TFile *zpt_file = new TFile("data/zpt_weights_2016_BtoH.root");
-    //    auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("zptmass_histo"));
+        // Z-pT reweighting
+        TFile *zpt_file = new TFile("data/zpt_weights_2016_BtoH.root");
+        auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("zptmass_histo"));
     //###############################################################################################
     //  Fix Parameters
     //###############################################################################################
@@ -200,15 +200,12 @@ int main(int argc, char* argv[]) {
             //############################################################################################
             //###########       Loop over MuJet events   #################################################
             //############################################################################################
-            float leadingBoostedTauPt=0;
-            bool onLeadTau = false;
             
             TLorentzVector Mu4Momentum, Mu4Momentum_sub, ZCandida;
             
             if (debug) cout<< "test 1\n";
             
             bool EventPass= false;
-            auto numMuTau(0);
             for (int imu = 0; imu < nMu; ++imu){
                 if (EventPass) break;
                 
@@ -251,9 +248,43 @@ int main(int argc, char* argv[]) {
                     MuonCor *= htt_sf->function("m_trk_ratio")->getVal();
                     
                     //                if (InputROOT.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
-                    if (name.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
+//                    if (name.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
                     
                 }
+                
+                
+                
+                float nom_zpt_weight=1.0;
+                float zmumuWeight=1.0;
+                
+                if (name == "EWKZ" || name == "ZL" || name == "ZTT" || name == "ZLL") {
+                    
+                    
+                    // Z-pT Reweighting
+                    nom_zpt_weight = zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+                    if (syst == "dyShape_Up") {
+                        nom_zpt_weight = 1.1 * nom_zpt_weight - 0.1;
+                    } else if (syst == "dyShape_Down") {
+                        nom_zpt_weight = 0.9 * nom_zpt_weight + 0.1;
+                    }
+                                                    
+                    
+                    
+                    if (syst == "zmumuShape_Up") {
+                        zmumuWeight= htt_sf->function("zptmass_weight_nom")->getVal() * htt_sf->function("zptmass_weight_nom")->getVal();
+                    } else if (syst == "zmumuShape_Down") {
+                        // no weight for shift down
+                    }
+                    else{
+                        zmumuWeight= htt_sf->function("zptmass_weight_nom")->getVal();
+                    }
+                }
+                plotFill("nom_zpt_weight",nom_zpt_weight ,100,0,2);
+                plotFill("zmumuWeight",zmumuWeight ,100,0,2);
+                float ZCorrection=nom_zpt_weight*zmumuWeight;
+                plotFill("ZCorrection",ZCorrection ,100,0,2);
+                
+                
                 
                 
                 
@@ -323,7 +354,7 @@ int main(int argc, char* argv[]) {
                                 if (Q_category[iq]) {
                                     
                                     
-                                    float FullWeight = LumiWeight;
+                                    float FullWeight = LumiWeight *MuonCor *ZCorrection;
                                     std::string FullStringName = Q_Cat[iq] ;
                                     
                                     //                                This check is used to make sure that each event is just filled once for any of the categories ==> No doube-counting of events  (this is specially important for ttbar events where we have many jets and leptons)
@@ -334,7 +365,7 @@ int main(int argc, char* argv[]) {
                                         
                                         plotFill("dR"+FullStringName,Mu4Momentum_sub.DeltaR(Mu4Momentum) ,100,0,1,FullWeight);
                                         plotFill("IsoMu"+FullStringName,IsoMu ,100,0,2,FullWeight);
-                                        plotFill("ZMass"+FullStringName,ZCandida.M() ,40,0,200,FullWeight);
+                                        plotFill("ZMass"+FullStringName,ZCandida.M() ,60,60,120,FullWeight);
                                         plotFill("ht"+FullStringName,ht ,100,0,1000,FullWeight);
                                         
                                         
