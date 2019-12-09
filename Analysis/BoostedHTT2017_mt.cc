@@ -56,9 +56,9 @@ int main(int argc, char* argv[]) {
     RooWorkspace *htt_sf = reinterpret_cast<RooWorkspace*>(htt_sf_file.Get("w"));
     htt_sf_file.Close();
     
-    //    // Z-pT reweighting
-    //    TFile *zpt_file = new TFile("data/zpt_weights_2016_BtoH.root");
-    //    auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("zptmass_histo"));
+        // Z-pT reweighting
+        TFile *zpt_file = new TFile("data/zpt_weights_2016_BtoH.root");
+        auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("zptmass_histo"));
     //###############################################################################################
     //  Fix Parameters
     //###############################################################################################
@@ -178,10 +178,47 @@ int main(int argc, char* argv[]) {
                 MuonCor *= htt_sf->function("m_trk_ratio")->getVal();
                 
                 //                if (InputROOT.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
-                if (name.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
+//                if (name.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
                 
             }
             plotFill("MuonCor",MuonCor ,100,0,2);
+            
+            
+            
+            
+            float nom_zpt_weight=1.0;
+            float zmumuWeight=1.0;
+            
+            if (name == "EWKZ" || name == "ZL" || name == "ZTT" || name == "ZLL") {
+                
+                
+                // Z-pT Reweighting
+                nom_zpt_weight = zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+                if (syst == "dyShape_Up") {
+                    nom_zpt_weight = 1.1 * nom_zpt_weight - 0.1;
+                } else if (syst == "dyShape_Down") {
+                    nom_zpt_weight = 0.9 * nom_zpt_weight + 0.1;
+                }
+                                                
+                
+                
+                if (syst == "zmumuShape_Up") {
+                    zmumuWeight= htt_sf->function("zptmass_weight_nom")->getVal() * htt_sf->function("zptmass_weight_nom")->getVal();
+                } else if (syst == "zmumuShape_Down") {
+                    // no weight for shift down
+                }
+                else{
+                    zmumuWeight= htt_sf->function("zptmass_weight_nom")->getVal();
+                }
+            }
+            plotFill("nom_zpt_weight",nom_zpt_weight ,100,0,2);
+            plotFill("zmumuWeight",zmumuWeight ,100,0,2);
+            float ZCorrection=nom_zpt_weight*zmumuWeight;
+            plotFill("ZCorrection",ZCorrection ,100,0,2);
+
+
+
+
             
             float tmass = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  Met,  Metphi);
             if (tmass > 40) continue;
@@ -261,7 +298,7 @@ int main(int argc, char* argv[]) {
                                     if (Q_category[iq]) {
                                         
                                         
-                                        float FullWeight = LumiWeight*MuonCor;
+                                        float FullWeight = LumiWeight*MuonCor *ZCorrection;
                                         if (isData) FullWeight=1;
                                         std::string FullStringName = Tau_Cat[tt] +iso_Cat[iso] + Q_Cat[iq] ;
                                         

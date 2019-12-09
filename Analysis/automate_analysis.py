@@ -65,8 +65,8 @@ def getSyst2016(name):
 #  if name == 'TT':
 #    systs += ['ttbarShape_Up', 'ttbarShape_Down']
 
-#  if name == 'ZLL':
-#    systs += ['dyShape_Up', 'dyShape_Down', 'zmumuShape_Up', 'zmumuShape_Down']
+  if name == 'ZLL' or name == 'ZTT' or name == 'ZJ':
+    systs += ['dyShape_Up', 'dyShape_Down', 'zmumuShape_Up', 'zmumuShape_Down']
 
   return systs
 
