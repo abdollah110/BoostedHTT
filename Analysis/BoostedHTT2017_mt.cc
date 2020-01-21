@@ -140,7 +140,7 @@ int main(int argc, char* argv[]) {
         //############################################################################################
         //###########       Loop over MuTau events   #################################################
         //############################################################################################
-        
+        bool isFilledOnce = false;
         TLorentzVector Mu4Momentum,BoostedTau4Momentum, Z4Momentum;
         
         for (int imu = 0; imu < nMu; ++imu){
@@ -367,10 +367,14 @@ int main(int argc, char* argv[]) {
                     }
                 }
                 
-                
+            if (! isFilledOnce )
+            {outTr->Fill();
+            isFilledOnce= true;
+            }
+            
             }//boostedTau loop
         }//muon loop
-    outTr->Fill();
+    
     } //End of Tree
     
 
