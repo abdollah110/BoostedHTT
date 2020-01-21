@@ -342,8 +342,8 @@ int main(int argc, char* argv[]) {
                 
                 
             }//boostedTau loop
-    outTr->Fill();    
         }//muon loop
+    outTr->Fill();
     } //End of Tree
     
 
@@ -354,6 +354,7 @@ int main(int argc, char* argv[]) {
     
     for (; iMap1 != jMap1; ++iMap1)
         nplot1(iMap1->first)->Write();
+    outTr->Write();
     
     map<string, TH2F*>::const_iterator iMap2 = myMap2->begin();
     map<string, TH2F*>::const_iterator jMap2 = myMap2->end();
