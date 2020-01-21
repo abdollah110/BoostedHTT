@@ -8,6 +8,8 @@ __date__ = "$Feb 23, 2013 10:39:33 PM$"
 
 import math
 import ROOT
+import sys
+
 from ROOT import *
 #from ROOT import TCanvas
 #from ROOT import TFile
@@ -29,12 +31,13 @@ import os
 
 
 ROOT.gROOT.SetBatch(True)
-
-InputFilesLocation = 'NewOutFiles_BoostedHTT2017_mm_/'
+InputFilesLocation=sys.argv[1]
+#InputFilesLocation = 'NewOutFiles_BoostedHTT2017_mm_/'
 #InputFilesLocation = 'NewOutFiles_BoostedHTT2017_old/'
 
 verbos_ = True
 RB_=1
+bcde_to_bcdef= (4.767+ 9.583+4.224+9.261)/(4.767+ 9.583+4.224+9.261+13.463)
 
 #process=[
 #['VV','VV',-1],
@@ -46,12 +49,14 @@ RB_=1
 #]
 
 process=[
-['VV','Diboson',-1],
-['SingleTop','SingleTop',-1],
-['TTJets','ttbar',-1],
-['DYJetsToLL','DYJets125',-1],
-['WJetsToLNu','WJets',-1],
-['Data','data_obs',+1],
+    ['VV','Diboson',-1],
+#    ['SingleTop','SingleTop',-1],
+    ['TT','ttbar',-1],
+    ['ZTT','DYJets125',-1],
+    ['ZLL','ZLL',-1],
+    ['ZJ','ZJ',-1],
+    ['W','WJets',-1],
+    ['Data','data_obs',+1],
 ]
 
 
@@ -99,6 +104,7 @@ def MakeTheHistogram(channel,NormMC,qcdOS,qcdSS,templateqcd,templateqcdShape,reg
                 raise Exception('Not valid %s'%pro[1])
             else:
                 RebinedHist= NormHisto.Rebin(RB_)
+                if not 'Data' in pro[0] : RebinedHist.Scale(bcde_to_bcdef)
                 tDirectory.WriteObject(RebinedHist,pro[1])
                 
                 qcd_Norm=RebinedHist.Clone()

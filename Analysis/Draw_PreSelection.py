@@ -2,13 +2,14 @@
 import ROOT
 import re
 from array import array
+import os
+import sys
 
 #InputFilesLocation = 'NewOutFiles_BoostedHTT2017_mm_/'
 #InputFilesLocation = 'NewOutFiles_BoostedHTT2017_/'
-InputFilesLocation = 'NewOutFiles_BoostedHTT2017_et_/'
+#InputFilesLocation = 'NN_nominal/'
 
 ForAN=1
-RB_=20
 def add_lumi():
     lowX=0.59
     lowY=0.835
@@ -57,7 +58,7 @@ def make_legend():
         output.SetTextFont(62)
         return output
 
-
+InputFilesLocation=sys.argv[1]
 def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbarCR,MTLegend):
 #    yMin*=0.1
     ROOT.gStyle.SetFrameLineWidth(3)
@@ -73,75 +74,38 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     new_idx=ROOT.gROOT.GetListOfColors().GetSize() + 1
 
     print "categort is ", categoriy
+    
     Data=file.Get(categoriy).Get("data_obs")
     Data.Rebin(RB_)
-    
-    
+        
     QCD=file.Get(categoriy).Get("QCD")
-#    if not QCD:
-#        QCD=file.Get(categoriy).Get("VV")
-#        QCD.Scale(.0001)
-#        print "\n\n\n\nn\######################### whatch out VV  instead of QCD\n\n\n\n"
     QCD.Rebin(RB_)
-    
-
-
-
-
 
     W=file.Get(categoriy).Get("WJets")
-#    W.Rebin(RB_)
-#    W.Scale(1)
-#    if ttbarCR=="" :  W.Scale(SF_W_SingleLep())
-#    if ttbarCR=="_ttbarCRSingleLep" :  W.Scale(SF_W_SingleLep())
-#    if ttbarCR=="_ttbarCRDiLep" :  W.Scale(SF_W_DiLep())
-
-
-
-
-
+    W.Rebin(RB_)
 
     TT=file.Get(categoriy).Get("ttbar")
-#    if not TT:
-#        TT=file.Get(categoriy).Get("VV")
-#        TT.Scale(.0001)
-#        print "\n\n\n\nn\######################### whatch out VV  instead of TT\n\n\n\n"
     TT.Rebin(RB_)
-#    TT.Scale(1)
-#    if ttbarCR=="" :  TT.Scale(SF_TT_SingleLep())
-#    if ttbarCR=="_ttbarCRSingleLep" :  TT.Scale(SF_TT_SingleLep())
-#    if ttbarCR=="_ttbarCRDiLep" :  TT.Scale(SF_TT_DiLep())
 
-
-
-
-
-    SingleT=file.Get(categoriy).Get("SingleTop")
-#    print "SingleT, ", SingleT.Integral()
-    if not SingleT:
-        SingleT=file.Get(categoriy).Get("Diboson")
-        SingleT.Scale(.0001)
-        print "\n\n\n\nn\######################### whatch out VV  instead of SingleT\n\n\n\n"
-    SingleT.Rebin(RB_)
-
-
-
-
+    ZTT=file.Get(categoriy).Get("DYJets125")
+    ZTT.Rebin(RB_)
+    
+    ZJ=file.Get(categoriy).Get("ZJ")
+    ZJ.Rebin(RB_)
+    
+    ZLL=file.Get(categoriy).Get("ZLL")
+    ZLL.Rebin(RB_)
+##    print "ZLL, ", ZLL.Integral()
+#    if not ZLL:
+#        ZLL=file.Get(categoriy).Get("Diboson")
+#        ZLL.Scale(.0001)
+#        print "\n\n\n\nn\######################### whatch out VV  instead of ZLL\n\n\n\n"
+    
 
     VV=file.Get(categoriy).Get("Diboson")
     VV.Rebin(RB_)
+    
 
-
-
-
-
-
-    DYS=file.Get(categoriy).Get("DYJets125")
-#    if not DYS:
-#        DYS=file.Get(categoriy).Get("VV")
-#        DYS.Scale(.0001)
-#        print "\n\n\n\nn\######################### whatch out VV  instead of DYS\n\n\n\n"
-    DYS.Rebin(RB_)
 
     Data.GetXaxis().SetTitle("")
     Data.GetXaxis().SetTitleSize(0)
@@ -155,22 +119,15 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     Data.GetYaxis().SetTitle("Events")
 
 
-#    Signal=file.Get(categoriy).Get("Codex_1200")
-    Signal=file.Get(categoriy).Get("Diboson")
-    Signal.Scale(1.50E-03*.5)
-    Signal.Rebin(RB_)
-    Signal.SetLineStyle(11)
-    Signal.SetLineWidth(3)
-    Signal.SetLineColor(4)
-    Signal.SetMarkerColor(4)
-
+    
 
     QCD.SetFillColor(ROOT.TColor.GetColor(408, 106, 154))
     W.SetFillColor(ROOT.TColor.GetColor(200, 2, 285))
     TT.SetFillColor(ROOT.TColor.GetColor(208, 376, 124))
-    SingleT.SetFillColor(ROOT.TColor.GetColor(150, 132, 232))
+    ZLL.SetFillColor(ROOT.TColor.GetColor(150, 132, 232))
     VV.SetFillColor(ROOT.TColor.GetColor(200, 282, 232))
-    DYS.SetFillColor(ROOT.TColor.GetColor(108, 226, 354))
+    ZTT.SetFillColor(ROOT.TColor.GetColor(108, 226, 354))
+    ZJ.SetFillColor(ROOT.TColor.GetColor(300, 200, 20))
     
     
     
@@ -179,15 +136,10 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
 #    QCD.SetBinContent(QCD.GetNbinsX(),QCD.GetBinContent(QCD.GetNbinsX()+1)+QCD.GetBinContent(QCD.GetNbinsX()))
 #    W.SetBinContent(W.GetNbinsX(),W.GetBinContent(W.GetNbinsX()+1)+W.GetBinContent(W.GetNbinsX()))
 #    TT.SetBinContent(TT.GetNbinsX(),TT.GetBinContent(TT.GetNbinsX()+1)+TT.GetBinContent(TT.GetNbinsX()))
-#    SingleT.SetBinContent(SingleT.GetNbinsX(),SingleT.GetBinContent(SingleT.GetNbinsX()+1)+SingleT.GetBinContent(SingleT.GetNbinsX()))
+#    ZLL.SetBinContent(ZLL.GetNbinsX(),ZLL.GetBinContent(ZLL.GetNbinsX()+1)+ZLL.GetBinContent(ZLL.GetNbinsX()))
 #    VV.SetBinContent(VV.GetNbinsX(),VV.GetBinContent(VV.GetNbinsX()+1)+VV.GetBinContent(VV.GetNbinsX()))
-#    DYS.SetBinContent(DYS.GetNbinsX(),DYS.GetBinContent(DYS.GetNbinsX()+1)+DYS.GetBinContent(DYS.GetNbinsX()))
+#    ZTT.SetBinContent(ZTT.GetNbinsX(),ZTT.GetBinContent(ZTT.GetNbinsX()+1)+ZTT.GetBinContent(ZTT.GetNbinsX()))
 #    Data.SetBinContent(Data.GetNbinsX(),Data.GetBinContent(Data.GetNbinsX()+1)+Data.GetBinContent(Data.GetNbinsX()))
-
-
-
-
-
 
 
     Data.SetMarkerStyle(20)
@@ -195,50 +147,31 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     QCD.SetLineColor(ROOT.kBlack)
     W.SetLineColor(ROOT.kBlack)
     TT.SetLineColor(ROOT.kBlack)
-    DYS.SetLineColor(ROOT.kBlack)
+    ZTT.SetLineColor(ROOT.kBlack)
     VV.SetLineColor(ROOT.kBlack)
-    SingleT.SetLineColor(ROOT.kBlack)
+    ZLL.SetLineColor(ROOT.kBlack)
+    ZJ.SetLineColor(ROOT.kBlack)
     Data.SetLineColor(ROOT.kBlack)
     Data.SetLineWidth(2)
 
-
-#    #Making the plot blind
-#    if FileName.find("LQMass") > 0 :
-#        print "##################################\n", FileName
-#        for i in range(Data.GetNbinsX()):
-##            if i > 15 : Data.SetBinContent(i+1,0)
-#            if i > 9 :
-#                Data.SetBinContent(i+1,0)
-#                Data.SetBinError(i+1,0)
-#
-#    if FileName.find("MET") > 0 :
-#        print "##################################\n", FileName
-#        for i in range(Data.GetNbinsX()):
-#            if i > 9 : Data.SetBinContent(i+1,0)
-#
-#    if FileName.find("tmass_MuMet") > 0 :
-#        print "##################################\n", FileName
-#        for i in range(Data.GetNbinsX()):
-#                if i > 9 : Data.SetBinContent(i+1,0)
-
-
-
-
     stack=ROOT.THStack("stack","stack")
     stack.Add(QCD)
-    stack.Add(VV)
-    stack.Add(DYS)
-    stack.Add(SingleT)
-    stack.Add(TT)
     stack.Add(W)
+    stack.Add(VV)
+    stack.Add(TT)
+    stack.Add(ZLL)    
+    stack.Add(ZJ)
+    stack.Add(ZTT)
     
 
     errorBand = W.Clone()
     errorBand.Add(QCD)
     errorBand.Add(TT)
     errorBand.Add(VV)
-    errorBand.Add(SingleT)
-    errorBand.Add(DYS)
+    errorBand.Add(ZLL)
+    errorBand.Add(ZTT)
+    errorBand.Add(ZJ)
+    
     errorBand.SetMarkerSize(0)
     errorBand.SetFillColor(16)
     errorBand.SetFillStyle(3001)
@@ -265,20 +198,19 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
 
     Data.GetXaxis().SetLabelSize(0)
     if isLOG: Data.SetMaximum(Data.GetMaximum()*10000)
-    else:  Data.SetMaximum(Data.GetMaximum()*3)
+    else:  Data.SetMaximum(Data.GetMaximum()*2)
     Data.SetMinimum(yMin)
     Data.Draw("e")
     stack.Draw("histsame")
     errorBand.Draw("e2same")
     Data.Draw("esame")
-#    Signal.Draw("histsame")
 
     legende=make_legend()
-    legende.AddEntry(Data,"Observed","elp")
-#    legende.AddEntry(Signal,"Codex_1200","l")
+    legende.AddEntry(Data,"Data","elp")
+    legende.AddEntry(ZJ,"ZJ","f")
     legende.AddEntry(TT,"t#bar{t}+jets","f")
-    legende.AddEntry(SingleT,"Single Top","f")
-    legende.AddEntry(DYS,"DY#rightarrowll+iets ","f")
+    legende.AddEntry(ZLL,"ZLL","f")
+    legende.AddEntry(ZTT,"ZTT","f")
     legende.AddEntry(VV,"Diboson","f")
     legende.AddEntry(W,"W+iets","f")
     legende.AddEntry(QCD,"QCD multijet","f")
@@ -337,10 +269,10 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     pad2.cd()
     
     h1=errorBand.Clone()
-#    h1.SetMaximum(2)
-#    h1.SetMinimum(0)
-    h1.SetMaximum(2.0)
-    h1.SetMinimum(0.0)
+    h1.SetMaximum(2)
+    h1.SetMinimum(0)
+#    h1.SetMaximum(1.5)
+#    h1.SetMinimum(0.5)
     h1.SetMarkerStyle(20)
 
     h3=Data.Clone()
@@ -386,25 +318,26 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     ROOT.gPad.RedrawAxis()
 
     c.Modified()
-    outName=((FileName.replace('TotalRootForLimit_PreSelection_MuJet','').replace('.root','')).replace('_HighDPhi_Iso','')).replace('_HighMT','_MT100')
-    c.SaveAs(InputFilesLocation+'_et'+outName+".pdf")
+    outName=(FileName.replace('TotalRootForLimit_PreSelection_MuJet','').replace('.root',''))
+    c.SaveAs(InputFilesLocation+'_mt'+outName+".pdf")
 
 
 FileNamesInfo=[
 #               ["_tmass_JetMet","M_{T}(jet,MET) (GeV)","",5,1],
-               ["ZMass","visible M_{e#tau} (GeV)","",1,.1],
-               ["dR","deltaR_{e#tau}","",5,.1],
-#               ["tmass","tmass{#mu,MET}","",1,.1],
-               ["ht","jet HT (GeV)","",5,.1],
+               ["ZMass","visible M_{l#tau} (GeV)","",1,.1],
+#               ["dR","deltaR_{e#tau}","",5,.1],
+               ["tmass","tmass{l,MET}","",1,.1],
+               ["ht","jet HT (GeV)","",1,.1],
                
                
-#               ["_LepPt","lepton p_{T} (GeV)","",100,.1],
+               ["lepPt","lepton p_{T} (GeV)","",1,.1],
+               ["tauPt","tau p_{T} (GeV)","",1,.1],
 #               ["_LepEta","lepton #eta ","",5,10],
 #               ["_JetPt","jet p_{T} (GeV)","",100,.1],
 #               ["_JetEta","jet #eta ","",5,10],
 #               ["_nVtx","# of vertex","",2,10],
 #               ["_nVtx_NoPU","# of vertex before PU reweighting","",2,10],
-#               ["_MET","MET  (GeV)","",10,.1],
+               ["MET","MET  (GeV)","",1,.1],
 #               ["_LQMass","M_{LQ}   (GeV)","",10,.1],
 #               ["_tmass_MuMet","M_{T}(#mu,MET) (GeV)","",10,.1],
 #               ["_dPhi_Jet_Met","#Delta#phi (jet,MET)","",5,1],
@@ -427,10 +360,14 @@ logStat=[0]
 
 #    Isolation=["_Iso", "_AntiIso"]
 #    Charge= ["_OS","_SS"]
-#region= ["_Pass", "_Fail"]
+
 region= [
 ['_Pass','pass'],
-['_Fail','fail']
+#['_Fail','fail'],
+#['_PassM','pass'],
+#['_FailM','fail'],
+#['_PassT','pass'],
+#['_FailT','fail']
 ]
 #region= ["_Fail"]
 Charge= ["_OS"]

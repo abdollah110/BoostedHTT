@@ -35,30 +35,33 @@ int main() {
     // Here we will just define two categories for an 8TeV analysis. Each entry in
     // the vector below specifies a bin name and corresponding bin_id.
     
-    VString chns = { "mt"};
+    VString chns = { "mt","et"};
     
     map<string, string> input_folders = {
-        //   {"et", "."},
-        {"mt", "."}
+        
+        {"mt", "."},
+        {"et", "."}
     };
     
     map<string, VString> bkg_procs;
     // bkg_procs["et"] = {"ZTT", "W", "QCD", "TT","VV","SingleTop"};
     bkg_procs["mt"] = {"WJets", "QCD", "ttbar","Diboson","SingleTop"};
+    bkg_procs["et"] = {"WJets", "QCD", "ttbar","Diboson","SingleTop"};
     
     VString sig_procs = {"DYJets"};
     
     map<string, Categories> cats;
-    //cats["et_13TeV"] = {
-    //      {1, "EleTau_DiJet"}};
     
     cats["mt_13TeV"] = {
         {1, "pass"},
         {2, "fail"}
-        
-        
     };
-    
+    cats["et_13TeV"] = {
+        {1, "pass"},
+        {2, "fail"}
+    };
+
+
     // ch::Categories is just a typedef of vector<pair<int, string>>
     //! [part1]
     
@@ -90,7 +93,7 @@ int main() {
     for (string era : {"13TeV"}) {
         for (string chn : chns) {
             
-            string file = aux_shapes + input_folders[chn] + "/template_boostedH.root";
+            string file = aux_shapes + input_folders[chn] + "/template_boostedH_"+chn+".root";
             cb.cp().channel({chn}).era({era}).backgrounds().ExtractShapes(
                                                                           file, "$BIN/$PROCESS", "$BIN/$PROCESS_$SYSTEMATIC");
             cb.cp().channel({chn}).era({era}).signals().ExtractShapes(
@@ -113,10 +116,10 @@ int main() {
     .AddSyst(cb, "CMS_lumi_$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.024));
     
     cb.cp().bin_id({1}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","SingleTop"}}))
-    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.1));
+    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.22222));
     
     cb.cp().bin_id({2}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","SingleTop"}}))
-    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 0.9));
+    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 0.818182));
     
     
     cb.cp().process(ch::JoinStr({sig_procs, {"WJets", "QCD", "ttbar","Diboson","SingleTop"}}))
@@ -201,10 +204,10 @@ int main() {
     .AddSyst(cb, "CMS_htt_SingleTopNorm", "lnN", SystMap<>::init(1.10));
     
     cb.cp().process({"WJets"})
-    .AddSyst(cb, "CMS_htt_WNorm", "lnN", SystMap<>::init(1.10));
+    .AddSyst(cb, "CMS_htt_WNorm", "lnN", SystMap<>::init(1.20));
     
     cb.cp().process({"QCD"})
-    .AddSyst(cb, "CMS_htt_QCDNorm", "lnN", SystMap<>::init(1.20));
+    .AddSyst(cb, "CMS_htt_QCDNorm", "lnN", SystMap<>::init(1.30));
     
     
     
@@ -225,7 +228,7 @@ int main() {
                                     aux_shapes + "/template_boostedH.root",
                                     "$BIN/$PROCESS$MASS",
                                     "$BIN/$PROCESS$MASS_$SYSTEMATIC");
-    
+
     
     
     
@@ -267,7 +270,7 @@ int main() {
     << "\n";
     
     
-    string folder = "outputBoostedHTT/V4";
+    string folder = "outputBoostedHTT/V10_cmb_Tight";
     boost::filesystem::create_directories(folder);
     boost::filesystem::create_directories(folder + "/common");
     for (auto m : masses) {

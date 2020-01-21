@@ -50,15 +50,17 @@ int main(int argc, char* argv[]) {
     myMap1 = new std::map<std::string, TH1F*>();
     myMap2 = new map<string, TH2F*>();
     
+    TTree * outTr=  new TTree("mutau_tree","mutau_tree");
+    
     
     // H->tau tau scale factors
     TFile htt_sf_file("data/htt_scalefactors_2017_v2.root");
     RooWorkspace *htt_sf = reinterpret_cast<RooWorkspace*>(htt_sf_file.Get("w"));
     htt_sf_file.Close();
     
-        // Z-pT reweighting
-        TFile *zpt_file = new TFile("data/zpt_weights_2016_BtoH.root");
-        auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("zptmass_histo"));
+    // Z-pT reweighting
+    TFile *zpt_file = new TFile("data/zpt_weights_2016_BtoH.root");
+    auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("zptmass_histo"));
     //###############################################################################################
     //  Fix Parameters
     //###############################################################################################
@@ -178,7 +180,7 @@ int main(int argc, char* argv[]) {
                 MuonCor *= htt_sf->function("m_trk_ratio")->getVal();
                 
                 //                if (InputROOT.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
-//                if (name.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
+                //                if (name.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
                 
             }
             plotFill("MuonCor",MuonCor ,100,0,2);
@@ -199,7 +201,7 @@ int main(int argc, char* argv[]) {
                 } else if (syst == "dyShape_Down") {
                     nom_zpt_weight = 0.9 * nom_zpt_weight + 0.1;
                 }
-                                                
+                
                 
                 
                 if (syst == "zmumuShape_Up") {
@@ -215,10 +217,10 @@ int main(int argc, char* argv[]) {
             plotFill("zmumuWeight",zmumuWeight ,100,0,2);
             float ZCorrection=nom_zpt_weight*zmumuWeight;
             plotFill("ZCorrection",ZCorrection ,100,0,2);
-
-
-
-
+            
+            
+            
+            
             
             float tmass = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  Met,  Metphi);
             if (tmass > 40) continue;
@@ -245,6 +247,14 @@ int main(int argc, char* argv[]) {
                 } else if (name == "ZJ" && Zcateg != 6) {
                     continue;
                 }
+                
+                
+                //###############################################################################################
+                //  make Tree
+                //###############################################################################################
+                
+                float mupt_=muPt->at(imu);
+                outTr->Branch("muPt",&mupt_,"muPt/F");
                 
                 //###############################################################################################
                 //  BoostedTau Isolation Categorization
@@ -332,10 +342,11 @@ int main(int argc, char* argv[]) {
                 
                 
             }//boostedTau loop
+    outTr->Fill();    
         }//muon loop
     } //End of Tree
     
-    
+
     
     fout->cd();
     map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();

@@ -27,14 +27,32 @@ RB_=1
 
 process=[
     ['VV','Diboson',-1],
-    ['SingleTop','SingleTop',-1],
-    ['TTJets','ttbar',-1],
-    ['DYJetsToLL','DYJets125',-1],
-    ['WJetsToLNu','WJets',-1],
+#    ['SingleTop','SingleTop',-1],
+    ['TT','ttbar',-1],
+    ['ZTT','DYJets125',-1],
+    ['ZLL','ZLL',-1],
+    ['ZJ','ZJ',-1],
+    ['W','WJets',-1],
     ['Data','data_obs',+1],
 ]
 
-
+systs = ['met_JESUp', 'met_JESDown', 'met_UESUp', 'met_UESDown','dyShape_Up', 'dyShape_Down', 'zmumuShape_Up', 'zmumuShape_Down']
+  
+#
+#
+#  if name != 'embed' and name != 'data_obs':
+#     systs += [
+#             'met_JESUp', 'met_JESDown', 'met_UESUp', 'met_UESDown'
+#              ]
+#
+##  if name == 'TT':
+##    systs += ['ttbarShape_Up', 'ttbarShape_Down']
+#
+#  if name == 'ZLL' or name == 'ZTT' or name == 'ZJ':
+#    systs += ['dyShape_Up', 'dyShape_Down', 'zmumuShape_Up', 'zmumuShape_Down']
+    
+    
+    
 
 def getNormOfQCD(channel,NormMC):
     sum=0
@@ -53,8 +71,8 @@ def MakeTheHistogram(channel,NormMC,qcdOS,qcdSS,templateqcd,templateqcdShape,reg
     
     OutFile = TFile(InputFilesLocation+'/'+"TotalRootForLimit_PreSelection_"+channel + NormMC+".root" , 'RECREATE')
 
-    if region=='_Pass':CatName='pass'
-    if region=='_Fail':CatName='fail'
+    if region=='_Pass' or region=='_PassM' or region=='_PassT' :CatName='pass'
+    if region=='_Fail' or region=='_FailM' or region=='_FailT' :CatName='fail'
     tDirectory= OutFile.mkdir(CatName)
     print "catName=",CatName
     tDirectory.cd()
@@ -79,6 +97,20 @@ def MakeTheHistogram(channel,NormMC,qcdOS,qcdSS,templateqcd,templateqcdShape,reg
         else:
             RebinedHist= NormHisto.Rebin(RB_)
             tDirectory.WriteObject(RebinedHist,pro[1])
+
+    for pro in process:
+        for sys in systs:
+#            print '=====>  ',InputFilesLocation+'/NN_'+sys+'/'+pro[0]+'.root'
+            sysfileName=InputFilesLocation.replace('NN_nominal','')+'/NN_'+sys+'/'+pro[0]+'_'+sys+'.root'
+            if not os.path.exists(sysfileName):
+                continue
+            else:
+                print sysfileName
+                sysfile = TFile(sysfileName)
+                sysNormHisto =  sysfile.Get(channel+NormMC )
+                sysRebinedHist= sysNormHisto.Rebin(RB_)
+                tDirectory.WriteObject(sysRebinedHist,pro[1]+'_'+sys)
+
                 
                 
     ################################################
@@ -141,16 +173,19 @@ def MakeTheHistogram(channel,NormMC,qcdOS,qcdSS,templateqcd,templateqcdShape,reg
 
 if __name__ == "__main__":
     
-    PlotName=["ZMass","dR","tmass","ht"]
+    PlotName=["ZMass","tmass","ht","lepPt","tauPt","MET"]
+#    PlotName=["ZMass"]
 
 
 #    Isolation=["_Iso", "_AntiIso"]
 #    Charge= ["_OS","_SS"]
     region= ["_Pass", "_Fail"]
+#    region= ["_PassM", "_FailM"]
+#    region= ["_PassT", "_FailT"]
 
     Isolation=["_Iso"]
     Charge= ["_OS"]
-#    region= ["_Pass"]
+
 
 
     for Norm in PlotName:
