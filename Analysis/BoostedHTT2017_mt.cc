@@ -312,10 +312,10 @@ int main(int argc, char* argv[]) {
                 outTr->Branch("FailM",&FailM,"FailM/O");
                 outTr->Branch("PassT",&PassT,"PassT/O");
                 outTr->Branch("FailT",&FailT,"FailT/O");
-                outTr->Branch("q_OS",&q_OS,"q_OS/F");
-                outTr->Branch("q_SS",&q_SS,"q_SS/F");
-                outTr->Branch("lepIso",&Isolation,"lepIso/F");
-                outTr->Branch("lepAntiIso",&AntiIsolation,"lepAntiIso/F");
+                outTr->Branch("q_OS",&q_OS,"q_OS/O");
+                outTr->Branch("q_SS",&q_SS,"q_SS/O");
+                outTr->Branch("lepIso",&Isolation,"lepIso/O");
+                outTr->Branch("lepAntiIso",&AntiIsolation,"lepAntiIso/O");
                 outTr->Branch("ZMass",&ZMass,"ZMass/F");
                 outTr->Branch("tmass",&tmass,"tmass/F");
                 outTr->Branch("ht",&ht,"ht/F");
