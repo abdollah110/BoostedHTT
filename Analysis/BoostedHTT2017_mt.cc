@@ -249,12 +249,7 @@ int main(int argc, char* argv[]) {
                 }
                 
                 
-                //###############################################################################################
-                //  make Tree
-                //###############################################################################################
-                
-                float mupt_=muPt->at(imu);
-                outTr->Branch("muPt",&mupt_,"muPt/F");
+
                 
                 //###############################################################################################
                 //  BoostedTau Isolation Categorization
@@ -295,6 +290,38 @@ int main(int argc, char* argv[]) {
                 
                 bool Q_category[size_q] = {q_OS, q_SS};
                 std::string Q_Cat[size_q] = {"_OS", "_SS"};
+                
+                
+                
+                //###############################################################################################
+                //  make Tree
+                //###############################################################################################
+                
+                float mupt_=muPt->at(imu);
+                float taupt_=boostedTauPt->at(ibtau);
+                float ZMass=Z4Momentum.M();
+                float LeadJetPt = LeadJet.Pt();
+                float dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
+                
+
+                outTr->Branch("muPt",&mupt_,"muPt/F");
+                outTr->Branch("taupt",&taupt_,"taupt/F");
+                outTr->Branch("Pass",&Pass,"Pass/O");
+                outTr->Branch("Fail",&Fail,"Fail/O");
+                outTr->Branch("PassM",&PassM,"PassM/O");
+                outTr->Branch("FailM",&FailM,"FailM/O");
+                outTr->Branch("PassT",&PassT,"PassT/O");
+                outTr->Branch("FailT",&FailT,"FailT/O");
+                outTr->Branch("q_OS",&q_OS,"q_OS/F");
+                outTr->Branch("q_SS",&q_SS,"q_SS/F");
+                outTr->Branch("lepIso",&Isolation,"lepIso/F");
+                outTr->Branch("lepAntiIso",&AntiIsolation,"lepAntiIso/F");
+                outTr->Branch("ZMass",&ZMass,"ZMass/F");
+                outTr->Branch("tmass",&tmass,"tmass/F");
+                outTr->Branch("ht",&ht,"ht/F");
+                outTr->Branch("Met",&Met,"Met/F");
+                outTr->Branch("LeadJetPt",&LeadJetPt,"LeadJetPt/F");
+                outTr->Branch("dR_mu_tau",&dR_mu_tau,"dR_mu_tau/F");
                 
                 //###############################################################################################
                 // Fill Histograms
