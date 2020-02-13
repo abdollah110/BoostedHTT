@@ -88,14 +88,11 @@ float XSection(std::string OutName) {
     else if (OutName.find("DYJetsToLL_M-50_HT-1200to2500") != string::npos) return 0.1514* DYScaleFactor;
     else if (OutName.find("DYJetsToLL_M-50_HT-2500toInf") != string::npos) return 0.003565* DYScaleFactor;
     
-    
-    //Di-boson   Pythia is not useful in this analysis
-    //    else if (OutName.find("WW_pythia") != string::npos) return 115.0;
-    //    else if (OutName.find("WZ_pythia") != string::npos) return 47.13;
-    //    else if (OutName.find("ZZ_pythia") != string::npos) return 16.523;
-    
-    
-
+    else if (OutName.find("ggH125") != string::npos) return 48.58* 0.0627;
+    else if (OutName.find("qqH125") != string::npos) return 3.782 * 0.0627;
+    else if (OutName.find("WPlusH125") != string::npos) return 0.840 * 0.0627;
+    else if (OutName.find("WMinusH125") != string::npos) return 0.5328 * 0.0627;
+    else if (OutName.find("ZH125") != string::npos) return 0.8839 * 0.062;
     
     
     else if (OutName.find("WWTo2L2Nu_powheg") != string::npos) return  12.178 ;
@@ -164,24 +161,6 @@ else if (OutName.find("WW") != string::npos) return  75.88 ;
     else if (OutName.find("ZZTo2L2Q_amcNLO") != string::npos) return  3.22 ;
 //    else if (OutName.find("ZZTo2Q2Nu_powheg") != string::npos) return  4.04 ;
     else if (OutName.find("ZZTo4L_powheg") != string::npos) return  1.212 ;
-//    else if (OutName.find("ZZTo4Q_amcatnloFXFX") != string::npos) return 6.000;   // NOTE THIS IS JUST MY ESTIMATION
-//    else if (OutName.find("ZZTo2L2Q_13TeV_amcatnloFXFX_madspin") != string::npos) return  3.22 ;
-    // The missing one is ZZto4Nu
-    
-    
-//    else if (OutName.find("WZTo2L2Q_13TeV_amcatnloFXFX_madspin") != string::npos) return  5.595 ;
-//    else if (OutName.find("WZTo3LNu_amcNLO") != string::npos) return   4.42965;
-    
-    
-    
-    
-    //Need to check these
-    
-    
-//    else if (OutName.find("") != string::npos) return   ;
-    
-    
-
     
     //SingleTop
     else if (OutName.find("ST_t-channel_antitop") != string::npos) return 80.95;
@@ -197,47 +176,7 @@ else if (OutName.find("WW") != string::npos) return  75.88 ;
     else if (OutName.find("TTToHadronic") != string::npos) return (831.76*TT_Had_BR);
     else if (OutName.find("TTToSemiLeptonic") != string::npos) return (831.76*TT_SemiLep_BR);
     
-//    else if (OutName.find("TTJets") != string::npos) return (831.76);
-    
-    
-    
-    
-    
-    
-    
-    //    //    https://twiki.cern.ch/twiki/bin/view/CMS/Exo2015LQ1AndLQ2Analyses
-    //    else if (OutName.find("skimed_lq200") != string::npos) return 60.6;
-    //    else if (OutName.find("skimed_lq250") != string::npos) return 20.3;
-    //    else if (OutName.find("skimed_lq300") != string::npos) return     8.05E+00;
-    //    else if (OutName.find("skimed_lq350") != string::npos) return     3.58E+00;
-    //    else if (OutName.find("skimed_lq400") != string::npos) return     1.74E+00;
-    //    else if (OutName.find("skimed_lq450") != string::npos) return     9.05E-01;
-    //    else if (OutName.find("skimed_lq500") != string::npos) return     4.96E-01;
-    //    else if (OutName.find("skimed_lq550") != string::npos) return     2.84E-01;
-    //    else if (OutName.find("skimed_lq600") != string::npos) return     1.69E-01;
-    //    else if (OutName.find("skimed_lq650") != string::npos) return     1.03E-01;
-    //    else if (OutName.find("skimed_lq700") != string::npos) return     6.48E-02;
-    //    else if (OutName.find("skimed_lq750") != string::npos) return     4.16E-02;
-    //    else if (OutName.find("skimed_lq800") != string::npos) return     2.73E-02;
-    //    else if (OutName.find("skimed_lq850") != string::npos) return     1.82E-02;
-    //    else if (OutName.find("skimed_lq900") != string::npos) return     1.23E-02;
-    //    else if (OutName.find("skimed_lq950") != string::npos) return     8.45E-03;
-    //    else if (OutName.find("skimed_lq1000") != string::npos) return     5.86E-03;
-    //    else if (OutName.find("skimed_lq1050") != string::npos) return     4.11E-03;
-    //    else if (OutName.find("skimed_lq1100") != string::npos) return     2.91E-03;
-    //    else if (OutName.find("skimed_lq1150") != string::npos) return     2.08E-03;
-    //    else if (OutName.find("skimed_lq1200") != string::npos) return     1.50E-03;
-    //    else if (OutName.find("skimed_lq1250") != string::npos) return     1.09E-03;
-    //    else if (OutName.find("skimed_lq1300") != string::npos) return     7.95E-04;
-    //    else if (OutName.find("skimed_lq1350") != string::npos) return     5.85E-04;
-    //    else if (OutName.find("skimed_lq1400") != string::npos) return     4.33E-04;
-    //    else if (OutName.find("skimed_lq1450") != string::npos) return     3.21E-04;
-    //    else if (OutName.find("skimed_lq1500") != string::npos) return     2.40E-04;
-    //
-    //
-    //
-    
-    else if (OutName.find("Codex") != string::npos ) return      1.0;
+
     
     else if (OutName.find("EWK_DYToLL") != string::npos ) return      3.987;
     

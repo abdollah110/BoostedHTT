@@ -83,45 +83,18 @@ for ifile in fileList:
         names = ['TT']
     elif 'WJets' in sample or 'EWK' in sample:
         names = ['W']
-#    elif 'EWKZ' in sample:
-#        names = ['EWKZ']
     elif 'data' in sample.lower():
         names = ['data_obs']
-#    elif 'ggHtoTauTau' in sample:
-#        mass = sample.split('ggHtoTauTau')[-1]
-#        names = ['ggH'+mass]
-#    elif 'ggH125' in sample:
-#        mass = sample.split('ggH')[-1]
-#        names = ['ggH'+mass]
-#    elif 'VBFHtoTauTau' in sample:
-#        mass = sample.split('VBFHtoTauTau')[-1]
-#        names = ['VBF'+mass]
-#    elif 'VBF' in sample:
-#        mass = sample.split('VBF')[-1]
-#        names = ['VBF'+mass]
-#    elif 'WPlus' in sample or 'WMinus' in sample:
-#        mass = sample.split('HTauTau')[-1]
-#        names = ['WH'+mass]
-#    elif 'ZHTauTau' in sample:
-#        mass = sample.split('ZHTauTau')[-1]
-#        names = ['ZH'+mass]
-#    elif 'ZH' in sample:
-#        mass = sample.split('ZH')[-1]
-#        names = ['ZH'+mass]
-#    elif 'ttH' in sample or 'tth' in sample:
-#        mass = sample.split('ttH')[-1]
-#        names = ['ttH'+mass]
-#    elif 'embed' in sample:
-#        names = ['embed']
-#    elif 'vbf' in sample:
-#        names = ['VBF125']
-#    elif 'ggH' in sample or 'ggh' in sample:
-#        names = ['ggH125']
-#        if not 'madgraph' in sample:
-#    elif 'wh' in sample:
-#        names = ['WH125']
-#    elif 'zh' in sample:
-#        names = ['ZH125']
+    elif 'ggH125' in sample:
+        names = ['ggH125']
+    elif 'qqH125' in sample:
+        names = ['qqH125']
+    elif 'WPlusH125' in sample:
+        names = ['WPlusH125']
+    elif 'WMinusH125' in sample:
+        names = ['WMinusH125']
+    elif 'ZH125' in sample:
+        names = ['ZH125']
     else:
         names = ['VV']
 
