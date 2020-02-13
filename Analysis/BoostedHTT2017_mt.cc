@@ -80,14 +80,15 @@ int main(int argc, char* argv[]) {
     Int_t nentries_wtn = (Int_t) Run_Tree->GetEntries();
     cout<<"nentries_wtn===="<<nentries_wtn<<"\n";
     for (Int_t i = 0; i < nentries_wtn; i++) {
-        //                    for (Int_t i = 0; i < 10000; i++) {
         
         Run_Tree->GetEntry(i);
         if (i % 10000 == 0) fprintf(stdout, "\r  Processed events: %8d of %8d ", i, nentries_wtn);
         fflush(stdout);
         
         // Trigger
-        bool PassTrigger = ((HLTEleMuX >> 19 & 1)==1); // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19; // 2017
+        bool PassTrigger = ((HLTEleMuX >> 21 & 1)==1);
+//              else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
+        // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19; // 2017
         if (! PassTrigger) continue;
         
         //  This part is to avoid of the duplicate of mu-tau pair from one events
@@ -234,7 +235,7 @@ int main(int argc, char* argv[]) {
                 
                 BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                 float dR_mu_tau= BoostedTau4Momentum.DeltaR(Mu4Momentum);
-                if( dR_mu_tau > 0.8 || dR_mu_tau < 0.4) continue;
+                if( dR_mu_tau > 0.8 || dR_mu_tau < 0.1) continue;
                 Z4Momentum=BoostedTau4Momentum+Mu4Momentum;
                 
                 
@@ -272,12 +273,13 @@ int main(int argc, char* argv[]) {
                 //###############################################################################################
                 bool LepPassIsolation= IsoMu < LeptonIsoCut;
                 
-                const int size_isoCat = 2;
+                const int size_isoCat = 3;
+                bool NoLepIso = 1;
                 bool Isolation = LepPassIsolation;
                 bool AntiIsolation =  !LepPassIsolation;
                 
-                bool Iso_category[size_isoCat] = {Isolation, AntiIsolation};
-                std::string iso_Cat[size_isoCat] = {"_Iso", "_AntiIso"};
+                bool Iso_category[size_isoCat] = {NoLepIso,Isolation, AntiIsolation};
+                std::string iso_Cat[size_isoCat] = {"","_Iso", "_AntiIso"};
                 
                 //###############################################################################################
                 //  Charge Categorization
