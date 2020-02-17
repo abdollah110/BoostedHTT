@@ -337,43 +337,43 @@ int main(int argc, char* argv[]) {
                 // Fill Histograms
                 //###############################################################################################
                 
-                for (int tt = 0; tt < size_tauCat; tt++) {
-                    if (Tau_category[tt]) {
-                        for (int iso = 0; iso < size_isoCat; iso++) {
-                            if (Iso_category[iso]) {
-                                for (int iq = 0; iq < size_q; iq++) {
-                                    if (Q_category[iq]) {
-                                        
-                                        
-                                        std::string FullStringName = Tau_Cat[tt] +iso_Cat[iso] + Q_Cat[iq] ;
-                                        
-                                        //                                This check is used to make sure that each event is just filled once for any of the categories ==> No doube-counting of events  (this is specially important for ttbar events where we have many jets and leptons)
-                                        if (!( std::find(HistNamesFilled.begin(), HistNamesFilled.end(), FullStringName) != HistNamesFilled.end())){
-                                            HistNamesFilled.push_back(FullStringName);
-                                            
-                                            //1 D histograms
-                                            plotFill("ZMass"+FullStringName,Z4Momentum.M() ,20,0,100,FullWeight);
-//                                            plotFill("tmass"+FullStringName,tmass ,25,0,50,FullWeight);
-//                                            plotFill("ht"+FullStringName,ht ,25,0,1000,FullWeight);
-//                                            plotFill("lepPt"+FullStringName,muPt->at(imu) ,20,0,200,FullWeight);
-//                                            plotFill("tauPt"+FullStringName,boostedTauPt->at(ibtau) ,20,0,200,FullWeight);
-//                                            plotFill("MET"+FullStringName,Met ,30,0,300,FullWeight);
-//                                            plotFill("LeadJetPt"+FullStringName,LeadJet.Pt() ,25,0,1000,FullWeight);
-//                                            plotFill("dR_Z_jet"+FullStringName,LeadJet.DeltaR(Z4Momentum) ,25,0,5,FullWeight);
+//                for (int tt = 0; tt < size_tauCat; tt++) {
+//                    if (Tau_category[tt]) {
+//                        for (int iso = 0; iso < size_isoCat; iso++) {
+//                            if (Iso_category[iso]) {
+//                                for (int iq = 0; iq < size_q; iq++) {
+//                                    if (Q_category[iq]) {
+//                                        
+//                                        
+//                                        std::string FullStringName = Tau_Cat[tt] +iso_Cat[iso] + Q_Cat[iq] ;
+//                                        
+//                                        //                                This check is used to make sure that each event is just filled once for any of the categories ==> No doube-counting of events  (this is specially important for ttbar events where we have many jets and leptons)
+//                                        if (!( std::find(HistNamesFilled.begin(), HistNamesFilled.end(), FullStringName) != HistNamesFilled.end())){
+//                                            HistNamesFilled.push_back(FullStringName);
 //                                            
+//                                            //1 D histograms
+//                                            plotFill("ZMass"+FullStringName,Z4Momentum.M() ,20,0,100,FullWeight);
+////                                            plotFill("tmass"+FullStringName,tmass ,25,0,50,FullWeight);
+////                                            plotFill("ht"+FullStringName,ht ,25,0,1000,FullWeight);
+////                                            plotFill("lepPt"+FullStringName,muPt->at(imu) ,20,0,200,FullWeight);
+////                                            plotFill("tauPt"+FullStringName,boostedTauPt->at(ibtau) ,20,0,200,FullWeight);
+////                                            plotFill("MET"+FullStringName,Met ,30,0,300,FullWeight);
+////                                            plotFill("LeadJetPt"+FullStringName,LeadJet.Pt() ,25,0,1000,FullWeight);
+////                                            plotFill("dR_Z_jet"+FullStringName,LeadJet.DeltaR(Z4Momentum) ,25,0,5,FullWeight);
+////                                            
+////                                            
+////                                            //2 D histograms
+////                                            plotFill("LepDR_MET"+FullStringName, dR_mu_tau, Met, 20,0.4,0.8 ,30,0,300,FullWeight);
+////                                            plotFill("LepDR_HT"+FullStringName, dR_mu_tau, ht, 20,0.4,0.8 ,25,0,1000,FullWeight);
+////                                            plotFill("LepDR_LeadJet"+FullStringName, dR_mu_tau, LeadJet.Pt(), 20,0.4,0.8 ,25,0,1000,FullWeight);
 //                                            
-//                                            //2 D histograms
-//                                            plotFill("LepDR_MET"+FullStringName, dR_mu_tau, Met, 20,0.4,0.8 ,30,0,300,FullWeight);
-//                                            plotFill("LepDR_HT"+FullStringName, dR_mu_tau, ht, 20,0.4,0.8 ,25,0,1000,FullWeight);
-//                                            plotFill("LepDR_LeadJet"+FullStringName, dR_mu_tau, LeadJet.Pt(), 20,0.4,0.8 ,25,0,1000,FullWeight);
-                                            
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
                 
 //                if (! isFilledOnce ){
 //                outTr->Fill();
