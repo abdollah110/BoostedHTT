@@ -167,22 +167,22 @@ int main(int argc, char* argv[]) {
 //                htt_sf->var("z_gen_mass")->setVal(ZBosonMass);
 //                htt_sf->var("z_gen_pt")->setVal(ZBosonPt);
 //                //                cout<<"\t\t ZBosonMass= "<<ZBosonMass <<"  ZBosonPt "<<ZBosonPt<<"\n";
-//                
-//                
+//
+//
 //                // muon ID SF
 //                MuonCor *= htt_sf->function("m_id_kit_ratio")->getVal();
 //                // muon Iso SF
 //                MuonCor *= htt_sf->function("m_iso_kit_ratio")->getVal();
-//                
+//
 //                auto single_data_eff = htt_sf->function("m_trg24_27_kit_data")->getVal();
 //                auto single_mc_eff = htt_sf->function("m_trg24_27_kit_mc")->getVal();
 //                auto single_eff = single_data_eff / single_mc_eff;
 //                MuonCor *=single_eff;
 //                MuonCor *= htt_sf->function("m_trk_ratio")->getVal();
-//                
+//
 //                //                if (InputROOT.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
 //                //                if (name.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
-//                
+//
 //            }
             plotFill("MuonCor",MuonCor ,100,0,2);
             
@@ -312,25 +312,25 @@ int main(int argc, char* argv[]) {
                 float dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
                 
                 
-                outTr->Branch("muPt",&mupt_,"muPt/F");
-                outTr->Branch("taupt",&taupt_,"taupt/F");
-                outTr->Branch("Pass",&Pass,"Pass/O");
-                outTr->Branch("Fail",&Fail,"Fail/O");
-                outTr->Branch("PassM",&PassM,"PassM/O");
-                outTr->Branch("FailM",&FailM,"FailM/O");
-                outTr->Branch("PassT",&PassT,"PassT/O");
-                outTr->Branch("FailT",&FailT,"FailT/O");
-                outTr->Branch("q_OS",&q_OS,"q_OS/O");
-                outTr->Branch("q_SS",&q_SS,"q_SS/O");
-                outTr->Branch("lepIso",&Isolation,"lepIso/O");
-                outTr->Branch("lepAntiIso",&AntiIsolation,"lepAntiIso/O");
-                outTr->Branch("ZMass",&ZMass,"ZMass/F");
-                outTr->Branch("tmass",&tmass,"tmass/F");
-                outTr->Branch("ht",&ht,"ht/F");
-                outTr->Branch("Met",&Met,"Met/F");
-                outTr->Branch("LeadJetPt",&LeadJetPt,"LeadJetPt/F");
-                outTr->Branch("dR_mu_tau",&dR_mu_tau,"dR_mu_tau/F");
-                outTr->Branch("evtwt",&FullWeight,"evtwt/F");
+//                outTr->Branch("muPt",&mupt_,"muPt/F");
+//                outTr->Branch("taupt",&taupt_,"taupt/F");
+//                outTr->Branch("Pass",&Pass,"Pass/O");
+//                outTr->Branch("Fail",&Fail,"Fail/O");
+//                outTr->Branch("PassM",&PassM,"PassM/O");
+//                outTr->Branch("FailM",&FailM,"FailM/O");
+//                outTr->Branch("PassT",&PassT,"PassT/O");
+//                outTr->Branch("FailT",&FailT,"FailT/O");
+//                outTr->Branch("q_OS",&q_OS,"q_OS/O");
+//                outTr->Branch("q_SS",&q_SS,"q_SS/O");
+//                outTr->Branch("lepIso",&Isolation,"lepIso/O");
+//                outTr->Branch("lepAntiIso",&AntiIsolation,"lepAntiIso/O");
+//                outTr->Branch("ZMass",&ZMass,"ZMass/F");
+//                outTr->Branch("tmass",&tmass,"tmass/F");
+//                outTr->Branch("ht",&ht,"ht/F");
+//                outTr->Branch("Met",&Met,"Met/F");
+//                outTr->Branch("LeadJetPt",&LeadJetPt,"LeadJetPt/F");
+//                outTr->Branch("dR_mu_tau",&dR_mu_tau,"dR_mu_tau/F");
+//                outTr->Branch("evtwt",&FullWeight,"evtwt/F");
                 
                 
                 //###############################################################################################
@@ -375,9 +375,9 @@ int main(int argc, char* argv[]) {
                     }
                 }
                 
-                if (! isFilledOnce ){
-                outTr->Fill();
-                isFilledOnce= true;
+//                if (! isFilledOnce ){
+//                outTr->Fill();
+//                isFilledOnce= true;
                 }
                 
             }//boostedTau loop
