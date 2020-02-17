@@ -1,0 +1,159 @@
+import sys
+import pandas as pd
+import numpy as np
+from glob import glob
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+
+# Variables used for selection. These shouldn't be normalized
+selection_vars = [
+                  'is_signal','OS','Pass'
+]
+
+# Variables that could be used as NN input. These should be normalized
+scaled_vars = [
+               'evtwt','muPt','taupt','lepIso','tmass', 'ht','Met','LeadJetPt', 'dR_mu_tau'
+               ]
+
+
+def loadFile(ifile, category):
+    from root_pandas import read_root
+
+    if 'mutau' in ifile:
+        channel = 'mt'
+    elif 'etau' in ifile:
+        channel = 'et'
+    elif 'emu' in ifile:
+        channel = 'em'
+    else:
+        raise Exception(
+            'Input files must have MUTAU or ETAU or EMU in the provided path. You gave {}, ya goober.'.format(ifile))
+
+    filename = ifile.split('/')[-1]
+    print 'Loading input file...', filename
+
+    columns = scaled_vars + selection_vars
+    todrop = ['evtwt', 'idx']
+
+    # read from TTrees into DataFrame
+    input_df = read_root(ifile, columns=columns)
+    input_df['idx'] = np.array([i for i in xrange(0, len(input_df))])
+
+#    # preselection
+#    if category == 'vbf':
+#        slim_df = input_df[
+#            (input_df['cat_vbf'] > 0)
+##            (input_df['njets'] > 1) & (input_df['mjj'] > 300)
+#        ]
+#    elif category == 'boosted':
+#        slim_df = input_df[
+#            (input_df['njets'] == 1)
+#        ]
+#    else:
+#        raise Exception('Not a category: {}'.format(category))
+
+    slim_df = slim_df.dropna(axis=0, how='any')  # drop events with a NaN
+
+    # get variables needed for selection (so they aren't normalized)
+    selection_df = slim_df[selection_vars]
+    # get just the weights (they are scaled differently)
+    weights = slim_df['evtwt']
+    index = slim_df['idx']
+    slim_df = slim_df.drop(selection_vars+todrop, axis=1)
+
+
+
+    isSignal = np.zeros(len(slim_df))
+    isQCD = np.zeros(len(slim_df))
+    isZTT = np.zeros(len(slim_df))
+
+#    if 'vbf' in ifile.lower() or 'ggh' in ifile.lower():
+    if 'qqh' in ifile.lower() or 'wh' in ifile.lower() or 'zh' in ifile.lower() or 'ggh' in ifile.lower() or 'vbf' in ifile.lower():
+        isSignal = np.ones(len(slim_df))
+    elif 'ZTT' in ifile:
+        isZTT = np.ones(len(slim_df))
+    else :
+        isQCD = np.ones(len(slim_df))
+
+
+    # save the name of the process
+    somenames = np.full(len(slim_df), filename.split('.root')[0])
+
+    # scale event weights between 1 - 2
+    weights = MinMaxScaler(
+        feature_range=(1., 2.)
+    ).fit_transform(
+        weights.values.reshape(-1, 1)
+    )
+
+    # get lepton channel
+    lepton = np.full(len(slim_df), channel)
+
+    return slim_df, selection_df, somenames, lepton, isSignal,isQCD, isZTT,weights, index
+
+
+def main(args):
+    
+    input_files = [ifile for ifile in glob('{}/*.root'.format(args.em_input_dir)) if args.em_input_dir != None ]
+        
+    # define collections that will all be merged in the end
+    unscaled_data, selection_df = pd.DataFrame(), pd.DataFrame()
+    names, leptons, isSignal, isQCD,isZTT,weight_df, index = np.array(
+        []), np.array([]), np.array([]), np.array([]), np.array([]), np.array([]), np.array([])
+
+    for ifile in input_files:
+        input_data, selection_data, new_name, lepton, sig,tt,ztt, weight, idx = loadFile(
+            ifile, args.category
+        )
+        # add data to the full set
+        unscaled_data = pd.concat([unscaled_data, input_data])
+        # add selection variables to full set
+        selection_df = pd.concat([selection_df, selection_data])
+        # insert the name of the current sample
+        names = np.append(names, new_name)
+        isSignal = np.append(isSignal, sig)  # labels for signal/background
+        isQCD = np.append(isQCD, qcd)  # labels for signal/background
+        isZTT = np.append(isZTT, ztt)  # labels for signal/background
+        weight_df = np.append(weight_df, weight)  # weights scaled from 0 - 1
+        leptons = np.append(leptons, lepton)  # lepton channel
+        index = np.append(index, idx)
+
+    # normalize the potential training variables
+    scaled_data = pd.DataFrame(
+        StandardScaler().fit_transform(unscaled_data.values),
+        columns=unscaled_data.columns.values
+    )
+
+    # add selection variables
+    for column in selection_df.columns:
+        scaled_data[column] = selection_df[column].values
+
+    # add other useful data
+    scaled_data['sample_names'] = pd.Series(names)
+    scaled_data['lepton'] = pd.Series(leptons)
+    scaled_data['isSignal'] = pd.Series(isSignal)
+    scaled_data['isQCD'] = pd.Series(isQCD)
+    scaled_data['isZTT'] = pd.Series(isZTT)
+    scaled_data['evtwt'] = pd.Series(weight_df)
+    scaled_data['idx'] = pd.Series(index)
+
+    # save the dataframe for later
+    store = pd.HDFStore('datasets/{}.h5'.format(args.output))
+    store['df'] = scaled_data
+
+
+if __name__ == "__main__":
+    from argparse import ArgumentParser
+    parser = ArgumentParser()
+    parser.add_argument('--el-input', '-e',  action='store',
+                        dest='el_input_dir', default=None, help='path to etau input files')
+    parser.add_argument('--mu-input', '-m',  action='store',
+                        dest='mu_input_dir', default=None, help='path to mutau input files')
+    parser.add_argument('--em-input', '-em', action='store',
+                        dest='em_input_dir', default=None, help='path to emu input files')
+    
+    parser.add_argument('--output', '-o', action='store', dest='output',
+                        default='store.h5', help='name of output file')
+    parser.add_argument('--category', '-c', action='store', dest='category',
+                        default='vbf', help='name of category for selection')
+
+    main(parser.parse_args())
