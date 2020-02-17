@@ -26,10 +26,11 @@ verbos_ = True
 RB_=1
 
 process=[
+    ['H125','H125',0],
     ['VV','Diboson',-1],
 #    ['SingleTop','SingleTop',-1],
     ['TT','ttbar',-1],
-    ['ZTT','DYJets125',-1],
+    ['ZTT','ZTT',-1],
     ['ZLL','ZLL',-1],
     ['ZJ','ZJ',-1],
     ['W','WJets',-1],

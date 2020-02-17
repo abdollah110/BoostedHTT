@@ -367,12 +367,12 @@ int main(int argc, char* argv[]) {
                                             HistNamesFilled.push_back(FullStringName);
                                             
                                             //1 D histograms
-                                            plotFill("ZMass"+FullStringName,Z4Momentum.M() ,20,0,100,FullWeight);
+                                            plotFill("ZMass"+FullStringName,Z4Momentum.M() ,25,0,125,FullWeight);
                                             plotFill("tmass"+FullStringName,tmass ,25,0,50,FullWeight);
-                                            plotFill("ht"+FullStringName,ht ,25,0,1000,FullWeight);
+                                            plotFill("ht"+FullStringName,ht ,25,0,1250,FullWeight);
                                             plotFill("lepPt"+FullStringName,muPt->at(imu) ,20,0,200,FullWeight);
                                             plotFill("tauPt"+FullStringName,boostedTauPt->at(ibtau) ,20,0,200,FullWeight);
-                                            plotFill("MET"+FullStringName,Met ,30,0,300,FullWeight);
+                                            plotFill("MET"+FullStringName,Met ,40,0,400,FullWeight);
                                             plotFill("LeadJetPt"+FullStringName,LeadJet.Pt() ,25,0,1000,FullWeight);
                                             plotFill("dR_Z_jet"+FullStringName,LeadJet.DeltaR(Z4Momentum) ,25,0,5,FullWeight);
 

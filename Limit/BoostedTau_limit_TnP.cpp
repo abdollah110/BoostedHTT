@@ -35,29 +35,33 @@ int main() {
     // Here we will just define two categories for an 8TeV analysis. Each entry in
     // the vector below specifies a bin name and corresponding bin_id.
     
-    VString chns = { "mt"};
+    VString chns = { "mt","et"};
     
     map<string, string> input_folders = {
-        //   {"et", "."},
-        {"mt", "."}
+        
+        {"mt", "."},
+        {"et", "."}
     };
     
     map<string, VString> bkg_procs;
-    bkg_procs["mt"] = {"WJets", "QCD", "ttbar","Diboson","ZLL","ZJ","ZTT"};
+    // bkg_procs["et"] = {"ZTT", "W", "QCD", "TT","VV","SingleTop"};
+    bkg_procs["mt"] = {"WJets", "QCD", "ttbar","Diboson","SingleTop"};
+    bkg_procs["et"] = {"WJets", "QCD", "ttbar","Diboson","SingleTop"};
     
-    VString sig_procs = {"H"};
+    VString sig_procs = {"DYJets"};
     
     map<string, Categories> cats;
-    //cats["et_13TeV"] = {
-    //      {1, "EleTau_DiJet"}};
     
     cats["mt_13TeV"] = {
         {1, "pass"},
-//        {2, "fail"}
-        
-        
+        {2, "fail"}
     };
-    
+    cats["et_13TeV"] = {
+        {1, "pass"},
+        {2, "fail"}
+    };
+
+
     // ch::Categories is just a typedef of vector<pair<int, string>>
     //! [part1]
     
@@ -75,9 +79,9 @@ int main() {
     
     for (auto chn : chns) {
         cb.AddObservations(
-                           {"*"}, {"H"}, {"13TeV"}, {chn}, cats[chn+"_13TeV"]);
+                           {"*"}, {"DYJets"}, {"13TeV"}, {chn}, cats[chn+"_13TeV"]);
         cb.AddProcesses(
-                        {"*"}, {"H"}, {"13TeV"}, {chn}, bkg_procs[chn], cats[chn+"_13TeV"], false);
+                        {"*"}, {"DYJets"}, {"13TeV"}, {chn}, bkg_procs[chn], cats[chn+"_13TeV"], false);
         cb.AddProcesses(
                         masses, sig_procs, {"13TeV"}, {chn}, sig_procs, cats[chn+"_13TeV"], true);
     }
@@ -89,7 +93,7 @@ int main() {
     for (string era : {"13TeV"}) {
         for (string chn : chns) {
             
-            string file = aux_shapes + input_folders[chn] + "/template_boostedH.root";
+            string file = aux_shapes + input_folders[chn] + "/template_boostedH_"+chn+".root";
             cb.cp().channel({chn}).era({era}).backgrounds().ExtractShapes(
                                                                           file, "$BIN/$PROCESS", "$BIN/$PROCESS_$SYSTEMATIC");
             cb.cp().channel({chn}).era({era}).signals().ExtractShapes(
@@ -107,28 +111,87 @@ int main() {
     using ch::JoinStr;
     
     
-    // Norm systematics
-    
-    cb.cp().process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","ZLL","ZJ","ZTT"}}))
+    //! [part5]
+    cb.cp().process(ch::JoinStr({sig_procs, {"WJets", "QCD", "ttbar","Diboson","SingleTop"}}))
     .AddSyst(cb, "CMS_lumi_$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.024));
     
-    cb.cp().bin_id({1}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","ZLL","ZJ","ZTT"}}))
-    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.1/0.9));
+    cb.cp().bin_id({1}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","SingleTop"}}))
+    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.22222));
     
-    cb.cp().bin_id({2}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","ZLL","ZJ","ZTT"}}))
-    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 0.9/1.1));
+    cb.cp().bin_id({2}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","SingleTop"}}))
+    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 0.818182));
     
     
-    cb.cp().process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","ZLL","ZJ","ZTT"}}))
+    cb.cp().process(ch::JoinStr({sig_procs, {"WJets", "QCD", "ttbar","Diboson","SingleTop"}}))
     .AddSyst(cb, "CMS_eff_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
     
-    cb.cp().process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","ZLL","ZJ","ZTT"}}))
-    .AddSyst(cb, "CMS_trg_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
-
-    cb.cp().process({"H125"})
-    .AddSyst(cb, "CMS_htt_SignalNorm", "lnN", SystMap<>::init(1.10));
-
-    cb.cp().process({"ZTT"})
+    
+    
+    //! [part5]
+    
+    //! [part6]
+    //  cb.cp().process({sig_procs})
+    //      .AddSyst(cb, "pdf_RHW", "lnN", SystMap<>::init(1.10));
+    //cb.cp().signals()
+    //    .AddSyst(cb, "pdf_RHW", "lnN", SystMap<>::init(1.10));
+    
+    
+    //    cb.cp().process(ch::JoinStr({sig_procs, {"DYjets","WJets", "QCD", "ttbar","Diboson","SingleTop"}}))
+    //    .AddSyst(cb, "CMS_trg_m", "lnN", SystMap<>::init(1.05));
+    
+    //    cb.cp().process(ch::JoinStr({sig_procs, {"ZTT", "W", "TT","VV","SingleTop"}}))
+    //    .AddSyst(cb, "CMS_eff_m", "lnN", SystMap<>::init(1.05));
+    //
+    //
+    //    cb.cp().process(ch::JoinStr({sig_procs, {"ZTT", "W", "TT","VV","SingleTop"}}))
+    //    .AddSyst(cb, "CMS_b_mistag_rate", "lnN", SystMap<>::init(1.01));
+    //
+    //    cb.cp().process(ch::JoinStr({sig_procs, {"ZTT", "W", "TT","VV","SingleTop"}}))
+    //    .AddSyst(cb, "CMS_e_veto", "lnN", SystMap<>::init(1.02));
+    //
+    //    cb.cp().process(ch::JoinStr({sig_procs, {"ZTT", "W", "TT","VV","SingleTop"}}))
+    //    .AddSyst(cb, "CMS_tau_veto", "lnN", SystMap<>::init(1.02));
+    //
+    //
+    //    cb.cp().process(JoinStr({sig_procs, {"ZTT", "W", "TT","VV","SingleTop"}}))
+    //    .AddSyst(cb, "CMS_scale_jes", "shape", SystMap<>::init(1.00));
+    //
+    //    cb.cp().process({sig_procs})
+    //    .AddSyst(cb, "CMS_scale_jer", "shape", SystMap<>::init(1.00));
+    //
+    //    cb.cp().process({sig_procs})
+    //    .AddSyst(cb, "CMS_signal_qcdScale", "lnN", SystMap<>::init(1.01));
+    //
+    //    cb.cp().process({sig_procs})
+    //    .AddSyst(cb, "CMS_signal_pdf", "lnN", SystMap<>::init(1.03));
+    //
+    //
+    //    cb.cp().process(JoinStr({sig_procs, {"ZTT", "W", "TT","VV","SingleTop"}}))
+    //    .AddSyst(cb, "CMS_scale_met_UES", "shape", SystMap<>::init(1.00));
+    //
+    ////    cb.cp().process(JoinStr({sig_procs, {"ZTT", "W", "TT","VV","SingleTop"}}))
+    ////    .AddSyst(cb, "CMS_scale_met_JES", "shape", SystMap<>::init(1.00));
+    //
+    //
+    //    cb.cp().process({"TT"})
+    //    .AddSyst(cb, "CMS_top_pt_Reweighting", "shape", SystMap<>::init(1.00));
+    //
+    //    cb.cp().process({"TT"})
+    //    .AddSyst(cb, "CMS_qcdScale_TT", "shape", SystMap<>::init(1.00));
+    //
+    //    cb.cp().process({"W"})
+    //    .AddSyst(cb, "CMS_PDF_AlphaS_", "shape", SystMap<>::init(1.00));
+    //
+    //
+    //
+    //     cb.cp().process({"W"})
+    //    .AddSyst(cb, "CMS_ewkKfactor_W", "shape", SystMap<>::init(1.00));
+    //
+    //     cb.cp().process({"ZTT"})
+    //    .AddSyst(cb, "CMS_ewkKfactor_Z", "shape", SystMap<>::init(1.00));
+    //
+    
+    cb.cp().process({"DYJets"})
     .AddSyst(cb, "CMS_htt_ZTTNorm", "lnN", SystMap<>::init(1.10));
     
     cb.cp().process({"ttbar"})
@@ -137,35 +200,17 @@ int main() {
     cb.cp().process({"Diboson"})
     .AddSyst(cb, "CMS_htt_DibosonNorm", "lnN", SystMap<>::init(1.10));
     
-    cb.cp().process({"ZLL"})
-    .AddSyst(cb, "CMS_htt_ZLLNorm", "lnN", SystMap<>::init(1.10));
-    
-    cb.cp().process({"ZJ"})
-    .AddSyst(cb, "CMS_htt_ZJNorm", "lnN", SystMap<>::init(1.10));
+    cb.cp().process({"SingleTop"})
+    .AddSyst(cb, "CMS_htt_SingleTopNorm", "lnN", SystMap<>::init(1.10));
     
     cb.cp().process({"WJets"})
-    .AddSyst(cb, "CMS_htt_WNorm", "lnN", SystMap<>::init(1.10));
+    .AddSyst(cb, "CMS_htt_WNorm", "lnN", SystMap<>::init(1.20));
     
     cb.cp().process({"QCD"})
-    .AddSyst(cb, "CMS_htt_QCDNorm", "lnN", SystMap<>::init(1.20));
+    .AddSyst(cb, "CMS_htt_QCDNorm", "lnN", SystMap<>::init(1.30));
     
     
-    // Shape systematics
-//
-//    cb.cp().process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","ZLL","ZJ","ZTT"}}))
-//    .AddSyst(cb, "met_JES", "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","ZLL","ZJ","ZTT"}}))
-//    .AddSyst(cb, "met_UES", "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process(ch::JoinStr({sig_procs, {"ZLL","ZJ","ZTT"}}))
-//    .AddSyst(cb, "dyShape_", "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process(ch::JoinStr({sig_procs, {"ZLL","ZJ","ZTT"}}))
-//    .AddSyst(cb, "zmumuShape_", "shape", SystMap<>::init(1.00));
-        
-
-
+    
     
     cout << ">> Adding systematic uncertainties...\n";
     // ch::AddSystematics_et_mt(cb);
@@ -183,7 +228,7 @@ int main() {
                                     aux_shapes + "/template_boostedH.root",
                                     "$BIN/$PROCESS$MASS",
                                     "$BIN/$PROCESS$MASS_$SYSTEMATIC");
-    
+
     
     
     
@@ -225,7 +270,7 @@ int main() {
     << "\n";
     
     
-    string folder = "outputBoostedHTT_v2/V2_mt_sys";
+    string folder = "outputBoostedHTT/V10_cmb_Tight";
     boost::filesystem::create_directories(folder);
     boost::filesystem::create_directories(folder + "/common");
     for (auto m : masses) {

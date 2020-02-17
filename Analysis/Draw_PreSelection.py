@@ -87,7 +87,7 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     TT=file.Get(categoriy).Get("ttbar")
     TT.Rebin(RB_)
 
-    ZTT=file.Get(categoriy).Get("DYJets125")
+    ZTT=file.Get(categoriy).Get("ZTT")
     ZTT.Rebin(RB_)
     
     ZJ=file.Get(categoriy).Get("ZJ")
@@ -95,18 +95,14 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     
     ZLL=file.Get(categoriy).Get("ZLL")
     ZLL.Rebin(RB_)
-##    print "ZLL, ", ZLL.Integral()
-#    if not ZLL:
-#        ZLL=file.Get(categoriy).Get("Diboson")
-#        ZLL.Scale(.0001)
-#        print "\n\n\n\nn\######################### whatch out VV  instead of ZLL\n\n\n\n"
-    
+
+    signal=file.Get(categoriy).Get("H125")
+    signal.Rebin(RB_)
+    signal.Scale(50)
 
     VV=file.Get(categoriy).Get("Diboson")
     VV.Rebin(RB_)
     
-
-
     Data.GetXaxis().SetTitle("")
     Data.GetXaxis().SetTitleSize(0)
     Data.GetXaxis().SetNdivisions(505)
@@ -128,6 +124,7 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     VV.SetFillColor(ROOT.TColor.GetColor(200, 282, 232))
     ZTT.SetFillColor(ROOT.TColor.GetColor(108, 226, 354))
     ZJ.SetFillColor(ROOT.TColor.GetColor(300, 200, 20))
+#    signal.SetLineColor(ROOT.TColor.GetColor(100, 100, 20))
     
     
     
@@ -149,6 +146,7 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     TT.SetLineColor(ROOT.kBlack)
     ZTT.SetLineColor(ROOT.kBlack)
     VV.SetLineColor(ROOT.kBlack)
+    signal.SetLineColor(ROOT.kRed)
     ZLL.SetLineColor(ROOT.kBlack)
     ZJ.SetLineColor(ROOT.kBlack)
     Data.SetLineColor(ROOT.kBlack)
@@ -202,6 +200,7 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     Data.SetMinimum(yMin)
     Data.Draw("e")
     stack.Draw("histsame")
+    signal.Draw("same")
     errorBand.Draw("e2same")
     Data.Draw("esame")
 
@@ -214,6 +213,7 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     legende.AddEntry(VV,"Diboson","f")
     legende.AddEntry(W,"W+iets","f")
     legende.AddEntry(QCD,"QCD multijet","f")
+    legende.AddEntry(signal,"H125","l")
     legende.AddEntry(errorBand,"Uncertainty","f")
 
     legende.Draw()
