@@ -160,30 +160,30 @@ int main(int argc, char* argv[]) {
             
             
             float MuonCor=1;
-            if (!isData){
-                // give inputs to workspace
-                htt_sf->var("m_pt")->setVal(muPt->at(imu));
-                htt_sf->var("m_eta")->setVal(muEta->at(imu));
-                htt_sf->var("z_gen_mass")->setVal(ZBosonMass);
-                htt_sf->var("z_gen_pt")->setVal(ZBosonPt);
-                //                cout<<"\t\t ZBosonMass= "<<ZBosonMass <<"  ZBosonPt "<<ZBosonPt<<"\n";
-                
-                
-                // muon ID SF
-                MuonCor *= htt_sf->function("m_id_kit_ratio")->getVal();
-                // muon Iso SF
-                MuonCor *= htt_sf->function("m_iso_kit_ratio")->getVal();
-                
-                auto single_data_eff = htt_sf->function("m_trg24_27_kit_data")->getVal();
-                auto single_mc_eff = htt_sf->function("m_trg24_27_kit_mc")->getVal();
-                auto single_eff = single_data_eff / single_mc_eff;
-                MuonCor *=single_eff;
-                MuonCor *= htt_sf->function("m_trk_ratio")->getVal();
-                
-                //                if (InputROOT.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
-                //                if (name.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
-                
-            }
+//            if (!isData){
+//                // give inputs to workspace
+//                htt_sf->var("m_pt")->setVal(muPt->at(imu));
+//                htt_sf->var("m_eta")->setVal(muEta->at(imu));
+//                htt_sf->var("z_gen_mass")->setVal(ZBosonMass);
+//                htt_sf->var("z_gen_pt")->setVal(ZBosonPt);
+//                //                cout<<"\t\t ZBosonMass= "<<ZBosonMass <<"  ZBosonPt "<<ZBosonPt<<"\n";
+//                
+//                
+//                // muon ID SF
+//                MuonCor *= htt_sf->function("m_id_kit_ratio")->getVal();
+//                // muon Iso SF
+//                MuonCor *= htt_sf->function("m_iso_kit_ratio")->getVal();
+//                
+//                auto single_data_eff = htt_sf->function("m_trg24_27_kit_data")->getVal();
+//                auto single_mc_eff = htt_sf->function("m_trg24_27_kit_mc")->getVal();
+//                auto single_eff = single_data_eff / single_mc_eff;
+//                MuonCor *=single_eff;
+//                MuonCor *= htt_sf->function("m_trk_ratio")->getVal();
+//                
+//                //                if (InputROOT.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
+//                //                if (name.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
+//                
+//            }
             plotFill("MuonCor",MuonCor ,100,0,2);
             
             
