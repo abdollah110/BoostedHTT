@@ -297,7 +297,7 @@ int main(int argc, char* argv[]) {
                 //###############################################################################################
                 //  Weights
                 //###############################################################################################
-                cout<<"LumiWeight*MuonCor *ZCorrection; "<<LumiWeight<<"  "<<MuonCor <<"  "<<ZCorrection<<"\n";
+//                cout<<"LumiWeight*MuonCor *ZCorrection; "<<LumiWeight<<"  "<<MuonCor <<"  "<<ZCorrection<<"\n";
                 float FullWeight = LumiWeight*MuonCor *ZCorrection;
                 if (isData) FullWeight=1;
 
