@@ -77,6 +77,39 @@ int main(int argc, char* argv[]) {
     float luminosity=    41530;
     
     
+    float mupt_=-10;
+    float taupt_=-10;
+    float ZMass=-10;
+    float LeadJetPt = -10;
+    float dR_Z_jet=-10;
+    bool Fail,Pass,PassM,FailM,PassT,FailT,q_OS,q_SS,Isolation,AntiIsolation;
+    float tmass,ht,Met,FullWeight;
+
+
+
+    outTr->Branch("muPt",&mupt_,"muPt/F");
+    outTr->Branch("taupt",&taupt_,"taupt/F");
+    outTr->Branch("Pass",&Pass,"Pass/O");
+    outTr->Branch("Fail",&Fail,"Fail/O");
+    outTr->Branch("PassM",&PassM,"PassM/O");
+    outTr->Branch("FailM",&FailM,"FailM/O");
+    outTr->Branch("PassT",&PassT,"PassT/O");
+    outTr->Branch("FailT",&FailT,"FailT/O");
+    outTr->Branch("q_OS",&q_OS,"q_OS/O");
+    outTr->Branch("q_SS",&q_SS,"q_SS/O");
+    outTr->Branch("lepIso",&Isolation,"lepIso/O");
+    outTr->Branch("lepAntiIso",&AntiIsolation,"lepAntiIso/O");
+    outTr->Branch("ZMass",&ZMass,"ZMass/F");
+    outTr->Branch("tmass",&tmass,"tmass/F");
+    outTr->Branch("ht",&ht,"ht/F");
+    outTr->Branch("Met",&Met,"Met/F");
+    outTr->Branch("LeadJetPt",&LeadJetPt,"LeadJetPt/F");
+    outTr->Branch("dR_mu_tau",&dR_mu_tau,"dR_mu_tau/F");
+    outTr->Branch("evtwt",&FullWeight,"evtwt/F");
+    
+    
+
+
     Int_t nentries_wtn = (Int_t) Run_Tree->GetEntries();
     cout<<"nentries_wtn===="<<nentries_wtn<<"\n";
     for (Int_t i = 0; i < nentries_wtn; i++) {
@@ -257,12 +290,12 @@ int main(int argc, char* argv[]) {
                 //###############################################################################################
                 
                 const int size_tauCat = 6;
-                bool Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
-                bool Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
-                bool PassM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
-                bool FailM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
-                bool PassT = boostedTauByTightIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
-                bool FailT = boostedTauByTightIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
+                 Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
+                 Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
+             PassM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
+                 FailM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
+                 PassT = boostedTauByTightIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
+                 FailT = boostedTauByTightIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
                 
                 
                 bool Tau_category[size_tauCat] = {Pass, Fail,PassM, FailM,PassT, FailT};
@@ -275,8 +308,8 @@ int main(int argc, char* argv[]) {
                 
                 const int size_isoCat = 3;
                 bool NoLepIso = 1;
-                bool Isolation = LepPassIsolation;
-                bool AntiIsolation =  !LepPassIsolation;
+                 Isolation = LepPassIsolation;
+                 AntiIsolation =  !LepPassIsolation;
                 
                 bool Iso_category[size_isoCat] = {NoLepIso,Isolation, AntiIsolation};
                 std::string iso_Cat[size_isoCat] = {"","_Iso", "_AntiIso"};
@@ -287,8 +320,8 @@ int main(int argc, char* argv[]) {
                 float chargelt= muCharge->at(imu) * boostedTauCharge->at(ibtau);
                 
                 const int size_q = 2;
-                bool q_OS = chargelt < 0;
-                bool q_SS =  chargelt > 0;
+                 q_OS = chargelt < 0;
+                 q_SS =  chargelt > 0;
                 
                 bool Q_category[size_q] = {q_OS, q_SS};
                 std::string Q_Cat[size_q] = {"_OS", "_SS"};
@@ -298,39 +331,21 @@ int main(int argc, char* argv[]) {
                 //  Weights
                 //###############################################################################################
 //                cout<<"LumiWeight*MuonCor *ZCorrection; "<<LumiWeight<<"  "<<MuonCor <<"  "<<ZCorrection<<"\n";
-                float FullWeight = LumiWeight*MuonCor *ZCorrection;
+                FullWeight = LumiWeight*MuonCor *ZCorrection;
                 if (isData) FullWeight=1;
 
                 //###############################################################################################
                 //  make Tree
                 //###############################################################################################
                 
-                float mupt_=muPt->at(imu);
-                float taupt_=boostedTauPt->at(ibtau);
-                float ZMass=Z4Momentum.M();
-                float LeadJetPt = LeadJet.Pt();
-                float dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
+                mupt_=muPt->at(imu);
+                 taupt_=boostedTauPt->at(ibtau);
+                 ZMass=Z4Momentum.M();
+                 LeadJetPt = LeadJet.Pt();
+                 dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
                 
                 
-                outTr->Branch("muPt",&mupt_,"muPt/F");
-                outTr->Branch("taupt",&taupt_,"taupt/F");
-                outTr->Branch("Pass",&Pass,"Pass/O");
-                outTr->Branch("Fail",&Fail,"Fail/O");
-                outTr->Branch("PassM",&PassM,"PassM/O");
-                outTr->Branch("FailM",&FailM,"FailM/O");
-                outTr->Branch("PassT",&PassT,"PassT/O");
-                outTr->Branch("FailT",&FailT,"FailT/O");
-                outTr->Branch("q_OS",&q_OS,"q_OS/O");
-                outTr->Branch("q_SS",&q_SS,"q_SS/O");
-                outTr->Branch("lepIso",&Isolation,"lepIso/O");
-                outTr->Branch("lepAntiIso",&AntiIsolation,"lepAntiIso/O");
-//                outTr->Branch("ZMass",&ZMass,"ZMass/F");
-//                outTr->Branch("tmass",&tmass,"tmass/F");
-//                outTr->Branch("ht",&ht,"ht/F");
-//                outTr->Branch("Met",&Met,"Met/F");
-//                outTr->Branch("LeadJetPt",&LeadJetPt,"LeadJetPt/F");
-//                outTr->Branch("dR_mu_tau",&dR_mu_tau,"dR_mu_tau/F");
-                outTr->Branch("evtwt",&FullWeight,"evtwt/F");
+
                 
                 
                 //###############################################################################################
