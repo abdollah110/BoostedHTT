@@ -15,6 +15,10 @@ do
     hadd   -f NN${SYS}/ZLL${SYS}.root    ${SYS}/*_ZLL_*.root
     hadd   -f NN${SYS}/DYJetsToLL${SYS}.root    ${SYS}/*_ZTT_*
     hadd   -f NN${SYS}/ZJ${SYS}.root    ${SYS}/*_ZJ_*
+    hadd   -f NN${SYS}/WH125${SYS}.root    ${SYS}/*WMinusH125_* ${SYS}/*WPlusH125_*
+    hadd   -f NN${SYS}/ZH125${SYS}.root    ${SYS}/*ZH125_*
+    hadd   -f NN${SYS}/ggH125${SYS}.root    ${SYS}/*ggH125*
+    hadd   -f NN${SYS}/qqH125${SYS}.root    ${SYS}/*qqH125*
 
 done
 

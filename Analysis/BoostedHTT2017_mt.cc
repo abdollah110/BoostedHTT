@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
     for (Int_t i = 0; i < nentries_wtn; i++) {
         
         Run_Tree->GetEntry(i);
-        if (i % 10000 == 0) fprintf(stdout, "\r  Processed events: %8d of %8d ", i, nentries_wtn);
+        if (i % 1000 == 0) fprintf(stdout, "\r  Processed events: %8d of %8d ", i, nentries_wtn);
         fflush(stdout);
         
         // Trigger
@@ -297,7 +297,7 @@ int main(int argc, char* argv[]) {
                 //###############################################################################################
                 //  Weights
                 //###############################################################################################
-
+                cout<<"LumiWeight*MuonCor *ZCorrection; "<<LumiWeight<<"  "<<MuonCor <<"  "<<ZCorrection<<"\n";
                 float FullWeight = LumiWeight*MuonCor *ZCorrection;
                 if (isData) FullWeight=1;
 
