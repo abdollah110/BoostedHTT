@@ -83,7 +83,7 @@ int main(int argc, char* argv[]) {
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
     bool Fail,Pass,PassM,FailM,PassT,FailT,q_OS,q_SS,Isolation,AntiIsolation;
-    float tmass,ht,Met,FullWeight;
+    float tmass,ht,Met,FullWeight, dR_mu_tau;
 
 
 
