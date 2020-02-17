@@ -324,12 +324,12 @@ int main(int argc, char* argv[]) {
                 outTr->Branch("q_SS",&q_SS,"q_SS/O");
                 outTr->Branch("lepIso",&Isolation,"lepIso/O");
                 outTr->Branch("lepAntiIso",&AntiIsolation,"lepAntiIso/O");
-                outTr->Branch("ZMass",&ZMass,"ZMass/F");
-                outTr->Branch("tmass",&tmass,"tmass/F");
-                outTr->Branch("ht",&ht,"ht/F");
-                outTr->Branch("Met",&Met,"Met/F");
-                outTr->Branch("LeadJetPt",&LeadJetPt,"LeadJetPt/F");
-                outTr->Branch("dR_mu_tau",&dR_mu_tau,"dR_mu_tau/F");
+//                outTr->Branch("ZMass",&ZMass,"ZMass/F");
+//                outTr->Branch("tmass",&tmass,"tmass/F");
+//                outTr->Branch("ht",&ht,"ht/F");
+//                outTr->Branch("Met",&Met,"Met/F");
+//                outTr->Branch("LeadJetPt",&LeadJetPt,"LeadJetPt/F");
+//                outTr->Branch("dR_mu_tau",&dR_mu_tau,"dR_mu_tau/F");
                 outTr->Branch("evtwt",&FullWeight,"evtwt/F");
                 
                 
