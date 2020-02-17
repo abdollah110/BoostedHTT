@@ -353,19 +353,19 @@ int main(int argc, char* argv[]) {
                                             
                                             //1 D histograms
                                             plotFill("ZMass"+FullStringName,Z4Momentum.M() ,20,0,100,FullWeight);
-                                            plotFill("tmass"+FullStringName,tmass ,25,0,50,FullWeight);
-                                            plotFill("ht"+FullStringName,ht ,25,0,1000,FullWeight);
-                                            plotFill("lepPt"+FullStringName,muPt->at(imu) ,20,0,200,FullWeight);
-                                            plotFill("tauPt"+FullStringName,boostedTauPt->at(ibtau) ,20,0,200,FullWeight);
-                                            plotFill("MET"+FullStringName,Met ,30,0,300,FullWeight);
-                                            plotFill("LeadJetPt"+FullStringName,LeadJet.Pt() ,25,0,1000,FullWeight);
-                                            plotFill("dR_Z_jet"+FullStringName,LeadJet.DeltaR(Z4Momentum) ,25,0,5,FullWeight);
-                                            
-                                            
-                                            //2 D histograms
-                                            plotFill("LepDR_MET"+FullStringName, dR_mu_tau, Met, 20,0.4,0.8 ,30,0,300,FullWeight);
-                                            plotFill("LepDR_HT"+FullStringName, dR_mu_tau, ht, 20,0.4,0.8 ,25,0,1000,FullWeight);
-                                            plotFill("LepDR_LeadJet"+FullStringName, dR_mu_tau, LeadJet.Pt(), 20,0.4,0.8 ,25,0,1000,FullWeight);
+//                                            plotFill("tmass"+FullStringName,tmass ,25,0,50,FullWeight);
+//                                            plotFill("ht"+FullStringName,ht ,25,0,1000,FullWeight);
+//                                            plotFill("lepPt"+FullStringName,muPt->at(imu) ,20,0,200,FullWeight);
+//                                            plotFill("tauPt"+FullStringName,boostedTauPt->at(ibtau) ,20,0,200,FullWeight);
+//                                            plotFill("MET"+FullStringName,Met ,30,0,300,FullWeight);
+//                                            plotFill("LeadJetPt"+FullStringName,LeadJet.Pt() ,25,0,1000,FullWeight);
+//                                            plotFill("dR_Z_jet"+FullStringName,LeadJet.DeltaR(Z4Momentum) ,25,0,5,FullWeight);
+//                                            
+//                                            
+//                                            //2 D histograms
+//                                            plotFill("LepDR_MET"+FullStringName, dR_mu_tau, Met, 20,0.4,0.8 ,30,0,300,FullWeight);
+//                                            plotFill("LepDR_HT"+FullStringName, dR_mu_tau, ht, 20,0.4,0.8 ,25,0,1000,FullWeight);
+//                                            plotFill("LepDR_LeadJet"+FullStringName, dR_mu_tau, LeadJet.Pt(), 20,0.4,0.8 ,25,0,1000,FullWeight);
                                             
                                         }
                                     }
