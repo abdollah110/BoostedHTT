@@ -6,7 +6,7 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 # Variables used for selection. These shouldn't be normalized
 selection_vars = [
-                  'is_signal','OS','Pass'
+                  'q_OS','Pass'
 ]
 
 # Variables that could be used as NN input. These should be normalized
@@ -38,6 +38,12 @@ def loadFile(ifile, category):
     input_df = read_root(ifile, columns=columns)
     input_df['idx'] = np.array([i for i in xrange(0, len(input_df))])
 
+    # preselection
+    slim_df = input_df[
+                (input_df['muPt'] > 50)
+    #            (input_df['njets'] > 1) & (input_df['mjj'] > 300)
+        ]
+    
 #    # preselection
 #    if category == 'vbf':
 #        slim_df = input_df[
@@ -63,16 +69,14 @@ def loadFile(ifile, category):
 
 
     isSignal = np.zeros(len(slim_df))
-    isQCD = np.zeros(len(slim_df))
     isZTT = np.zeros(len(slim_df))
 
 #    if 'vbf' in ifile.lower() or 'ggh' in ifile.lower():
-    if 'qqh' in ifile.lower() or 'wh' in ifile.lower() or 'zh' in ifile.lower() or 'ggh' in ifile.lower() or 'vbf' in ifile.lower():
+    if 'h125' in ifile.lower() or 'qqh' in ifile.lower() or 'wh' in ifile.lower() or 'zh' in ifile.lower() or 'ggh' in ifile.lower() or 'vbf' in ifile.lower():
         isSignal = np.ones(len(slim_df))
-    elif 'ZTT' in ifile:
+#    else 'ZTT' in ifile:
+    else:
         isZTT = np.ones(len(slim_df))
-    else :
-        isQCD = np.ones(len(slim_df))
 
 
     # save the name of the process
@@ -88,20 +92,23 @@ def loadFile(ifile, category):
     # get lepton channel
     lepton = np.full(len(slim_df), channel)
 
-    return slim_df, selection_df, somenames, lepton, isSignal,isQCD, isZTT,weights, index
+    return slim_df, selection_df, somenames, lepton, isSignal,isZTT,weights, index
 
 
 def main(args):
     
-    input_files = [ifile for ifile in glob('{}/*.root'.format(args.em_input_dir)) if args.em_input_dir != None ]
+    input_files = [ifile for ifile in glob('{}/*.root'.format(args.mu_input_dir)) if args.mu_input_dir != None ]
+    for ifile in input_files:
+        print 'file is ', ifile
         
     # define collections that will all be merged in the end
     unscaled_data, selection_df = pd.DataFrame(), pd.DataFrame()
-    names, leptons, isSignal, isQCD,isZTT,weight_df, index = np.array(
-        []), np.array([]), np.array([]), np.array([]), np.array([]), np.array([]), np.array([])
+    names, leptons, isSignal,isZTT,weight_df, index = np.array(
+        []), np.array([]), np.array([]), np.array([]), np.array([]), np.array([])
 
     for ifile in input_files:
-        input_data, selection_data, new_name, lepton, sig,tt,ztt, weight, idx = loadFile(
+        print 'file is ', ifile
+        input_data, selection_data, new_name, lepton, sig,ztt, weight, idx = loadFile(
             ifile, args.category
         )
         # add data to the full set
@@ -111,12 +118,12 @@ def main(args):
         # insert the name of the current sample
         names = np.append(names, new_name)
         isSignal = np.append(isSignal, sig)  # labels for signal/background
-        isQCD = np.append(isQCD, qcd)  # labels for signal/background
         isZTT = np.append(isZTT, ztt)  # labels for signal/background
         weight_df = np.append(weight_df, weight)  # weights scaled from 0 - 1
         leptons = np.append(leptons, lepton)  # lepton channel
         index = np.append(index, idx)
 
+    print "unscaled_data.values", unscaled_data.values
     # normalize the potential training variables
     scaled_data = pd.DataFrame(
         StandardScaler().fit_transform(unscaled_data.values),
@@ -131,7 +138,6 @@ def main(args):
     scaled_data['sample_names'] = pd.Series(names)
     scaled_data['lepton'] = pd.Series(leptons)
     scaled_data['isSignal'] = pd.Series(isSignal)
-    scaled_data['isQCD'] = pd.Series(isQCD)
     scaled_data['isZTT'] = pd.Series(isZTT)
     scaled_data['evtwt'] = pd.Series(weight_df)
     scaled_data['idx'] = pd.Series(index)
