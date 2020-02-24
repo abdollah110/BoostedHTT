@@ -6,12 +6,12 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 # Variables used for selection. These shouldn't be normalized
 selection_vars = [
-                  'q_OS','Pass'
+                  'q_OS'
 ]
 
 # Variables that could be used as NN input. These should be normalized
 scaled_vars = [
-               'evtwt','muPt','taupt','lepIso','tmass', 'ht','Met','LeadJetPt', 'dR_mu_tau'
+               'evtwt','muPt','taupt','lepIso','tmass', 'ht','Met','LeadJetPt', 'dR_mu_tau', 'ZMass','Pass'
                ]
 
 
@@ -20,10 +20,10 @@ def loadFile(ifile, category):
 
     if 'mutau' in ifile:
         channel = 'mt'
-    elif 'etau' in ifile:
-        channel = 'et'
-    elif 'emu' in ifile:
-        channel = 'em'
+#    elif 'etau' in ifile:
+#        channel = 'et'
+#    elif 'emu' in ifile:
+#        channel = 'em'
     else:
         raise Exception(
             'Input files must have MUTAU or ETAU or EMU in the provided path. You gave {}, ya goober.'.format(ifile))
@@ -40,7 +40,7 @@ def loadFile(ifile, category):
 
     # preselection
     slim_df = input_df[
-                (input_df['muPt'] > 50)
+                (input_df['muPt'] > 50) & (input_df['q_OS'] < 0)
     #            (input_df['njets'] > 1) & (input_df['mjj'] > 300)
         ]
     
@@ -150,13 +150,10 @@ def main(args):
 if __name__ == "__main__":
     from argparse import ArgumentParser
     parser = ArgumentParser()
-    parser.add_argument('--el-input', '-e',  action='store',
-                        dest='el_input_dir', default=None, help='path to etau input files')
+#    parser.add_argument('--el-input', '-e',  action='store',
+#                        dest='el_input_dir', default=None, help='path to etau input files')
     parser.add_argument('--mu-input', '-m',  action='store',
                         dest='mu_input_dir', default=None, help='path to mutau input files')
-    parser.add_argument('--em-input', '-em', action='store',
-                        dest='em_input_dir', default=None, help='path to emu input files')
-    
     parser.add_argument('--output', '-o', action='store', dest='output',
                         default='store.h5', help='name of output file')
     parser.add_argument('--category', '-c', action='store', dest='category',

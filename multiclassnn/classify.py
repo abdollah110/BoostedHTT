@@ -16,15 +16,15 @@ class Predictor:
     self.data_copy = pd.DataFrame()
     # open the input data
     try:
-#      self.data = pd.HDFStore(data_name)['df']
-      self.data = pd.HDFStore('datasets/testData_wis.h5')['df']
+      self.data = pd.HDFStore(data_name)['df']
+#      self.data = pd.HDFStore('datasets/testData_wis.h5')['df']
     except:
       self.bad = True
 
     # open the trained model
     try:
-#      self.model = load_model('models/{}.hdf5'.format(model_name))
-      self.model=   load_model('models/outputModel_wis.hdf5')
+      self.model = load_model('models/{}.hdf5'.format(model_name))
+#      self.model=   load_model('models/outputModel_wis.hdf5')
     except:
       self.bad = True
 
@@ -44,17 +44,12 @@ class Predictor:
       guesses = self.model.predict(to_classify.values, verbose=True)
       print 'is now predicted'
       self.data_copy['guess_sig'] = guesses[:,0]
-#      self.data_copy['guess_bkg1'] = guesses[:,1]
-#      self.data_copy['guess_bkg2'] = guesses[:,2]
       self.data_copy.set_index('idx', inplace=True)
-#      print "\n\n &&&&&&& ", self.data_copy
+
 
   def getGuess(self, index):
     try:
       guess = self.data_copy.loc[index, 'guess_sig']
-#      guess1 = self.data_copy.loc[index, 'guess_bkg1']
-#      guess2 = self.data_copy.loc[index, 'guess_bkg2']
-#      print index, "  guess= ", guess
     except:
       guess= -999
     
@@ -77,15 +72,6 @@ def fillFile(ifile, channel, args, vbf_pred):
   root_file = TFile(ifile, 'READ')
   itree = root_file.Get(args.treename)
 
-#  #===== AM  [not needed anymore]
-#  TName=args.treename
-##  if "Up" in ifile.split("_")[-2] or "Down" in ifile.split("_")[-2]:
-#  if "Up" in ifile or "Down" in ifile:
-#    TName=TName+"_"+ifile.split("_")[-3]+"_"+ifile.split("_")[-2]
-#
-#  itree = root_file.Get(TName)
-#  #===== AM
-
   oname = ifile.split('/')[-1].split('.root')[0]
   fout = TFile('{}/{}.root'.format(args.output_dir, oname), 'recreate')  ## make new file for output
   fout.cd()
@@ -93,34 +79,19 @@ def fillFile(ifile, channel, args, vbf_pred):
 #  nevents.Write()
   ntree = itree.CloneTree(-1, 'fast')
 
-#  branch_var = array('f', [0.])
-#  branch_var1 = array('f', [0.])
-#  branch_var2 = array('f', [0.])
   branch_var_vbf = array('f', [0.])
-#  branch_var_boost = array('f', [0.])
-#  disc_branch = ntree.Branch('NN_disc', branch_var, 'NN_disc/F')
-#  disc_branch1 = ntree.Branch('NN_disc_TT', branch_var1, 'NN_disc_TT/F')
-#  disc_branch2 = ntree.Branch('NN_disc_ZTT', branch_var2, 'NN_disc_ZTT/F')
   disc_branch_vbf = ntree.Branch('NN_disc_vbf', branch_var_vbf, 'NN_disc_vbf/F')
-#  disc_branch_boost = ntree.Branch('NN_disc_boost', branch_var_boost, 'NN_disc_boost/F')
   nevts = ntree.GetEntries()
   
   evt_index = 0
   for _ in itree:
     if evt_index % 10000 == 0 and evt_index > 0:
       print 'Process: {} has completed: {} events out of {}'.format(fname, evt_index, nevts)
-#    branch_var[0],branch_var1[0],branch_var2[0] = vbf_pred.getGuess(evt_index)
     branch_var= vbf_pred.getGuess(evt_index)
-#    branch_var_vbf[0] = vbf_pred.getGuess(evt_index)
-#    branch_var_boost[0] = boost_pred.getGuess(evt_index)
 
     evt_index += 1
     fout.cd()
-#    disc_branch.Fill()
-#    disc_branch1.Fill()
-#    disc_branch2.Fill()
     disc_branch_vbf.Fill()
-#    disc_branch_boost.Fill()
 
 
   root_file.Close()
@@ -132,12 +103,8 @@ def fillFile(ifile, channel, args, vbf_pred):
 def main(args):
     if args.treename == 'mutau_tree':
         channel = 'mt'
-    elif args.treename == 'etau_tree':
-        channel = 'et'
-    elif args.treename == 'emu_tree':
-        channel = 'em'
-    elif args.treename == 'emu_tree_':
-        channel = 'em'
+#    elif args.treename == 'etau_tree':
+#        channel = 'et'
     else:
         raise Exception('Hey. Bad channel. No. Try again.')
 
@@ -147,23 +114,11 @@ def main(args):
     file_names = [ifile for ifile in glob('{}/*.root'.format(args.input_dir))]
 
     keep_vbf = [
-#                'mjj', 'higgs_pT','m_sv','mt',
-#2016                'njets','mt',  'mu_iso','D_zeta','mjj', 'higgs_pT','vis_mass'
-#               'njets', 'mt',  'mu_iso','D_zeta',
-#                'mjj',  'higgs_pT','m_sv',
-#                'Q2V1', 'Q2V2', 'Phi', 'Phi1', 'costheta1', 'costheta2', 'costhetastar'
-                'muPt','taupt','lepIso','tmass', 'ht','Met','LeadJetPt', 'dR_mu_tau'
+                'muPt','taupt','lepIso','tmass', 'ht','Met','LeadJetPt', 'dR_mu_tau', 'ZMass','Pass'
                 ]
 
     vbf_pred = Predictor(args.input_vbf, args.model_vbf, keep_vbf)
 
-#    keep_boost = [
-#             'muPt','taupt','lepIso','tmass', 'ht','Met','LeadJetPt', 'dR_mu_tau'
-#    ]
-#    boost_pred = Predictor(args.input_boost, args.model_boost, keep_boost)
-
-#    processes = [Process(target=fillFile, args=(ifile, channel, args, vbf_pred)) for ifile in file_names]
-#    processes = [Process(target=fillFile, args=("PreNN_mutau_2017/ZTT.root", 'mt', args, vbf_pred)) for ifile in file_names]
     processes = [fillFile(ifile, 'mt', args, vbf_pred) for ifile in file_names]
     
 #    n_processes = min(8, multiprocessing.cpu_count() / 2)
