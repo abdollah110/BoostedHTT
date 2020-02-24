@@ -1,3 +1,6 @@
+import matplotlib
+matplotlib.use('Agg')
+
 def ROC_curve(data_test, label_test, weights, model, name, color):
     import matplotlib.pyplot as plt
     from sklearn.metrics import roc_curve, auc
@@ -10,8 +13,7 @@ def ROC_curve(data_test, label_test, weights, model, name, color):
     # use the model to do classifications
     label_predict = model.predict(data_test)
     fpr, tpr, _ = roc_curve(
-        label_test[:,0], label_predict[:, 0], sample_weight=weights)  # calculate the ROC curve
-#        label_test, label_predict[:, 0])#, sample_weight=weights)  # calculate the ROC curve
+        label_test, label_predict[:, 0])  # , sample_weight=weights)  # calculate the ROC curve
 
     roc_auc = auc(fpr, tpr)
     plt.plot([0, 1], [0, 1], linestyle='--', lw=2,
@@ -25,10 +27,7 @@ def ROC_curve(data_test, label_test, weights, model, name, color):
     plt.legend(loc="upper left")
     plt.grid()
     if 'testing' in name:
-        plt.savefig('plots/{}.png'.format(name))
-        plt.clf()
-
-
+        plt.savefig('Output/plots/{}.png'.format(name))
 
 
 def trainingPlots(history, name):
@@ -48,19 +47,17 @@ def trainingPlots(history, name):
     ax.legend(loc="upper left")
     ax.set_xlabel('epoch')
     ax.set_ylabel('acc')
-    plt.savefig('plots/{}.png'.format(name))
+    plt.savefig('Output/plots/{}.png'.format(name))
 
 
 def discPlot(name, model, train_sig, train_bkg, test_sig, test_bkg):
     import matplotlib.pyplot as plt
     import numpy as np
 
-
-    
-    train_sig_pred = model.predict(train_sig)[:, 0]
-    train_bkg_pred = model.predict(train_bkg)[:, 0]
-    test_sig_pred = model.predict(test_sig)[:, 0]
-    test_bkg_pred = model.predict(test_bkg)[:, 0]    
+    train_sig_pred = model.predict(train_sig)
+    train_bkg_pred = model.predict(train_bkg)
+    test_sig_pred = model.predict(test_sig)
+    test_bkg_pred = model.predict(test_bkg)
 
     plt.figure(figsize=(12, 8))
     plt.title('NN Discriminant')
@@ -74,19 +71,13 @@ def discPlot(name, model, train_sig, train_bkg, test_sig, test_bkg):
 
     plt.clf()
 
-    plt.hist(train_bkg_pred, histtype='stepfilled', color='red', label='ZTT Train', bins=50, range=(0,1), normed=True, alpha=0.5)
-    plt.hist(train_sig_pred, histtype='stepfilled', color='blue', label='VBF Train', bins=50, range=(0,1), normed=True, alpha=0.5)
-
+    plt.hist(train_bkg_pred, histtype='stepfilled', color='red',
+             label='ZTT Train', bins=50, range=(0, 1), normed=True, alpha=0.5)
+    plt.hist(train_sig_pred, histtype='stepfilled', color='blue',
+             label='VBF Train', bins=50, range=(0, 1), normed=True, alpha=0.5)
 
     plt.errorbar(y=nb, x=bin_centers, yerr=np.sqrt(nb)*.1, fmt='o', color='blue', label='ZTT Test')
     plt.errorbar(y=ns, x=bin_centers, yerr=np.sqrt(ns)*.1, fmt='o', color='red', label='VBF Test')
 
     plt.legend()
-    plt.savefig('plots/{}.png'.format(name))
-
-
-#
-#
-#python classify.py --treename emu_tree --input-vbf datasets/testData_2016_down.h5  --model-vbf outputModel_2016  --dir legacy_emu_2016_v4_down  --output-dir   legacy_emu_2016_v4_down_NN
-#
-#python classify.py --treename emu_tree --input-vbf datasets/testData_2016_nom.h5  --model-vbf outputModel_2016  --dir legacy_emu_2016_v4_nom  --output-dir   legacy_emu_2016_v4_nom_NN
+    plt.savefig('Output/plots/{}.png'.format(name))

@@ -15,7 +15,7 @@ def main(args):
     ## define training variables
 
     training_variables = [
-                    'evtwt','muPt','taupt','lepIso','tmass', 'ht','Met','LeadJetPt', 'dR_mu_tau'
+                    'muPt','taupt','lepIso','tmass', 'ht','Met','LeadJetPt', 'dR_mu_tau'
     ]
 
     nvars = len(training_variables)
@@ -159,7 +159,7 @@ def main(args):
     )
 
 #
-#    training_data, testing_data, training_labels, testing_meta, training_weights, testing_weights  = train_test_split(
+#    training_data, testing_data, training_labels, testing_labels, training_weights, testing_weights  = train_test_split(
 #        training_dataframe[training_variables].values, training_dataframe[['isSignal','isTT','isZTT']].values, training_dataframe['evtwt'].values,
 #        test_size=0.1, random_state=7
 #        )
@@ -171,12 +171,14 @@ def main(args):
 
     print "training_data \n\n\n\n",len(training_data), "  and , ", training_data
     print "training_labels \n\n\n\n",len(training_labels), "  and , ", training_labels
-
+    print "training_weights \n\n\n\n",len(training_weights), "  and , ", training_weights
+    
     ## train that there model, my dude
     history = model.fit(training_data, training_labels, shuffle=True,
                         epochs=10000, batch_size=1024, verbose=True,
                         callbacks=callbacks, validation_split=0.25, sample_weight=training_weights
                         )
+                        
 #        ## train that there model, my dude
 #        _ = model.fit(training_data, training_labels, shuffle=True,
 #                            epochs=10000, batch_size=1024, verbose=True,
@@ -191,21 +193,23 @@ def main(args):
 
 
 
-        test_sig,  test_ztt = [], []
-        for i in range(len(testing_meta)):
-            if testing_meta[i, 0] == 1:
+        test_sig,  test_bkg = [], []
+        for i in range(len(testing_labels)):
+            if testing_labels[i] == 1:
                 test_sig.append(testing_data[i, :])
-            elif testing_meta[i, 2] == 1:
-                test_ztt.append(testing_data[i, :])
+            elif testing_labels[i] == 0:
+                test_bkg.append(testing_data[i, :])
 
-        train_sig,  train_ztt = [], []
+        train_sig,  train_bkg = [], []
         for i in range(len(training_labels)):
-            if training_labels[i, 0] == 1:
+            if training_labels[i] == 1:
                 train_sig.append(training_data[i, :])
-            elif training_labels[i, 2] == 1:
-                train_ztt.append(training_data[i, :])
+            elif training_labels[i] == 0:
+                train_bkg.append(training_data[i, :])
 
-
+        discPlot('NN_disc_{}'.format(args.model), model, np.array(train_sig),
+                  np.array(train_bkg), np.array(test_sig), np.array(test_bkg))
+                  
 
         trainingPlots(history, 'trainingPlot_{}'.format(args.model))
 
@@ -225,18 +229,18 @@ def main(args):
 
 #        discPlot('NN_disc_{}'.format(args.model), model, np.array(train_sig), np.array(train_tt), np.array(test_sig), np.array(test_tt))
 
-        discPlot('NN_disc_{}'.format(args.model), model, np.array(train_sig), np.array(train_bkg), np.array(test_sig), np.array(test_bkg))
+#        discPlot('NN_disc_{}'.format(args.model), model, np.array(train_sig), np.array(train_bkg), np.array(test_sig), np.array(test_bkg))
         
 #
-#        discPlot('NN_sig_{}_vbf_ztt'.format(args.model), model, np.array(train_sig), np.array(train_ztt), np.array(test_sig), np.array(test_ztt))
+#        discPlot('NN_sig_{}_vbf_ztt'.format(args.model), model, np.array(train_sig), np.array(train_bkg), np.array(test_sig), np.array(test_bkg))
 #        discPlot('NN_sig_{}_vbf_tt'.format(args.model), model, np.array(train_sig), np.array(train_tt), np.array(test_sig), np.array(test_tt))
-#        discPlot('NN_sig_{}_ztt_tt'.format(args.model), model, np.array(train_ztt), np.array(train_tt), np.array(test_ztt), np.array(test_tt))
-#        discPlot('NN_bkg_{}_vbf_ztt'.format(args.model), model, np.array(train_sig), np.array(train_ztt), np.array(test_sig), np.array(test_ztt))
+#        discPlot('NN_sig_{}_ztt_tt'.format(args.model), model, np.array(train_bkg), np.array(train_tt), np.array(test_bkg), np.array(test_tt))
+#        discPlot('NN_bkg_{}_vbf_ztt'.format(args.model), model, np.array(train_sig), np.array(train_bkg), np.array(test_sig), np.array(test_bkg))
 #        discPlot('NN_bkg_{}_vbf_tt'.format(args.model), model, np.array(train_sig), np.array(train_tt), np.array(test_sig), np.array(test_tt))
-#        discPlot('NN_bkg_{}_ztt_tt'.format(args.model), model, np.array(train_ztt), np.array(train_tt), np.array(test_ztt), np.array(test_tt))
-#        discPlot('NN_tt_{}_vbf_ztt'.format(args.model), model, np.array(train_sig), np.array(train_ztt), np.array(test_sig), np.array(test_ztt))
+#        discPlot('NN_bkg_{}_ztt_tt'.format(args.model), model, np.array(train_bkg), np.array(train_tt), np.array(test_bkg), np.array(test_tt))
+#        discPlot('NN_tt_{}_vbf_ztt'.format(args.model), model, np.array(train_sig), np.array(train_bkg), np.array(test_sig), np.array(test_bkg))
 #        discPlot('NN_tt_{}_vbf_tt'.format(args.model), model, np.array(train_sig), np.array(train_tt), np.array(test_sig), np.array(test_tt))
-#        discPlot('NN_tt_{}_ztt_tt'.format(args.model), model, np.array(train_ztt), np.array(train_tt), np.array(test_ztt), np.array(test_tt))
+#        discPlot('NN_tt_{}_ztt_tt'.format(args.model), model, np.array(train_bkg), np.array(train_tt), np.array(test_bkg), np.array(test_tt))
 
 
 

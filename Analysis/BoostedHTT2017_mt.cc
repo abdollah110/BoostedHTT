@@ -151,7 +151,8 @@ int main(int argc, char* argv[]) {
         if (numBJet > 0) continue;
         
         // HT cut
-        float ht= getHT(JetPtCut);
+        ht= getHT(JetPtCut);
+        cout<<"ht = "<<ht<<"\n";
         if (ht < 200) continue;
         
         //electron veto
@@ -162,13 +163,15 @@ int main(int argc, char* argv[]) {
         TLorentzVector LeadJet= getLeadJet();
         
         
-        //MET Shape systematics
-        float Met=pfMET;
-        float Metphi=pfMETPhi;
-        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
-        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
-        if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
-        if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
+//        //MET Shape systematics
+        Met=pfMET;
+        Metphi=pfMETPhi;
+        cout<<"MET = "<<MET<<   "    Metphi = "<<pfMETPhi << "\n";
+        
+//        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
+//        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
+//        if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
+//        if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
         if (Met < 50 ) continue ;
         
         //############################################################################################
@@ -267,7 +270,7 @@ int main(int argc, char* argv[]) {
                 if (boostedTauByTightMuonRejection3->at(ibtau) < 0.5) continue;
                 
                 BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
-                float dR_mu_tau= BoostedTau4Momentum.DeltaR(Mu4Momentum);
+                dR_mu_tau= BoostedTau4Momentum.DeltaR(Mu4Momentum);
                 if( dR_mu_tau > 0.8 || dR_mu_tau < 0.1) continue;
                 Z4Momentum=BoostedTau4Momentum+Mu4Momentum;
                 
