@@ -152,7 +152,7 @@ int main(int argc, char* argv[]) {
         
         // HT cut
         ht= getHT(JetPtCut);
-        cout<<"ht = "<<ht<<"\n";
+//        cout<<"ht = "<<ht<<"\n";
         if (ht < 200) continue;
         
         //electron veto
@@ -166,12 +166,11 @@ int main(int argc, char* argv[]) {
 //        //MET Shape systematics
         Met=pfMET;
         Metphi=pfMETPhi;
-        cout<<"MET = "<<Met<<   "    Metphi = "<<pfMETPhi << "\n";
-        
-//        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
-//        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
-//        if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
-//        if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
+//        cout<<"MET = "<<Met<<   "    Metphi = "<<pfMETPhi << "\n";
+        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
+        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
+        if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
+        if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
         if (Met < 50 ) continue ;
         
         //############################################################################################
@@ -259,7 +258,7 @@ int main(int argc, char* argv[]) {
             
             
             
-            float tmass = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  Met,  Metphi);
+            tmass = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  Met,  Metphi);
             if (tmass > 40) continue;
             
             for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
