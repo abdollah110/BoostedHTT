@@ -83,7 +83,7 @@ int main(int argc, char* argv[]) {
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
     bool Fail,Pass,PassM,FailM,PassT,FailT,q_OS,q_SS,Isolation,AntiIsolation;
-    float tmass,ht,Met,FullWeight, dR_mu_tau;
+    float tmass,ht,Met,FullWeight, dR_mu_tau, Metphi;
 
 
 
@@ -166,7 +166,7 @@ int main(int argc, char* argv[]) {
 //        //MET Shape systematics
         Met=pfMET;
         Metphi=pfMETPhi;
-        cout<<"MET = "<<MET<<   "    Metphi = "<<pfMETPhi << "\n";
+        cout<<"MET = "<<Met<<   "    Metphi = "<<pfMETPhi << "\n";
         
 //        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
 //        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
