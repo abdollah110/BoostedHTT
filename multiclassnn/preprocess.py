@@ -40,7 +40,7 @@ def loadFile(ifile, category):
 
     # preselection
     slim_df = input_df[
-                (input_df['muPt'] > 50) & (input_df['q_OS'] < 0)
+                (input_df['muPt'] > 50)
     #            (input_df['njets'] > 1) & (input_df['mjj'] > 300)
         ]
     

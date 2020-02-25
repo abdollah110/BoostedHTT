@@ -79,15 +79,16 @@ def fillFile(ifile, channel, args, vbf_pred):
 #  nevents.Write()
   ntree = itree.CloneTree(-1, 'fast')
 
-  branch_var_vbf = array('f', [0.])
-  disc_branch_vbf = ntree.Branch('NN_disc_vbf', branch_var_vbf, 'NN_disc_vbf/F')
+  branch_var = array('f', [0.])
+  disc_branch_vbf = ntree.Branch('NN_disc', branch_var, 'NN_disc/F')
   nevts = ntree.GetEntries()
   
   evt_index = 0
   for _ in itree:
     if evt_index % 10000 == 0 and evt_index > 0:
       print 'Process: {} has completed: {} events out of {}'.format(fname, evt_index, nevts)
-    branch_var= vbf_pred.getGuess(evt_index)
+    branch_var[0]= vbf_pred.getGuess(evt_index)
+#    print 'branch_var= ', branch_var
 
     evt_index += 1
     fout.cd()

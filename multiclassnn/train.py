@@ -69,7 +69,8 @@ def main(args):
     ## combine channels into total dataset
 #    combine = pd.concat([selected_et, selected_mt])
     combine = pd.concat([selected_mt])
-#    print 'combine is ', combine
+
+#    separate two channels to apply a different weight on each
     sig_df = combine[(combine['sample_names'] == args.signal)]
     bkg_df = combine[(combine['sample_names'] == args.background)]
 
@@ -101,8 +102,8 @@ def main(args):
                         )
 
     if not args.dont_plot:
-#        ROC_curve(training_data, training_labels, training_weights, model, 'ROC_training_{}'.format(args.model), 'red')
-#        ROC_curve(testing_data, testing_labels[:], testing_weights[:], model, 'ROC_testing_{}'.format(args.model), 'cyan')
+        ROC_curve(training_data, training_labels, training_weights, model, 'ROC_training_{}'.format(args.model), 'red')
+        ROC_curve(testing_data, testing_labels[:], testing_weights[:], model, 'ROC_testing_{}'.format(args.model), 'cyan')
 
 
 
@@ -126,6 +127,7 @@ def main(args):
                   
 
         trainingPlots(history, 'trainingPlot_{}'.format(args.model))
+
 
 
 if __name__ == "__main__":
