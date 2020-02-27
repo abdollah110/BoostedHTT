@@ -53,7 +53,7 @@ public:
     std::vector<float>  Get_OS_SS_ratio();
     
     //  void convertDataToFake(Categories, std::string, double, double, double, double, double, double);  // 2d
-    void histoLoop(std::string year  ,std::vector<std::string>, std::string, std::string,std::vector<float>, std::string, std::string);
+    void histoLoop(std::string year  ,std::vector<std::string>, std::string,std::string, std::string,std::vector<float>, std::string, std::string);
     void histoQCD(std::vector<std::string>, std::string, std::string, std::string);
     //  void getJetFakes(std::vector<std::string>, std::string, std::string, bool);
 //    Categories getCategory(std::vector<Float_t>, double, double );

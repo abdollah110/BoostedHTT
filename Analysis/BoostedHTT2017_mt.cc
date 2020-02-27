@@ -79,37 +79,37 @@ int main(int argc, char* argv[]) {
     
     float mupt_=-10;
     float taupt_=-10;
-    float ZMass=-10;
+    float vis_mass=-10;
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
-    bool Fail,Pass,PassM,FailM,PassT,FailT,q_OS,q_SS,Isolation,AntiIsolation;
-    float tmass,ht,Met,FullWeight, dR_mu_tau, Metphi;
-
-
-
+    bool Fail,Pass,OS,SS,Isolation,AntiIsolation;
+    float tmass,ht,Met,FullWeight, dR_mu_tau, Metphi,IsoMu,BoostedTauRawIso, higgs_pT, higgs_m;
+    
+    
+    
     outTr->Branch("muPt",&mupt_,"muPt/F");
     outTr->Branch("taupt",&taupt_,"taupt/F");
     outTr->Branch("Pass",&Pass,"Pass/O");
     outTr->Branch("Fail",&Fail,"Fail/O");
-    outTr->Branch("PassM",&PassM,"PassM/O");
-    outTr->Branch("FailM",&FailM,"FailM/O");
-    outTr->Branch("PassT",&PassT,"PassT/O");
-    outTr->Branch("FailT",&FailT,"FailT/O");
-    outTr->Branch("q_OS",&q_OS,"q_OS/O");
-    outTr->Branch("q_SS",&q_SS,"q_SS/O");
+    outTr->Branch("OS",&OS,"OS/O");
+    outTr->Branch("SS",&SS,"SS/O");
     outTr->Branch("lepIso",&Isolation,"lepIso/O");
     outTr->Branch("lepAntiIso",&AntiIsolation,"lepAntiIso/O");
-    outTr->Branch("ZMass",&ZMass,"ZMass/F");
+    outTr->Branch("vis_mass",&vis_mass,"vis_mass/F");
     outTr->Branch("tmass",&tmass,"tmass/F");
     outTr->Branch("ht",&ht,"ht/F");
     outTr->Branch("Met",&Met,"Met/F");
     outTr->Branch("LeadJetPt",&LeadJetPt,"LeadJetPt/F");
     outTr->Branch("dR_mu_tau",&dR_mu_tau,"dR_mu_tau/F");
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
+    outTr->Branch("IsoMu",&IsoMu,"IsoMu/F");
+    outTr->Branch("BoostedTauRawIso",&BoostedTauRawIso,"BoostedTauRawIso/F");
+    outTr->Branch("higgs_pT",&higgs_pT,"higgs_pT/F");
+    outTr->Branch("higgs_m",&higgs_m,"higgs_m/F");
     
     
-
-
+    
+    
     Int_t nentries_wtn = (Int_t) Run_Tree->GetEntries();
     cout<<"nentries_wtn===="<<nentries_wtn<<"\n";
     for (Int_t i = 0; i < nentries_wtn; i++) {
@@ -120,7 +120,7 @@ int main(int argc, char* argv[]) {
         
         // Trigger
         bool PassTrigger = ((HLTEleMuX >> 21 & 1)==1);
-//              else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
+        //              else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
         // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19; // 2017
         if (! PassTrigger) continue;
         
@@ -152,7 +152,7 @@ int main(int argc, char* argv[]) {
         
         // HT cut
         ht= getHT(JetPtCut);
-//        cout<<"ht = "<<ht<<"\n";
+        //        cout<<"ht = "<<ht<<"\n";
         if (ht < 200) continue;
         
         //electron veto
@@ -163,10 +163,10 @@ int main(int argc, char* argv[]) {
         TLorentzVector LeadJet= getLeadJet();
         
         
-//        //MET Shape systematics
+        //        //MET Shape systematics
         Met=pfMET;
         Metphi=pfMETPhi;
-//        cout<<"MET = "<<Met<<   "    Metphi = "<<pfMETPhi << "\n";
+        //        cout<<"MET = "<<Met<<   "    Metphi = "<<pfMETPhi << "\n";
         if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
         if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
         if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
@@ -191,38 +191,46 @@ int main(int argc, char* argv[]) {
             
             if (!MuId ) continue;
             Mu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
-            //                float MuonCor=getCorrFactorMuon94X(isData,  muPt->at(imu), muEta->at(imu) , HistoMuId,HistoMuIso,HistoMuTrg,HistoMuTrack);
-            
             
             float MuonCor=1;
-//            if (!isData){
-//                // give inputs to workspace
-//                htt_sf->var("m_pt")->setVal(muPt->at(imu));
-//                htt_sf->var("m_eta")->setVal(muEta->at(imu));
-//                htt_sf->var("z_gen_mass")->setVal(ZBosonMass);
-//                htt_sf->var("z_gen_pt")->setVal(ZBosonPt);
-//                //                cout<<"\t\t ZBosonMass= "<<ZBosonMass <<"  ZBosonPt "<<ZBosonPt<<"\n";
-//
-//
-//                // muon ID SF
-//                MuonCor *= htt_sf->function("m_id_kit_ratio")->getVal();
+            if (!isData){
+            
+            
+            // Separate Drell-Yan
+            int Zcateg = ZCategory(BoostedTau4Momentum);
+            if (name == "ZLL" && Zcateg > 4) {
+                continue;
+            } else if ((name == "ZTT") &&Zcateg != 5) {
+                continue;
+            } else if (name == "ZJ" && Zcateg != 6) {
+                continue;
+            }
+
+                // give inputs to workspace
+                htt_sf->var("m_pt")->setVal(muPt->at(imu));
+                htt_sf->var("m_eta")->setVal(muEta->at(imu));
+                htt_sf->var("z_gen_mass")->setVal(ZBosonMass);
+                htt_sf->var("z_gen_pt")->setVal(ZBosonPt);
+                
+                
+                // muon ID SF
+                MuonCor *= htt_sf->function("m_id_kit_ratio")->getVal();
 //                // muon Iso SF
 //                MuonCor *= htt_sf->function("m_iso_kit_ratio")->getVal();
-//
+//                //Tracker
+//                MuonCor *= htt_sf->function("m_trk_ratio")->getVal();
+//                // Trigger
 //                auto single_data_eff = htt_sf->function("m_trg24_27_kit_data")->getVal();
 //                auto single_mc_eff = htt_sf->function("m_trg24_27_kit_mc")->getVal();
 //                auto single_eff = single_data_eff / single_mc_eff;
 //                MuonCor *=single_eff;
-//                MuonCor *= htt_sf->function("m_trk_ratio")->getVal();
-//
-//                //                if (InputROOT.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
-//                //                if (name.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
-//
-//            }
+                
+                
+                //                if (InputROOT.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
+                //                if (name.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
+                
+            }
             plotFill("MuonCor",MuonCor ,100,0,2);
-            
-            
-            
             
             float nom_zpt_weight=1.0;
             float zmumuWeight=1.0;
@@ -238,25 +246,20 @@ int main(int argc, char* argv[]) {
                     nom_zpt_weight = 0.9 * nom_zpt_weight + 0.1;
                 }
                 
-                
-                
-                if (syst == "zmumuShape_Up") {
-                    zmumuWeight= htt_sf->function("zptmass_weight_nom")->getVal() * htt_sf->function("zptmass_weight_nom")->getVal();
-                } else if (syst == "zmumuShape_Down") {
-                    // no weight for shift down
-                }
-                else{
-                    zmumuWeight= htt_sf->function("zptmass_weight_nom")->getVal();
-                }
+//                if (syst == "zmumuShape_Up") {
+//                    zmumuWeight= htt_sf->function("zptmass_weight_nom")->getVal() * htt_sf->function("zptmass_weight_nom")->getVal();
+//                } else if (syst == "zmumuShape_Down") {
+//                    // no weight for shift down
+//                }
+//                else{
+//                    zmumuWeight= htt_sf->function("zptmass_weight_nom")->getVal();
+//                }
             }
-            plotFill("nom_zpt_weight",nom_zpt_weight ,100,0,2);
-            plotFill("zmumuWeight",zmumuWeight ,100,0,2);
+            
             float ZCorrection=nom_zpt_weight*zmumuWeight;
+            plotFill("nom_zpt_weight",nom_zpt_weight ,100,0,2);
+//            plotFill("zmumuWeight",zmumuWeight ,100,0,2);
             plotFill("ZCorrection",ZCorrection ,100,0,2);
-            
-            
-            
-            
             
             tmass = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  Met,  Metphi);
             if (tmass > 40) continue;
@@ -270,138 +273,47 @@ int main(int argc, char* argv[]) {
                 
                 BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                 dR_mu_tau= BoostedTau4Momentum.DeltaR(Mu4Momentum);
+                
                 if( dR_mu_tau > 0.8 || dR_mu_tau < 0.1) continue;
+                
+                
+                
+                //###############################################################################################
+                //  tree branches
+                //###############################################################################################
+                
                 Z4Momentum=BoostedTau4Momentum+Mu4Momentum;
-                
-                
-                // Separate Drell-Yan
-                int Zcateg = ZCategory(BoostedTau4Momentum);
-                if (name == "ZLL" && Zcateg > 4) {
-                    continue;
-                } else if ((name == "ZTT") &&Zcateg != 5) {
-                    continue;
-                } else if (name == "ZJ" && Zcateg != 6) {
-                    continue;
-                }
-                
-                
-                
-                
-                //###############################################################################################
-                //  BoostedTau Isolation Categorization
-                //###############################################################################################
-                
-                const int size_tauCat = 6;
-                 Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
-                 Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
-             PassM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
-                 FailM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
-                 PassT = boostedTauByTightIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
-                 FailT = boostedTauByTightIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
-                
-                
-                bool Tau_category[size_tauCat] = {Pass, Fail,PassM, FailM,PassT, FailT};
-                std::string Tau_Cat[size_tauCat] = {"_Pass", "_Fail","_PassM", "_FailM","_PassT", "_FailT"};
-                
-                //###############################################################################################
-                //  lepton Isolation Categorization
-                //###############################################################################################
-                bool LepPassIsolation= IsoMu < LeptonIsoCut;
-                
-                const int size_isoCat = 3;
-                bool NoLepIso = 1;
-                 Isolation = LepPassIsolation;
-                 AntiIsolation =  !LepPassIsolation;
-                
-                bool Iso_category[size_isoCat] = {NoLepIso,Isolation, AntiIsolation};
-                std::string iso_Cat[size_isoCat] = {"","_Iso", "_AntiIso"};
-                
-                //###############################################################################################
-                //  Charge Categorization
-                //###############################################################################################
-                float chargelt= muCharge->at(imu) * boostedTauCharge->at(ibtau);
-                
-                const int size_q = 2;
-                 q_OS = chargelt < 0;
-                 q_SS =  chargelt > 0;
-                
-                bool Q_category[size_q] = {q_OS, q_SS};
-                std::string Q_Cat[size_q] = {"_OS", "_SS"};
-                
+                TLorentzVector Met4Momentum;
+                Met4Momentum.SetPtEtaPhiM(pfMET, 0, pfMETPhi, 0);
+                TLorentzVector higgs = BoostedTau4Momentum+Mu4Momentum +Met4Momentum;
+                higgs_pT = higgs.Pt();
+                higgs_m = higgs.M();
+                OS = muCharge->at(imu) * boostedTauCharge->at(ibtau) < 0;
+                SS =  muCharge->at(imu) * boostedTauCharge->at(ibtau) > 0;
+                Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
+                Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
+                Isolation= IsoMu < LeptonIsoCut;
+                mupt_=muPt->at(imu);
+                taupt_=boostedTauPt->at(ibtau);
+                vis_mass=Z4Momentum.M();
+                LeadJetPt = LeadJet.Pt();
+                dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
+                BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(ibtau);
                 
                 //###############################################################################################
                 //  Weights
                 //###############################################################################################
-//                cout<<"LumiWeight*MuonCor *ZCorrection; "<<LumiWeight<<"  "<<MuonCor <<"  "<<ZCorrection<<"\n";
                 FullWeight = LumiWeight*MuonCor *ZCorrection;
                 if (isData) FullWeight=1;
-
-                //###############################################################################################
-                //  make Tree
-                //###############################################################################################
                 
-                mupt_=muPt->at(imu);
-                 taupt_=boostedTauPt->at(ibtau);
-                 ZMass=Z4Momentum.M();
-                 LeadJetPt = LeadJet.Pt();
-                 dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
-                
-                
-
-                
-                
-                //###############################################################################################
-                // Fill Histograms
-                //###############################################################################################
-                
-                for (int tt = 0; tt < size_tauCat; tt++) {
-                    if (Tau_category[tt]) {
-                        for (int iso = 0; iso < size_isoCat; iso++) {
-                            if (Iso_category[iso]) {
-                                for (int iq = 0; iq < size_q; iq++) {
-                                    if (Q_category[iq]) {
-                                        
-                                        
-                                        std::string FullStringName = Tau_Cat[tt] +iso_Cat[iso] + Q_Cat[iq] ;
-                                        
-                                        //                                This check is used to make sure that each event is just filled once for any of the categories ==> No doube-counting of events  (this is specially important for ttbar events where we have many jets and leptons)
-                                        if (!( std::find(HistNamesFilled.begin(), HistNamesFilled.end(), FullStringName) != HistNamesFilled.end())){
-                                            HistNamesFilled.push_back(FullStringName);
-                                            
-                                            //1 D histograms
-                                            plotFill("ZMass"+FullStringName,Z4Momentum.M() ,25,0,125,FullWeight);
-                                            plotFill("tmass"+FullStringName,tmass ,25,0,50,FullWeight);
-                                            plotFill("ht"+FullStringName,ht ,25,0,1250,FullWeight);
-                                            plotFill("lepPt"+FullStringName,muPt->at(imu) ,20,0,200,FullWeight);
-                                            plotFill("tauPt"+FullStringName,boostedTauPt->at(ibtau) ,20,0,200,FullWeight);
-                                            plotFill("MET"+FullStringName,Met ,40,0,400,FullWeight);
-                                            plotFill("LeadJetPt"+FullStringName,LeadJet.Pt() ,25,0,1000,FullWeight);
-                                            plotFill("dR_Z_jet"+FullStringName,LeadJet.DeltaR(Z4Momentum) ,25,0,5,FullWeight);
-
-
-                                            //2 D histograms
-                                            plotFill("LepDR_MET"+FullStringName, dR_mu_tau, Met, 20,0.4,0.8 ,30,0,300,FullWeight);
-                                            plotFill("LepDR_HT"+FullStringName, dR_mu_tau, ht, 20,0.4,0.8 ,25,0,1000,FullWeight);
-                                            plotFill("LepDR_LeadJet"+FullStringName, dR_mu_tau, LeadJet.Pt(), 20,0.4,0.8 ,25,0,1000,FullWeight);
-                                            
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
                 
                 if (! isFilledOnce ){
-                outTr->Fill();
-                isFilledOnce= true;
+                    outTr->Fill();
+                    isFilledOnce= true;
                 }
-                
             }//boostedTau loop
         }//muon loop
-        
     } //End of Tree
-    
     
     
     fout->cd();

@@ -64,7 +64,7 @@ float dR_(float ieta, float iphi, float jeta, float jphi){
 
 TTree *  Xttree( TFile * f_Double){
     
-//            TTree *Run_Tree = (TTree*) f_Double->Get("ggNtuplizer/EventTree");
+    //            TTree *Run_Tree = (TTree*) f_Double->Get("ggNtuplizer/EventTree");
     TTree *Run_Tree = (TTree*) f_Double->Get("EventTree");
     
     cout.setf(ios::fixed, ios::floatfield);
@@ -133,7 +133,7 @@ TTree *  Xttree( TFile * f_Double){
     Run_Tree->SetBranchAddress("eleChargeConsistent", &eleChargeConsistent);
     Run_Tree->SetBranchAddress("eleEn", &eleEn);
     Run_Tree->SetBranchAddress("eleSCEn", &eleSCEn);
-//    Run_Tree->SetBranchAddress("eleESEn", &eleESEn);
+    //    Run_Tree->SetBranchAddress("eleESEn", &eleESEn);
     Run_Tree->SetBranchAddress("eleESEnP1", &eleESEnP1);
     Run_Tree->SetBranchAddress("eleESEnP2", &eleESEnP2);
     Run_Tree->SetBranchAddress("eleD0", &eleD0);
@@ -142,24 +142,24 @@ TTree *  Xttree( TFile * f_Double){
     Run_Tree->SetBranchAddress("elePt", &elePt);
     Run_Tree->SetBranchAddress("eleEta", &eleEta);
     Run_Tree->SetBranchAddress("elePhi", &elePhi);
-//    Run_Tree->SetBranchAddress("eleR9", &eleR9);
-//    Run_Tree->SetBranchAddress("eleCalibPt", &eleCalibPt);
-//    Run_Tree->SetBranchAddress("eleCalibEn", &eleCalibEn);
+    //    Run_Tree->SetBranchAddress("eleR9", &eleR9);
+    //    Run_Tree->SetBranchAddress("eleCalibPt", &eleCalibPt);
+    //    Run_Tree->SetBranchAddress("eleCalibEn", &eleCalibEn);
     Run_Tree->SetBranchAddress("eleSCEta", &eleSCEta);
-//    Run_Tree->SetBranchAddress("eleSCPhi", &eleSCPhi);
-//    Run_Tree->SetBranchAddress("eleSCRawEn", &eleSCRawEn);
-//    Run_Tree->SetBranchAddress("eleSCEtaWidth", &eleSCEtaWidth);
-//    Run_Tree->SetBranchAddress("eleSCPhiWidth", &eleSCPhiWidth);
-//    Run_Tree->SetBranchAddress("eleHoverE", &eleHoverE);
-//    Run_Tree->SetBranchAddress("eleEoverP", &eleEoverP);
-//    Run_Tree->SetBranchAddress("eleEoverPout", &eleEoverPout);
-//    Run_Tree->SetBranchAddress("eleEoverPInv", &eleEoverPInv);
-//    Run_Tree->SetBranchAddress("eleBrem", &eleBrem);
-//    Run_Tree->SetBranchAddress("eledEtaAtVtx", &eledEtaAtVtx);
-//    Run_Tree->SetBranchAddress("eledPhiAtVtx", &eledPhiAtVtx);
-////    Run_Tree->SetBranchAddress("eledEtaAtCalo", &eledEtaAtCalo);
-//    Run_Tree->SetBranchAddress("eleSigmaIEtaIEtaFull5x5", &eleSigmaIEtaIEtaFull5x5);
-//    Run_Tree->SetBranchAddress("eleSigmaIPhiIPhiFull5x5", &eleSigmaIPhiIPhiFull5x5);
+    //    Run_Tree->SetBranchAddress("eleSCPhi", &eleSCPhi);
+    //    Run_Tree->SetBranchAddress("eleSCRawEn", &eleSCRawEn);
+    //    Run_Tree->SetBranchAddress("eleSCEtaWidth", &eleSCEtaWidth);
+    //    Run_Tree->SetBranchAddress("eleSCPhiWidth", &eleSCPhiWidth);
+    //    Run_Tree->SetBranchAddress("eleHoverE", &eleHoverE);
+    //    Run_Tree->SetBranchAddress("eleEoverP", &eleEoverP);
+    //    Run_Tree->SetBranchAddress("eleEoverPout", &eleEoverPout);
+    //    Run_Tree->SetBranchAddress("eleEoverPInv", &eleEoverPInv);
+    //    Run_Tree->SetBranchAddress("eleBrem", &eleBrem);
+    //    Run_Tree->SetBranchAddress("eledEtaAtVtx", &eledEtaAtVtx);
+    //    Run_Tree->SetBranchAddress("eledPhiAtVtx", &eledPhiAtVtx);
+    ////    Run_Tree->SetBranchAddress("eledEtaAtCalo", &eledEtaAtCalo);
+    //    Run_Tree->SetBranchAddress("eleSigmaIEtaIEtaFull5x5", &eleSigmaIEtaIEtaFull5x5);
+    //    Run_Tree->SetBranchAddress("eleSigmaIPhiIPhiFull5x5", &eleSigmaIPhiIPhiFull5x5);
     Run_Tree->SetBranchAddress("eleConvVeto", &eleConvVeto);
     Run_Tree->SetBranchAddress("eleMissHits", &eleMissHits);
     Run_Tree->SetBranchAddress("eleESEffSigmaRR", &eleESEffSigmaRR);
@@ -169,28 +169,28 @@ TTree *  Xttree( TFile * f_Double){
     Run_Tree->SetBranchAddress("elePFPUIso", &elePFPUIso);
     Run_Tree->SetBranchAddress("elePFClusEcalIso", &elePFClusEcalIso);
     Run_Tree->SetBranchAddress("elePFClusHcalIso", &elePFClusHcalIso);
-//    Run_Tree->SetBranchAddress("elePFMiniIso", &elePFMiniIso);
+    //    Run_Tree->SetBranchAddress("elePFMiniIso", &elePFMiniIso);
     Run_Tree->SetBranchAddress("eleIDMVAIso", &eleIDMVAIso);
     Run_Tree->SetBranchAddress("eleIDMVANoIso", &eleIDMVANoIso);
-//    Run_Tree->SetBranchAddress("eledEtaseedAtVtx", &eledEtaseedAtVtx);
-//    Run_Tree->SetBranchAddress("eleE1x5", &eleE1x5);
-//    Run_Tree->SetBranchAddress("eleE2x5", &eleE2x5);
-//    Run_Tree->SetBranchAddress("eleE5x5", &eleE5x5);
-//    Run_Tree->SetBranchAddress("eleE1x5Full5x5", &eleE1x5Full5x5);
-//    Run_Tree->SetBranchAddress("eleE2x5Full5x5", &eleE2x5Full5x5);
-//    Run_Tree->SetBranchAddress("eleE5x5Full5x5", &eleE5x5Full5x5);
-//    Run_Tree->SetBranchAddress("eleR9Full5x5", &eleR9Full5x5);
-//    Run_Tree->SetBranchAddress("eleEcalDrivenSeed", &eleEcalDrivenSeed);
-//    Run_Tree->SetBranchAddress("eleDr03EcalRecHitSumEt", &eleDr03EcalRecHitSumEt);
-//    Run_Tree->SetBranchAddress("eleDr03HcalDepth1TowerSumEt", &eleDr03HcalDepth1TowerSumEt);
-//    Run_Tree->SetBranchAddress("eleDr03HcalDepth2TowerSumEt", &eleDr03HcalDepth2TowerSumEt);
-//    Run_Tree->SetBranchAddress("eleDr03HcalTowerSumEt", &eleDr03HcalTowerSumEt);
-//    Run_Tree->SetBranchAddress("eleDr03TkSumPt", &eleDr03TkSumPt);
-//    Run_Tree->SetBranchAddress("elecaloEnergy", &elecaloEnergy);
-//    Run_Tree->SetBranchAddress("eleTrkdxy", &eleTrkdxy);
-//    Run_Tree->SetBranchAddress("eleKFHits", &eleKFHits);
-//    Run_Tree->SetBranchAddress("eleKFChi2", &eleKFChi2);
-//    Run_Tree->SetBranchAddress("eleIDbit", &eleIDbit);
+    //    Run_Tree->SetBranchAddress("eledEtaseedAtVtx", &eledEtaseedAtVtx);
+    //    Run_Tree->SetBranchAddress("eleE1x5", &eleE1x5);
+    //    Run_Tree->SetBranchAddress("eleE2x5", &eleE2x5);
+    //    Run_Tree->SetBranchAddress("eleE5x5", &eleE5x5);
+    //    Run_Tree->SetBranchAddress("eleE1x5Full5x5", &eleE1x5Full5x5);
+    //    Run_Tree->SetBranchAddress("eleE2x5Full5x5", &eleE2x5Full5x5);
+    //    Run_Tree->SetBranchAddress("eleE5x5Full5x5", &eleE5x5Full5x5);
+    //    Run_Tree->SetBranchAddress("eleR9Full5x5", &eleR9Full5x5);
+    //    Run_Tree->SetBranchAddress("eleEcalDrivenSeed", &eleEcalDrivenSeed);
+    //    Run_Tree->SetBranchAddress("eleDr03EcalRecHitSumEt", &eleDr03EcalRecHitSumEt);
+    //    Run_Tree->SetBranchAddress("eleDr03HcalDepth1TowerSumEt", &eleDr03HcalDepth1TowerSumEt);
+    //    Run_Tree->SetBranchAddress("eleDr03HcalDepth2TowerSumEt", &eleDr03HcalDepth2TowerSumEt);
+    //    Run_Tree->SetBranchAddress("eleDr03HcalTowerSumEt", &eleDr03HcalTowerSumEt);
+    //    Run_Tree->SetBranchAddress("eleDr03TkSumPt", &eleDr03TkSumPt);
+    //    Run_Tree->SetBranchAddress("elecaloEnergy", &elecaloEnergy);
+    //    Run_Tree->SetBranchAddress("eleTrkdxy", &eleTrkdxy);
+    //    Run_Tree->SetBranchAddress("eleKFHits", &eleKFHits);
+    //    Run_Tree->SetBranchAddress("eleKFChi2", &eleKFChi2);
+    //    Run_Tree->SetBranchAddress("eleIDbit", &eleIDbit);
     
     //########################################   Jet Info
     Run_Tree->SetBranchAddress("nJet",&nJet);
@@ -205,9 +205,9 @@ TTree *  Xttree( TFile * f_Double){
     Run_Tree->SetBranchAddress("jetJECUnc",&jetJECUnc);
     Run_Tree->SetBranchAddress("jetRawEn",&jetRawEn);
     Run_Tree->SetBranchAddress("jetHadFlvr",&jetHadFlvr);
-//    Run_Tree->SetBranchAddress("jetP4Smear",&jetP4Smear);
-//    Run_Tree->SetBranchAddress("jetP4SmearUp",&jetP4SmearUp);
-//    Run_Tree->SetBranchAddress("jetP4SmearDo",&jetP4SmearDo);
+    //    Run_Tree->SetBranchAddress("jetP4Smear",&jetP4Smear);
+    //    Run_Tree->SetBranchAddress("jetP4SmearUp",&jetP4SmearUp);
+    //    Run_Tree->SetBranchAddress("jetP4SmearDo",&jetP4SmearDo);
     
     
     
@@ -228,11 +228,11 @@ TTree *  Xttree( TFile * f_Double){
     Run_Tree->SetBranchAddress("metFilters",&metFilters);
     Run_Tree->SetBranchAddress("genHT",&genHT);
     
-//    Run_Tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
-//    Run_Tree->SetBranchAddress("pdfSystWeightId",&pdfSystWeightId);
-//    Run_Tree->SetBranchAddress("pdfWeight",&pdfWeight);
+    //    Run_Tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
+    //    Run_Tree->SetBranchAddress("pdfSystWeightId",&pdfSystWeightId);
+    //    Run_Tree->SetBranchAddress("pdfWeight",&pdfWeight);
     
- 
+    
     
     //########################################   Boosted Tau
     Run_Tree->SetBranchAddress("nBoostedTau",&nBoostedTau);
@@ -242,54 +242,56 @@ TTree *  Xttree( TFile * f_Double){
     Run_Tree->SetBranchAddress("boostedTauMass",&boostedTauMass);
     Run_Tree->SetBranchAddress("boostedTauDecayMode",&boostedTauDecayMode);
     Run_Tree->SetBranchAddress("boostedTauCharge",&boostedTauCharge);
-Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v2DBoldDMwLT",&boostedTauByLooseIsolationMVArun2v2DBoldDMwLT);
-
-Run_Tree->SetBranchAddress("boostedTaupfTausDiscriminationByDecayModeFinding",&boostedTaupfTausDiscriminationByDecayModeFinding);
+    Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v2DBoldDMwLT",&boostedTauByLooseIsolationMVArun2v2DBoldDMwLT);
+    
+    Run_Tree->SetBranchAddress("boostedTaupfTausDiscriminationByDecayModeFinding",&boostedTaupfTausDiscriminationByDecayModeFinding);
     Run_Tree->SetBranchAddress("boostedTauByMVA6VLooseElectronRejection",&boostedTauByMVA6VLooseElectronRejection);
     Run_Tree->SetBranchAddress("boostedTauByMVA6TightElectronRejection",&boostedTauByMVA6TightElectronRejection);
     Run_Tree->SetBranchAddress("boostedTauByTightMuonRejection3",&boostedTauByTightMuonRejection3);
     Run_Tree->SetBranchAddress("boostedTauByLooseMuonRejection3",&boostedTauByLooseMuonRejection3);
-
+    
     
     Run_Tree->SetBranchAddress("boostedTauByTightIsolationMVArun2v1DBoldDMwLT",&boostedTauByTightIsolationMVArun2v1DBoldDMwLT);
     Run_Tree->SetBranchAddress("boostedTauByMediumIsolationMVArun2v1DBoldDMwLT",&boostedTauByMediumIsolationMVArun2v1DBoldDMwLT);
     Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBoldDMwLT",&boostedTauByLooseIsolationMVArun2v1DBoldDMwLT);
     Run_Tree->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT",&boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT);
-
-Run_Tree->SetBranchAddress("taudaugPt",&taudaugPt);
-Run_Tree->SetBranchAddress("taudaugEta",&taudaugEta);
-Run_Tree->SetBranchAddress("taudaugPhi",&taudaugPhi);
-Run_Tree->SetBranchAddress("taudaugMass",&taudaugMass);
-Run_Tree->SetBranchAddress("numGenTau",&numGenTau);
-
-
-
+    
+    Run_Tree->SetBranchAddress("boostedTauByIsolationMVArun2v1DBoldDMwLTraw",&boostedTauByIsolationMVArun2v1DBoldDMwLTraw);
+    
+    Run_Tree->SetBranchAddress("taudaugPt",&taudaugPt);
+    Run_Tree->SetBranchAddress("taudaugEta",&taudaugEta);
+    Run_Tree->SetBranchAddress("taudaugPhi",&taudaugPhi);
+    Run_Tree->SetBranchAddress("taudaugMass",&taudaugMass);
+    Run_Tree->SetBranchAddress("numGenTau",&numGenTau);
+    
+    
+    
     //    .push_back(vec.Pt());
     //    .push_back(vec.Eta());
     //    .push_back(vec.Phi());
     //    .push_back(vec.mass());
     
     
-
-
+    
+    
     //    Run_Tree->SetBranchAddress("",&);
-//
-//
-//
-//    vector<float>   *boostedTauPt;
-//    vector<float>   *boostedTauEt;
-//    vector<float>   *boostedTauCharge;
-//    vector<float>   *boostedTauP;
-//    vector<float>   *boostedTauPx;
-//    vector<float>   *boostedTauPy;
-//    vector<float>   *boostedTauPz;
-//    vector<float>   *boostedTauVz;
-//    vector<float>   *boostedTauEnergy;
-//    vector<float>   *boostedTauMass;
-//    vector<float>   *boostedTauDxy;
-//    vector<float>   *boostedTauZImpact;
-//    vector<int>     *boostedTauDecayMode;
-//
+    //
+    //
+    //
+    //    vector<float>   *boostedTauPt;
+    //    vector<float>   *boostedTauEt;
+    //    vector<float>   *boostedTauCharge;
+    //    vector<float>   *boostedTauP;
+    //    vector<float>   *boostedTauPx;
+    //    vector<float>   *boostedTauPy;
+    //    vector<float>   *boostedTauPz;
+    //    vector<float>   *boostedTauVz;
+    //    vector<float>   *boostedTauEnergy;
+    //    vector<float>   *boostedTauMass;
+    //    vector<float>   *boostedTauDxy;
+    //    vector<float>   *boostedTauZImpact;
+    //    vector<int>     *boostedTauDecayMode;
+    //
     
     
     return Run_Tree;
@@ -309,7 +311,7 @@ TH1F *  HistPUData(){
     TH1F * HistoPUData= (TH1F *) PUData->Get("pileup");
     HistoPUData->Rebin(2);
     HistoPUData->Scale(1.0/HistoPUData->Integral());
-//    cout << "HistoPUData integral= "<<HistoPUData->Integral()<<"\n";
+    //    cout << "HistoPUData integral= "<<HistoPUData->Integral()<<"\n";
     return HistoPUData;
 }
 
@@ -318,12 +320,12 @@ TH1F *  HistPUData(){
 TH1F *  HistPUMC(bool isData,TFile *f_Double){
     if (isData) return 0;
     else{
-//    TFile * PUMC= TFile::Open("../interface/pileup-hists/mcMoriondPU.root");
-//    TH1F * HistoPUMC= (TH1F *) PUMC->Get("pileup");
-    TFile * PUMC= TFile::Open(f_Double->GetName());
-    TH1F * HistoPUMC= (TH1F *) PUMC->Get("hPUTrue");
-    HistoPUMC->Scale(1.0/HistoPUMC->Integral());
-//        cout << "HistoPUMC integral= "<<HistoPUMC->Integral()<<"\n";
+        //    TFile * PUMC= TFile::Open("../interface/pileup-hists/mcMoriondPU.root");
+        //    TH1F * HistoPUMC= (TH1F *) PUMC->Get("pileup");
+        TFile * PUMC= TFile::Open(f_Double->GetName());
+        TH1F * HistoPUMC= (TH1F *) PUMC->Get("hPUTrue");
+        HistoPUMC->Scale(1.0/HistoPUMC->Integral());
+        //        cout << "HistoPUMC integral= "<<HistoPUMC->Integral()<<"\n";
         return HistoPUMC;
     }
     return 0;
@@ -335,20 +337,20 @@ TH1F *  HistPUMC(bool isData,TFile *f_Double){
 //########################################
 
 TH2F**  FuncHistMuId(){
-
     
-
-        TFile * MuCorrId_BCDEF= TFile::Open(("../interface/pileup-hists/RunBCDEF_SF_ID.root"));
-        TH2F * HistoMuId_BCDEF= (TH2F *) MuCorrId_BCDEF->Get("NUM_MediumID_DEN_genTracks_pt_abseta");
     
-        static TH2F* HistoMuId[1]={HistoMuId_BCDEF};
     
-        return  HistoMuId;
+    TFile * MuCorrId_BCDEF= TFile::Open(("../interface/pileup-hists/RunBCDEF_SF_ID.root"));
+    TH2F * HistoMuId_BCDEF= (TH2F *) MuCorrId_BCDEF->Get("NUM_MediumID_DEN_genTracks_pt_abseta");
+    
+    static TH2F* HistoMuId[1]={HistoMuId_BCDEF};
+    
+    return  HistoMuId;
 }
 
 
 TH2F**  FuncHistMuIso(){
-
+    
     TFile * MuCorrIso_BCDEF= TFile::Open(("../interface/pileup-hists/RunBCDEF_SF_ISO.root"));
     TH2F * HistoMuIso_BCDEF= (TH2F *) MuCorrIso_BCDEF->Get("NUM_LooseRelIso_DEN_MediumID_pt_abseta");
     
@@ -360,15 +362,15 @@ TH2F**  FuncHistMuIso(){
 
 
 TH2F**  FuncHistMuTrigger(){
-
+    
     TFile * MuCorrTrg_BCDEF= TFile::Open(("../interface/MuSF/EfficienciesAndSF_RunBtoF_Nov17Nov2017.root"));
-
-//    TH1F * HistoMuTrg_BCDEF= (TH1F *) MuCorrTrg_BCDEF->Get("Mu50_EtaBins/eta_ratio");
+    
+    //    TH1F * HistoMuTrg_BCDEF= (TH1F *) MuCorrTrg_BCDEF->Get("Mu50_EtaBins/eta_ratio");
     TH2F * HistoMuTrg_BCDEF= (TH2F *) MuCorrTrg_BCDEF->Get("IsoMu27_PtEtaBins/pt_abseta_ratio");
-
+    
     
     static TH2F* HistoMuTrg[2]={HistoMuTrg_BCDEF};
-
+    
     
     return HistoMuTrg;
 }
@@ -389,28 +391,28 @@ TGraphAsymmErrors * FuncHistMuTrack(){
 
 
 TH2F** FuncHistEleReco(){
-
+    
     TFile * eleF= TFile::Open(("../interface/EleSF/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root"));
     TH2F * HistoEle= (TH2F *) eleF->Get("EGamma_SF2D");
     
     static  TH2F* HistoElReco[1]={HistoEle};
     
     return HistoElReco;
-
-
-
+    
+    
+    
 }
 
 TH2F** FuncHistEleId(){
-
+    
     TFile * eleIdF= TFile::Open(("../interface/EleSF/2017_ElectronMVA80.root"));
     TH2F * eleIdHisto= (TH2F *) eleIdF->Get("EGamma_SF2D");
     
     static  TH2F* HistoElId[1]={eleIdHisto};
     
     return HistoElId;
-
-
+    
+    
 }
 
 
@@ -421,7 +423,7 @@ TH2F** FuncHistEleId(){
 TH2F * FuncHistEleMVAId(std::string type){
     
     
-//    TFile * EleCorrMVAIdIso90= TFile::Open(("../interface/pileup-hists/egammaEffi.txt_EGM2D.root")); //This is for 2016
+    //    TFile * EleCorrMVAIdIso90= TFile::Open(("../interface/pileup-hists/egammaEffi.txt_EGM2D.root")); //This is for 2016
     TFile * EleCorrMVAIdIso90= TFile::Open(("../interface/pileup-hists/gammaEffi.txt_EGM2D_runBCDEF_passingMVA94Xwp90iso.root"));
     TH2F * HistoEleMVAIdIso90= (TH2F *) EleCorrMVAIdIso90->Get("EGamma_SF2D");
     TH2F * HistoEleMVAIdIso90_EffMC= (TH2F *) EleCorrMVAIdIso90->Get("EGamma_EffMC2D");
@@ -769,7 +771,7 @@ vector<float>  GeneratorInfo(){
     if (ZBosonPt ==0){
         ZBosonPt=(GenMu4Momentum+GenAntiMu4Momentum).Pt();  //This is a temp solution to the above problem
         ZBosonMass=(GenMu4Momentum+GenAntiMu4Momentum).M();  //This is a temp solution to the above problem
-        }
+    }
     
     if (WBosonPt==0)
         WBosonPt = (MUGEN4Momentum+NUGEN4Momentum).Pt();
@@ -786,10 +788,10 @@ vector<float>  GeneratorInfo(){
     
     //######################## W Mass
     infoGen.push_back(WBosonMass);
-
+    
     //######################## Z Mass
     infoGen.push_back(ZBosonMass);
-
+    
     return infoGen;
     
 }
@@ -890,10 +892,10 @@ float FuncFinalBTagSF(bool isData, TH2F ** Btagg_TT, float BJetPtCut, float CSVC
                 P_Data_P_mc=(1-SF*EffJet)/(1-EffJet);
                 
             }
-        FinalBTagSF *=P_Data_P_mc;
+            FinalBTagSF *=P_Data_P_mc;
         }
         
-//        FinalBTagSF *=P_Data_P_mc; //  Seemd to ve a BUGGGGGGG  May16
+        //        FinalBTagSF *=P_Data_P_mc; //  Seemd to ve a BUGGGGGGG  May16
     }
     return FinalBTagSF;
 }
@@ -926,7 +928,7 @@ float getHT( float SimpleJetPtCut){
     float HT=0;
     for (int ijet= 0 ; ijet < nJet ; ijet++){
         if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 3.0 )
-          HT += jetPt->at(ijet);
+            HT += jetPt->at(ijet);
     }
     return HT;
 }
@@ -934,13 +936,13 @@ float getHT( float SimpleJetPtCut){
 
 
 TLorentzVector getLeadJet(){
-TLorentzVector leadJet;
-float MaxJetPt=0;
-int leadJetPtIndex=0;
+    TLorentzVector leadJet;
+    float MaxJetPt=0;
+    int leadJetPtIndex=0;
     for (int ijet= 0 ; ijet < nJet ; ijet++){
         if (jetPFLooseId->at(ijet) > 0.5 && fabs(jetEta->at(ijet)) < 3.0  && jetPt->at(ijet) > MaxJetPt ){
-        MaxJetPt=jetPt->at(ijet);
-        leadJetPtIndex=ijet;
+            MaxJetPt=jetPt->at(ijet);
+            leadJetPtIndex=ijet;
         }
     }
     leadJet.SetPtEtaPhiE(jetPt->at(leadJetPtIndex),jetEta->at(leadJetPtIndex),jetPhi->at(leadJetPtIndex),jetEn->at(leadJetPtIndex));
@@ -1036,11 +1038,11 @@ int ZCategory(TLorentzVector tauCandidate) {
     }
     TLorentzVector genTau;
     for (int i=0; i < numGenTau  ; i++){
-//        cout<<taudaugPt->at(i)<<" "<<taudaugEta->at(i)<<" "<<taudaugPhi->at(i)<<" "<<taudaugMass->at(i)<<"\n";
-//        cout<<taudaugMass->at(i)<<"\n";
+        //        cout<<taudaugPt->at(i)<<" "<<taudaugEta->at(i)<<" "<<taudaugPhi->at(i)<<" "<<taudaugMass->at(i)<<"\n";
+        //        cout<<taudaugMass->at(i)<<"\n";
         genTau.SetPtEtaPhiM(taudaugPt->at(i),taudaugEta->at(i),taudaugPhi->at(i),taudaugMass->at(i));
         if (tauCandidate.DeltaR(genTau) < 0.2  && taudaugPt->at(i) > 15)
-        return 5;
+            return 5;
     }
     return 6;
 }
