@@ -196,16 +196,6 @@ int main(int argc, char* argv[]) {
             if (!isData){
             
             
-            // Separate Drell-Yan
-            int Zcateg = ZCategory(BoostedTau4Momentum);
-            if (name == "ZLL" && Zcateg > 4) {
-                continue;
-            } else if ((name == "ZTT") &&Zcateg != 5) {
-                continue;
-            } else if (name == "ZJ" && Zcateg != 6) {
-                continue;
-            }
-
                 // give inputs to workspace
                 htt_sf->var("m_pt")->setVal(muPt->at(imu));
                 htt_sf->var("m_eta")->setVal(muEta->at(imu));
@@ -276,7 +266,16 @@ int main(int argc, char* argv[]) {
                 
                 if( dR_mu_tau > 0.8 || dR_mu_tau < 0.1) continue;
                 
-                
+                // Separate Drell-Yan
+                int Zcateg = ZCategory(BoostedTau4Momentum);
+                if (name == "ZLL" && Zcateg > 4) {
+                    continue;
+                } else if ((name == "ZTT") &&Zcateg != 5) {
+                    continue;
+                } else if (name == "ZJ" && Zcateg != 6) {
+                    continue;
+                }
+
                 
                 //###############################################################################################
                 //  tree branches

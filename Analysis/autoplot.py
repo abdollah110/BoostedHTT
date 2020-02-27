@@ -12,7 +12,7 @@ plots = [
 #    ('met', 'Missing E_{T}', 1.4),
 #    ('mt', 'TMass (lep,MET)', 1.4),
 #    ('njets', 'N(jets)', 1.4),
-    ('ZMass', 'm_{Visible}', 2.2),
+    ('vis_mass', 'm_{Visible}', 2.2),
 #    ('el_pt', 'Electron p_{T}', 1.4),
 #    #    ('el_eta', 'Electron #eta', 2.2),
 #    ('mu_pt', 'Muon p_{T}', 1.4),

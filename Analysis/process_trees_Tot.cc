@@ -82,10 +82,10 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         
         float mupt_=-10;
         float taupt_=-10;
-        float ZMass=-10;
+        float vis_mass=-10;
         float LeadJetPt = -10;
         float dR_Z_jet=-10;
-        bool Fail,Pass,PassM,FailM,PassT,FailT,q_OS,q_SS,Isolation,AntiIsolation;
+        bool Fail,Pass,PassM,FailM,PassT,FailT,OS,SS,Isolation,AntiIsolation;
         float tmass,ht,Met,weight, dR_mu_tau, Metphi;
         float NN_disc;
         
@@ -95,11 +95,11 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         tree->SetBranchAddress("taupt",&taupt_);
         tree->SetBranchAddress("Pass",&Pass);
         tree->SetBranchAddress("Fail",&Fail);
-        tree->SetBranchAddress("q_OS",&q_OS);
-        tree->SetBranchAddress("q_SS",&q_SS);
+        tree->SetBranchAddress("OS",&OS);
+        tree->SetBranchAddress("SS",&SS);
         tree->SetBranchAddress("lepIso",&Isolation);
         tree->SetBranchAddress("lepAntiIso",&AntiIsolation);
-        tree->SetBranchAddress("ZMass",&ZMass);
+        tree->SetBranchAddress("vis_mass",&vis_mass);
         tree->SetBranchAddress("tmass",&tmass);
         tree->SetBranchAddress("ht",&ht);
         tree->SetBranchAddress("Met",&Met);
@@ -125,7 +125,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
                 {"Pass",Pass},
                 {"lepIso",Isolation},
                 {"lepAntiIso",AntiIsolation},
-                {"ZMass",ZMass},
+                {"vis_mass",vis_mass},
                 {"tmass",tmass},
                 {"ht",ht},
                 {"Met",Met},
@@ -135,20 +135,20 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
             };
             
             
-            //            vbf_var1 = ZMass;
+            //            vbf_var1 = vis_mass;
             //            vbf_var1 = NN_disc;
             //            std::cout<<observable<< " and "<<ObsName[observable]<<"\n";
             vbf_var1 =ObsName[observable];
             //            std::cout<<"vbf_var1= "<<vbf_var1<<"\n";
             // fill histograms
-            if (q_OS != 0 && Isolation && Pass) {
+            if (OS != 0 && Isolation && Pass) {
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
             }
-            else if (q_SS != 0 && Isolation && Pass ){
+            else if (SS != 0 && Isolation && Pass ){
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight,OSSS[0]);
             }
             
-            else if (q_SS != 0){
+            else if (SS != 0){
                 fillQCD_Shape(zeroJet, name, vbf_var1,  weight);
             }
         }
@@ -176,11 +176,13 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
         
         float mupt_=-10;
         float weight=0;
+        bool Pass, Fail;
+        bool OS, SS, AntiIsolation;
         
         tree->SetBranchAddress("Pass",&Pass);
         tree->SetBranchAddress("Fail",&Fail);
-        tree->SetBranchAddress("q_OS",&q_OS);
-        tree->SetBranchAddress("q_SS",&q_SS);
+        tree->SetBranchAddress("OS",&OS);
+        tree->SetBranchAddress("SS",&SS);
 
 
         tree->SetBranchAddress("muPt",&mupt_);
@@ -188,10 +190,10 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
         
         for (auto i = 0; i < tree->GetEntries(); i++) {
             tree->GetEntry(i);
-            if (q_OS != 0 && Pass && AntiIsolation){
+            if (OS != 0 && Pass && AntiIsolation){
                 fillQCD_OS_CR(zeroJet, name, mupt_,  weight);
             }
-            else if (q_SS != 0 && Pass && AntiIsolation){
+            else if (SS != 0 && Pass && AntiIsolation){
                 fillQCD_SS_CR(zeroJet, name, mupt_,  weight);
             }
         }
