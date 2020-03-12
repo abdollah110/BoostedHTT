@@ -12,6 +12,7 @@
 #include "TH1F.h"
 #include "TTree.h"
 
+using std::cout;
 using std::string;
 using std::vector;
 enum Categories { zeroJet,
@@ -38,7 +39,7 @@ void read_directory(const std::string &name, std::vector<std::string> *v) {
 // class to hold the histograms until I'm ready to write them
 class HistTool {
 public:
-    HistTool(std::string, std::string, std::string, bool, bool);
+    HistTool(std::string, std::string, std::string,std::vector<int>, bool, bool);
     //  ~HistTool() { delete ff_weight; }
     ~HistTool() {  }
     void writeHistos();
@@ -47,7 +48,7 @@ public:
     void initSystematics(std::string);
     
     void fillQCD_Norm(int, std::string, double, double,float);
-    void fillQCD_Shape(int, std::string, double, double);
+    void fillQCD_Shape(int, std::string, double, double,float);
     void fillQCD_OS_CR(int, std::string, double, double);
     void fillQCD_SS_CR(int, std::string, double, double);
     std::vector<float>  Get_OS_SS_ratio();
@@ -71,20 +72,20 @@ public:
     std::vector<TH1F *> fakes_1d_shape, fakes_1d_shape_Up, fakes_1d_shape_Down;
     
     // binning
-    std::vector<Float_t> bins_NN;
+    std::vector<int> bins_NN, bins_FAKE;
 //    std::vector<Float_t> D0_binning_ggH, D0_binning_hvv;
 };
 
 // HistTool contructor to create the output file, the qcd histograms with the correct binning
 // and the map from categories to vectors of TH1F*'s. Each TH1F* in the vector corresponds to
 // one file that is being put into that categories directory in the output tempalte
-HistTool::HistTool(std::string channel_prefix, std::string year, std::string suffix = "final", bool doNN = false, bool old = false)
+HistTool::HistTool(std::string channel_prefix, std::string year, std::string suffix,std::vector<int> bins, bool doNN = false, bool old = false)
 : fout(new TFile(("Output/templates/" + channel_prefix + year + "_" + suffix + ".root").c_str(), "recreate")),
 
 // x-axis
 //bins_NN{0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0}, // This is for 0jet
-bins_NN{0,10,20,30,40,50,60,70,80,90,100,110,120}, // This is for 0jet
-
+bins_NN(bins), // This is for 0jet
+bins_FAKE({20,0,2000}),
 channel_prefix(channel_prefix),
 categories{
     channel_prefix + "_0jet",
@@ -106,21 +107,21 @@ systematics{
         
         if (cat.find("0jet") != std::string::npos) {
             
-            fakes_1d_norm.push_back(new TH1F("fake_0jet", "fake_SS_0", bins_NN.size() - 1, &bins_NN[0]));
-            fakes_1d_norm_Up.push_back(new TH1F("fake_0jet_Up", "fake_SS_0_Up_0", bins_NN.size() - 1, &bins_NN[0]));
-            fakes_1d_norm_Down.push_back(new TH1F("fake_0jet_Down", "fake_SS_0_Down_0", bins_NN.size() - 1, &bins_NN[0]));
+            fakes_1d_norm.push_back(new TH1F("fake_0jet", "fake_SS_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
+            fakes_1d_norm_Up.push_back(new TH1F("fake_0jet_Up", "fake_SS_0_Up_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
+            fakes_1d_norm_Down.push_back(new TH1F("fake_0jet_Down", "fake_SS_0_Down_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
             
-            fakes_1d_shape.push_back(new TH1F("fake_0jet_shape", "fake_SS_shape_0", bins_NN.size() - 1, &bins_NN[0]));
-            fakes_1d_shape_Up.push_back(new TH1F("fake_0jet_shape_Up", "fake_SS_shape_0_Up_0", bins_NN.size() - 1, &bins_NN[0]));
-            fakes_1d_shape_Down.push_back(new TH1F("fake_0jet_shape_Down", "fake_SS_shape_0_Down_0", bins_NN.size() - 1, &bins_NN[0]));
+            fakes_1d_shape.push_back(new TH1F("fake_0jet_shape", "fake_SS_shape_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
+            fakes_1d_shape_Up.push_back(new TH1F("fake_0jet_shape_Up", "fake_SS_shape_0_Up_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
+            fakes_1d_shape_Down.push_back(new TH1F("fake_0jet_shape_Down", "fake_SS_shape_0_Down_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
             
-            fakes_1d_OS_CR.push_back(new TH1F("OS_CR_0jet", "OS_CR_0jet", bins_NN.size() - 1, &bins_NN[0]));
-            fakes_1d_OS_CR_Up.push_back(new TH1F("OS_CR_0jet_Up", "OS_CR_0jet_Up", bins_NN.size() - 1, &bins_NN[0]));
-            fakes_1d_OS_CR_Down.push_back(new TH1F("OS_CR_0jet_Down", "OS_CR_0jet_Down", bins_NN.size() - 1, &bins_NN[0]));
+            fakes_1d_OS_CR.push_back(new TH1F("OS_CR_0jet", "OS_CR_0jet", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
+            fakes_1d_OS_CR_Up.push_back(new TH1F("OS_CR_0jet_Up", "OS_CR_0jet_Up", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
+            fakes_1d_OS_CR_Down.push_back(new TH1F("OS_CR_0jet_Down", "OS_CR_0jet_Down", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
             
-            fakes_1d_SS_CR.push_back(new TH1F("SS_CR_0jet", "SS_CR_0jet", bins_NN.size() - 1, &bins_NN[0]));
-            fakes_1d_SS_CR_Up.push_back(new TH1F("SS_CR_0jet_Up", "SS_CR_0jet_Up", bins_NN.size() - 1, &bins_NN[0]));
-            fakes_1d_SS_CR_Down.push_back(new TH1F("SS_CR_0jet_Down", "SS_CR_0jet_Down", bins_NN.size() - 1, &bins_NN[0]));
+            fakes_1d_SS_CR.push_back(new TH1F("SS_CR_0jet", "SS_CR_0jet", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
+            fakes_1d_SS_CR_Up.push_back(new TH1F("SS_CR_0jet_Up", "SS_CR_0jet_Up", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
+            fakes_1d_SS_CR_Down.push_back(new TH1F("SS_CR_0jet_Down", "SS_CR_0jet_Down", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
 
 
         }
@@ -147,14 +148,14 @@ systematics{
                     name = "data_obs";
                 }
                 if (key.first == channel_prefix + "_0jet") {
-                    hists_1d.at(key.first.c_str()).push_back(new TH1F(name.c_str(), name.c_str(), bins_NN.size() - 1, &bins_NN[0]));
+                    hists_1d.at(key.first.c_str()).push_back(new TH1F(name.c_str(), name.c_str(), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
                 }
             }
         }
         
         // This is CR to extract OS/SS ratio
         void HistTool::fillQCD_OS_CR(int cat, std::string name, double var1,  double weight) {
-            TH1F *hist;
+//            cout<<"fillQCD_OS_CR    cat ="<<cat <<"   pt= "<<var1 << "  weight= "<<weight<<"\n";
             if (name == "Data") {
                 fakes_1d_OS_CR.at(cat)->Fill(var1, 1);
                 fakes_1d_OS_CR_Up.at(cat)->Fill(var1, 1);
@@ -167,7 +168,7 @@ systematics{
         }
         // This is CR to extract OS/SS ratio
         void HistTool::fillQCD_SS_CR(int cat, std::string name, double var1,  double weight) {
-            TH1F *hist;
+//            cout<<"fillQCD_SS_CR   cat ="<<cat <<"   pt= "<<var1 << "  weight= "<<weight<<"\n";
             if (name == "Data") {
                 fakes_1d_SS_CR.at(cat)->Fill(var1, 1);
                 fakes_1d_SS_CR_Up.at(cat)->Fill(var1, 1);
@@ -194,20 +195,18 @@ systematics{
         }
         
         // This is Loose SS region [To get the shape of QCD from SS and loose region]
-        void HistTool::fillQCD_Shape(int cat, std::string name, double var1,  double weight) {
+        void HistTool::fillQCD_Shape(int cat, std::string name, double var1,  double weight, float OSSS_val) {
             TH1F *hist;
             if (name == "Data") {
-                fakes_1d_shape.at(cat)->Fill(var1, 1);
-                fakes_1d_shape_Up.at(cat)->Fill(var1, 1);
-                fakes_1d_shape_Down.at(cat)->Fill(var1, 1);
+                fakes_1d_shape.at(cat)->Fill(var1, 1*OSSS_val);
+                fakes_1d_shape_Up.at(cat)->Fill(var1, 1*OSSS_val);
+                fakes_1d_shape_Down.at(cat)->Fill(var1, 1*OSSS_val);
             } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZJ"|| name == "ZLL" || name == "EWKZ" ) {
-                fakes_1d_shape.at(cat)->Fill(var1, -1*weight);
-                fakes_1d_shape_Up.at(cat)->Fill(var1, -1*weight*0.9);
-                fakes_1d_shape_Down.at(cat)->Fill(var1, -1*weight*1.1);
+                fakes_1d_shape.at(cat)->Fill(var1, -1*OSSS_val*weight);
+                fakes_1d_shape_Up.at(cat)->Fill(var1, -1*OSSS_val*weight*0.9);
+                fakes_1d_shape_Down.at(cat)->Fill(var1, -1*OSSS_val*weight*1.1);
             }
         }
-        
-        
         
         // Derive OS/SS ratio
         std::vector<float>  HistTool::Get_OS_SS_ratio(){
@@ -223,6 +222,7 @@ systematics{
 //            os_ss_values.push_back(OS_SS_boosted);
 //            os_ss_values.push_back(OS_SS_vbf);
             
+            cout<< "numerator is "<<fakes_1d_OS_CR.at(0)->Integral()  << "   and denumerator is" <<fakes_1d_SS_CR.at(0)->Integral()<<"\n";
             return os_ss_values;
         }
         

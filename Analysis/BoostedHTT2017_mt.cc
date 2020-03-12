@@ -183,7 +183,7 @@ int main(int argc, char* argv[]) {
             
             if (muPt->at(imu) <= 30 || fabs(muEta->at(imu)) >= 2.4) continue;
             
-            float IsoMu=muPFChIso->at(imu)/muPt->at(imu);
+            IsoMu=muPFChIso->at(imu)/muPt->at(imu);
             if ( (muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu) )  > 0.0)
                 IsoMu= ( muPFChIso->at(imu) + muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu))/muPt->at(imu);
             

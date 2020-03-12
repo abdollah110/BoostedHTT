@@ -10,6 +10,7 @@ GetColor = ROOT.TColor.GetColor
 black = ROOT.kBlack
 no_color = 0
 
+
 style_map_tuple = namedtuple('style_map_tuple', [
     'fill_color', 'line_color', 'line_style', 'line_width', 'marker_style'
 ])
@@ -17,17 +18,17 @@ style_map = {
     "data_obs": style_map_tuple(no_color, black, 1, 1, 8),
     "backgrounds": {
 #        "embedded": style_map_tuple(GetColor("#f9cd66"), black, 1, 1, 1),
-        "ZTT": style_map_tuple(GetColor("#f9cd66"), black, 1, 1, 1),
+        "ZTT": style_map_tuple(GetColor(108, 226, 354), black, 1, 1, 1),
 #        "jetFakes": style_map_tuple(GetColor("#ffccff"), black, 1, 1, 1),
-        "QCD": style_map_tuple(GetColor("#ffccff"), black, 1, 1, 1),
-        "TT": style_map_tuple(GetColor("#cfe87f"), black, 1, 1, 1),
-        "ZLL": style_map_tuple(GetColor("#de5a6a"), black, 1, 1, 1),
+        "QCD": style_map_tuple(GetColor(408, 106, 154), black, 1, 1, 1),
+        "TT": style_map_tuple(GetColor(208, 376, 124), black, 1, 1, 1),
+        "ZLL": style_map_tuple(GetColor(150, 132, 232), black, 1, 1, 1),
         },
     "EWK": {
-        "VV": style_map_tuple(GetColor("#9feff2"), black, 1, 1, 1),
-        "W": style_map_tuple(GetColor("#9feff2"), no_color, 1, 0, 1),
+        "VV": style_map_tuple(GetColor(200, 282, 232), black, 1, 1, 1),
+        "W": style_map_tuple(GetColor(200, 282, 232), no_color, 1, 0, 1),
 #        "EWKZ": style_map_tuple(GetColor("#9feff2"), no_color, 1, 0, 1),
-        "ZJ": style_map_tuple(GetColor("#9feff2"), no_color, 1, 0, 1),
+        "ZJ": style_map_tuple(GetColor(200, 282, 232), no_color, 1, 0, 1),
     },
     "signals": {
         "H125": style_map_tuple(no_color, GetColor("#FF0000"), 1, 3, 1),
@@ -203,7 +204,7 @@ def blindData(data, signal, background):
 
 def BuildPlot(args):
     print "ifile,category,category ", args.input ,args.category ,args.variable
-    InputFile=args.input.replace('ZMass',args.variable)
+    InputFile=args.input.replace('vis_mass',args.variable)
     ifile = ROOT.TFile(InputFile)
     category = ifile.Get(args.category)
 #    variable = category.Get(args.variable)
@@ -233,11 +234,11 @@ def BuildPlot(args):
     stat = data_hist.Clone() # sum of all backgrounds
     stat.Reset()
     stack = ROOT.THStack() # stack of all backgrounds
-    for bkg in sorted(backgrounds_EWK.itervalues(), key = lambda hist: hist.Integral()):
+    for bkg in sorted(backgrounds.itervalues(), key = lambda hist: 1./hist.Integral()):
         print "\t\t = ", bkg.GetName(),"  int= ",bkg.Integral()
         stat.Add(bkg)
         stack.Add(bkg)
-    for bkg in sorted(backgrounds.itervalues(), key = lambda hist: hist.Integral()):
+    for bkg in sorted(backgrounds_EWK.itervalues(), key = lambda hist: 1./hist.Integral()):
         print "\t\t = ", bkg.GetName(),"  int= ",bkg.Integral()
         stat.Add(bkg)
         stack.Add(bkg)

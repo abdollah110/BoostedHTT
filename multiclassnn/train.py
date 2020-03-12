@@ -14,7 +14,7 @@ def main(args):
     data = pd.HDFStore(args.input)['df']
     ## define training variables
     training_variables = [
-                    'muPt','taupt','lepIso','tmass', 'ht','Met','LeadJetPt', 'dR_mu_tau', 'ZMass','Pass'
+                    'taupt','Met','vis_mass', 'LeadJetPt','Higgs_pT','Higgs_m'
     ]
 
     nvars = len(training_variables)
@@ -74,10 +74,17 @@ def main(args):
     sig_df = combine[(combine['sample_names'] == args.signal)]
     bkg_df = combine[(combine['sample_names'] == args.background)]
 
+    NewWeight_sig=np.ones(len(sig_df))
+    NewWeight_bkg=np.ones(len(bkg_df))
     ## reweight to have equal events per class
     scaleto = max(len(sig_df), len(bkg_df))
     sig_df.loc[:, 'evtwt'] = sig_df['evtwt'].apply(lambda x: x*scaleto/len(sig_df))
     bkg_df.loc[:, 'evtwt'] = bkg_df['evtwt'].apply(lambda x: x*scaleto/len(bkg_df))
+#    sig_df.loc[:, 'evtwt'] = sig_df['evtwt'].apply(lambda x: scaleto/len(sig_df))
+#    bkg_df.loc[:, 'evtwt'] = bkg_df['evtwt'].apply(lambda x: scaleto/len(bkg_df))
+#    sig_df.loc[:, 'evtwt'] = sig_df.loc[:, scaleto/len(sig_df)]
+#    bkg_df.loc[:, 'evtwt'] = bkg_df.loc[:, scaleto/len(bkg_df)]
+
     selected_events = pd.concat([sig_df, bkg_df])
 
 

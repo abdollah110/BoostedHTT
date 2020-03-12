@@ -6,33 +6,33 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 # Variables used for selection. These shouldn't be normalized
 selection_vars = [
-                  'q_OS'
+                  'OS','Pass',
 ]
 
 # Variables that could be used as NN input. These should be normalized
 scaled_vars = [
-               'evtwt','muPt','taupt','lepIso','tmass', 'ht','Met','LeadJetPt', 'dR_mu_tau', 'ZMass','Pass'
+               'evtwt','taupt','Met','vis_mass', 'LeadJetPt','Higgs_pT','Higgs_m'
                ]
 
 
 def loadFile(ifile, category):
     from root_pandas import read_root
 
-    if 'mutau' in ifile:
-        channel = 'mt'
-#    elif 'etau' in ifile:
-#        channel = 'et'
-#    elif 'emu' in ifile:
-#        channel = 'em'
-    else:
-        raise Exception(
-            'Input files must have MUTAU or ETAU or EMU in the provided path. You gave {}, ya goober.'.format(ifile))
+#    if 'mutau' in ifile:
+    channel = 'mt'
+##    elif 'etau' in ifile:
+##        channel = 'et'
+##    elif 'emu' in ifile:
+##        channel = 'em'
+#    else:
+#        raise Exception(
+#            'Input files must have MUTAU or ETAU or EMU in the provided path. You gave {}, ya goober.'.format(ifile))
 
     filename = ifile.split('/')[-1]
     print 'Loading input file...', filename
 
     columns = scaled_vars + selection_vars
-    todrop = ['evtwt', 'idx']
+    
 
     # read from TTrees into DataFrame
     input_df = read_root(ifile, columns=columns)
@@ -40,22 +40,10 @@ def loadFile(ifile, category):
 
     # preselection
     slim_df = input_df[
-                (input_df['muPt'] > 50)
+                (input_df['Pass'] > 0)  & (input_df['OS'] > 0)
     #            (input_df['njets'] > 1) & (input_df['mjj'] > 300)
         ]
     
-#    # preselection
-#    if category == 'vbf':
-#        slim_df = input_df[
-#            (input_df['cat_vbf'] > 0)
-##            (input_df['njets'] > 1) & (input_df['mjj'] > 300)
-#        ]
-#    elif category == 'boosted':
-#        slim_df = input_df[
-#            (input_df['njets'] == 1)
-#        ]
-#    else:
-#        raise Exception('Not a category: {}'.format(category))
 
     slim_df = slim_df.dropna(axis=0, how='any')  # drop events with a NaN
 
@@ -64,6 +52,7 @@ def loadFile(ifile, category):
     # get just the weights (they are scaled differently)
     weights = slim_df['evtwt']
     index = slim_df['idx']
+    todrop = ['evtwt','idx']
     slim_df = slim_df.drop(selection_vars+todrop, axis=1)
 
 
@@ -71,7 +60,6 @@ def loadFile(ifile, category):
     isSignal = np.zeros(len(slim_df))
     isZTT = np.zeros(len(slim_df))
 
-#    if 'vbf' in ifile.lower() or 'ggh' in ifile.lower():
     if 'h125' in ifile.lower() or 'qqh' in ifile.lower() or 'wh' in ifile.lower() or 'zh' in ifile.lower() or 'ggh' in ifile.lower() or 'vbf' in ifile.lower():
         isSignal = np.ones(len(slim_df))
 #    else 'ZTT' in ifile:
@@ -117,10 +105,10 @@ def main(args):
         selection_df = pd.concat([selection_df, selection_data])
         # insert the name of the current sample
         names = np.append(names, new_name)
+        leptons = np.append(leptons, lepton)  # lepton channel
         isSignal = np.append(isSignal, sig)  # labels for signal/background
         isZTT = np.append(isZTT, ztt)  # labels for signal/background
         weight_df = np.append(weight_df, weight)  # weights scaled from 0 - 1
-        leptons = np.append(leptons, lepton)  # lepton channel
         index = np.append(index, idx)
 
     print "unscaled_data.values", unscaled_data.values
