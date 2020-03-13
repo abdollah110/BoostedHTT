@@ -14,7 +14,8 @@ def main(args):
     data = pd.HDFStore(args.input)['df']
     ## define training variables
     training_variables = [
-                    'taupt','Met','vis_mass', 'LeadJetPt','higgs_pT','higgs_m'
+#                    'taupt','Met','vis_mass', 'LeadJetPt','higgs_pT','higgs_m'
+                    'vis_mass','higgs_pT'
     ]
 
     nvars = len(training_variables)
