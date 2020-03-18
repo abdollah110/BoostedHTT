@@ -104,6 +104,7 @@ void SkimerBoost::Loop(TString outputName, int skm)
 //        cout<< MT <<" MT " <<"\n";
         if(MT < 40) continue;
         hcount->Fill(4);
+        MyNewTree->Branch("tmass__",&MT);
         
 //
 //        auto BoostedTau(0);
