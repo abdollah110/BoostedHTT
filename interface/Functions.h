@@ -26,7 +26,8 @@
 #include <iostream>
 #include <map>
 #include "TLorentzVector.h"
-#include "../interface/CodexAnalyzer.h"
+//#include "../interface/CodexAnalyzer.h"
+#include "../interface/boostHTT.h"
 #include "../interface/WeightCalculator.h"
 #include "../interface/Corrector.h"
 //#include "../interface/Functions.h"
@@ -65,7 +66,8 @@ float dR_(float ieta, float iphi, float jeta, float jphi){
 TTree *  Xttree( TFile * f_Double){
     
     //            TTree *Run_Tree = (TTree*) f_Double->Get("ggNtuplizer/EventTree");
-    TTree *Run_Tree = (TTree*) f_Double->Get("EventTree");
+//    TTree *Run_Tree = (TTree*) f_Double->Get("EventTree");
+    TTree *Run_Tree = (TTree*) f_Double->Get("mutau_tree");
     
     cout.setf(ios::fixed, ios::floatfield);
     cout.precision(6);
@@ -265,6 +267,37 @@ TTree *  Xttree( TFile * f_Double){
     Run_Tree->SetBranchAddress("numGenTau",&numGenTau);
     
     
+    
+    Run_Tree->SetBranchAddress("era", &era);
+    Run_Tree->SetBranchAddress("met_px", &met_px);
+    Run_Tree->SetBranchAddress("met_py", &met_py);
+//    Run_Tree->SetBranchAddress("met", &met);
+//    Run_Tree->SetBranchAddress("metphi", &metphi);
+    Run_Tree->SetBranchAddress("m_1", &m_1);
+    Run_Tree->SetBranchAddress("px_1", &px_1);
+    Run_Tree->SetBranchAddress("py_1", &py_1);
+    Run_Tree->SetBranchAddress("pz_1", &pz_1);
+    Run_Tree->SetBranchAddress("e_1", &e_1);
+    Run_Tree->SetBranchAddress("pt_1", &pt_1);
+    Run_Tree->SetBranchAddress("phi_1", &phi_1);
+    Run_Tree->SetBranchAddress("eta_1", &eta_1);
+    Run_Tree->SetBranchAddress("m_2", &m_2);
+    Run_Tree->SetBranchAddress("px_2", &px_2);
+    Run_Tree->SetBranchAddress("py_2", &py_2);
+    Run_Tree->SetBranchAddress("pz_2", &pz_2);
+    Run_Tree->SetBranchAddress("e_2", &e_2);
+    Run_Tree->SetBranchAddress("pt_2", &pt_2);
+    Run_Tree->SetBranchAddress("phi_2", &phi_2);
+    Run_Tree->SetBranchAddress("eta_2", &eta_2);
+    Run_Tree->SetBranchAddress("metcov00", &metcov00);
+    Run_Tree->SetBranchAddress("metcov01", &metcov01);
+    Run_Tree->SetBranchAddress("metcov10", &metcov10);
+    Run_Tree->SetBranchAddress("metcov11", &metcov11);
+    Run_Tree->SetBranchAddress("decayMode2", &decayMode2);
+    Run_Tree->SetBranchAddress("m_sv", &m_sv);
+    Run_Tree->SetBranchAddress("pt_sv", &pt_sv);
+
+
     
     //    .push_back(vec.Pt());
     //    .push_back(vec.Eta());

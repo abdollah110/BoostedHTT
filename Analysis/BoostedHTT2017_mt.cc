@@ -83,7 +83,7 @@ int main(int argc, char* argv[]) {
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
     bool Fail,Pass,OS,SS,Isolation,AntiIsolation;
-    float tmass,ht,Met,FullWeight, dR_mu_tau, Metphi,IsoMu,BoostedTauRawIso, higgs_pT, higgs_m;
+    float tmass,ht,Met,FullWeight, dR_mu_tau, Metphi,IsoMu,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_;
     
     
     
@@ -106,6 +106,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("BoostedTauRawIso",&BoostedTauRawIso,"BoostedTauRawIso/F");
     outTr->Branch("higgs_pT",&higgs_pT,"higgs_pT/F");
     outTr->Branch("higgs_m",&higgs_m,"higgs_m/F");
+    outTr->Branch("m_sv_",&m_sv_,"m_sv_/F");
     
     
     
@@ -178,27 +179,39 @@ int main(int argc, char* argv[]) {
         //############################################################################################
         bool isFilledOnce = false;
         TLorentzVector Mu4Momentum,BoostedTau4Momentum, Z4Momentum;
-        
+        int idx_mu= 0;
+        int idx_tau= 0;
         for (int imu = 0; imu < nMu; ++imu){
+            if ( fabs (muPt->at(imu)- pt_1 ) < 0.1){
+                idx_mu = imu;
+                break;
+            }
+        }
+        for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
+            if ( fabs (boostedTauPt->at(ibtau)- pt_2 ) < 0.1){
+                idx_tau = ibtau;
+                break;
+            }
+        }
             
-            if (muPt->at(imu) <= 30 || fabs(muEta->at(imu)) >= 2.4) continue;
+            if (muPt->at(idx_mu) <= 50 || fabs(muEta->at(idx_mu)) >= 2.4) continue;
             
-            IsoMu=muPFChIso->at(imu)/muPt->at(imu);
-            if ( (muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu) )  > 0.0)
-                IsoMu= ( muPFChIso->at(imu) + muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu))/muPt->at(imu);
+            IsoMu=muPFChIso->at(idx_mu)/muPt->at(idx_mu);
+            if ( (muPFNeuIso->at(idx_mu) + muPFPhoIso->at(idx_mu) - 0.5* muPFPUIso->at(idx_mu) )  > 0.0)
+                IsoMu= ( muPFChIso->at(idx_mu) + muPFNeuIso->at(idx_mu) + muPFPhoIso->at(idx_mu) - 0.5* muPFPUIso->at(idx_mu))/muPt->at(idx_mu);
             
-            bool MuId=( (muIDbit->at(imu) >> 2 & 1)  && fabs(muD0->at(imu)) < 0.045 && fabs(muDz->at(imu)) < 0.2); //CutBasedIdMediumPrompt)) pow(2,  2);
+            bool MuId=( (muIDbit->at(idx_mu) >> 2 & 1)  && fabs(muD0->at(idx_mu)) < 0.045 && fabs(muDz->at(idx_mu)) < 0.2); //CutBasedIdMediumPrompt)) pow(2,  2);
             
             if (!MuId ) continue;
-            Mu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
+            Mu4Momentum.SetPtEtaPhiM(muPt->at(idx_mu),muEta->at(idx_mu),muPhi->at(idx_mu),MuMass);
             
             float MuonCor=1;
             if (!isData){
             
             
                 // give inputs to workspace
-                htt_sf->var("m_pt")->setVal(muPt->at(imu));
-                htt_sf->var("m_eta")->setVal(muEta->at(imu));
+                htt_sf->var("m_pt")->setVal(muPt->at(idx_mu));
+                htt_sf->var("m_eta")->setVal(muEta->at(idx_mu));
                 htt_sf->var("z_gen_mass")->setVal(ZBosonMass);
                 htt_sf->var("z_gen_pt")->setVal(ZBosonPt);
                 
@@ -252,19 +265,19 @@ int main(int argc, char* argv[]) {
             plotFill("ZCorrection",ZCorrection ,100,0,2);
             
             tmass = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  Met,  Metphi);
-            if (tmass > 40) continue;
+            if (tmass > 80) continue;
             
-            for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                 
-                if (boostedTauPt->at(ibtau) <= 20 || fabs(boostedTauEta->at(ibtau)) >= 2.3 ) continue;
-                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
-                if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
-                if (boostedTauByTightMuonRejection3->at(ibtau) < 0.5) continue;
+                if (boostedTauPt->at(idx_tau) <= 20 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
+                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_tau) < 0.5 ) continue;
+                if (boostedTauByMVA6VLooseElectronRejection->at(idx_tau) < 0.5) continue;
+                if (boostedTauByTightMuonRejection3->at(idx_tau) < 0.5) continue;
                 
-                BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
+                BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
                 dR_mu_tau= BoostedTau4Momentum.DeltaR(Mu4Momentum);
                 
                 if( dR_mu_tau > 0.8 || dR_mu_tau < 0.1) continue;
+                 if (m_sv < 10) continue;
                 
                 // Separate Drell-Yan
                 int Zcateg = ZCategory(BoostedTau4Momentum);
@@ -287,18 +300,19 @@ int main(int argc, char* argv[]) {
                 TLorentzVector higgs = BoostedTau4Momentum+Mu4Momentum +Met4Momentum;
                 higgs_pT = higgs.Pt();
                 higgs_m = higgs.M();
-                OS = muCharge->at(imu) * boostedTauCharge->at(ibtau) < 0;
-                SS =  muCharge->at(imu) * boostedTauCharge->at(ibtau) > 0;
-                Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
-                Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
+                OS = muCharge->at(idx_mu) * boostedTauCharge->at(idx_tau) < 0;
+                SS =  muCharge->at(idx_mu) * boostedTauCharge->at(idx_tau) > 0;
+                Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) > 0.5 ;
+                Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) < 0.5 ;
                 Isolation= IsoMu < LeptonIsoCut;
-                mupt_=muPt->at(imu);
-                taupt_=boostedTauPt->at(ibtau);
+                mupt_=muPt->at(idx_mu);
+//                cout<<"mupt_ "<<mupt_ <<"  vs  "<<pt_1<<"  " <<  mupt_-pt_1<<"\n";
+                taupt_=boostedTauPt->at(idx_tau);
                 vis_mass=Z4Momentum.M();
                 LeadJetPt = LeadJet.Pt();
                 dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
-                BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(ibtau);
-                
+                BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_tau);
+                m_sv_=m_sv;
                 //###############################################################################################
                 //  Weights
                 //###############################################################################################
@@ -310,9 +324,7 @@ int main(int argc, char* argv[]) {
                     outTr->Fill();
                     isFilledOnce= true;
                 }
-            }//boostedTau loop
-        }//muon loop
-    } //End of Tree
+        } //End of Tree
     
     
     fout->cd();

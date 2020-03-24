@@ -39,12 +39,10 @@ float XSection(std::string OutName) {
     
     
     
-    
-    
     if (OutName.find("Data") != string::npos) return 1;   // As we have large cut at Skim, this one is not
     
-    if (OutName.find("WJetsToLNu_Inc") != string::npos) return 50690;   // As we have large cut at Skim, this one is not needed
-    else if (OutName.find("WJetsToLNu_HT-70To100") != string::npos) return 1372 * WScaleFactor;
+//    if (OutName.find("WJetsToLNu_Inc") != string::npos) return 50690;   // As we have large cut at Skim, this one is not needed
+//    else if (OutName.find("WJetsToLNu_HT-70To100") != string::npos) return 1372 * WScaleFactor;
     else if (OutName.find("WJetsToLNu_HT-100To200") != string::npos) return 1345* WScaleFactor;
     else if (OutName.find("WJetsToLNu_HT-200To400") != string::npos) return 359.7* WScaleFactor;
     else if (OutName.find("WJetsToLNu_HT-400To600") != string::npos) return 48.91* WScaleFactor;
@@ -79,7 +77,7 @@ float XSection(std::string OutName) {
     
     
     //    else if (OutName.find("DYJetsToLL_Inc") != string::npos) return 4895 * 1.012; // As we have large cut at Skim, this one is not needed
-    else if (OutName.find("DYJetsToLL_M-50_HT-70to100") != string::npos) return 169.9 * DYScaleFactor;
+//    else if (OutName.find("DYJetsToLL_M-50_HT-70to100") != string::npos) return 169.9 * DYScaleFactor;
     else if (OutName.find("DYJetsToLL_M-50_HT-100to200") != string::npos) return 147.40* DYScaleFactor;
     else if (OutName.find("DYJetsToLL_M-50_HT-200to400") != string::npos) return 40.99* DYScaleFactor;
     else if (OutName.find("DYJetsToLL_M-50_HT-400to600") != string::npos) return 5.678* DYScaleFactor;
@@ -213,7 +211,12 @@ else if (OutName.find("WW") != string::npos) return  75.88 ;
     else if (OutName.find("ZJetsToNuNu_HT-1200to2500") != string::npos) return     0.28833   * 1.23    ;
     else if (OutName.find("ZJetsToNuNu_HT-2500toInf") != string::npos) return      0.006945    * 1.23     ;
     
+    else if (OutName.find("JJH0PMToTauTauPlusTwoJets") != string::npos) return     0.1383997884      ;
+    else if (OutName.find("JJH0PMToTauTauPlusOneJets") != string::npos) return       0.2270577971    ;
+    else if (OutName.find("JJH0PMToTauTauPlusZeroJets") != string::npos) return     0.3989964912      ;
     
+
+
     
     
     

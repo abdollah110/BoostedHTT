@@ -102,7 +102,7 @@ def fillFile(ifile, channel, args, vbf_pred):
   print '{} Completed.'.format(fname)
 
 def main(args):
-    if args.treename == 'mutau_tree':
+    if args.treename == 'emu_tree':
         channel = 'mt'
 #    elif args.treename == 'etau_tree':
 #        channel = 'et'
@@ -116,7 +116,7 @@ def main(args):
 
     keep_vbf = [
 #                'taupt','Met','vis_mass', 'LeadJetPt','higgs_pT','higgs_m'
-                'taupt','Met','m_sv_', 'LeadJetPt','higgs_m'
+                'vis_mass','higgs_pT','mjj','m_sv','Q2V1', 'Q2V2', 'Phi', 'Phi1', 'costheta1', 'costheta2', 'costhetastar'
                 ]
 
     vbf_pred = Predictor(args.input_vbf, args.model_vbf, keep_vbf)

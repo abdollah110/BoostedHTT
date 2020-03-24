@@ -117,7 +117,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         tree->SetBranchAddress("LeadJetPt",&LeadJetPt);
         tree->SetBranchAddress("dR_mu_tau",&dR_mu_tau);
         tree->SetBranchAddress("evtwt",&weight);
-//        tree->SetBranchAddress("NN_disc",&NN_disc);
+        tree->SetBranchAddress("NN_disc",&NN_disc);
         tree->SetBranchAddress("IsoMu",&IsoMu);
         tree->SetBranchAddress("BoostedTauRawIso",&BoostedTauRawIso);
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
@@ -150,33 +150,25 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
                 {"IsoMu",IsoMu},
                 {"BoostedTauRawIso",BoostedTauRawIso},
                 {"higgs_pT",higgs_pT},
-                {"higgs_m",higgs_m}
-
-//                {"NN_disc",NN_disc}
+                {"higgs_m",higgs_m},
+                {"NN_disc",NN_disc}
             };
             
             
-            //            vbf_var1 = vis_mass;
-            //            vbf_var1 = NN_disc;
-            //            std::cout<<var_name<< " and "<<ObsName[var_name]<<"\n";
             vbf_var1 =ObsName[var_name];
-//                        std::cout<<"vbf_var1= "<<vbf_var1<<"\n";
-            // fill histograms
-//            if (OS != 0 && Isolation && Pass) {
+
             if (OS != 0  && Pass) {
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
             }
-//            if (SS != 0 && Isolation && Pass ){
+
             if (SS != 0 && Pass ){
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight,OSSS[0]);
             }
-//            if (SS != 0 && Isolation && Pass ){
+
             if (SS != 0  && Pass ){
                 fillQCD_Shape(zeroJet, name, vbf_var1,  weight,OSSS[0]);
             }
         }
-        //        }// this for iteration over weights
-        //        fin->Close();
         delete fin;
     }
 }
@@ -203,7 +195,7 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
 //        bool OS, SS, AntiIsolation;
         float mupt_=-10;
          bool Fail,Pass,PassM,FailM,PassT,FailT,OS,SS,Isolation,AntiIsolation;
-         float tmass,ht,Met,weight, dR_mu_tau, Metphi;
+         float weight;
          
         
         tree->SetBranchAddress("muPt",&mupt_);
