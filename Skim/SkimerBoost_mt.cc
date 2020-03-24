@@ -86,6 +86,9 @@ void SkimerBoost::Loop(TString OutputFile)
         int decayMode2 = 1;
         float MT = 0;
         auto numMuTau(0);
+        int muIndex = -1;
+        int tauIndex= -1;
+
         for (int imu = 0; imu < nMu; ++imu){
             if (muPt->at(imu) < 50 || fabs(muEta->at(imu)) > 2.4) continue;
             
@@ -113,6 +116,8 @@ void SkimerBoost::Loop(TString OutputFile)
                 if(BoostTau4Mom.DeltaR(Mu4Mom) > 0.8 || BoostTau4Mom.DeltaR(Mu4Mom) < 0.1) continue;
                 decayMode2 = boostedTauDecayMode->at(ibtau);
                 numMuTau++;
+                muIndex=imu;
+                tauIndex=ibtau;
                 break;
                 
                 
@@ -187,6 +192,9 @@ void SkimerBoost::Loop(TString OutputFile)
 
         BoostTree->Branch("decayMode2", &decayMode2);
         
+        BoostTree->Branch("muIndex", &muIndex);
+        BoostTree->Branch("tauIndex", &tauIndex);
+
         BoostTree->Fill();
     }
     
