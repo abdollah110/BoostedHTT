@@ -422,6 +422,11 @@ class SkimerBoost {
     vector<float>   *boostedTaudz;
     vector<float>   *boostedTaudxy;
     
+    float metcov00;
+    float metcov01;
+    float metcov10;
+    float metcov11;
+    
     // List of branches
     TBranch        *b_run;   //!
     TBranch        *b_event;   //!
@@ -810,6 +815,14 @@ class SkimerBoost {
     TBranch        *b_boostedTauphotonPtSumOutsideSignalCone;   //!
     TBranch        *b_boostedTaudz;   //!
     TBranch        *b_boostedTaudxy;   //!
+    TBranch *b_metcov00;
+    TBranch *b_metcov01;
+    TBranch *b_metcov10;
+    TBranch *b_metcov11;
+
+    
+    
+    
     
     SkimerBoost(TString fileNamem);
     virtual ~SkimerBoost();
@@ -1201,6 +1214,12 @@ void SkimerBoost::Init(TTree *tree)
     boostedTauphotonPtSumOutsideSignalCone = 0;
     boostedTaudz = 0;
     boostedTaudxy = 0;
+    
+    metcov00 = 0;
+    metcov01 = 0;
+    metcov10 = 0;
+    metcov11 = 0;
+    
     // Set branch addresses and branch pointers
     if (!tree) return;
     fChain = tree;
@@ -1594,6 +1613,13 @@ void SkimerBoost::Init(TTree *tree)
     fChain->SetBranchAddress("boostedTauphotonPtSumOutsideSignalCone", &boostedTauphotonPtSumOutsideSignalCone, &b_boostedTauphotonPtSumOutsideSignalCone);
     fChain->SetBranchAddress("boostedTaudz", &boostedTaudz, &b_boostedTaudz);
     fChain->SetBranchAddress("boostedTaudxy", &boostedTaudxy, &b_boostedTaudxy);
+    
+    fChain->SetBranchAddress("metcov00", &metcov00, &b_metcov00);
+    fChain->SetBranchAddress("metcov01", &metcov01, &b_metcov01);
+    fChain->SetBranchAddress("metcov10", &metcov10, &b_metcov10);
+    fChain->SetBranchAddress("metcov11", &metcov11, &b_metcov11);
+
+    
     Notify();
 }
 

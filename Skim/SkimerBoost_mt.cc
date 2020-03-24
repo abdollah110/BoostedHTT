@@ -22,11 +22,11 @@ void SkimerBoost::Loop(TString OutputFile)
     
     
     TH1F* hEvents = (TH1F*)gDirectory->Get("ggNtuplizer/hEvents");
-//    TH1F* hPU     = (TH1F*)gDirectory->Get("ggNtuplizer/hPU");
-//    TH1F* hPUTrue = (TH1F*)gDirectory->Get("ggNtuplizer/hPUTrue");
+    TH1F* hPU     = (TH1F*)gDirectory->Get("ggNtuplizer/hPU");
+    TH1F* hPUTrue = (TH1F*)gDirectory->Get("ggNtuplizer/hPUTrue");
     
     TFile* file = TFile::Open(OutputFile, "RECREATE");
-    TTree* MyNewTree = fChain->CloneTree(0);
+    TTree* BoostTree = fChain->CloneTree(0);
     
     fChain->SetBranchStatus("*",0);
     fChain->SetBranchStatus("vt*",1);
@@ -79,37 +79,42 @@ void SkimerBoost::Loop(TString OutputFile)
         if (!isData)
             hcount->Fill(2,genWeight);
         
-        if (pfMET < 45) continue;
+        if (pfMET < 50) continue;
         hcount->Fill(3);
         
-        TLorentzVector BoostedTau4Momentum, Mu4Momentum;
-        
+        TLorentzVector BoostTau4Mom, Mu4Mom;
+        int decayMode2 = 1;
+        float MT = 0;
         auto numMuTau(0);
         for (int imu = 0; imu < nMu; ++imu){
-            if (muPt->at(imu) < 30 || fabs(muEta->at(imu)) > 2.4) continue;
+            if (muPt->at(imu) < 50 || fabs(muEta->at(imu)) > 2.4) continue;
             
             
-            bool MuId=( muIDbit->at(imu) >> 2 & 1); //(iMu->passed(reco::Muon::CutBasedIdMediumPrompt)) tmpmuIDbit += pow(2,  2);
+//            bool MuId=( muIDbit->at(imu) >> 2 & 1); //(iMu->passed(reco::Muon::CutBasedIdMediumPrompt)) tmpmuIDbit += pow(2,  2);
             
-            if (!MuId) continue;
+//            if (!MuId) continue;
                             
-            Mu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
+            Mu4Mom.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
-            float MT =TMass_F(Mu4Momentum.Pt(),Mu4Momentum.Px(),Mu4Momentum.Py(),pfMET,pfMETPhi);
-            if(MT > 45) continue;
+            MT =TMass_F(Mu4Mom.Pt(),Mu4Mom.Px(),Mu4Mom.Py(),pfMET,pfMETPhi);
+            if(MT > 80) continue;
             
             
             for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
             
-                if (boostedTauPt->at(ibtau) < 20 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
+                if (boostedTauPt->at(ibtau) < 40 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
                 if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
                 if (boostedTauByTightMuonRejection3->at(ibtau) < 0.5) continue;
+                if (boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5) continue;
 
-                BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
+                BoostTau4Mom.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                 
-                if(BoostedTau4Momentum.DeltaR(Mu4Momentum) > 0.8 || BoostedTau4Momentum.DeltaR(Mu4Momentum) < 0.1) continue;
+                if(BoostTau4Mom.DeltaR(Mu4Mom) > 0.8 || BoostTau4Mom.DeltaR(Mu4Mom) < 0.1) continue;
+                decayMode2 = boostedTauDecayMode->at(ibtau);
                 numMuTau++;
+                break;
+                
                 
             }
         }
@@ -118,16 +123,80 @@ void SkimerBoost::Loop(TString OutputFile)
         hcount->Fill(4);
         
         
+        float  met_px = pfMET*sin(pfMETPhi);
+        float  met_py = pfMET*cos(pfMETPhi);
+        float  met = pfMET;
+        float  metphi = pfMETPhi;
         
-        MyNewTree->Fill();
+        float  m_1 = Mu4Mom.M();
+        float  px_1 = Mu4Mom.Px();
+        float  py_1 = Mu4Mom.Py();
+        float  pz_1 = Mu4Mom.Pz();
+        float  e_1 = Mu4Mom.E();
+        float  pt_1 = Mu4Mom.Pt();
+        float  phi_1 = Mu4Mom.Phi();
+        float  eta_1 = Mu4Mom.Eta();
+
+        float  m_2 = BoostTau4Mom.M();
+        float  px_2 = BoostTau4Mom.Px();
+        float  py_2 = BoostTau4Mom.Py();
+        float  pz_2 = BoostTau4Mom.Pz();
+        float  e_2 = BoostTau4Mom.E();
+        float  pt_2 = BoostTau4Mom.Pt();
+        float  phi_2 = BoostTau4Mom.Phi();
+        float  eta_2 = BoostTau4Mom.Eta();
+
+        float pfCovMatrix00 = metcov00;
+        float pfCovMatrix01 = metcov01;
+        float pfCovMatrix10 = metcov10;
+        float pfCovMatrix11 = metcov11;
+        int era = 2017;
+    
+        
+        BoostTree->Branch("tmass",&MT);
+        BoostTree->Branch("era", &era);
+
+        BoostTree->Branch("met_px", &met_px);
+        BoostTree->Branch("met_py", &met_py);
+        BoostTree->Branch("met", &met);
+        BoostTree->Branch("metphi", &metphi);
+        
+        BoostTree->Branch("m_1", &m_1);
+        BoostTree->Branch("px_1", &px_1);
+        BoostTree->Branch("py_1", &py_1);
+        BoostTree->Branch("pz_1", &pz_1);
+        BoostTree->Branch("e_1", &e_1);
+        BoostTree->Branch("pt_1", &pt_1);
+        BoostTree->Branch("phi_1", &phi_1);
+        BoostTree->Branch("eta_1", &eta_1);
+
+        BoostTree->Branch("m_2", &m_2);
+        BoostTree->Branch("px_2", &px_2);
+        BoostTree->Branch("py_2", &py_2);
+        BoostTree->Branch("pz_2", &pz_2);
+        BoostTree->Branch("e_2", &e_2);
+        BoostTree->Branch("pt_2", &pt_2);
+        BoostTree->Branch("phi_2", &phi_2);
+        BoostTree->Branch("eta_2", &eta_2);
+    
+        
+        BoostTree->Branch("metcov00", &pfCovMatrix00);
+        BoostTree->Branch("metcov01", &pfCovMatrix01);
+        BoostTree->Branch("metcov10", &pfCovMatrix10);
+        BoostTree->Branch("metcov11", &pfCovMatrix11);
+
+        BoostTree->Branch("decayMode2", &decayMode2);
+        
+        BoostTree->Fill();
     }
     
     
-    MyNewTree->AutoSave();
+    BoostTree->SetName("mutau_tree");
+    BoostTree->AutoSave();
     hEvents->Write();
     hcount->Write();
-//    hPU->Write();
-//    hPUTrue->Write();
+    if (hPU) hPU->Write();
+    if (hPUTrue) hPUTrue->Write();
     file->Close();
 }
 
