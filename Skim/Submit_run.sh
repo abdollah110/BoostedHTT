@@ -87,7 +87,7 @@ hadd -f $FinalOutName "skimed_"*.root
 ##########  remove the unneccesat files
 #rm skim*root  Skimmer.cc  Skimmer.h  Makefile  InputSamples.txt
 echo "Done execution ..."
-xrdcp -f $FinalOutName  root://cmseos.fnal.gov//store/user/abdollah/SkimBoost/mt/v3/$FinalOutName
+xrdcp -f $FinalOutName  root://cmseos.fnal.gov//store/user/abdollah/NewSkimBoost/mt/v1/$FinalOutName
 xrdcp *.stdout *.stderr *.condor  root://cmseos.fnal.gov//store/user/abdollah/CONDOR/
 
 

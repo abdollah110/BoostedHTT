@@ -64,6 +64,81 @@ void SkimerBoost::Loop(TString outputName)
 
     
     
+    
+    
+    float  met_px = 0;
+    float  met_py = 0;
+    float  met = 0;
+    float  metphi = 0;
+    
+    float  m_1 = 0;
+    float  px_1 = 0;
+    float  py_1 = 0;
+    float  pz_1 = 0;
+    float  e_1 = 0;
+    float  pt_1 = 0;
+    float  phi_1 = 0;
+    float  eta_1 = 0;
+
+    float  m_2 = 0;
+    float  px_2 = 0;
+    float  py_2 = 0;
+    float  pz_2 = 0;
+    float  e_2 = 0;
+    float  pt_2 = 0;
+    float  phi_2 = 0;
+    float  eta_2 = 0;
+
+    float pfCovMatrix00 = 0;
+    float pfCovMatrix01 = 0;
+    float pfCovMatrix10 = 0;
+    float pfCovMatrix11 = 0;
+    int era = 0;
+    int decayMode2 = 1;
+    int muIndex = -1;
+    int tauIndex= -1;
+    float MT = 0;
+    
+    
+        BoostTree->Branch("tmass",&MT);
+        BoostTree->Branch("era", &era);
+
+        BoostTree->Branch("met_px", &met_px);
+        BoostTree->Branch("met_py", &met_py);
+        BoostTree->Branch("met", &met);
+        BoostTree->Branch("metphi", &metphi);
+        
+        BoostTree->Branch("m_1", &m_1);
+        BoostTree->Branch("px_1", &px_1);
+        BoostTree->Branch("py_1", &py_1);
+        BoostTree->Branch("pz_1", &pz_1);
+        BoostTree->Branch("e_1", &e_1);
+        BoostTree->Branch("pt_1", &pt_1);
+        BoostTree->Branch("phi_1", &phi_1);
+        BoostTree->Branch("eta_1", &eta_1);
+
+        BoostTree->Branch("m_2", &m_2);
+        BoostTree->Branch("px_2", &px_2);
+        BoostTree->Branch("py_2", &py_2);
+        BoostTree->Branch("pz_2", &pz_2);
+        BoostTree->Branch("e_2", &e_2);
+        BoostTree->Branch("pt_2", &pt_2);
+        BoostTree->Branch("phi_2", &phi_2);
+        BoostTree->Branch("eta_2", &eta_2);
+    
+        
+        BoostTree->Branch("metcov00", &pfCovMatrix00);
+        BoostTree->Branch("metcov01", &pfCovMatrix01);
+        BoostTree->Branch("metcov10", &pfCovMatrix10);
+        BoostTree->Branch("metcov11", &pfCovMatrix11);
+
+        BoostTree->Branch("decayMode2", &decayMode2);
+        
+        BoostTree->Branch("muIndex", &muIndex);
+        BoostTree->Branch("tauIndex", &tauIndex);
+        
+        
+        
         for (int jentry=0; jentry<nentries;jentry++) {
             
             Long64_t ientry = LoadTree(jentry);
@@ -74,6 +149,12 @@ void SkimerBoost::Loop(TString outputName)
             
             if(jentry % 10000 == 0) cout << "Processed " << jentry << " events out of " <<nentries<<endl;
             
+            
+
+                
+                
+                
+            
             hcount->Fill(1);
             if (!isData)
                 hcount->Fill(2,genWeight);
@@ -82,11 +163,11 @@ void SkimerBoost::Loop(TString outputName)
             hcount->Fill(3);
             
             TLorentzVector BoostTau4Mom, Mu4Mom;
-            int decayMode2 = 1;
-            float MT = 0;
+//            int decayMode2 = 1;
+//            float MT = 0;
             auto numMuTau(0);
-            int muIndex = -1;
-            int tauIndex= -1;
+//            int muIndex = -1;
+//            int tauIndex= -1;
 
             for (int imu = 0; imu < nMu; ++imu){
                 if (muPt->at(imu) < 50 || fabs(muEta->at(imu)) > 2.4) continue;
@@ -127,71 +208,35 @@ void SkimerBoost::Loop(TString outputName)
             hcount->Fill(4);
             
             
-            float  met_px = pfMET*sin(pfMETPhi);
-            float  met_py = pfMET*cos(pfMETPhi);
-            float  met = pfMET;
-            float  metphi = pfMETPhi;
+              met_px = pfMET*sin(pfMETPhi);
+              met_py = pfMET*cos(pfMETPhi);
+              met = pfMET;
+              metphi = pfMETPhi;
             
-            float  m_1 = Mu4Mom.M();
-            float  px_1 = Mu4Mom.Px();
-            float  py_1 = Mu4Mom.Py();
-            float  pz_1 = Mu4Mom.Pz();
-            float  e_1 = Mu4Mom.E();
-            float  pt_1 = Mu4Mom.Pt();
-            float  phi_1 = Mu4Mom.Phi();
-            float  eta_1 = Mu4Mom.Eta();
+              m_1 = Mu4Mom.M();
+              px_1 = Mu4Mom.Px();
+              py_1 = Mu4Mom.Py();
+              pz_1 = Mu4Mom.Pz();
+              e_1 = Mu4Mom.E();
+              pt_1 = Mu4Mom.Pt();
+              phi_1 = Mu4Mom.Phi();
+              eta_1 = Mu4Mom.Eta();
 
-            float  m_2 = BoostTau4Mom.M();
-            float  px_2 = BoostTau4Mom.Px();
-            float  py_2 = BoostTau4Mom.Py();
-            float  pz_2 = BoostTau4Mom.Pz();
-            float  e_2 = BoostTau4Mom.E();
-            float  pt_2 = BoostTau4Mom.Pt();
-            float  phi_2 = BoostTau4Mom.Phi();
-            float  eta_2 = BoostTau4Mom.Eta();
+              m_2 = BoostTau4Mom.M();
+              px_2 = BoostTau4Mom.Px();
+              py_2 = BoostTau4Mom.Py();
+              pz_2 = BoostTau4Mom.Pz();
+              e_2 = BoostTau4Mom.E();
+              pt_2 = BoostTau4Mom.Pt();
+              phi_2 = BoostTau4Mom.Phi();
+              eta_2 = BoostTau4Mom.Eta();
 
-            float pfCovMatrix00 = metcov00;
-            float pfCovMatrix01 = metcov01;
-            float pfCovMatrix10 = metcov10;
-            float pfCovMatrix11 = metcov11;
-            int era = 2017;
+             pfCovMatrix00 = metcov00;
+             pfCovMatrix01 = metcov01;
+             pfCovMatrix10 = metcov10;
+             pfCovMatrix11 = metcov11;
+            era = 2017;
             
-            BoostTree->Branch("tmass",&MT);
-            BoostTree->Branch("era", &era);
-
-            BoostTree->Branch("met_px", &met_px);
-            BoostTree->Branch("met_py", &met_py);
-            BoostTree->Branch("met", &met);
-            BoostTree->Branch("metphi", &metphi);
-            
-            BoostTree->Branch("m_1", &m_1);
-            BoostTree->Branch("px_1", &px_1);
-            BoostTree->Branch("py_1", &py_1);
-            BoostTree->Branch("pz_1", &pz_1);
-            BoostTree->Branch("e_1", &e_1);
-            BoostTree->Branch("pt_1", &pt_1);
-            BoostTree->Branch("phi_1", &phi_1);
-            BoostTree->Branch("eta_1", &eta_1);
-
-            BoostTree->Branch("m_2", &m_2);
-            BoostTree->Branch("px_2", &px_2);
-            BoostTree->Branch("py_2", &py_2);
-            BoostTree->Branch("pz_2", &pz_2);
-            BoostTree->Branch("e_2", &e_2);
-            BoostTree->Branch("pt_2", &pt_2);
-            BoostTree->Branch("phi_2", &phi_2);
-            BoostTree->Branch("eta_2", &eta_2);
-        
-            
-            BoostTree->Branch("metcov00", &pfCovMatrix00);
-            BoostTree->Branch("metcov01", &pfCovMatrix01);
-            BoostTree->Branch("metcov10", &pfCovMatrix10);
-            BoostTree->Branch("metcov11", &pfCovMatrix11);
-
-            BoostTree->Branch("decayMode2", &decayMode2);
-            
-            BoostTree->Branch("muIndex", &muIndex);
-            BoostTree->Branch("tauIndex", &tauIndex);
             
             BoostTree->Fill();
     }
