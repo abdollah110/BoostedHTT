@@ -208,10 +208,11 @@ void SkimerBoost::Loop(TString outputName)
 int main(int argc, char* argv[]){
     
     string FinaName=argv[1];
+    string OutName=argv[2];
     
     
     SkimerBoost t(FinaName);
-    t.Loop("skimed_"+FinaName);
+    t.Loop("skimed_"+OutName);
     return 0;
 }
 
