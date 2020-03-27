@@ -64,7 +64,7 @@ int main(int argc, char* argv[]) {
     auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("zptmass_histo"));
     
     
-    size_t isInputData = fname.find("data");
+    size_t isInputData = fname.find("Data");
     reweight::LumiReWeighting* PU_weights;
     // PU reweighting
     if (isInputData== string::npos){
