@@ -302,8 +302,8 @@ int main(int argc, char* argv[]) {
                 higgs_m = higgs.M();
                 OS = muCharge->at(idx_mu) * boostedTauCharge->at(idx_tau) < 0;
                 SS =  muCharge->at(idx_mu) * boostedTauCharge->at(idx_tau) > 0;
-                Pass = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) > 0.5 ;
-                Fail = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) < 0.5 ;
+                Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) > 0.5 ;
+                Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) < 0.5 ;
                 Isolation= IsoMu < LeptonIsoCut;
                 mupt_=muPt->at(idx_mu);
 //                cout<<"mupt_ "<<mupt_ <<"  vs  "<<pt_1<<"  " <<  mupt_-pt_1<<"\n";
