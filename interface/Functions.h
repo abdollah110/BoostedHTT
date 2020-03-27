@@ -296,8 +296,10 @@ TTree *  Xttree( TFile * f_Double){
     Run_Tree->SetBranchAddress("decayMode2", &decayMode2);
     Run_Tree->SetBranchAddress("m_sv", &m_sv);
     Run_Tree->SetBranchAddress("pt_sv", &pt_sv);
+    Run_Tree->SetBranchAddress("tmass", &tmass);
 
-
+    Run_Tree->SetBranchAddress("muIndex", &muIndex);
+    Run_Tree->SetBranchAddress("tauIndex", &tauIndex);
     
     //    .push_back(vec.Pt());
     //    .push_back(vec.Eta());

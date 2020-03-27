@@ -122,6 +122,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         tree->SetBranchAddress("BoostedTauRawIso",&BoostedTauRawIso);
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
         tree->SetBranchAddress("higgs_m",&higgs_m);
+        tree->SetBranchAddress("m_sv_",&m_sv_);
 
         
         
@@ -151,6 +152,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
                 {"BoostedTauRawIso",BoostedTauRawIso},
                 {"higgs_pT",higgs_pT},
                 {"higgs_m",higgs_m},
+                {"m_sv_",m_sv_},
                 {"NN_disc",NN_disc}
             };
             

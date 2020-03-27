@@ -7,6 +7,7 @@
 #include "RooFunctor.h"
 #include "RooMsgService.h"
 #include "../interface/CLParser.h"
+#include "../interface/LumiReweightingStandAlone.h"
 
 
 int main(int argc, char* argv[]) {
@@ -61,6 +62,14 @@ int main(int argc, char* argv[]) {
     // Z-pT reweighting
     TFile *zpt_file = new TFile("data/zpt_weights_2016_BtoH.root");
     auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("zptmass_histo"));
+    
+    
+    // PU reweighting
+    reweight::LumiReWeighting* PU_weights;
+            // read inputs for lumi reweighting
+            PU_weights = new reweight::LumiReWeighting(fname, "pileup/pu_distributions_data_2017.root", "hPUTrue", "pileup");
+        
+        
     //###############################################################################################
     //  Fix Parameters
     //###############################################################################################
@@ -83,7 +92,7 @@ int main(int argc, char* argv[]) {
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
     bool Fail,Pass,OS,SS,Isolation,AntiIsolation;
-    float tmass,ht,Met,FullWeight, dR_mu_tau, Metphi,IsoMu,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_;
+    float tmass_,ht,Met,FullWeight, dR_mu_tau, Metphi,IsoMu,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_;
     
     
     
@@ -137,15 +146,15 @@ int main(int argc, char* argv[]) {
         float ZBosonPt=genInfo[2];
         float ZBosonMass=genInfo[4];
         
-        // Lumi weight
+        
         float LumiWeight = 1;
-        if (!isData){
-            LumiWeight = luminosity * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
-        }
-        
-        // Pilu up weights
         float PUWeight = 1;
-        
+        if (!isData){
+        // Lumi weight
+            LumiWeight = luminosity * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
+        // Pilu up weights
+            PUWeight= PU_weights->weight(puTrue->at(0));
+        }
         
         // BJet veto
         int numBJet=numBJets(BJetPtCut,CSVCut);
@@ -179,20 +188,8 @@ int main(int argc, char* argv[]) {
         //############################################################################################
         bool isFilledOnce = false;
         TLorentzVector Mu4Momentum,BoostedTau4Momentum, Z4Momentum;
-        int idx_mu= 0;
-        int idx_tau= 0;
-        for (int imu = 0; imu < nMu; ++imu){
-            if ( fabs (muPt->at(imu)- pt_1 ) < 0.1){
-                idx_mu = imu;
-                break;
-            }
-        }
-        for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
-            if ( fabs (boostedTauPt->at(ibtau)- pt_2 ) < 0.1){
-                idx_tau = ibtau;
-                break;
-            }
-        }
+        int idx_mu= muIndex;
+        int idx_tau= tauIndex;
             
             if (muPt->at(idx_mu) <= 50 || fabs(muEta->at(idx_mu)) >= 2.4) continue;
             
@@ -264,11 +261,12 @@ int main(int argc, char* argv[]) {
 //            plotFill("zmumuWeight",zmumuWeight ,100,0,2);
             plotFill("ZCorrection",ZCorrection ,100,0,2);
             
-            tmass = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  Met,  Metphi);
+            tmass_ = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  Met,  Metphi);
             if (tmass > 80) continue;
+            if (tmass != tmass_) cout<<"tmasses are not the same " <<tmass <<"  "<<tmass_<<"\n";
             
                 
-                if (boostedTauPt->at(idx_tau) <= 20 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
+                if (boostedTauPt->at(idx_tau) <= 40 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_tau) < 0.5 ) continue;
                 if (boostedTauByMVA6VLooseElectronRejection->at(idx_tau) < 0.5) continue;
                 if (boostedTauByTightMuonRejection3->at(idx_tau) < 0.5) continue;
@@ -302,8 +300,8 @@ int main(int argc, char* argv[]) {
                 higgs_m = higgs.M();
                 OS = muCharge->at(idx_mu) * boostedTauCharge->at(idx_tau) < 0;
                 SS =  muCharge->at(idx_mu) * boostedTauCharge->at(idx_tau) > 0;
-                Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) > 0.5 ;
-                Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) < 0.5 ;
+                Pass = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) > 0.5 ;
+                Fail = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) < 0.5 ;
                 Isolation= IsoMu < LeptonIsoCut;
                 mupt_=muPt->at(idx_mu);
 //                cout<<"mupt_ "<<mupt_ <<"  vs  "<<pt_1<<"  " <<  mupt_-pt_1<<"\n";
