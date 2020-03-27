@@ -64,11 +64,13 @@ int main(int argc, char* argv[]) {
     auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("zptmass_histo"));
     
     
+    size_t isInputData = fname.find("data");
     // PU reweighting
+    if (!isInputData){
     reweight::LumiReWeighting* PU_weights;
             // read inputs for lumi reweighting
             PU_weights = new reweight::LumiReWeighting(fname, "pileup/pu_distributions_data_2017.root", "hPUTrue", "pileup");
-        
+        }
         
     //###############################################################################################
     //  Fix Parameters
