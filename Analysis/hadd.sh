@@ -15,6 +15,7 @@ do
     hadd   -f NN${SYS}/ZLL${SYS}.root    ${SYS}/*_ZLL_*.root
     hadd   -f NN${SYS}/ZTT${SYS}.root    ${SYS}/*_ZTT_*
     hadd   -f NN${SYS}/ZJ${SYS}.root    ${SYS}/*_ZJ_*
+    hadd   -f NN${SYS}/JJH125${SYS}.root    ${SYS}/*JJH*
 #    hadd   -f NN${SYS}/WH125${SYS}.root    ${SYS}/*WMinusH125_* ${SYS}/*WPlusH125_*
 #    hadd   -f NN${SYS}/ZH125${SYS}.root    ${SYS}/*ZH125_*
 #    hadd   -f NN${SYS}/ggH125${SYS}.root    ${SYS}/*ggH125*
@@ -33,9 +34,3 @@ done
 
 mkdir DEL
 find . -name "*.root" -size -2k | xargs -n 1 -I {} mv {} DEL/
-
-
-input=$1
-python preprocess.py --mu-input ${input}  -o testData_${input}
-python train.py --signal H125 --background ZTT --input datasets/testData_${input}.h5 --model outputModel_${input}
-python classify.py --treename mutau_tree --input-vbf datasets/testData_${input}.h5  --model-vbf outputModel_${input}   --dir ${input}  --output-dir ${input}_NN
