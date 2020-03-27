@@ -67,7 +67,7 @@ int main(int argc, char* argv[]) {
     size_t isInputData = fname.find("data");
     reweight::LumiReWeighting* PU_weights;
     // PU reweighting
-    if (!isInputData){
+    if (isInputData== string::npos){
             // read inputs for lumi reweighting
             PU_weights = new reweight::LumiReWeighting(fname, "pileup/pu_distributions_data_2017.root", "hPUTrue", "pileup");
         }
