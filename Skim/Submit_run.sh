@@ -42,7 +42,8 @@ tar -xf CMSSW_9_4_13.tar.gz
 rm CMSSW_9_4_13.tar.gz
 cd CMSSW_9_4_13/src/BoostedHTT/Skim/
 scramv1 b ProjectRename
-eval `scramv1 runtime -sh` 
+eval `scramv1 runtime -sh`
+rm *root
 ls
 ########### complie the Skimmer
 make
@@ -53,7 +54,6 @@ DataSetArray=($(cat InputSamples.txt)) # array of the input datadets
 echo ${DataSetArray[$PROCESS / $SplitingNumber]}
 DataSetName=${DataSetArray[$PROCESS / $SplitingNumber]}
 rootNumber=$(($PROCESS % $SplitingNumber))
-#DataSetName=DataSetName_.replace("/store/user/abdollah/Moriond18/","")
 
 ########### loop over all root file in a dataset directory
 xrdfs root://cmseos.fnal.gov ls $DataSetName | grep $rootNumber.root | while read FullDataSetName
@@ -87,8 +87,7 @@ hadd -f $FinalOutName "skimed_"*.root
 ##########  remove the unneccesat files
 #rm skim*root  Skimmer.cc  Skimmer.h  Makefile  InputSamples.txt
 echo "Done execution ..."
-xrdcp -f $FinalOutName  root://cmseos.fnal.gov//store/user/abdollah/NewSkimBoost/mt/v1/$FinalOutName
-xrdcp *.stdout *.stderr *.condor  root://cmseos.fnal.gov//store/user/abdollah/CONDOR/
+xrdcp -f $FinalOutName  root://cmseos.fnal.gov//store/user/abdollah/NewSkimBoost/mt/v2/$FinalOutName
 
 
 END_TIME=`/bin/date`
