@@ -814,7 +814,7 @@ vector<float>  GeneratorInfo(){
     TopPtReweighting=compTopPtWeight(GenTopPt, GenAntiTopPt);
     
 //    if (ZBosonPt ==0){
-    if (ZBosonPt < 10){
+    if (ZBosonMass < 10){
         ZBosonPt=(GenMu4Momentum+GenAntiMu4Momentum).Pt();  //This is a temp solution to the above problem
         ZBosonMass=(GenMu4Momentum+GenAntiMu4Momentum).M();  //This is a temp solution to the above problem
     }
