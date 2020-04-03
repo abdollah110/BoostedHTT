@@ -342,34 +342,51 @@ TTree *  Xttree( TFile * f_Double){
 
 
 TH1F *  HistPUData(){
-    TFile * PUData= TFile::Open("../interface/pileup-hists/Data_nPU_new.root");
+    TFile * PUData= TFile::Open("data/Data_nPU_new.root");
     TH1F * HistoPUData= (TH1F *) PUData->Get("pileup");
     HistoPUData->Rebin(2);
     HistoPUData->Scale(1.0/HistoPUData->Integral());
-    //    cout << "HistoPUData integral= "<<HistoPUData->Integral()<<"\n";
     return HistoPUData;
 }
 
-
-
-TH1F *  HistPUMC(bool isData,TFile *f_Double){
-    if (isData) return 0;
-    else{
-        //    TFile * PUMC= TFile::Open("../interface/pileup-hists/mcMoriondPU.root");
+TH1F *  HistPUMC(TFile *f_Double){
+        //    TFile * PUMC= TFile::Open("../interface/pileup-hists/mcMoriondPU.root"); // Not valid for 2017 yet
         //    TH1F * HistoPUMC= (TH1F *) PUMC->Get("pileup");
         TFile * PUMC= TFile::Open(f_Double->GetName());
         TH1F * HistoPUMC= (TH1F *) PUMC->Get("hPUTrue");
         HistoPUMC->Scale(1.0/HistoPUMC->Integral());
         //        cout << "HistoPUMC integral= "<<HistoPUMC->Integral()<<"\n";
         return HistoPUMC;
-    }
-    return 0;
 }
 
 
 //########################################
 // Muon Id, Iso, Trigger and Tracker Eff files
 //########################################
+
+
+
+
+TH2F**  FuncHistMuTrigger(){
+    
+    TFile * MuCorrTrg_BCDEF= TFile::Open(("../interface/MuSF/EfficienciesAndSF_RunBtoF_Nov17Nov2017.root"));
+//    TH1F * HistoMuTrg_BCDEF= (TH1F *) MuCorrTrg_BCDEF->Get("Mu50_EtaBins/eta_ratio");
+//    TH1F * HistoMuTrg_BCDEF= (TH1F *) MuCorrTrg_BCDEF->Get("Mu50_EtaBins/pt_abseta_ratio");
+    TH2F * HistoMuTrg_BCDEF= (TH2F *) MuCorrTrg_BCDEF->Get("IsoMu27_PtEtaBins/pt_abseta_ratio");
+    
+    static TH2F* HistoMuTrg[2]={HistoMuTrg_BCDEF};
+    return HistoMuTrg;
+}
+
+
+TGraphAsymmErrors * FuncHistMuTrack(){
+    
+    TFile * MuCorrTrack= TFile::Open(("../interface/pileup-hists/Tracking_EfficienciesAndSF_BCDEFGH.root"));
+    TGraphAsymmErrors * HistoMuTrack= (TGraphAsymmErrors *) MuCorrTrack->Get("ratio_eff_eta3_dr030e030_corr");
+    
+    return HistoMuTrack;
+}
+
 
 TH2F**  FuncHistMuId(){
     
@@ -396,32 +413,9 @@ TH2F**  FuncHistMuIso(){
 
 
 
-TH2F**  FuncHistMuTrigger(){
-    
-    TFile * MuCorrTrg_BCDEF= TFile::Open(("../interface/MuSF/EfficienciesAndSF_RunBtoF_Nov17Nov2017.root"));
-    
-    //    TH1F * HistoMuTrg_BCDEF= (TH1F *) MuCorrTrg_BCDEF->Get("Mu50_EtaBins/eta_ratio");
-    TH2F * HistoMuTrg_BCDEF= (TH2F *) MuCorrTrg_BCDEF->Get("IsoMu27_PtEtaBins/pt_abseta_ratio");
-    
-    
-    static TH2F* HistoMuTrg[2]={HistoMuTrg_BCDEF};
-    
-    
-    return HistoMuTrg;
-}
-
-
-TGraphAsymmErrors * FuncHistMuTrack(){
-    
-    TFile * MuCorrTrack= TFile::Open(("../interface/pileup-hists/Tracking_EfficienciesAndSF_BCDEFGH.root"));
-    TGraphAsymmErrors * HistoMuTrack= (TGraphAsymmErrors *) MuCorrTrack->Get("ratio_eff_eta3_dr030e030_corr");
-    
-    return HistoMuTrack;
-}
-
-
-
-
+//########################################
+// Ele Id, Iso, Trigger and Tracker Eff files
+//########################################
 
 
 
@@ -959,22 +953,38 @@ int numJets( float SimpleJetPtCut){
 }
 
 //###########       HT   ###########################################################
-float getHT( float SimpleJetPtCut){
+float getHT( float SimpleJetPtCut, TLorentzVector lep4Mom, TLorentzVector tau4Mom){
+    TLorentzVector  Jet;
     float HT=0;
     for (int ijet= 0 ; ijet < nJet ; ijet++){
+    Jet.SetPtEtaPhiE(jetPt->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
+    if (Jet.DeltaR(lep4Mom) < 0.1) continue;
+    if (Jet.DeltaR(tau4Mom) < 0.1) continue;
         if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 3.0 )
             HT += jetPt->at(ijet);
     }
     return HT;
 }
 
+//###########       ST   ###########################################################
+float getST( float SimpleJetPtCut){
+    float ST=0;
+    for (int ijet= 0 ; ijet < nJet ; ijet++){
+        if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 3.0 )
+            ST += jetPt->at(ijet);
+    }
+    return ST;
+}
 
 
-TLorentzVector getLeadJet(){
-    TLorentzVector leadJet;
+TLorentzVector getLeadJet(TLorentzVector lep4Mom, TLorentzVector tau4Mom){
+    TLorentzVector leadJet, Jet;
     float MaxJetPt=0;
     int leadJetPtIndex=0;
     for (int ijet= 0 ; ijet < nJet ; ijet++){
+        Jet.SetPtEtaPhiE(jetPt->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
+        if (Jet.DeltaR(lep4Mom) < 0.1) continue;
+        if (Jet.DeltaR(tau4Mom) < 0.1) continue;
         if (jetPFLooseId->at(ijet) > 0.5 && fabs(jetEta->at(ijet)) < 3.0  && jetPt->at(ijet) > MaxJetPt ){
             MaxJetPt=jetPt->at(ijet);
             leadJetPtIndex=ijet;
@@ -1100,7 +1110,7 @@ int ZCategory(TLorentzVector tauCandidate) {
 //        std::vector<reco::Candidate::LorentzVector> genTaus = buildGenTaus();
 //
 //        for ( auto vec : genTaus ) {
-//            double tmpDR2 = reco::deltaR( daughter(i)->p4(), vec );
+//            double tmpDR2 = reco::DeltaR( daughter(i)->p4(), vec );
 //            //std::cout << "DR: " << tmpDR2 << "   genTauPt: " << vec.Pt() <<std::endl;
 //            //std::cout << "DR: " << tmpDR2 << std::endl;
 //            if (tmpDR2 < 0.2) {

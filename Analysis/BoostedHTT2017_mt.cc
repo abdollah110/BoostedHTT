@@ -39,19 +39,42 @@ int main(int argc, char* argv[]) {
     
     // open input file
     std::cout << "Opening file... " << sample << std::endl;
-    auto fin = TFile::Open(fname.c_str());
+    auto InputFile = TFile::Open(fname.c_str());
     std::cout << "Loading Ntuple..." << std::endl;
     TTree *  Run_Tree;
-    Run_Tree= Xttree(fin);
+    Run_Tree= Xttree(InputFile);
     
-    //    auto HistoTot = reinterpret_cast<TH1D*>(fin->Get("ggNtuplizer/hEvents"));
-    TH1F * HistoTot = (TH1F*) fin->Get("hcount");
+    //    auto HistoTot = reinterpret_cast<TH1D*>(InputFile->Get("ggNtuplizer/hEvents"));
+    TH1F * HistoTot = (TH1F*) InputFile->Get("hcount");
     auto fout = new TFile(filename.c_str(), "RECREATE");
     
     myMap1 = new std::map<std::string, TH1F*>();
     myMap2 = new map<string, TH2F*>();
     
     TTree * outTr=  new TTree("mutau_tree","mutau_tree");
+    
+    
+    //########################################
+    // Muon Id, Iso, Trigger and Tracker Eff files
+    //########################################
+    TH2F** HistoMuId=FuncHistMuId();
+    TH2F** HistoMuIso=FuncHistMuIso();
+    TH2F** HistoMuTrg=FuncHistMuTrigger();
+    TGraphAsymmErrors * HistoMuTrack=FuncHistMuTrack();
+    
+    //########################################
+    // Pileup files
+    //########################################
+    
+    TH1F *  HistoPUData =HistPUData();
+    
+//    size_t isInputData = InputFile->find("Data");
+    size_t isInputData = fname.find("Data");
+    TH1F * HistoPUMC = new TH1F();
+    if (isInputData!= string::npos)
+        HistoPUMC=HistPUMC(InputFile);
+    
+    
     
     
     // H->tau tau scale factors
@@ -64,16 +87,17 @@ int main(int argc, char* argv[]) {
     auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("zptmass_histo"));
     
     
-    size_t isInputData = fname.find("Data");
-    reweight::LumiReWeighting* PU_weights;
-    // PU reweighting
-    if (isInputData== string::npos){
-            // read inputs for lumi reweighting
-            PU_weights = new reweight::LumiReWeighting(fname, "pileup/pu_distributions_data_2017.root", "hPUTrue", "pileup");
-        }
-        
+//    size_t isInputData = fname.find("Data");
+    
+    //    reweight::LumiReWeighting* PU_weights;
+    //    // PU reweighting
+    //    if (isInputData== string::npos){
+    //        // read inputs for lumi reweighting
+    //        PU_weights = new reweight::LumiReWeighting(fname, "pileup/pu_distributions_data_2017.root", "hPUTrue", "pileup");
+    //    }
+    
     //###############################################################################################
-    //  Fix Parameters
+    // Parameters
     //###############################################################################################
     float MuMass= 0.10565837;
     float eleMass= 0.000511;
@@ -93,33 +117,29 @@ int main(int argc, char* argv[]) {
     float vis_mass=-10;
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
-    bool Fail,Pass,OS,SS,Isolation,AntiIsolation;
-    float tmass_,ht,Met,FullWeight, dR_mu_tau, Metphi,IsoMu,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_;
+    bool Fail,Pass,OS,SS,lepIso,IsoMu;
+    float tmass_,ht,st,Met,FullWeight, dR_mu_tau, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_;
     
-    
-    
+    outTr->Branch("evtwt",&FullWeight,"evtwt/F");
     outTr->Branch("muPt",&mupt_,"muPt/F");
     outTr->Branch("taupt",&taupt_,"taupt/F");
     outTr->Branch("Pass",&Pass,"Pass/O");
     outTr->Branch("Fail",&Fail,"Fail/O");
     outTr->Branch("OS",&OS,"OS/O");
     outTr->Branch("SS",&SS,"SS/O");
-    outTr->Branch("lepIso",&Isolation,"lepIso/O");
-    outTr->Branch("lepAntiIso",&AntiIsolation,"lepAntiIso/O");
+    outTr->Branch("lepIso",&lepIso,"lepIso/O");
     outTr->Branch("vis_mass",&vis_mass,"vis_mass/F");
     outTr->Branch("tmass",&tmass,"tmass/F");
     outTr->Branch("ht",&ht,"ht/F");
+    outTr->Branch("st",&st,"st/F");
     outTr->Branch("Met",&Met,"Met/F");
     outTr->Branch("LeadJetPt",&LeadJetPt,"LeadJetPt/F");
     outTr->Branch("dR_mu_tau",&dR_mu_tau,"dR_mu_tau/F");
-    outTr->Branch("evtwt",&FullWeight,"evtwt/F");
-    outTr->Branch("IsoMu",&IsoMu,"IsoMu/F");
+    outTr->Branch("IsoMuValue",&IsoMu,"IsoMuValue/F");
     outTr->Branch("BoostedTauRawIso",&BoostedTauRawIso,"BoostedTauRawIso/F");
     outTr->Branch("higgs_pT",&higgs_pT,"higgs_pT/F");
     outTr->Branch("higgs_m",&higgs_m,"higgs_m/F");
-    outTr->Branch("m_sv_",&m_sv_,"m_sv_/F");
-    
-    
+    outTr->Branch("m_sv",&m_sv_,"m_sv/F");
     
     
     Int_t nentries_wtn = (Int_t) Run_Tree->GetEntries();
@@ -130,115 +150,141 @@ int main(int argc, char* argv[]) {
         if (i % 1000 == 0) fprintf(stdout, "\r  Processed events: %8d of %8d ", i, nentries_wtn);
         fflush(stdout);
         
+        plotFill("cutFlowTable",1 ,15,0,15);
+        //=========================================================================================================
         // Trigger
         bool PassTrigger = ((HLTEleMuX >> 21 & 1)==1);
         //              else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
         // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19; // 2017
         if (! PassTrigger) continue;
+        plotFill("cutFlowTable",2 ,15,0,15);
+        //=========================================================================================================
+        // MET Filters
+        // Here we apply MET Filters
+        // Here we apply prefire weights
         
-        //  This part is to avoid of the duplicate of mu-tau pair from one events
-        std::vector<string> HistNamesFilled;
-        HistNamesFilled.clear();
-        
-        
-        //###############################################################################################
-        //  GenInfo
-        //###############################################################################################
-        vector<float>  genInfo=GeneratorInfo();
-        float ZBosonPt=genInfo[2];
-        float ZBosonMass=genInfo[4];
-        
-        
-        float LumiWeight = 1;
-        float PUWeight = 1;
-        if (!isData){
-        // Lumi weight
-            LumiWeight = luminosity * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
-        // Pilu up weights
-            PUWeight= PU_weights->weight(puTrue->at(0));
-        }
-        
-        // BJet veto
-        int numBJet=numBJets(BJetPtCut,CSVCut);
-        if (numBJet > 0) continue;
-        
-        // HT cut
-        ht= getHT(JetPtCut);
-        //        cout<<"ht = "<<ht<<"\n";
-        if (ht < 200) continue;
-        
-        //electron veto
-        int numele =getNumElectron();
-        if (numele > 0) continue;
-        
-        //Leading jet
-        TLorentzVector LeadJet= getLeadJet();
-        
-        
-        //        //MET Shape systematics
+        //=========================================================================================================
+        //MET Shape systematics
         Met=pfMET;
         Metphi=pfMETPhi;
-        //        cout<<"MET = "<<Met<<   "    Metphi = "<<pfMETPhi << "\n";
         if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
         if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
         if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
         if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
         if (Met < 50 ) continue ;
         
-        //############################################################################################
-        //###########       Loop over MuTau events   #################################################
-        //############################################################################################
-        bool isFilledOnce = false;
-        TLorentzVector Mu4Momentum,BoostedTau4Momentum, Z4Momentum;
+        TLorentzVector Mu4Momentum,BoostedTau4Momentum, Z4Momentum, Met4Momentum;
+        //=========================================================================================================
+        // Muon selection
         int idx_mu= muIndex;
+        
+        if (muPt->at(idx_mu) <= 52 || fabs(muEta->at(idx_mu)) >= 2.4) continue;
+        
+        IsoMu=muPFChIso->at(idx_mu)/muPt->at(idx_mu);
+        if ( (muPFNeuIso->at(idx_mu) + muPFPhoIso->at(idx_mu) - 0.5* muPFPUIso->at(idx_mu) )  > 0.0)
+            IsoMu= ( muPFChIso->at(idx_mu) + muPFNeuIso->at(idx_mu) + muPFPhoIso->at(idx_mu) - 0.5* muPFPUIso->at(idx_mu))/muPt->at(idx_mu);
+        
+        bool MuId=( (muIDbit->at(idx_mu) >> 2 & 1)  && fabs(muD0->at(idx_mu)) < 0.045 && fabs(muDz->at(idx_mu)) < 0.2); //CutBasedIdMediumPrompt)) pow(2,  2);
+        
+        if (!MuId ) continue;
+        Mu4Momentum.SetPtEtaPhiM(muPt->at(idx_mu),muEta->at(idx_mu),muPhi->at(idx_mu),MuMass);
+        plotFill("cutFlowTable",3 ,15,0,15);
+        //=========================================================================================================
+        // Tau selection
         int idx_tau= tauIndex;
+        
+        if (boostedTauPt->at(idx_tau) <= 40 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
+        if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_tau) < 0.5 ) continue;
+        if (boostedTauByMVA6VLooseElectronRejection->at(idx_tau) < 0.5) continue;
+        if (boostedTauByTightMuonRejection3->at(idx_tau) < 0.5) continue;
+        BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
+        plotFill("cutFlowTable",4 ,15,0,15);
+        //=========================================================================================================
+        // Event Selection
+        
+        dR_mu_tau= BoostedTau4Momentum.DeltaR(Mu4Momentum);
+        if( dR_mu_tau > 0.8 || dR_mu_tau < 0.1) continue;
+        plotFill("cutFlowTable",5 ,15,0,15);
+        
+        tmass_ = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  Met,  Metphi);
+        if (tmass > 80) continue;
+        if (tmass != tmass_) cout<<"tmasses are not the same " <<tmass <<"  "<<tmass_<<"\n";
+        plotFill("cutFlowTable",6 ,15,0,15);
+        
+        if (m_sv < 10) continue;
+        plotFill("cutFlowTable",7 ,15,0,15);
+        
+        // BJet veto
+        int numBJet=numBJets(BJetPtCut,CSVCut);
+        if (numBJet > 0) continue;
+        plotFill("cutFlowTable",8 ,15,0,15);
+        
+        // HT cut
+        ht= getHT(JetPtCut, Mu4Momentum, BoostedTau4Momentum);
+        if (ht < 200) continue;
+        plotFill("cutFlowTable",9 ,15,0,15);
+        
+        // ST definition
+        st= getST(JetPtCut);
+        
+        //electron veto
+        int numele =getNumElectron();
+        if (numele > 0) continue;
+        plotFill("cutFlowTable",10 ,15,0,15);
+        
+        //Leading jet
+        TLorentzVector LeadJet= getLeadJet(Mu4Momentum, BoostedTau4Momentum);
+        
+        //=========================================================================================================
+        // Separate Drell-Yan processes
+        int Zcateg = ZCategory(BoostedTau4Momentum);
+        if (name == "ZLL" && Zcateg > 4) {
+            continue;
+        } else if ((name == "ZTT") &&Zcateg != 5) {
+            continue;
+        } else if (name == "ZJ" && Zcateg != 6) {
+            continue;
+        }
+        
+        //=========================================================================================================
+        // Weights & Correction
+        
+        float LumiWeight = 1;
+        float PUWeight = 1;
+        float MuonCor=1;
+        float nom_zpt_weight=1.0;
+        float zmumuWeight=1.0;
+        //  GenInfo
+        vector<float>  genInfo=GeneratorInfo();
+        float ZBosonPt=genInfo[2];
+        float ZBosonMass=genInfo[4];
+        
+        
+        if (!isData){
             
-            if (muPt->at(idx_mu) <= 50 || fabs(muEta->at(idx_mu)) >= 2.4) continue;
+            // Lumi weight
+            LumiWeight = luminosity * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
             
-            IsoMu=muPFChIso->at(idx_mu)/muPt->at(idx_mu);
-            if ( (muPFNeuIso->at(idx_mu) + muPFPhoIso->at(idx_mu) - 0.5* muPFPUIso->at(idx_mu) )  > 0.0)
-                IsoMu= ( muPFChIso->at(idx_mu) + muPFNeuIso->at(idx_mu) + muPFPhoIso->at(idx_mu) - 0.5* muPFPUIso->at(idx_mu))/muPt->at(idx_mu);
+            // Pilu up weights
+            int puNUmmc=int(puTrue->at(0)*5);
+            int puNUmdata=int(puTrue->at(0)*5);
+            float PUMC_=HistoPUMC->GetBinContent(puNUmmc+1);
+            float PUData_=HistoPUData->GetBinContent(puNUmdata+1);
+            if (PUMC_ ==0)
+                cout<<"PUMC_ is zero!!! & num pileup= "<< puTrue->at(0)<<"\n";
+            else
+                PUWeight= PUData_/PUMC_;
             
-            bool MuId=( (muIDbit->at(idx_mu) >> 2 & 1)  && fabs(muD0->at(idx_mu)) < 0.045 && fabs(muDz->at(idx_mu)) < 0.2); //CutBasedIdMediumPrompt)) pow(2,  2);
+            // Muon Correction
+            MuonCor= getCorrFactorMuon94X(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() , HistoMuId,HistoMuIso,HistoMuTrg,HistoMuTrack);
             
-            if (!MuId ) continue;
-            Mu4Momentum.SetPtEtaPhiM(muPt->at(idx_mu),muEta->at(idx_mu),muPhi->at(idx_mu),MuMass);
-            
-            float MuonCor=1;
-            if (!isData){
-            
-            
-                // give inputs to workspace
-                htt_sf->var("m_pt")->setVal(muPt->at(idx_mu));
-                htt_sf->var("m_eta")->setVal(muEta->at(idx_mu));
-                htt_sf->var("z_gen_mass")->setVal(ZBosonMass);
-                htt_sf->var("z_gen_pt")->setVal(ZBosonPt);
-                
-                
-                // muon ID SF
-                MuonCor *= htt_sf->function("m_id_kit_ratio")->getVal();
-//                // muon Iso SF
-//                MuonCor *= htt_sf->function("m_iso_kit_ratio")->getVal();
-//                //Tracker
-//                MuonCor *= htt_sf->function("m_trk_ratio")->getVal();
-//                // Trigger
-//                auto single_data_eff = htt_sf->function("m_trg24_27_kit_data")->getVal();
-//                auto single_mc_eff = htt_sf->function("m_trg24_27_kit_mc")->getVal();
-//                auto single_eff = single_data_eff / single_mc_eff;
-//                MuonCor *=single_eff;
-                
-                
-                //                if (InputROOT.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
-                //                if (name.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
-                
-            }
-            plotFill("MuonCor",MuonCor ,100,0,2);
-            
-            float nom_zpt_weight=1.0;
-            float zmumuWeight=1.0;
-            
+            // give inputs to workspace
+            htt_sf->var("m_pt")->setVal(muPt->at(idx_mu));
+            htt_sf->var("m_eta")->setVal(muEta->at(idx_mu));
+            htt_sf->var("z_gen_mass")->setVal(ZBosonMass);
+            htt_sf->var("z_gen_pt")->setVal(ZBosonPt);
+                        
             if (name == "EWKZ" || name == "ZL" || name == "ZTT" || name == "ZLL") {
-                
                 
                 // Z-pT Reweighting
                 nom_zpt_weight = zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
@@ -248,83 +294,51 @@ int main(int argc, char* argv[]) {
                     nom_zpt_weight = 0.9 * nom_zpt_weight + 0.1;
                 }
                 
-//                if (syst == "zmumuShape_Up") {
-//                    zmumuWeight= htt_sf->function("zptmass_weight_nom")->getVal() * htt_sf->function("zptmass_weight_nom")->getVal();
-//                } else if (syst == "zmumuShape_Down") {
-//                    // no weight for shift down
-//                }
-//                else{
-//                    zmumuWeight= htt_sf->function("zptmass_weight_nom")->getVal();
-//                }
+                if (syst == "zmumuShape_Up") {
+                    zmumuWeight= htt_sf->function("zptmass_weight_nom")->getVal() * htt_sf->function("zptmass_weight_nom")->getVal();
+                } else if (syst == "zmumuShape_Down") {
+                    // no weight for shift down
+                }
+                else{
+                    zmumuWeight= htt_sf->function("zptmass_weight_nom")->getVal();
+                }
             }
-            
-            float ZCorrection=nom_zpt_weight*zmumuWeight;
-            plotFill("nom_zpt_weight",nom_zpt_weight ,100,0,2);
-//            plotFill("zmumuWeight",zmumuWeight ,100,0,2);
-            plotFill("ZCorrection",ZCorrection ,100,0,2);
-            
-            tmass_ = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  Met,  Metphi);
-            if (tmass > 80) continue;
-            if (tmass != tmass_) cout<<"tmasses are not the same " <<tmass <<"  "<<tmass_<<"\n";
-            
-                
-                if (boostedTauPt->at(idx_tau) <= 40 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
-                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_tau) < 0.5 ) continue;
-                if (boostedTauByMVA6VLooseElectronRejection->at(idx_tau) < 0.5) continue;
-                if (boostedTauByTightMuonRejection3->at(idx_tau) < 0.5) continue;
-                
-                BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
-                dR_mu_tau= BoostedTau4Momentum.DeltaR(Mu4Momentum);
-                
-                if( dR_mu_tau > 0.8 || dR_mu_tau < 0.1) continue;
-                 if (m_sv < 10) continue;
-                
-                // Separate Drell-Yan
-                int Zcateg = ZCategory(BoostedTau4Momentum);
-                if (name == "ZLL" && Zcateg > 4) {
-                    continue;
-                } else if ((name == "ZTT") &&Zcateg != 5) {
-                    continue;
-                } else if (name == "ZJ" && Zcateg != 6) {
-                    continue;
-                }
-
-                
-                //###############################################################################################
-                //  tree branches
-                //###############################################################################################
-                
-                Z4Momentum=BoostedTau4Momentum+Mu4Momentum;
-                TLorentzVector Met4Momentum;
-                Met4Momentum.SetPtEtaPhiM(pfMET, 0, pfMETPhi, 0);
-                TLorentzVector higgs = BoostedTau4Momentum+Mu4Momentum +Met4Momentum;
-                higgs_pT = higgs.Pt();
-                higgs_m = higgs.M();
-                OS = muCharge->at(idx_mu) * boostedTauCharge->at(idx_tau) < 0;
-                SS =  muCharge->at(idx_mu) * boostedTauCharge->at(idx_tau) > 0;
-                Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) > 0.5 ;
-                Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) < 0.5 ;
-                Isolation= IsoMu < LeptonIsoCut;
-                mupt_=muPt->at(idx_mu);
-//                cout<<"mupt_ "<<mupt_ <<"  vs  "<<pt_1<<"  " <<  mupt_-pt_1<<"\n";
-                taupt_=boostedTauPt->at(idx_tau);
-                vis_mass=Z4Momentum.M();
-                LeadJetPt = LeadJet.Pt();
-                dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
-                BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_tau);
-                m_sv_=m_sv;
-                //###############################################################################################
-                //  Weights
-                //###############################################################################################
-                FullWeight = LumiWeight*MuonCor *ZCorrection;
-                if (isData) FullWeight=1;
-                
-                
-                if (! isFilledOnce ){
-                    outTr->Fill();
-                    isFilledOnce= true;
-                }
-        } //End of Tree
+        }
+        
+        plotFill("LumiWeight",LumiWeight ,1000,0,10000);
+        plotFill("MuonCor",MuonCor ,100,0,2);
+        plotFill("nom_zpt_weight",nom_zpt_weight ,100,0,2);
+        plotFill("zmumuWeight",zmumuWeight ,100,0,2);
+        plotFill("PUWeight",PUWeight ,200,0,2);
+        
+        //###############################################################################################
+        //  tree branches
+        //###############################################################################################
+        
+        Met4Momentum.SetPtEtaPhiM(pfMET, 0, pfMETPhi, 0);
+        Z4Momentum=BoostedTau4Momentum+Mu4Momentum;
+        TLorentzVector higgs = BoostedTau4Momentum+Mu4Momentum +Met4Momentum;
+        
+        higgs_pT = higgs.Pt();
+        higgs_m = higgs.M();
+        OS = muCharge->at(idx_mu) * boostedTauCharge->at(idx_tau) < 0;
+        SS =  muCharge->at(idx_mu) * boostedTauCharge->at(idx_tau) > 0;
+        Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) > 0.5 ;
+        Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) < 0.5 ;
+        lepIso= IsoMu < LeptonIsoCut;
+        mupt_=muPt->at(idx_mu);
+        taupt_=boostedTauPt->at(idx_tau);
+        vis_mass=Z4Momentum.M();
+        LeadJetPt = LeadJet.Pt();
+        dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
+        BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_tau);
+        m_sv_=m_sv;
+        //  Weights
+        FullWeight = LumiWeight*MuonCor *nom_zpt_weight*zmumuWeight;
+        
+        // Fill the tree
+        outTr->Fill();
+    } //End of Tree
     
     
     fout->cd();
@@ -342,8 +356,6 @@ int main(int argc, char* argv[]) {
         nplot2(iMap2->first)->Write();
     
     fout->Close();
-    
-    
 }
 
 

@@ -582,22 +582,15 @@ float Cor94X_Iso_Mu(float pt, float eta , TH2F * HistoIso) {
 ////////////////////////////////////////////////////////////
 
 float Cor94X_Trigger_Mu_onlyEta(float eta, TH1F* HistoTrg ){
-    
-    
     return HistoTrg->GetBinContent(HistoTrg->GetXaxis()->FindBin(eta));
-    
 }
 
 
 //pt-eta binned
 
 float Cor94X_Trigger_Mu_EtaPt(float pt,float eta, TH2F* HistoTrg ){
-    
-    
     if (pt > 1000) pt=1000;
-    
     return HistoTrg->GetBinContent(HistoTrg->GetXaxis()->FindBin(pt),HistoTrg->GetYaxis()->FindBin(fabs(eta)));
-    
 }
 
 
@@ -922,18 +915,15 @@ float getCorrFactorMuon94X(bool isData, float pt, float eta, TH2F ** HistoId, TH
         return 1;
     else{
         
-        float Weighted_IDSF=Cor94X_ID_Mu(pt,eta,HistoId[0]);
-
-        float Weighted_IsoSF=Cor94X_Iso_Mu(pt,eta,HistoIso[0]);
-
-//        float Weighted_TriggerSF=Cor94X_Trigger_Mu_onlyEta(eta,HistoTrg[0]);
         float Weighted_TriggerSF=Cor94X_Trigger_Mu_EtaPt(pt,fabs(eta),HistoTrg[0]);
-        float Tracking_SF=Cor94X_TRK_Mu_Full2016(eta, graph);
-                   
-//cout<< "Weighted_IDSF * Weighted_IsoSF * Tracking_SF * Weighted_TriggerSF "<<Weighted_IDSF <<" "<< Weighted_IsoSF <<" "<< Tracking_SF <<" "<< Weighted_TriggerSF<<"\n";
-        return (Weighted_IDSF * Weighted_IsoSF * Tracking_SF * Weighted_TriggerSF);
+//        float Tracking_SF=Cor94X_TRK_Mu(eta, graph);
+        float Tracking_SF=Cor94X_TRK_Mu(eta);
+        float Weighted_IDSF=Cor94X_ID_Mu(pt,eta,HistoId[0]);
+//        float Weighted_IsoSF=Cor94X_Iso_Mu(pt,eta,HistoIso[0]);
+        
+        return (Weighted_TriggerSF * Tracking_SF * Weighted_IDSF);
+//        return (Weighted_TriggerSF * Tracking_SF * Weighted_IDSF * Weighted_IsoSF );
     }
-    
 }
 
 
