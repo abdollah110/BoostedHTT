@@ -354,7 +354,8 @@ int main(int argc, char* argv[]) {
         BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_tau);
         m_sv_=m_sv;
         //  Weights
-        FullWeight = LumiWeight*MuonCor *nom_zpt_weight*zmumuWeight;
+//        FullWeight = LumiWeight*MuonCor *nom_zpt_weight*zmumuWeight;
+        FullWeight = LumiWeight*MuonCor*zmumuWeight;
         
         // Fill the tree
         outTr->Fill();
