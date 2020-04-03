@@ -282,7 +282,25 @@ int main(int argc, char* argv[]) {
             htt_sf->var("m_eta")->setVal(muEta->at(idx_mu));
             htt_sf->var("z_gen_mass")->setVal(ZBosonMass);
             htt_sf->var("z_gen_pt")->setVal(ZBosonPt);
-                        
+
+
+            
+//            if (name == "EWKZ" || name == "ZTT" || name == "ZLL" || name == "ZL") {
+//
+//                ws_SF->var("z_gen_mass")->setVal(event.getGenM());
+//                ws_SF->var("z_gen_pt")->setVal(event.getGenPt());
+//                auto nom_zpt_weight=ws_SF->function("zptmass_weight_nom")->getVal();
+//
+//                if (syst == "dyShape_Up") {
+//                    nom_zpt_weight = 1.1 * nom_zpt_weight - 0.1;
+//                } else if (syst == "dyShape_Down") {
+//                    nom_zpt_weight = 0.9 * nom_zpt_weight + 0.1;
+//                }else
+//                    evtwt *= nom_zpt_weight;
+//            }
+            
+
+
             if (name == "EWKZ" || name == "ZL" || name == "ZTT" || name == "ZLL") {
                 
                 // Z-pT Reweighting
@@ -301,6 +319,9 @@ int main(int argc, char* argv[]) {
                 else{
                     zmumuWeight= htt_sf->function("zptmass_weight_nom")->getVal();
                 }
+                
+                cout<<"ZBosonMass= "<<ZBosonMass << "  ZBosonPt= "<<ZBosonPt <<"  nom_zpt_weight= "<<nom_zpt_weight<< "  zmumuWeight= "<< htt_sf->function("zptmass_weight_nom")->getVal()<<"\n";
+                
             }
         }
         

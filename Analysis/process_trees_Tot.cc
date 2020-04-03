@@ -97,9 +97,9 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         float LeadJetPt = -10;
         float dR_Z_jet=-10;
         bool Fail,Pass,PassM,FailM,PassT,FailT,OS,SS,Isolation,AntiIsolation;
-        float tmass,ht,Met,weight, dR_mu_tau, Metphi;
+        float tmass,ht,st,Met,weight, dR_mu_tau, Metphi;
         float NN_disc;
-        float IsoMu,BoostedTauRawIso, higgs_pT, higgs_m;
+        float IsoMuValue,BoostedTauRawIso, higgs_pT, higgs_m, m_sv;
         
         
         tree->SetBranchAddress("muPt",&mupt_);
@@ -113,16 +113,17 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         tree->SetBranchAddress("vis_mass",&vis_mass);
         tree->SetBranchAddress("tmass",&tmass);
         tree->SetBranchAddress("ht",&ht);
+        tree->SetBranchAddress("st",&st);
         tree->SetBranchAddress("Met",&Met);
         tree->SetBranchAddress("LeadJetPt",&LeadJetPt);
         tree->SetBranchAddress("dR_mu_tau",&dR_mu_tau);
         tree->SetBranchAddress("evtwt",&weight);
         tree->SetBranchAddress("NN_disc",&NN_disc);
-        tree->SetBranchAddress("IsoMu",&IsoMu);
+        tree->SetBranchAddress("IsoMuValue",&IsoMuValue);
         tree->SetBranchAddress("BoostedTauRawIso",&BoostedTauRawIso);
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
         tree->SetBranchAddress("higgs_m",&higgs_m);
-        tree->SetBranchAddress("m_sv_",&m_sv_);
+        tree->SetBranchAddress("m_sv",&m_sv);
 
         
         
@@ -145,14 +146,15 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
                 {"vis_mass",vis_mass},
                 {"tmass",tmass},
                 {"ht",ht},
+                {"st",st},
                 {"Met",Met},
                 {"LeadJetPt",LeadJetPt},
                 {"dR_mu_tau",dR_mu_tau},
-                {"IsoMu",IsoMu},
+                {"IsoMuValue",IsoMuValue},
                 {"BoostedTauRawIso",BoostedTauRawIso},
                 {"higgs_pT",higgs_pT},
                 {"higgs_m",higgs_m},
-                {"m_sv_",m_sv_},
+                {"m_sv",m_sv},
                 {"NN_disc",NN_disc}
             };
             
@@ -213,11 +215,13 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
             
 //            std::cout<<OS <<Pass << !Isolation<<"\n";
             if (OS != 0 && !Pass && !Isolation){
+//            if (OS != 0 &&  !Isolation){
 //            if (OS != 0 ){
 //            std::cout<<name<< " "<<mupt_<<"  " << weight<<"\n";
                 fillQCD_OS_CR(zeroJet, name, mupt_,  weight);
             }
             else if (SS != 0 && !Pass && !Isolation){
+//            else if (SS != 0  && !Isolation){
 //            else if (SS != 0 ){
 //            std::cout<<"\t "<<name<< " "<<mupt_<<"  " << weight<<"\n";
                 fillQCD_SS_CR(zeroJet, name, mupt_,  weight);
