@@ -349,6 +349,23 @@ TH1F *  HistPUData(){
     return HistoPUData;
 }
 
+
+//TH1F *  HistPUMC(size_t isInputData, TFile *f_Double){
+//    if (isInputData== string::npos){
+//        //    TFile * PUMC= TFile::Open("../interface/pileup-hists/mcMoriondPU.root"); // Not valid for 2017 yet
+//        //    TH1F * HistoPUMC= (TH1F *) PUMC->Get("pileup");
+//        TFile * PUMC= TFile::Open(f_Double->GetName());
+//        TH1F * HistoPUMC= (TH1F *) PUMC->Get("hPUTrue");
+//        HistoPUMC->Scale(1.0/HistoPUMC->Integral());
+//        //        cout << "HistoPUMC integral= "<<HistoPUMC->Integral()<<"\n";
+//        return HistoPUMC;
+//        }
+//        else{
+//        return 0;
+//        }
+//        return 0;
+//}
+
 TH1F *  HistPUMC(TFile *f_Double){
         //    TFile * PUMC= TFile::Open("../interface/pileup-hists/mcMoriondPU.root"); // Not valid for 2017 yet
         //    TH1F * HistoPUMC= (TH1F *) PUMC->Get("pileup");

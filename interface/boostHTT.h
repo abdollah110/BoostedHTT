@@ -443,7 +443,7 @@ using namespace std;
 //   Float_t         metcov11;
    Int_t           decayMode2;
    Int_t tauIndex;
-   Int_t muIndex;
+   Int_t lepIndex;
    
 //   Float_t         tmass;
 //   Int_t           era;

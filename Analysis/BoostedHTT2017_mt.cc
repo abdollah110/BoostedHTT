@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
 //    size_t isInputData = InputFile->find("Data");
     size_t isInputData = fname.find("Data");
     TH1F * HistoPUMC = new TH1F();
-    if (isInputData!= string::npos)
+    if (isInputData== string::npos)
         HistoPUMC=HistPUMC(InputFile);
     
     
@@ -129,7 +129,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("SS",&SS,"SS/O");
     outTr->Branch("lepIso",&lepIso,"lepIso/O");
     outTr->Branch("vis_mass",&vis_mass,"vis_mass/F");
-    outTr->Branch("tmass",&tmass,"tmass/F");
+//    outTr->Branch("tmass",&tmass,"tmass/F");
     outTr->Branch("ht",&ht,"ht/F");
     outTr->Branch("st",&st,"st/F");
     outTr->Branch("Met",&Met,"Met/F");
@@ -176,7 +176,7 @@ int main(int argc, char* argv[]) {
         TLorentzVector Mu4Momentum,BoostedTau4Momentum, Z4Momentum, Met4Momentum;
         //=========================================================================================================
         // Muon selection
-        int idx_mu= muIndex;
+        int idx_mu= lepIndex;
         
         if (muPt->at(idx_mu) <= 52 || fabs(muEta->at(idx_mu)) >= 2.4) continue;
         
@@ -208,7 +208,6 @@ int main(int argc, char* argv[]) {
         
         tmass_ = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  Met,  Metphi);
         if (tmass > 80) continue;
-        if (tmass != tmass_) cout<<"tmasses are not the same " <<tmass <<"  "<<tmass_<<"\n";
         plotFill("cutFlowTable",6 ,15,0,15);
         
         if (m_sv < 10) continue;
