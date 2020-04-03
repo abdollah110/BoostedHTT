@@ -118,9 +118,10 @@ int main(int argc, char* argv[]) {
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
     bool Fail,Pass,OS,SS,lepIso,IsoMu;
-    float tmass_,ht,st,Met,FullWeight, dR_mu_tau, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_;
+    float tmass_,ht,st,Met,FullWeight, dR_mu_tau, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
+    outTr->Branch("evtwtZpt",&wtnom_zpt_weight,"evtwtZPt/F");
     outTr->Branch("muPt",&mupt_,"muPt/F");
     outTr->Branch("taupt",&taupt_,"taupt/F");
     outTr->Branch("Pass",&Pass,"Pass/O");
@@ -356,6 +357,7 @@ int main(int argc, char* argv[]) {
         //  Weights
 //        FullWeight = LumiWeight*MuonCor *nom_zpt_weight*zmumuWeight;
         FullWeight = LumiWeight*MuonCor*zmumuWeight;
+        wtnom_zpt_weight=zmumuWeight;
         
         // Fill the tree
         outTr->Fill();

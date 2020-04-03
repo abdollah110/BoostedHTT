@@ -296,7 +296,6 @@ TTree *  Xttree( TFile * f_Double){
     Run_Tree->SetBranchAddress("decayMode2", &decayMode2);
     Run_Tree->SetBranchAddress("m_sv", &m_sv);
     Run_Tree->SetBranchAddress("pt_sv", &pt_sv);
-    Run_Tree->SetBranchAddress("tmass", &tmass);
 
     Run_Tree->SetBranchAddress("lepIndex", &lepIndex);
     Run_Tree->SetBranchAddress("tauIndex", &tauIndex);
@@ -814,7 +813,8 @@ vector<float>  GeneratorInfo(){
     
     TopPtReweighting=compTopPtWeight(GenTopPt, GenAntiTopPt);
     
-    if (ZBosonPt ==0){
+//    if (ZBosonPt ==0){
+    if (ZBosonPt < 10){
         ZBosonPt=(GenMu4Momentum+GenAntiMu4Momentum).Pt();  //This is a temp solution to the above problem
         ZBosonMass=(GenMu4Momentum+GenAntiMu4Momentum).M();  //This is a temp solution to the above problem
     }
