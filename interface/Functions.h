@@ -298,7 +298,7 @@ TTree *  Xttree( TFile * f_Double){
     Run_Tree->SetBranchAddress("pt_sv", &pt_sv);
     Run_Tree->SetBranchAddress("tmass", &tmass);
 
-    Run_Tree->SetBranchAddress("muIndex", &muIndex);
+    Run_Tree->SetBranchAddress("lepIndex", &lepIndex);
     Run_Tree->SetBranchAddress("tauIndex", &tauIndex);
     
     //    .push_back(vec.Pt());
