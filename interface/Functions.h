@@ -630,7 +630,7 @@ int getNumMuon(){
         
         if ( muPt->at(jmu) < 15 || fabs(muEta->at(jmu)) > 2.4) continue;
                 
-        IsoMu=muPFChIso->at(jmu)/muPt->at(jmu);
+        float IsoMu=muPFChIso->at(jmu)/muPt->at(jmu);
         if ( (muPFNeuIso->at(jmu) + muPFPhoIso->at(jmu) - 0.5* muPFPUIso->at(jmu) )  > 0.0)
             IsoMu= ( muPFChIso->at(jmu) + muPFNeuIso->at(jmu) + muPFPhoIso->at(jmu) - 0.5* muPFPUIso->at(jmu))/muPt->at(jmu);
         
