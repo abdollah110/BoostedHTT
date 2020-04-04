@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
     auto InputFile = TFile::Open(fname.c_str());
     std::cout << "Loading Ntuple..." << std::endl;
     TTree *  Run_Tree;
-    Run_Tree= Xttree(InputFile);
+    Run_Tree= Xttree(InputFile,"mutau_tree");
     
     //    auto HistoTot = reinterpret_cast<TH1D*>(InputFile->Get("ggNtuplizer/hEvents"));
     TH1F * HistoTot = (TH1F*) InputFile->Get("hcount");
