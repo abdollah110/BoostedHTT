@@ -605,8 +605,6 @@ int getNumElectron(){
     
     //            https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recommended_MVA_recipes_for_2016
     int numElectron=0;
-    float ElectronCor=1;
-    float ElectronEffVeto=1;
     for  (int jele=0 ; jele < nEle; jele++){
         
         if ( elePt->at(jele) < 15 || fabs(eleEta->at(jele)) > 2.5) continue;
@@ -623,6 +621,27 @@ int getNumElectron(){
     }
     return numElectron;
     
+}
+
+int getNumMuon(){
+    
+    int numMuon=0;
+    for  (int jmu=0 ; jmu < nMu; jmu++){
+        
+        if ( muPt->at(jmu) < 15 || fabs(muEta->at(jmu)) > 2.4) continue;
+                
+        IsoMu=muPFChIso->at(jmu)/muPt->at(jmu);
+        if ( (muPFNeuIso->at(jmu) + muPFPhoIso->at(jmu) - 0.5* muPFPUIso->at(jmu) )  > 0.0)
+            IsoMu= ( muPFChIso->at(jmu) + muPFNeuIso->at(jmu) + muPFPhoIso->at(jmu) - 0.5* muPFPUIso->at(jmu))/muPt->at(jmu);
+        
+        bool MuId=( (muIDbit->at(jmu) >> 2 & 1)  && fabs(muD0->at(jmu)) < 0.045 && fabs(muDz->at(jmu)) < 0.2);
+        bool MuIso = IsoMu < 0.15;
+        
+        
+        if (MuId && MuIso)
+        numMuon++;
+    }
+    return numMuon;
 }
 
 //###########       electron  correction factor   ###########################################################

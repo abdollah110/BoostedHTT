@@ -237,8 +237,8 @@ int main(int argc, char* argv[]) {
         st= getST(JetPtCut);
         
         //electron veto
-        int numele =getNumElectron();
-        if (numele > 0) continue;
+        int numMu =getNumMuon();
+        if (numMu > 0) continue;
         plotFill("cutFlowTable",10 ,15,0,15);
         
         //Leading jet
