@@ -106,7 +106,7 @@ int main(int argc, char* argv[]) {
     
     //    float CSVCut=   0.9535   ;                  //  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
     float CSVCut=   0.8838   ;                  //  medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
-    float LeptonIsoCut=0.20;
+    float LeptonIsoCut=0.15;
     bool debug= false;
     //    float luminosity=    35867;
     float luminosity=    41530;
@@ -117,8 +117,8 @@ int main(int argc, char* argv[]) {
     float vis_mass=-10;
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
-    bool Fail,Pass,OS,SS,lepIso,IsoMu;
-    float tmass,ht,st,Met,FullWeight, dR_lep_tau, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight, eleIDMVANoIso_;
+    bool Fail,Pass,OS,SS,lepIsoPass;
+    float tmass,ht,st,Met,FullWeight, dR_lep_tau, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight, eleIDMVA, IsoLepValue;
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
     outTr->Branch("evtwtZpt",&wtnom_zpt_weight,"evtwtZPt/F");
@@ -128,7 +128,8 @@ int main(int argc, char* argv[]) {
     outTr->Branch("Fail",&Fail,"Fail/O");
     outTr->Branch("OS",&OS,"OS/O");
     outTr->Branch("SS",&SS,"SS/O");
-    outTr->Branch("lepIso",&lepIso,"lepIso/O");
+    outTr->Branch("lepIsoPass",&lepIsoPass,"lepIsoPass/O");
+    outTr->Branch("IsoLepValue",&IsoLepValue,"IsoLepValue/F");
     outTr->Branch("vis_mass",&vis_mass,"vis_mass/F");
     outTr->Branch("tmass",&tmass,"tmass/F");
     outTr->Branch("ht",&ht,"ht/F");
@@ -136,7 +137,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("Met",&Met,"Met/F");
     outTr->Branch("LeadJetPt",&LeadJetPt,"LeadJetPt/F");
     outTr->Branch("dR_lep_tau",&dR_lep_tau,"dR_lep_tau/F");
-    outTr->Branch("eleIDMVANoIso",&eleIDMVANoIso_,"eleIDMVANoIso/F");
+    outTr->Branch("eleIDMVA",&eleIDMVA,"eleIDMVA/F");
     outTr->Branch("BoostedTauRawIso",&BoostedTauRawIso,"BoostedTauRawIso/F");
     outTr->Branch("higgs_pT",&higgs_pT,"higgs_pT/F");
     outTr->Branch("higgs_m",&higgs_m,"higgs_m/F");
@@ -194,8 +195,15 @@ int main(int argc, char* argv[]) {
         else if (fabs (eleSCEta->at(idx_lep)) >  0.8 &&fabs (eleSCEta->at(idx_lep)) <=  1.5 && eleIDMVANoIso->at(idx_lep) >    0.715   ) eleMVAId= true;
         else if ( fabs (eleSCEta->at(idx_lep)) >=  1.5 && eleIDMVANoIso->at(idx_lep) >   0.357   ) eleMVAId= true;
         else eleMVAId= false;
+        if (!eleMVAId) continue;    
+
+
+        IsoLepValue=elePFChIso->at(idx_lep)/elePt->at(idx_lep);
+        if ( (elePFNeuIso->at(idx_lep) + elePFPhoIso->at(idx_lep) - 0.5* elePFPUIso->at(idx_lep) )  > 0.0)
+            IsoLepValue= ( elePFChIso->at(idx_lep) + elePFNeuIso->at(idx_lep) + elePFPhoIso->at(idx_lep) - 0.5* elePFPUIso->at(idx_lep))/elePt->at(idx_lep);
         
-        if (!eleMVAId) continue;
+        
+        
                                 
         Lep4Momentum.SetPtEtaPhiM(elePt->at(idx_lep),eleEta->at(idx_lep),elePhi->at(idx_lep),eleMass);
         plotFill("cutFlowTable",3 ,15,0,15);
@@ -326,8 +334,8 @@ int main(int argc, char* argv[]) {
         SS =  eleCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) > 0;
         Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) > 0.5 ;
         Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) < 0.5 ;
-        lepIso= eleMVAId;
-        eleIDMVANoIso_=eleIDMVANoIso->at(idx_lep);
+        lepIsoPass= IsoLepValue < LeptonIsoCut;
+        eleIDMVA=eleIDMVANoIso->at(idx_lep);
         lepPt_=elePt->at(idx_lep);
         taupt_=boostedTauPt->at(idx_tau);
         vis_mass=Z4Momentum.M();

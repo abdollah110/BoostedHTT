@@ -106,7 +106,7 @@ int main(int argc, char* argv[]) {
     
     //    float CSVCut=   0.9535   ;                  //  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
     float CSVCut=   0.8838   ;                  //  medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
-    float LeptonIsoCut=0.20;
+    float LeptonIsoCut=0.15;
     bool debug= false;
     //    float luminosity=    35867;
     float luminosity=    41530;
@@ -117,7 +117,7 @@ int main(int argc, char* argv[]) {
     float vis_mass=-10;
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
-    bool Fail,Pass,OS,SS,lepIso,IsoMu;
+    bool Fail,Pass,OS,SS,lepIsoPass,IsoLepValue;
     float tmass,ht,st,Met,FullWeight, dR_lep_tau, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
@@ -128,7 +128,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("Fail",&Fail,"Fail/O");
     outTr->Branch("OS",&OS,"OS/O");
     outTr->Branch("SS",&SS,"SS/O");
-    outTr->Branch("lepIso",&lepIso,"lepIso/O");
+    outTr->Branch("lepIsoPass",&lepIsoPass,"lepIsoPass/O");
     outTr->Branch("vis_mass",&vis_mass,"vis_mass/F");
     outTr->Branch("tmass",&tmass,"tmass/F");
     outTr->Branch("ht",&ht,"ht/F");
@@ -136,7 +136,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("Met",&Met,"Met/F");
     outTr->Branch("LeadJetPt",&LeadJetPt,"LeadJetPt/F");
     outTr->Branch("dR_lep_tau",&dR_lep_tau,"dR_lep_tau/F");
-    outTr->Branch("IsoMuValue",&IsoMu,"IsoMuValue/F");
+    outTr->Branch("IsoLepValue",&IsoLepValue,"IsoLepValue/F");
     outTr->Branch("BoostedTauRawIso",&BoostedTauRawIso,"BoostedTauRawIso/F");
     outTr->Branch("higgs_pT",&higgs_pT,"higgs_pT/F");
     outTr->Branch("higgs_m",&higgs_m,"higgs_m/F");
@@ -181,9 +181,9 @@ int main(int argc, char* argv[]) {
         
         if (muPt->at(idx_lep) <= 52 || fabs(muEta->at(idx_lep)) >= 2.4) continue;
         
-        IsoMu=muPFChIso->at(idx_lep)/muPt->at(idx_lep);
+        IsoLepValue=muPFChIso->at(idx_lep)/muPt->at(idx_lep);
         if ( (muPFNeuIso->at(idx_lep) + muPFPhoIso->at(idx_lep) - 0.5* muPFPUIso->at(idx_lep) )  > 0.0)
-            IsoMu= ( muPFChIso->at(idx_lep) + muPFNeuIso->at(idx_lep) + muPFPhoIso->at(idx_lep) - 0.5* muPFPUIso->at(idx_lep))/muPt->at(idx_lep);
+            IsoLepValue= ( muPFChIso->at(idx_lep) + muPFNeuIso->at(idx_lep) + muPFPhoIso->at(idx_lep) - 0.5* muPFPUIso->at(idx_lep))/muPt->at(idx_lep);
         
         bool MuId=( (muIDbit->at(idx_lep) >> 2 & 1)  && fabs(muD0->at(idx_lep)) < 0.045 && fabs(muDz->at(idx_lep)) < 0.2); //CutBasedIdMediumPrompt)) pow(2,  2);
         
@@ -317,7 +317,7 @@ int main(int argc, char* argv[]) {
         SS =  muCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) > 0;
         Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) > 0.5 ;
         Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) < 0.5 ;
-        lepIso= IsoMu < LeptonIsoCut;
+        lepIsoPass= IsoLepValue < LeptonIsoCut;
         lepPt_=muPt->at(idx_lep);
         taupt_=boostedTauPt->at(idx_tau);
         vis_mass=Z4Momentum.M();

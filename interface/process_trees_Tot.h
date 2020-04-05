@@ -231,10 +231,6 @@ systematics{
             auto order(0);
             for (auto cat : hists_1d) {
                 fout->cd(cat.first.c_str());
-                
-                
-                std::cout<<"\t\t\t\t step 2 hists_1d= "<<cat.first.c_str()<< "  intg is " <<"\n";
-                
                 for (auto hist : cat.second) {
                 
                     std::cout<<"hists_1d= "<<cat.first.c_str()<< "  intg is " << hist->GetName() <<  "  int = "<<hist->Integral() <<"\n";

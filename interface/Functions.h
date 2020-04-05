@@ -26,11 +26,9 @@
 #include <iostream>
 #include <map>
 #include "TLorentzVector.h"
-//#include "../interface/CodexAnalyzer.h"
 #include "../interface/boostHTT.h"
 #include "../interface/WeightCalculator.h"
 #include "../interface/Corrector.h"
-//#include "../interface/Functions.h"
 #include "../interface/makeHisto.h"
 
 
@@ -65,8 +63,6 @@ float dR_(float ieta, float iphi, float jeta, float jphi){
 
 TTree *  Xttree( TFile * f_Double, string channel){
     
-    //            TTree *Run_Tree = (TTree*) f_Double->Get("ggNtuplizer/EventTree");
-//    TTree *Run_Tree = (TTree*) f_Double->Get("EventTree");
     TTree *Run_Tree = (TTree*) f_Double->Get(channel.c_str());
     
     cout.setf(ios::fixed, ios::floatfield);
@@ -271,8 +267,8 @@ TTree *  Xttree( TFile * f_Double, string channel){
     Run_Tree->SetBranchAddress("era", &era);
     Run_Tree->SetBranchAddress("met_px", &met_px);
     Run_Tree->SetBranchAddress("met_py", &met_py);
-//    Run_Tree->SetBranchAddress("met", &met);
-//    Run_Tree->SetBranchAddress("metphi", &metphi);
+    //    Run_Tree->SetBranchAddress("met", &met);
+    //    Run_Tree->SetBranchAddress("metphi", &metphi);
     Run_Tree->SetBranchAddress("m_1", &m_1);
     Run_Tree->SetBranchAddress("px_1", &px_1);
     Run_Tree->SetBranchAddress("py_1", &py_1);
@@ -296,37 +292,9 @@ TTree *  Xttree( TFile * f_Double, string channel){
     Run_Tree->SetBranchAddress("decayMode2", &decayMode2);
     Run_Tree->SetBranchAddress("m_sv", &m_sv);
     Run_Tree->SetBranchAddress("pt_sv", &pt_sv);
-
+    
     Run_Tree->SetBranchAddress("lepIndex", &lepIndex);
     Run_Tree->SetBranchAddress("tauIndex", &tauIndex);
-    
-    //    .push_back(vec.Pt());
-    //    .push_back(vec.Eta());
-    //    .push_back(vec.Phi());
-    //    .push_back(vec.mass());
-    
-    
-    
-    
-    //    Run_Tree->SetBranchAddress("",&);
-    //
-    //
-    //
-    //    vector<float>   *boostedTauPt;
-    //    vector<float>   *boostedTauEt;
-    //    vector<float>   *boostedTauCharge;
-    //    vector<float>   *boostedTauP;
-    //    vector<float>   *boostedTauPx;
-    //    vector<float>   *boostedTauPy;
-    //    vector<float>   *boostedTauPz;
-    //    vector<float>   *boostedTauVz;
-    //    vector<float>   *boostedTauEnergy;
-    //    vector<float>   *boostedTauMass;
-    //    vector<float>   *boostedTauDxy;
-    //    vector<float>   *boostedTauZImpact;
-    //    vector<int>     *boostedTauDecayMode;
-    //
-    
     
     return Run_Tree;
 }
@@ -348,46 +316,25 @@ TH1F *  HistPUData(){
     return HistoPUData;
 }
 
-
-//TH1F *  HistPUMC(size_t isInputData, TFile *f_Double){
-//    if (isInputData== string::npos){
-//        //    TFile * PUMC= TFile::Open("../interface/pileup-hists/mcMoriondPU.root"); // Not valid for 2017 yet
-//        //    TH1F * HistoPUMC= (TH1F *) PUMC->Get("pileup");
-//        TFile * PUMC= TFile::Open(f_Double->GetName());
-//        TH1F * HistoPUMC= (TH1F *) PUMC->Get("hPUTrue");
-//        HistoPUMC->Scale(1.0/HistoPUMC->Integral());
-//        //        cout << "HistoPUMC integral= "<<HistoPUMC->Integral()<<"\n";
-//        return HistoPUMC;
-//        }
-//        else{
-//        return 0;
-//        }
-//        return 0;
-//}
-
 TH1F *  HistPUMC(TFile *f_Double){
-        //    TFile * PUMC= TFile::Open("../interface/pileup-hists/mcMoriondPU.root"); // Not valid for 2017 yet
-        //    TH1F * HistoPUMC= (TH1F *) PUMC->Get("pileup");
-        TFile * PUMC= TFile::Open(f_Double->GetName());
-        TH1F * HistoPUMC= (TH1F *) PUMC->Get("hPUTrue");
-        HistoPUMC->Scale(1.0/HistoPUMC->Integral());
-        //        cout << "HistoPUMC integral= "<<HistoPUMC->Integral()<<"\n";
-        return HistoPUMC;
+    //    TFile * PUMC= TFile::Open("../interface/pileup-hists/mcMoriondPU.root"); // Not valid for 2017 yet
+    //    TH1F * HistoPUMC= (TH1F *) PUMC->Get("pileup");
+    TFile * PUMC= TFile::Open(f_Double->GetName());
+    TH1F * HistoPUMC= (TH1F *) PUMC->Get("hPUTrue");
+    HistoPUMC->Scale(1.0/HistoPUMC->Integral());
+    //        cout << "HistoPUMC integral= "<<HistoPUMC->Integral()<<"\n";
+    return HistoPUMC;
 }
 
 
 //########################################
 // Muon Id, Iso, Trigger and Tracker Eff files
 //########################################
-
-
-
-
 TH2F**  FuncHistMuTrigger(){
     
     TFile * MuCorrTrg_BCDEF= TFile::Open(("../interface/MuSF/EfficienciesAndSF_RunBtoF_Nov17Nov2017.root"));
-//    TH1F * HistoMuTrg_BCDEF= (TH1F *) MuCorrTrg_BCDEF->Get("Mu50_EtaBins/eta_ratio");
-//    TH1F * HistoMuTrg_BCDEF= (TH1F *) MuCorrTrg_BCDEF->Get("Mu50_EtaBins/pt_abseta_ratio");
+    //    TH1F * HistoMuTrg_BCDEF= (TH1F *) MuCorrTrg_BCDEF->Get("Mu50_EtaBins/eta_ratio");
+    //    TH1F * HistoMuTrg_BCDEF= (TH1F *) MuCorrTrg_BCDEF->Get("Mu50_EtaBins/pt_abseta_ratio");
     TH2F * HistoMuTrg_BCDEF= (TH2F *) MuCorrTrg_BCDEF->Get("IsoMu27_PtEtaBins/pt_abseta_ratio");
     
     static TH2F* HistoMuTrg[2]={HistoMuTrg_BCDEF};
@@ -598,7 +545,7 @@ int getNumTau(){
 
 
 
-//###########       electron  Veto   ###########################################################
+//###########       Lepton  Veto   ###########################################################
 
 int getNumElectron(){
     
@@ -629,7 +576,7 @@ int getNumMuon(){
     for  (int jmu=0 ; jmu < nMu; jmu++){
         
         if ( muPt->at(jmu) < 15 || fabs(muEta->at(jmu)) > 2.4) continue;
-                
+        
         float IsoMu=muPFChIso->at(jmu)/muPt->at(jmu);
         if ( (muPFNeuIso->at(jmu) + muPFPhoIso->at(jmu) - 0.5* muPFPUIso->at(jmu) )  > 0.0)
             IsoMu= ( muPFChIso->at(jmu) + muPFNeuIso->at(jmu) + muPFPhoIso->at(jmu) - 0.5* muPFPUIso->at(jmu))/muPt->at(jmu);
@@ -639,7 +586,7 @@ int getNumMuon(){
         
         
         if (MuId && MuIso)
-        numMuon++;
+            numMuon++;
     }
     return numMuon;
 }
@@ -660,12 +607,6 @@ float getElectronCor(TH2F * HistoEleMVAIdIso90){
         else eleMVAIdExtra= false;
         
         
-        
-        //        if (!(eleMVAIdExtra )) {
-        //            ElectronEffVeto= ElectronEffVeto * getEffVetoMVA90WPElectron80X(isData,  elePt->at(jele),eleSCEta->at(jele),    HistoEleMVAIdIso90 , HistoEleMVAIdIso90_EffMC,HistoEleMVAIdIso90_EffData);
-        //            continue;
-        //        }
-        
         if (eleMVAIdExtra)
             ElectronCor=getCorrFactorMVA90WPElectron94X(isData,  elePt->at(jele),eleSCEta->at(jele),    HistoEleMVAIdIso90 );
         
@@ -673,52 +614,6 @@ float getElectronCor(TH2F * HistoEleMVAIdIso90){
     }
     return ElectronCor;
 }
-
-
-
-
-
-
-
-//
-//
-//
-////            https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recommended_MVA_recipes_for_2016
-//int numElectron=0;
-//float ElectronCor=1;
-//TLorentzVector Ele4Momentum;
-//float ElectronEffVeto=1;
-//Ele4Momentum.SetPtEtaPhiM(0,0,0,0);
-//for  (int jele=0 ; jele < nEle; jele++){  //FIXME
-//    
-//    if ( elePt->at(jele) < 15 || fabs(eleEta->at(jele)) > 2.5) continue;
-//    
-//    bool eleMVAIdExtra= false;
-//    if (fabs (eleSCEta->at(jele)) <= 0.8 && eleIDMVAIso->at(jele) >   -0.83  ) eleMVAIdExtra= true;
-//        else if (fabs (eleSCEta->at(jele)) >  0.8 &&fabs (eleSCEta->at(jele)) <=  1.5 && eleIDMVAIso->at(jele) >   -0.77  ) eleMVAIdExtra= true;
-//            else if ( fabs (eleSCEta->at(jele)) >=  1.5 && eleIDMVAIso->at(jele) >  -0.69  ) eleMVAIdExtra= true;
-//                else eleMVAIdExtra= false;
-//                    
-//                    
-//                    
-//                    if (!(eleMVAIdExtra )) {
-//                        ElectronEffVeto= ElectronEffVeto * getEffVetoMVA90WPElectron94X(isData,  elePt->at(jele),eleSCEta->at(jele),    HistoEleMVAIdIso90 , HistoEleMVAIdIso90_EffMC,HistoEleMVAIdIso90_EffData);
-//                        continue;
-//                    }
-//    
-//    ElectronCor=getCorrFactorMVA90WPElectron94X(isData,  elePt->at(jele),eleSCEta->at(jele),    HistoEleMVAIdIso90 );
-//    //                ElectronCor=1;
-//    Ele4Momentum.SetPtEtaPhiM(elePt->at(jele),eleEta->at(jele),elePhi->at(jele),eleMass);
-//    numElectron++;
-//    
-//    break;
-//}
-//
-//
-
-
-
-
 
 //###########       Z boson Veto   ###########################################################
 float MuMass= 0.10565837;
@@ -804,7 +699,7 @@ vector<float>  GeneratorInfo(){
     float WBosonMass=0;
     float ZBosonMass=0;
     
-    TLorentzVector GenMu4Momentum,GenAntiMu4Momentum, WGEN4Momentum, MUGEN4Momentum, NUGEN4Momentum;
+    TLorentzVector GenMu4Momentum,GenAntiMu4Momentum, WGEN4Momentum, MUGEN4Momentum, NUGEN4Momentum, GenEle4Momentum,GenAntiEle4Momentum;
     
     for (int igen=0;igen < nMC; igen++){
         
@@ -822,17 +717,31 @@ vector<float>  GeneratorInfo(){
         if ( fabs(mcPID->at(igen)) ==14  && mcStatus->at(igen) ==1)  {NUGEN4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));}
         
         //Z Pt
-        if (fabs(mcPID->at(igen)) ==23)  {ZBosonPt= mcPt->at(igen); ZBosonMass= mcMass->at(igen);} //FIXME somethime we do not have Z in the DY events
-        if ( mcPID->at(igen) ==13  )  {GenMu4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen)); modPDGId=mcMomPID->at(igen);}
-        if ( mcPID->at(igen) ==-13  )  {GenAntiMu4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen)); AntimodPDGId=mcMomPID->at(igen);}
+        if (fabs(mcPID->at(igen)) ==23)  {ZBosonPt= mcPt->at(igen); ZBosonMass= mcMass->at(igen);
+        cout<<"\n Z boson  status is "<<mcStatus->at(igen)<<"\n";
         
+        } //FIXME somethime we do not have Z in the DY events
+        if ( mcPID->at(igen) ==13  )  {GenMu4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+            //        modPDGId=mcMomPID->at(igen);
+            cout<<"\n muon  status is "<<mcStatus->at(igen)<<"\n";
+        }
+        if ( mcPID->at(igen) ==-13  )  {GenAntiMu4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+            //         AntimodPDGId=mcMomPID->at(igen);
+            cout<<"\n ANTI muon  status is "<<mcStatus->at(igen)<<"\n";
+        }
         
+        if ( mcPID->at(igen) ==11  )  {GenEle4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+        cout<<"\n electron  status is "<<mcStatus->at(igen)<<"\n";
+        }
+        if ( mcPID->at(igen) ==-11  )  {GenAntiEle4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+        cout<<"\n ANTI electron  status is "<<mcStatus->at(igen)<<"\n";
+        }
     }
     
     
     TopPtReweighting=compTopPtWeight(GenTopPt, GenAntiTopPt);
     
-//    if (ZBosonPt ==0){
+    //    if (ZBosonPt ==0){
     if (ZBosonMass < 10){
         ZBosonPt=(GenMu4Momentum+GenAntiMu4Momentum).Pt();  //This is a temp solution to the above problem
         ZBosonMass=(GenMu4Momentum+GenAntiMu4Momentum).M();  //This is a temp solution to the above problem
@@ -841,7 +750,7 @@ vector<float>  GeneratorInfo(){
     if (WBosonPt==0)
         WBosonPt = (MUGEN4Momentum+NUGEN4Momentum).Pt();
     
-    
+    cout<<"\n ZBosonMass & ZBosonPt   "<<ZBosonMass << "  "<<ZBosonPt<<"\n\n\n";
     //######################## Top Pt Reweighting
     infoGen.push_back(TopPtReweighting);
     
@@ -993,9 +902,9 @@ float getHT( float SimpleJetPtCut, TLorentzVector lep4Mom, TLorentzVector tau4Mo
     TLorentzVector  Jet;
     float HT=0;
     for (int ijet= 0 ; ijet < nJet ; ijet++){
-    Jet.SetPtEtaPhiE(jetPt->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
-    if (Jet.DeltaR(lep4Mom) < 0.1) continue;
-    if (Jet.DeltaR(tau4Mom) < 0.1) continue;
+        Jet.SetPtEtaPhiE(jetPt->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
+        if (Jet.DeltaR(lep4Mom) < 0.1) continue;
+        if (Jet.DeltaR(tau4Mom) < 0.1) continue;
         if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 3.0 )
             HT += jetPt->at(ijet);
     }
@@ -1075,23 +984,6 @@ float W_PDFAlphaS(float wMass, float sign){
 //}
 //
 
-
-//
-//                    for (int igen=0; igen < nMC; igen++){
-////
-//////                    Run_Tree->SetBranchAddress("nMC", &nMC);
-//////                    Run_Tree->SetBranchAddress("mcPID", &mcPID);
-//////                    Run_Tree->SetBranchAddress("mcStatus", &mcStatus);
-//////                    Run_Tree->SetBranchAddress("mcPt", &mcPt );
-//////                    Run_Tree->SetBranchAddress("mcEta", &mcEta );
-//////                    Run_Tree->SetBranchAddress("mcPhi", &mcPhi );
-//////                    Run_Tree->SetBranchAddress("mcE", &mcE );
-//////                    Run_Tree->SetBranchAddress("mcMass", &mcMass );
-//////                    Run_Tree->SetBranchAddress("mcMomPID", &mcMomPID );
-//////                    Run_Tree->SetBranchAddress("mcGMomPID", &mcGMomPID );
-//////                    Run_Tree->SetBranchAddress("mcStatusFlag",&mcStatusFlag);
-////
-////
 ////
 ////                    gen4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
 ////
