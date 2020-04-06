@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
     
     
     // H->tau tau scale factors
-    TFile htt_sf_file("data/htt_scalefactors_2017_v2.root");
+    TFile htt_sf_file("data/htt_scalefactors_legacy_2017.root");
     RooWorkspace *htt_sf = reinterpret_cast<RooWorkspace*>(htt_sf_file.Get("w"));
     htt_sf_file.Close();
     
@@ -311,7 +311,8 @@ int main(int argc, char* argv[]) {
             // Lepton Correction
             LeptonIdCor= getCorrFactorElectron94X(isData,  Lep4Momentum.Pt(), eleSCEta->at(idx_lep) , HistoEleReco, HistoEleMVAIdIso90);
             
-//            LeptonTrgCor = htt_sf->function("e_trg_ic_ratio")->getVal();
+            if (Lep4Momentum.Pt() < 120)
+            LeptonTrgCor = htt_sf->function("e_trg_ic_ratio")->getVal();
 
             cout << "  Lep4Momentum.Pt(), eleSCEta->at(idx_lep)"<< Lep4Momentum.Pt() <<" " <<eleSCEta->at(idx_lep) <<"   id="<< LeptonIdCor <<"  trg="<< LeptonTrgCor<<"\n";
             
