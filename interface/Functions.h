@@ -724,20 +724,20 @@ vector<float>  GeneratorInfo(){
 //        cout<<"\n Z boson  status is "<<mcStatus->at(igen)<<"\n";
         
         } //FIXME somethime we do not have Z in the DY events
-        if ( mcPID->at(igen) ==13   && mcStatus->at(igen)==1)  {GenMu4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+        if ( mcPID->at(igen) ==13   && mcMomPID->at(igen) == 23)  {GenMu4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
             //        modPDGId=mcMomPID->at(igen);
 //            cout<<"\n muon  status is "<< mcPID->at(igen) << " "<<mcStatus->at(igen)<<"\n";
         }
-        if ( mcPID->at(igen) ==-13   && mcStatus->at(igen)==1)  {GenAntiMu4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+        if ( mcPID->at(igen) ==-13   && mcMomPID->at(igen) == 23)  {GenAntiMu4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
             //         AntimodPDGId=mcMomPID->at(igen);
 //            cout<<"\n ANTI muon  status is "<<mcPID->at(igen) << " "<<mcStatus->at(igen)<<"\n";
         }
         
-        if ( mcPID->at(igen) ==11  )  {GenEle4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-        cout<<"electron id "<<mcPID->at(igen) << " status "<<mcStatus->at(igen)<< " pt "<< mcPt->at(igen) <<" mom "<<mcMomPID->at(igen)<<"\n";
+        if ( mcPID->at(igen) ==11 && mcMomPID->at(igen) == 23 )  {GenEle4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+//        cout<<"electron id "<<mcPID->at(igen) << " status "<<mcStatus->at(igen)<< " pt "<< mcPt->at(igen) <<" mom "<<mcMomPID->at(igen)<<"\n";
         }
-        if ( mcPID->at(igen) ==-11 )  {GenAntiEle4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-        cout<<"\t ANTI electron id "<<mcPID->at(igen) << " status "<<mcStatus->at(igen)<< " pt "<< mcPt->at(igen)<<" mom "<<mcMomPID->at(igen)<<"\n";
+        if ( mcPID->at(igen) ==-11 && mcMomPID->at(igen) == 23)  {GenAntiEle4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+//        cout<<"\t ANTI electron id "<<mcPID->at(igen) << " status "<<mcStatus->at(igen)<< " pt "<< mcPt->at(igen)<<" mom "<<mcMomPID->at(igen)<<"\n";
         }
     }
     
