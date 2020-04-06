@@ -725,7 +725,7 @@ vector<float>  GeneratorInfo(){
 //        cout<<"\n Z boson  status is "<<mcStatus->at(igen)<<"\n";
         
         } //FIXME somethime we do not have Z in the DY events
-        if ( mcPID->at(igen) ==13 )  {
+        if ( mcPID->at(igen) ==13   )  {
         GenMu4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
             //        modPDGId=mcMomPID->at(igen);
 //            cout<<"\n muon  status is "<< mcPID->at(igen) << " "<<mcStatus->at(igen)<<"\n";
@@ -735,10 +735,10 @@ vector<float>  GeneratorInfo(){
 //            cout<<"\n ANTI muon  status is "<<mcPID->at(igen) << " "<<mcStatus->at(igen)<<"\n";
         }
         
-        if ( mcPID->at(igen) ==11)  {GenEle4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+        if (mcPt->at(igen) > 10 &&  (mcPID->at(igen) ==11 || mcPID->at(igen) ==13  || mcPID->at(igen) ==15))  {GenEle4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
         cout<<"electron id "<<mcPID->at(igen) << " status "<<mcStatusFlag->at(igen)<< " pt "<< mcPt->at(igen) <<" mom "<<mcMomPID->at(igen)<<"\n";
         }
-        if ( mcPID->at(igen) ==-11 )  {GenAntiEle4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+        if (mcPt->at(igen) > 10 &&  (mcPID->at(igen) == -11 || mcPID->at(igen) == -13  || mcPID->at(igen) == -15))  {GenAntiEle4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
         cout<<"\t ANTI electron id "<<mcPID->at(igen) << " status "<<mcStatusFlag->at(igen)<< " pt "<< mcPt->at(igen)<<" mom "<<mcMomPID->at(igen)<<"\n";
         }
 
