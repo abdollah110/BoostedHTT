@@ -272,10 +272,25 @@ int main(int argc, char* argv[]) {
         float nom_zpt_weight=1.0;
         //  GenInfo
         vector<float>  genInfo=GeneratorInfo();
-        float ZBosonPt=genInfo[4];
-        float ZBosonMass=genInfo[8];
+        float ZBosonPt=0;
+        float ZBosonMass=0;
         
-        cout<< genInfo[6]<<"  "<< genInfo[7] <<"  "<<genInfo[8]<<"\n";
+        if (name == "ZTT"){
+            ZBosonPt=genInfo[6];
+            ZBosonMass=genInfo[10];
+        }else if (name == "ZLL"){
+            ZBosonPt=genInfo[5];
+            ZBosonMass=genInfo[9];
+        }else{
+            ZBosonPt=genInfo[3];
+            ZBosonMass=genInfo[7];
+        }
+        
+        
+        
+        
+        
+        cout<< name<<" Z.M()=  "<< genInfo[7]<<"  LepLep.M()= "<< ZBosonMass <<"\n";
         
         
         if (!isData){

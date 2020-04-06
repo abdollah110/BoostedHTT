@@ -700,8 +700,9 @@ vector<float>  GeneratorInfo(){
     float ZBosonMass=0;
     float ZmumuMass=0;
     float ZeeMass=0;
+    float ZttMass=0;
     
-    TLorentzVector GenMu4Momentum,GenAntiMu4Momentum, WGEN4Momentum, MUGEN4Momentum, NUGEN4Momentum, GenEle4Momentum,GenAntiEle4Momentum;
+    TLorentzVector GenMu4Momentum,GenAntiMu4Momentum, WGEN4Momentum, MUGEN4Momentum, NUGEN4Momentum, GenEle4Momentum,GenAntiEle4Momentum, GenTau4Momentum, GenAntiTau4Momentum;
     
     
     for (int igen=0;igen < nMC; igen++){
@@ -739,6 +740,12 @@ vector<float>  GeneratorInfo(){
         if ( mcPID->at(igen) ==-11 && mcMomPID->at(igen) == 23)  {GenAntiEle4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
 //        cout<<"\t ANTI electron id "<<mcPID->at(igen) << " status "<<mcStatus->at(igen)<< " pt "<< mcPt->at(igen)<<" mom "<<mcMomPID->at(igen)<<"\n";
         }
+
+                if ( mcPID->at(igen) ==15 && mcMomPID->at(igen) == 23 )  {GenTau4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+                }
+                if ( mcPID->at(igen) ==-15 && mcMomPID->at(igen) == 23)  {GenAntiTau4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+                }
+                
     }
     
     ZmumuMass=(GenMu4Momentum+GenAntiMu4Momentum).M();
@@ -757,21 +764,21 @@ vector<float>  GeneratorInfo(){
         //######################## Top Pt Reweighting
     infoGen.push_back(TopPtReweighting);
     
-    //######################## W Pt
+    //######################## W Pt/Mass
     infoGen.push_back(WBosonPt);
-    
+    infoGen.push_back(WBosonMass);
+        
     //######################## Z Pt
     infoGen.push_back(ZBosonPt);
     infoGen.push_back((GenMu4Momentum+GenAntiMu4Momentum).Pt());
     infoGen.push_back((GenEle4Momentum+GenAntiEle4Momentum).Pt());
-    
-    //######################## W Mass
-    infoGen.push_back(WBosonMass);
-    
+    infoGen.push_back((GenTau4Momentum+GenAntiTau4Momentum).Pt());
+        
     //######################## Z Mass
     infoGen.push_back(ZBosonMass);
     infoGen.push_back((GenMu4Momentum+GenAntiMu4Momentum).M());
     infoGen.push_back((GenEle4Momentum+GenAntiEle4Momentum).M());
+    infoGen.push_back((GenTau4Momentum+GenAntiTau4Momentum).M());
 
     return infoGen;
     
