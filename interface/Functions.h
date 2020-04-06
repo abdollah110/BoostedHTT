@@ -734,10 +734,10 @@ vector<float>  GeneratorInfo(){
         }
         
         if ( mcPID->at(igen) ==11   && mcStatus->at(igen)==1)  {GenEle4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-//        cout<<"\n electron  status is "<<mcPID->at(igen) << " "<<mcStatus->at(igen)<<"\n";
+        cout<<"\n electron id "<<mcPID->at(igen) << " status "<<mcStatus->at(igen)<< " pt "<< mcPt->at(igen)<<"\n";
         }
         if ( mcPID->at(igen) ==-11   && mcStatus->at(igen)==1)  {GenAntiEle4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-//        cout<<"\n ANTI electron  status is "<<mcPID->at(igen) << " "<<mcStatus->at(igen)<<"\n";
+        cout<<"\n \t ANTI electron id "<<mcPID->at(igen) << " status "<<mcStatus->at(igen)<< " pt "<< mcPt->at(igen)<<"\n";
         }
     }
     
@@ -746,10 +746,10 @@ vector<float>  GeneratorInfo(){
     
     TopPtReweighting=compTopPtWeight(GenTopPt, GenAntiTopPt);
     
-    if (ZBosonMass < 10){
-        ZBosonPt=(GenMu4Momentum+GenAntiMu4Momentum).Pt();  //This is a temp solution to the above problem
-        ZBosonMass=(GenMu4Momentum+GenAntiMu4Momentum).M();  //This is a temp solution to the above problem
-    }
+//    if (ZBosonMass < 10){
+//        ZBosonPt=(GenMu4Momentum+GenAntiMu4Momentum).Pt();  //This is a temp solution to the above problem
+//        ZBosonMass=(GenMu4Momentum+GenAntiMu4Momentum).M();  //This is a temp solution to the above problem
+//    }
     
     if (WBosonPt==0)
         WBosonPt = (MUGEN4Momentum+NUGEN4Momentum).Pt();
