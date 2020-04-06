@@ -976,7 +976,9 @@ if (isData)
 else
 {
 
-float recoWeight=HistoEleReco->GetBinContent(  HistoEleReco->GetXaxis()->FindBin(scEta),HistoEleReco->GetYaxis()->FindBin(fabs(pt)));
+//float recoWeight=HistoEleReco->GetBinContent(  HistoEleReco->GetXaxis()->FindBin(scEta),HistoEleReco->GetYaxis()->FindBin(fabs(pt)));
+float recoWeight=1;
+//float IdWeight=HistoEleId->GetBinContent(  HistoEleId->GetXaxis()->FindBin(scEta),HistoEleId->GetYaxis()->FindBin(fabs(pt)));
 float IdWeight=HistoEleId->GetBinContent(  HistoEleId->GetXaxis()->FindBin(scEta),HistoEleId->GetYaxis()->FindBin(fabs(pt)));
 
 return recoWeight * IdWeight;
