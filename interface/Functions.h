@@ -702,7 +702,7 @@ vector<float>  GeneratorInfo(){
     float ZeeMass=0;
     float ZttMass=0;
     
-    TLorentzVector GenMu4Momentum,GenAntiMu4Momentum, WGEN4Momentum, MUGEN4Momentum, NUGEN4Momentum, GenEle4Momentum,GenAntiEle4Momentum, GenTau4Momentum, GenAntiTau4Momentum;
+    TLorentzVector GenMu4Momentum,GenAntiMu4Momentum, WGEN4Momentum, MUGEN4Momentum, NUGEN4Momentum, GenLep4Momentum,GenAntiLep4Momentum, GenTau4Momentum, GenAntiTau4Momentum;
     
     
     for (int igen=0;igen < nMC; igen++){
@@ -722,42 +722,53 @@ vector<float>  GeneratorInfo(){
         
         //Z Pt
         if (fabs(mcPID->at(igen)) ==23)  {ZBosonPt= mcPt->at(igen); ZBosonMass= mcMass->at(igen);
-//        cout<<"\n Z boson  status is "<<mcStatus->at(igen)<<"\n";
-        
-        } //FIXME somethime we do not have Z in the DY events
-        if ( mcPID->at(igen) ==13   )  {
-        GenMu4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-            //        modPDGId=mcMomPID->at(igen);
-//            cout<<"\n muon  status is "<< mcPID->at(igen) << " "<<mcStatus->at(igen)<<"\n";
+        // Lepton from Z
+        if (mcStatusFlag->at(igen) > 760 && mcStatusFlag->at(igen) < 780  &&  (mcPID->at(igen) ==11 || mcPID->at(igen) ==13  || mcPID->at(igen) ==15))  {GenLep4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
         }
-        if ( mcPID->at(igen) ==-13) {GenAntiMu4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-            //         AntimodPDGId=mcMomPID->at(igen);
-//            cout<<"\n ANTI muon  status is "<<mcPID->at(igen) << " "<<mcStatus->at(igen)<<"\n";
+        // antiLepton from Z
+        if (mcStatusFlag->at(igen) > 760 && mcStatusFlag->at(igen) < 780  &&  (mcPID->at(igen) == -11 || mcPID->at(igen) == -13  || mcPID->at(igen) == -15))  {GenAntiLep4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
         }
-        
-        if (mcPt->at(igen) > 10 &&  (mcPID->at(igen) ==11 || mcPID->at(igen) ==13  || mcPID->at(igen) ==15))  {GenEle4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-        cout<<"electron id "<<mcPID->at(igen) << " status "<<mcStatusFlag->at(igen)<< " pt "<< mcPt->at(igen) <<" mom "<<mcMomPID->at(igen)<<"\n";
-        }
-        if (mcPt->at(igen) > 10 &&  (mcPID->at(igen) == -11 || mcPID->at(igen) == -13  || mcPID->at(igen) == -15))  {GenAntiEle4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-        cout<<"\t ANTI electron id "<<mcPID->at(igen) << " status "<<mcStatusFlag->at(igen)<< " pt "<< mcPt->at(igen)<<" mom "<<mcMomPID->at(igen)<<"\n";
-        }
-
-                if ( mcPID->at(igen) ==15)  {GenTau4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-                }
-                if ( mcPID->at(igen) ==-15)  {GenAntiTau4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-                }
-                
-    }
-    
-    ZmumuMass=(GenMu4Momentum+GenAntiMu4Momentum).M();
-    ZeeMass= (GenEle4Momentum+GenAntiEle4Momentum).M();
+//
+//
+//
+//
+//
+////        cout<<"\n Z boson  status is "<<mcStatus->at(igen)<<"\n";
+//
+//        } //FIXME somethime we do not have Z in the DY events
+//        if ( mcPID->at(igen) ==13   )  {
+//        GenMu4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+//            //        modPDGId=mcMomPID->at(igen);
+////            cout<<"\n muon  status is "<< mcPID->at(igen) << " "<<mcStatus->at(igen)<<"\n";
+//        }
+//        if ( mcPID->at(igen) ==-13) {GenAntiMu4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+//            //         AntimodPDGId=mcMomPID->at(igen);
+////            cout<<"\n ANTI muon  status is "<<mcPID->at(igen) << " "<<mcStatus->at(igen)<<"\n";
+//        }
+//
+//        if (mcPt->at(igen) > 10 &&  (mcPID->at(igen) ==11 || mcPID->at(igen) ==13  || mcPID->at(igen) ==15))  {GenLep4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+//        cout<<"electron id "<<mcPID->at(igen) << " status "<<mcStatusFlag->at(igen)<< " pt "<< mcPt->at(igen) <<" mom "<<mcMomPID->at(igen)<<"\n";
+//        }
+//        if (mcPt->at(igen) > 10 &&  (mcPID->at(igen) == -11 || mcPID->at(igen) == -13  || mcPID->at(igen) == -15))  {GenAntiLep4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+//        cout<<"\t ANTI electron id "<<mcPID->at(igen) << " status "<<mcStatusFlag->at(igen)<< " pt "<< mcPt->at(igen)<<" mom "<<mcMomPID->at(igen)<<"\n";
+//        }
+//
+//                if ( mcPID->at(igen) ==15)  {GenTau4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+//                }
+//                if ( mcPID->at(igen) ==-15)  {GenAntiTau4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+//                }
+//
+//    }
+//
+//    ZmumuMass=(GenMu4Momentum+GenAntiMu4Momentum).M();
+//    ZeeMass= (GenLep4Momentum+GenAntiLep4Momentum).M();
     
     TopPtReweighting=compTopPtWeight(GenTopPt, GenAntiTopPt);
     
-//    if (ZBosonMass < 10){
-//        ZBosonPt=(GenMu4Momentum+GenAntiMu4Momentum).Pt();  //This is a temp solution to the above problem
-//        ZBosonMass=(GenMu4Momentum+GenAntiMu4Momentum).M();  //This is a temp solution to the above problem
-//    }
+    if (ZBosonMass < 10){
+        ZBosonPt=(GenLep4Momentum+GenAntiLep4Momentum).Pt();  //This is a temp solution to the above problem
+        ZBosonMass=(GenLep4Momentum+GenAntiLep4Momentum).M();  //This is a temp solution to the above problem
+    }
     
     if (WBosonPt==0)
         WBosonPt = (MUGEN4Momentum+NUGEN4Momentum).Pt();
@@ -768,18 +779,20 @@ vector<float>  GeneratorInfo(){
     //######################## W Pt/Mass
     infoGen.push_back(WBosonPt);
     infoGen.push_back(WBosonMass);
-        
-    //######################## Z Pt
     infoGen.push_back(ZBosonPt);
-    infoGen.push_back((GenMu4Momentum+GenAntiMu4Momentum).Pt());
-    infoGen.push_back((GenEle4Momentum+GenAntiEle4Momentum).Pt());
-    infoGen.push_back((GenTau4Momentum+GenAntiTau4Momentum).Pt());
-        
-    //######################## Z Mass
     infoGen.push_back(ZBosonMass);
-    infoGen.push_back((GenMu4Momentum+GenAntiMu4Momentum).M());
-    infoGen.push_back((GenEle4Momentum+GenAntiEle4Momentum).M());
-    infoGen.push_back((GenTau4Momentum+GenAntiTau4Momentum).M());
+    
+//    //######################## Z Pt
+//    infoGen.push_back(ZBosonPt);
+//    infoGen.push_back((GenMu4Momentum+GenAntiMu4Momentum).Pt());
+//    infoGen.push_back((GenLep4Momentum+GenAntiLep4Momentum).Pt());
+//    infoGen.push_back((GenTau4Momentum+GenAntiTau4Momentum).Pt());
+//        
+//    //######################## Z Mass
+//    infoGen.push_back(ZBosonMass);
+//    infoGen.push_back((GenMu4Momentum+GenAntiMu4Momentum).M());
+//    infoGen.push_back((GenLep4Momentum+GenAntiLep4Momentum).M());
+//    infoGen.push_back((GenTau4Momentum+GenAntiTau4Momentum).M());
 
     return infoGen;
     

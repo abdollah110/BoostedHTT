@@ -272,25 +272,25 @@ int main(int argc, char* argv[]) {
         float nom_zpt_weight=1.0;
         //  GenInfo
         vector<float>  genInfo=GeneratorInfo();
-        float ZBosonPt=0;
-        float ZBosonMass=0;
+        float ZBosonPt=genInfo[3];
+        float ZBosonMass=genInfo[4];
         
-        if (name == "ZTT"){
-            ZBosonPt=genInfo[6];
-            ZBosonMass=genInfo[10];
-        }else if (name == "ZLL"){
-            ZBosonPt=genInfo[5];
-            ZBosonMass=genInfo[9];
-        }else{
-            ZBosonPt=genInfo[3];
-            ZBosonMass=genInfo[7];
-        }
-        
-        
+//        if (name == "ZTT"){
+//            ZBosonPt=genInfo[6];
+//            ZBosonMass=genInfo[10];
+//        }else if (name == "ZLL"){
+//            ZBosonPt=genInfo[5];
+//            ZBosonMass=genInfo[9];
+//        }else{
+//            ZBosonPt=genInfo[3];
+//            ZBosonMass=genInfo[7];
+//        }
         
         
         
-        cout<< name<<" Z.M()=  "<< genInfo[7]<<"  LepLep.M()= "<< ZBosonMass <<"\n";
+        
+        
+//        cout<< name<<" Z.M()=  "<< genInfo[7]<<"  LepLep.M()= "<< ZBosonMass <<"\n";
         
         
         if (!isData){
@@ -327,7 +327,7 @@ int main(int argc, char* argv[]) {
                 } else if (syst == "dyShape_Down") {
                     nom_zpt_weight = 0.9 * nom_zpt_weight + 0.1;
                 }
-//                cout<<"ZBosonMass= "<<ZBosonMass << "  ZBosonPt= "<<ZBosonPt <<"  nom_zpt_weight= "<<nom_zpt_weight<<"\n";
+                cout<<"ZBosonMass= "<<ZBosonMass << "  ZBosonPt= "<<ZBosonPt <<"  nom_zpt_weight= "<<nom_zpt_weight<<"\n";
                 
             }
         }
