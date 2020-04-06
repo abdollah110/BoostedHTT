@@ -910,6 +910,8 @@ float Cor94X_Trg_Ele25(float pt,float eta,TGraphAsymmErrors **  Ele25Trg){
 
 
 
+
+
 float getCorrFactorMuon94X(bool isData, float pt, float eta, TH2F ** HistoId, TH2F ** HistoIso,TH2F ** HistoTrg, TGraphAsymmErrors * graph) {
     if (isData)
         return 1;
@@ -967,15 +969,15 @@ float getEffVetoMVA90WPElectron94X(bool isData, float pt, float eta,    TH2F * H
 
 
 
-float getCorrFactorElectron94X  (bool isData, float scEta, float pt, TH2F** HistoEleReco, TH2F** HistoEleId){
+float getCorrFactorElectron94X  (bool isData, float pt, float scEta, TH2F* HistoEleReco, TH2F* HistoEleId){
 
 if (isData)
     return 1;
 else
 {
 
-float recoWeight=HistoEleReco[0]->GetBinContent(  HistoEleReco[0]->GetXaxis()->FindBin(scEta),HistoEleReco[0]->GetYaxis()->FindBin(fabs(pt)));
-float IdWeight=HistoEleId[0]->GetBinContent(  HistoEleId[0]->GetXaxis()->FindBin(scEta),HistoEleId[0]->GetYaxis()->FindBin(fabs(pt)));
+float recoWeight=HistoEleReco->GetBinContent(  HistoEleReco->GetXaxis()->FindBin(scEta),HistoEleReco->GetYaxis()->FindBin(fabs(pt)));
+float IdWeight=HistoEleId->GetBinContent(  HistoEleId->GetXaxis()->FindBin(scEta),HistoEleId->GetYaxis()->FindBin(fabs(pt)));
 
 return recoWeight * IdWeight;
 
