@@ -256,8 +256,8 @@ int main(int argc, char* argv[]) {
         //  GenInfo
         vector<float>  genInfo=GeneratorInfo();
         float ZBosonPt=genInfo[3];
-        float ZBosonMass=genInfo[7];
-        
+        float ZBosonMass=genInfo[4];
+
         
         if (!isData){
             
@@ -293,7 +293,7 @@ int main(int argc, char* argv[]) {
                 } else if (syst == "dyShape_Down") {
                     nom_zpt_weight = 0.9 * nom_zpt_weight + 0.1;
                 }
-                cout<<"ZBosonMass= "<<ZBosonMass << "  ZBosonPt= "<<ZBosonPt <<"  nom_zpt_weight= "<<nom_zpt_weight<<"\n";
+//                cout<<"ZBosonMass= "<<ZBosonMass << "  ZBosonPt= "<<ZBosonPt <<"  nom_zpt_weight= "<<nom_zpt_weight<<"\n";
                 
             }
         }

@@ -57,10 +57,16 @@ int main(int argc, char* argv[]) {
     //########################################
     // Electron MVA IdIso files
     //########################################
-    TFile * EleCorrMVAIdIso90= TFile::Open(("../interface/pileup-hists/egammaEffi.txt_EGM2D.root"));
+//    TFile * EleCorrMVAIdIso90= TFile::Open(("../interface/pileup-hists/egammaEffi.txt_EGM2D.root"));
+    TFile * EleCorrMVAIdIso90= TFile::Open(("data/2017_ElectronMVA90noiso.root"));
     TH2F * HistoEleMVAIdIso90= (TH2F *) EleCorrMVAIdIso90->Get("EGamma_SF2D");
-    TH2F * HistoEleMVAIdIso90_EffMC= (TH2F *) EleCorrMVAIdIso90->Get("EGamma_EffMC2D");
-    TH2F * HistoEleMVAIdIso90_EffData= (TH2F *) EleCorrMVAIdIso90->Get("EGamma_EffData2D");
+//    TH2F * HistoEleMVAIdIso90_EffMC= (TH2F *) EleCorrMVAIdIso90->Get("EGamma_EffMC2D");
+//    TH2F * HistoEleMVAIdIso90_EffData= (TH2F *) EleCorrMVAIdIso90->Get("EGamma_EffData2D");
+
+    TFile * EleCorrReco= TFile::Open(("data/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root"));
+    TH2F * HistoEleReco= (TH2F *) EleCorrReco->Get("EGamma_SF2D");
+
+
 
     //########################################
     // Pileup files
@@ -266,8 +272,11 @@ int main(int argc, char* argv[]) {
         //=========================================================================================================
         // Weights & Correction
         
+        
         float LumiWeight = 1;
         float PUWeight = 1;
+        float LeptonIdCor=1;
+        float LeptonTrgCor=1;
         float LepCorrection=1;
         float nom_zpt_weight=1.0;
         //  GenInfo
@@ -275,24 +284,14 @@ int main(int argc, char* argv[]) {
         float ZBosonPt=genInfo[3];
         float ZBosonMass=genInfo[4];
         
-//        if (name == "ZTT"){
-//            ZBosonPt=genInfo[6];
-//            ZBosonMass=genInfo[10];
-//        }else if (name == "ZLL"){
-//            ZBosonPt=genInfo[5];
-//            ZBosonMass=genInfo[9];
-//        }else{
-//            ZBosonPt=genInfo[3];
-//            ZBosonMass=genInfo[7];
-//        }
         
         
-        
-        
-        
-//        cout<< name<<" Z.M()=  "<< genInfo[7]<<"  LepLep.M()= "<< ZBosonMass <<"\n";
-        
-        
+        // give inputs to workspace
+        htt_sf->var("e_pt")->setVal(elePt->at(idx_lep));
+        htt_sf->var("e_eta")->setVal(eleEta->at(idx_lep));
+        htt_sf->var("z_gen_mass")->setVal(ZBosonMass);
+        htt_sf->var("z_gen_pt")->setVal(ZBosonPt);
+
         if (!isData){
             
             // Lumi weight
@@ -308,14 +307,15 @@ int main(int argc, char* argv[]) {
             else
                 PUWeight= PUData_/PUMC_;
             
+    
             // Lepton Correction
-//            LepCorrection= getCorrFactorMuon94X(isData,  Lep4Momentum.Pt(), Lep4Momentum.Eta() , HistoMuId,HistoMuIso,HistoMuTrg,HistoMuTrack);
+            LeptonIdCor= getCorrFactorElectron94X(isData,  Lep4Momentum.Pt(), eleSCEta->at(idx_lep) , HistoEleReco, HistoEleMVAIdIso90);
             
-            // give inputs to workspace
-            htt_sf->var("e_pt")->setVal(elePt->at(idx_lep));
-            htt_sf->var("e_eta")->setVal(eleEta->at(idx_lep));
-            htt_sf->var("z_gen_mass")->setVal(ZBosonMass);
-            htt_sf->var("z_gen_pt")->setVal(ZBosonPt);
+            LeptonTrgCor = htt_sf->function("e_trg_ic_ratio")->getVal();
+
+            cout << "  Lep4Momentum.Pt(), eleSCEta->at(idx_lep)"<< Lep4Momentum.Pt() <<" " <<eleSCEta->at(idx_lep) <<"   id="<< LeptonIdCor <<"  trg="<< LeptonTrgCor<<"\n";
+            
+            LepCorrection = LeptonIdCor * LeptonTrgCor;
 
         
             if (name == "EWKZ" || name == "ZL" || name == "ZTT" || name == "ZLL") {
@@ -327,7 +327,7 @@ int main(int argc, char* argv[]) {
                 } else if (syst == "dyShape_Down") {
                     nom_zpt_weight = 0.9 * nom_zpt_weight + 0.1;
                 }
-                cout<<"ZBosonMass= "<<ZBosonMass << "  ZBosonPt= "<<ZBosonPt <<"  nom_zpt_weight= "<<nom_zpt_weight<<"\n";
+//                cout<<"ZBosonMass= "<<ZBosonMass << "  ZBosonPt= "<<ZBosonPt <<"  nom_zpt_weight= "<<nom_zpt_weight<<"\n";
                 
             }
         }
