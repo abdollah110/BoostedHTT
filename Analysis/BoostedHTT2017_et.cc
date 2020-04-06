@@ -311,7 +311,7 @@ int main(int argc, char* argv[]) {
             // Lepton Correction
             LeptonIdCor= getCorrFactorElectron94X(isData,  Lep4Momentum.Pt(), eleSCEta->at(idx_lep) , HistoEleReco, HistoEleMVAIdIso90);
             
-            LeptonTrgCor = htt_sf->function("e_trg_ic_ratio")->getVal();
+//            LeptonTrgCor = htt_sf->function("e_trg_ic_ratio")->getVal();
 
             cout << "  Lep4Momentum.Pt(), eleSCEta->at(idx_lep)"<< Lep4Momentum.Pt() <<" " <<eleSCEta->at(idx_lep) <<"   id="<< LeptonIdCor <<"  trg="<< LeptonTrgCor<<"\n";
             
