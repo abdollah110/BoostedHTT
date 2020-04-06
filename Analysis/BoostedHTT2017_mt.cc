@@ -255,8 +255,8 @@ int main(int argc, char* argv[]) {
         float nom_zpt_weight=1.0;
         //  GenInfo
         vector<float>  genInfo=GeneratorInfo();
-        float ZBosonPt=genInfo[2];
-        float ZBosonMass=genInfo[4];
+        float ZBosonPt=genInfo[3];
+        float ZBosonMass=genInfo[7];
         
         
         if (!isData){
