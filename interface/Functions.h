@@ -735,10 +735,10 @@ vector<float>  GeneratorInfo(){
         }
         
         if ( mcPID->at(igen) ==11 && mcMomPID->at(igen) == 23 )  {GenEle4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-//        cout<<"electron id "<<mcPID->at(igen) << " status "<<mcStatus->at(igen)<< " pt "<< mcPt->at(igen) <<" mom "<<mcMomPID->at(igen)<<"\n";
+        cout<<"electron id "<<mcPID->at(igen) << " status "<<mcStatusFlag->at(igen)<< " pt "<< mcPt->at(igen) <<" mom "<<mcMomPID->at(igen)<<"\n";
         }
         if ( mcPID->at(igen) ==-11 && mcMomPID->at(igen) == 23)  {GenAntiEle4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-//        cout<<"\t ANTI electron id "<<mcPID->at(igen) << " status "<<mcStatus->at(igen)<< " pt "<< mcPt->at(igen)<<" mom "<<mcMomPID->at(igen)<<"\n";
+        cout<<"\t ANTI electron id "<<mcPID->at(igen) << " status "<<mcStatusFlag->at(igen)<< " pt "<< mcPt->at(igen)<<" mom "<<mcMomPID->at(igen)<<"\n";
         }
 
                 if ( mcPID->at(igen) ==15 && mcMomPID->at(igen) == 23 )  {GenTau4Momentum.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
