@@ -188,20 +188,20 @@ else if (OutName.find("WW") != string::npos) return  75.88 ;
 
 
 //    else if (OutName.find("WJetsToLNu") != string::npos) return  61526.7   ;
-    else if (OutName.find("WJetsToLNu_Pt-50to100") != string::npos) return  8053   ;
-    else if (OutName.find("WJetsToLNu_Pt-100to250") != string::npos) return  676.3   ;
-    else if (OutName.find("WJetsToLNu_Pt-250to400") != string::npos) return  23.94   ;
-    else if (OutName.find("WJetsToLNu_Pt-400to600") != string::npos) return  3.031   ;
-    else if (OutName.find("WJetsToLNu_Pt-600toInf") != string::npos) return  0.4524   ;
+    else if (OutName.find("WJetsToLNu_Pt-50To100") != string::npos) return  8053   ;
+    else if (OutName.find("WJetsToLNu_Pt-100To250") != string::npos) return  676.3   ;
+    else if (OutName.find("WJetsToLNu_Pt-250To400") != string::npos) return  23.94   ;
+    else if (OutName.find("WJetsToLNu_Pt-400To600") != string::npos) return  3.031   ;
+    else if (OutName.find("WJetsToLNu_Pt-600ToInf") != string::npos) return  0.4524   ;
     
     
     
 //    else if (OutName.find("DYJetsToLL_M-50") != string::npos) return          5765.4 ;
-    else if (OutName.find("DYJetsToLL_Pt-50to100") != string::npos) return  354.3   ;
-    else if (OutName.find("DYJetsToLL_Pt-100to250") != string::npos) return   83.12 ;
-    else if (OutName.find("DYJetsToLL_Pt-250to400") != string::npos) return   3.047 ;
-    else if (OutName.find("DYJetsToLL_Pt-400to650") != string::npos) return   0.3921 ;
-    else if (OutName.find("DYJetsToLL_Pt-650toInf") != string::npos) return   0.03636 ;
+    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  354.3   ;
+    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   83.12 ;
+    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.047 ;
+    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.3921 ;
+    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.03636 ;
     
     else if (OutName.find("LQ") != string::npos ) return      1.0;
     
@@ -364,7 +364,7 @@ vector <float> WTauNu_MassBin(std::string FileLoc){
 vector <float> W_PTBinNLO(std::string FileLoc){
     
     const int WSizeNLO=5;
-    std::string W_ROOTFilesNLO[WSizeNLO]={"WJetsToLNu_FXFX.root",  "WJetsToLNu_Pt-100to250_FXFX.root","WJetsToLNu_Pt-250to400_FXFX.root","WJetsToLNu_Pt-400to600_FXFX.root", "WJetsToLNu_Pt-600toInf_FXFX.root"};
+    std::string W_ROOTFilesNLO[WSizeNLO]={"WJetsToLNu.root",  "WJetsToLNu_Pt-100to250.root","WJetsToLNu_Pt-250to400.root","WJetsToLNu_Pt-400to600.root", "WJetsToLNu_Pt-600toInf.root"};
     
     vector<float> W_eventsNLO;
     W_eventsNLO.clear();
@@ -391,7 +391,7 @@ vector <float> W_PTBinNLO(std::string FileLoc){
 vector <float> Z_PTBinNLO(std::string FileLoc){
     
     const int ZSizeNLO=5;
-    std::string Z_ROOTFilesNLO[ZSizeNLO]={"DYJetsToLL_M-50_FXFX.root", "DYJetsToLL_Pt-100to250_FXFX.root", "DYJetsToLL_Pt-250to400_FXFX.root","DYJetsToLL_Pt-400to650_FXFX.root","DYJetsToLL_Pt-650toInf_FXFX.root"};
+    std::string Z_ROOTFilesNLO[ZSizeNLO]={"DYJetsToLL_M-50.root", "DYJetsToLL_Pt-100to250.root", "DYJetsToLL_Pt-250to400.root","DYJetsToLL_Pt-400to650.root","DYJetsToLL_Pt-650toInf.root"};
     
     vector<float> Z_eventsNLO;
     Z_eventsNLO.clear();
