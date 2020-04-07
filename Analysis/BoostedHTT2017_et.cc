@@ -323,18 +323,18 @@ int main(int argc, char* argv[]) {
             LepCorrection = LeptonIdCor * LeptonTrgCor;
 
         
-            if (name == "EWKZ" || name == "ZL" || name == "ZTT" || name == "ZLL") {
-                
-                // Z-pT Reweighting
-                nom_zpt_weight = htt_sf_v2->function("zptmass_weight_nom")->getVal();
-                if (syst == "dyShape_Up") {
-                    nom_zpt_weight = 1.1 * nom_zpt_weight - 0.1;
-                } else if (syst == "dyShape_Down") {
-                    nom_zpt_weight = 0.9 * nom_zpt_weight + 0.1;
-                }
-                cout<<"ZBosonMass= "<<ZBosonMass << "  ZBosonPt= "<<ZBosonPt <<"  nom_zpt_weight= "<<nom_zpt_weight<<"\n";
-                
-            }
+//            if (name == "EWKZ" || name == "ZL" || name == "ZTT" || name == "ZLL") {
+//
+//                // Z-pT Reweighting
+//                nom_zpt_weight = htt_sf_v2->function("zptmass_weight_nom")->getVal();
+//                if (syst == "dyShape_Up") {
+//                    nom_zpt_weight = 1.1 * nom_zpt_weight - 0.1;
+//                } else if (syst == "dyShape_Down") {
+//                    nom_zpt_weight = 0.9 * nom_zpt_weight + 0.1;
+//                }
+//                cout<<"ZBosonMass= "<<ZBosonMass << "  ZBosonPt= "<<ZBosonPt <<"  nom_zpt_weight= "<<nom_zpt_weight<<"\n";
+//
+//            }
         }
         
         plotFill("LumiWeight",LumiWeight ,1000,0,10000);
