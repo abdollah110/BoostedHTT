@@ -15,7 +15,7 @@ def main(args):
     ## define training variables
     training_variables = [
 #                    'taupt','Met','vis_mass', 'LeadJetPt','higgs_pT','higgs_m'
-                    'taupt','Met','m_sv', 'LeadJetPt','higgs_m','ht'
+                    'taupt','Met','m_sv', 'LeadJetPt','higgs_m'
     ]
 
     nvars = len(training_variables)

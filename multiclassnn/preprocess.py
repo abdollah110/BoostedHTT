@@ -12,7 +12,7 @@ selection_vars = [
 # Variables that could be used as NN input. These should be normalized
 scaled_vars = [
 #               'evtwt','taupt','Met','vis_mass', 'LeadJetPt','higgs_pT','higgs_m'
-               'evtwt','taupt','Met','m_sv', 'LeadJetPt','higgs_m','ht'
+               'evtwt','taupt','Met','m_sv', 'LeadJetPt','higgs_m'
                ]
 
 

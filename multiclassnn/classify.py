@@ -116,7 +116,7 @@ def main(args):
 
     keep_vbf = [
 #                'taupt','Met','vis_mass', 'LeadJetPt','higgs_pT','higgs_m'
-                'taupt','Met','m_sv', 'LeadJetPt','higgs_m','ht'
+                'taupt','Met','m_sv', 'LeadJetPt','higgs_m'
                 ]
 
     vbf_pred = Predictor(args.input_vbf, args.model_vbf, keep_vbf)
