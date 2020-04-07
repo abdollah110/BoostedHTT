@@ -142,7 +142,7 @@ if __name__ == "__main__":
     from argparse import ArgumentParser
     parser = ArgumentParser()
 #    parser.add_argument('--el-input', '-e',  action='store',
-                        dest='el_input_dir', default=None, help='path to etau input files')
+#                        dest='el_input_dir', default=None, help='path to etau input files')
 #    parser.add_argument('--mu-input', '-m',  action='store',
 #                        dest='mu_input_dir', default=None, help='path to mutau input files')
     parser.add_argument('--l-input', '-l',  action='store',
