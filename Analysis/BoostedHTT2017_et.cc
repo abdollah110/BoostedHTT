@@ -87,7 +87,11 @@ int main(int argc, char* argv[]) {
     TFile htt_sf_file("data/htt_scalefactors_legacy_2017.root");
     RooWorkspace *htt_sf = reinterpret_cast<RooWorkspace*>(htt_sf_file.Get("w"));
     htt_sf_file.Close();
-    
+
+    TFile htt_sf_file_v2("data/htt_scalefactors_2017_v2.root");
+    RooWorkspace *htt_sf_v2 = reinterpret_cast<RooWorkspace*>(htt_sf_file_v2.Get("w"));
+    htt_sf_file_v2.Close();
+
 //    // Z-pT reweighting
 //    TFile *zpt_file = new TFile("data/zpt_weights_2016_BtoH.root");
 //    auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("zptmass_histo"));
@@ -289,8 +293,8 @@ int main(int argc, char* argv[]) {
         // give inputs to workspace
         htt_sf->var("e_pt")->setVal(elePt->at(idx_lep));
         htt_sf->var("e_eta")->setVal(eleEta->at(idx_lep));
-        htt_sf->var("z_gen_mass")->setVal(ZBosonMass);
-        htt_sf->var("z_gen_pt")->setVal(ZBosonPt);
+        htt_sf_v2->var("z_gen_mass")->setVal(ZBosonMass);
+        htt_sf_v2->var("z_gen_pt")->setVal(ZBosonPt);
 
         if (!isData){
             
@@ -322,7 +326,7 @@ int main(int argc, char* argv[]) {
             if (name == "EWKZ" || name == "ZL" || name == "ZTT" || name == "ZLL") {
                 
                 // Z-pT Reweighting
-                nom_zpt_weight = htt_sf->function("zptmass_weight_nom")->getVal();
+                nom_zpt_weight = htt_sf_v2->function("zptmass_weight_nom")->getVal();
                 if (syst == "dyShape_Up") {
                     nom_zpt_weight = 1.1 * nom_zpt_weight - 0.1;
                 } else if (syst == "dyShape_Down") {
