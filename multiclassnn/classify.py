@@ -104,8 +104,8 @@ def fillFile(ifile, channel, args, vbf_pred):
 def main(args):
     if args.treename == 'mutau_tree':
         channel = 'mt'
-#    elif args.treename == 'etau_tree':
-#        channel = 'et'
+    elif args.treename == 'etau_tree':
+        channel = 'et'
     else:
         raise Exception('Hey. Bad channel. No. Try again.')
 
@@ -116,12 +116,12 @@ def main(args):
 
     keep_vbf = [
 #                'taupt','Met','vis_mass', 'LeadJetPt','higgs_pT','higgs_m'
-                'taupt','Met','m_sv_', 'LeadJetPt','higgs_m'
+                'taupt','Met','m_sv', 'LeadJetPt','higgs_m','ht'
                 ]
 
     vbf_pred = Predictor(args.input_vbf, args.model_vbf, keep_vbf)
 
-    processes = [fillFile(ifile, 'mt', args, vbf_pred) for ifile in file_names]
+    processes = [fillFile(ifile, channel, args, vbf_pred) for ifile in file_names]
     
 #    n_processes = min(8, multiprocessing.cpu_count() / 2)
 #    print multiprocessing.cpu_count(), "  n_process= ",n_processes

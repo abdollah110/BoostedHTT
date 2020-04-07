@@ -12,17 +12,17 @@ selection_vars = [
 # Variables that could be used as NN input. These should be normalized
 scaled_vars = [
 #               'evtwt','taupt','Met','vis_mass', 'LeadJetPt','higgs_pT','higgs_m'
-               'evtwt','taupt','Met','m_sv_', 'LeadJetPt','higgs_m'
+               'evtwt','taupt','Met','m_sv', 'LeadJetPt','higgs_m','ht'
                ]
 
 
 def loadFile(ifile, category):
     from root_pandas import read_root
 
-#    if 'mutau' in ifile:
-    channel = 'mt'
-##    elif 'etau' in ifile:
-##        channel = 'et'
+    if 'mutau' in ifile:
+        channel = 'mt'
+    elif 'etau' in ifile:
+        channel = 'et'
 ##    elif 'emu' in ifile:
 ##        channel = 'em'
 #    else:

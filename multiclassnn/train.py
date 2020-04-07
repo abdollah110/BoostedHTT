@@ -15,7 +15,7 @@ def main(args):
     ## define training variables
     training_variables = [
 #                    'taupt','Met','vis_mass', 'LeadJetPt','higgs_pT','higgs_m'
-                    'taupt','Met','m_sv_', 'LeadJetPt','higgs_m'
+                    'taupt','Met','m_sv', 'LeadJetPt','higgs_m','ht'
     ]
 
     nvars = len(training_variables)
@@ -51,7 +51,7 @@ def main(args):
     print 'No. Signal Events:     {}'.format(len(vbf_processes[vbf_processes['sample_names'] == args.signal]))
     print 'No. Background Events: {}'.format(len(vbf_processes[vbf_processes['sample_names'] == args.background]))
 
-#    etau   = vbf_processes[(vbf_processes['lepton'] == 'et')]
+    etau   = vbf_processes[(vbf_processes['lepton'] == 'et')]
     mutau  = vbf_processes[(vbf_processes['lepton'] == 'mt')]
 
 
@@ -59,8 +59,8 @@ def main(args):
     selected_mt = pd.DataFrame()
 
     ## electron-tau channel selection (all in vbf_process for now)
-#    if len(etau) > 0:
-#        selected_et = etau
+    if len(etau) > 0:
+        selected_et = etau
 
     ## muon-tau channel selection (all in vbf_process for now)
     if len(mutau) > 0:
@@ -69,8 +69,10 @@ def main(args):
 
     ## combine channels into total dataset
 #    combine = pd.concat([selected_et, selected_mt])
-    combine = pd.concat([selected_mt])
 
+
+#    combine = pd.concat([selected_et])
+    combine = pd.concat([selected_mt])
 #    separate two channels to apply a different weight on each
     sig_df = combine[(combine['sample_names'] == args.signal)]
     bkg_df = combine[(combine['sample_names'] == args.background)]
