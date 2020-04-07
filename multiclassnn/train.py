@@ -58,21 +58,23 @@ def main(args):
     ## do event selection
 #    selected_mt = pd.DataFrame()
     selected_et = pd.DataFrame()
+    combine= pd.DataFrame()
 
     ## electron-tau channel selection (all in vbf_process for now)
     if len(etau) > 0:
         selected_et = etau
-
+        combine = pd.concat([selected_et])
+        
     ## muon-tau channel selection (all in vbf_process for now)
     if len(mutau) > 0:
         selected_mt = mutau
-    
+        combine = pd.concat([selected_mt])
 
     ## combine channels into total dataset
 #    combine = pd.concat([selected_et, selected_mt])
 
 
-    combine = pd.concat([selected_et])
+    
 #    combine = pd.concat([selected_mt])
 #    separate two channels to apply a different weight on each
     sig_df = combine[(combine['sample_names'] == args.signal)]
@@ -84,14 +86,8 @@ def main(args):
     scaleto = max(len(sig_df), len(bkg_df))
     sig_df.loc[:, 'evtwt'] = sig_df['evtwt'].apply(lambda x: x*scaleto/len(sig_df))
     bkg_df.loc[:, 'evtwt'] = bkg_df['evtwt'].apply(lambda x: x*scaleto/len(bkg_df))
-#    sig_df.loc[:, 'evtwt'] = sig_df['evtwt'].apply(lambda x: scaleto/len(sig_df))
-#    bkg_df.loc[:, 'evtwt'] = bkg_df['evtwt'].apply(lambda x: scaleto/len(bkg_df))
-#    sig_df.loc[:, 'evtwt'] = sig_df.loc[:, scaleto/len(sig_df)]
-#    bkg_df.loc[:, 'evtwt'] = bkg_df.loc[:, scaleto/len(bkg_df)]
 
     selected_events = pd.concat([sig_df, bkg_df])
-
-
 
     ## remove all columns except those needed for training
     training_dataframe = selected_events[training_variables + ['isSignal', 'evtwt']]
