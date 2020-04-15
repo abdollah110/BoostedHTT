@@ -63,15 +63,15 @@ def main(args):
     ## electron-tau channel selection (all in vbf_process for now)
     if len(etau) > 0:
         selected_et = etau
-        combine = pd.concat([selected_et])
+#        combine = pd.concat([selected_et])
         
     ## muon-tau channel selection (all in vbf_process for now)
     if len(mutau) > 0:
         selected_mt = mutau
-        combine = pd.concat([selected_mt])
+#        combine = pd.concat([selected_mt])
 
     ## combine channels into total dataset
-#    combine = pd.concat([selected_et, selected_mt])
+    combine = pd.concat([selected_et, selected_mt])
 
 
     
