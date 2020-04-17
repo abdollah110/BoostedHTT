@@ -156,7 +156,7 @@ void SkimerBoost::Loop(TString OutputFile)
                 
                 if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
                 if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5) continue;
-//                if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(ibtau) < 0) continue;
+                if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(ibtau) < 0) continue;
                 
                 BoostLeadTau4Momtmp.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                 
@@ -170,7 +170,7 @@ void SkimerBoost::Loop(TString OutputFile)
                     
                     if (boostedTauByMVA6VLooseElectronRejection->at(jbtau) < 0.5) continue;
                     if (boostedTauByLooseMuonRejection3->at(jbtau) < 0.5) continue;
-//                    if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(jbtau) < 0) continue;
+                    if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(jbtau) < 0) continue;
                     
                     BoostSubTau4Momtmp.SetPtEtaPhiM(boostedTauPt->at(jbtau),boostedTauEta->at(jbtau),boostedTauPhi->at(jbtau),boostedTauMass->at(jbtau));
                                 
