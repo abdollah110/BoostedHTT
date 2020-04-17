@@ -1,6 +1,6 @@
 CPPFLAGS=`root-config --cflags` -I/usr/local/root/include
 LDFLAGS=`root-config --libs` -lMinuit
-all: Skimerloc SkimerBoost_mt  SkimerBoost_et SkimerBoost_mm SkimerBoost_EffMeasurement
+all: Skimerloc SkimerBoost_mt  SkimerBoost_et SkimerBoost_mm SkimerBoost_EffMeasurement SkimerBoost_tt
 Skimerloc: Skimer_local.cc		
 	g++ $(CPPFLAGS) $(LDFLAGS) -o $@ $^
 SkimerBoost_mt: SkimerBoost_mt.cc
@@ -10,5 +10,7 @@ SkimerBoost_et: SkimerBoost_et.cc
 SkimerBoost_mm: SkimerBoost_mm.cc
 	g++ $(CPPFLAGS) $(LDFLAGS) -o $@ $^
 SkimerBoost_EffMeasurement: SkimerBoost_EffMeasurement.cc
+	g++ $(CPPFLAGS) $(LDFLAGS) -o $@ $^
+SkimerBoost_tt: SkimerBoost_tt.cc
 	g++ $(CPPFLAGS) $(LDFLAGS) -o $@ $^
 
