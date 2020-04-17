@@ -187,12 +187,14 @@ void SkimerBoost::Loop(TString OutputFile)
 //                break;
             }
         }
-        BoostLeadTau4Mom.SetPtEtaPhiM(boostedTauPt->at(leadtauIndex),boostedTauEta->at(leadtauIndex),boostedTauPhi->at(leadtauIndex),boostedTauMass->at(leadtauIndex));
-            BoostSubTau4Mom.SetPtEtaPhiM(boostedTauPt->at(subtauIndex),boostedTauEta->at(subtauIndex),boostedTauPhi->at(subtauIndex),boostedTauMass->at(subtauIndex));
+        
         
         if(numTauTau < 1) continue;
         hcount->Fill(4);
         
+    BoostLeadTau4Mom.SetPtEtaPhiM(boostedTauPt->at(leadtauIndex),boostedTauEta->at(leadtauIndex),boostedTauPhi->at(leadtauIndex),boostedTauMass->at(leadtauIndex));
+    BoostSubTau4Mom.SetPtEtaPhiM(boostedTauPt->at(subtauIndex),boostedTauEta->at(subtauIndex),boostedTauPhi->at(subtauIndex),boostedTauMass->at(subtauIndex));
+    
         met_px = pfMET*sin(pfMETPhi);
         met_py = pfMET*cos(pfMETPhi);
         met = pfMET;
