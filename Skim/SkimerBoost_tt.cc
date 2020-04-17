@@ -143,7 +143,7 @@ void SkimerBoost::Loop(TString OutputFile)
         if (pfMET < 50) continue;
         hcount->Fill(3);
         
-        TLorentzVector BoostSubTau4Mom, BoostLeadTau4Mom;
+        TLorentzVector BoostSubTau4Mom, BoostLeadTau4Mom,BoostSubTau4Momtmp, BoostLeadTau4Momtmp;
         auto numTauTau(0);
         bool foundApair= false;
         
@@ -156,9 +156,9 @@ void SkimerBoost::Loop(TString OutputFile)
                 
                 if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
                 if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5) continue;
-                if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(ibtau) < 0) continue;
+//                if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(ibtau) < 0) continue;
                 
-                BoostLeadTau4Mom.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
+                BoostLeadTau4Momtmp.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                 
                 
                 
@@ -170,12 +170,12 @@ void SkimerBoost::Loop(TString OutputFile)
                     
                     if (boostedTauByMVA6VLooseElectronRejection->at(jbtau) < 0.5) continue;
                     if (boostedTauByLooseMuonRejection3->at(jbtau) < 0.5) continue;
-                    if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(jbtau) < 0) continue;
+//                    if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(jbtau) < 0) continue;
                     
-                    BoostSubTau4Mom.SetPtEtaPhiM(boostedTauPt->at(jbtau),boostedTauEta->at(jbtau),boostedTauPhi->at(jbtau),boostedTauMass->at(jbtau));
+                    BoostSubTau4Momtmp.SetPtEtaPhiM(boostedTauPt->at(jbtau),boostedTauEta->at(jbtau),boostedTauPhi->at(jbtau),boostedTauMass->at(jbtau));
                                 
 
-                if(BoostSubTau4Mom.DeltaR(BoostLeadTau4Mom) > 0.8 || BoostSubTau4Mom.DeltaR(BoostLeadTau4Mom) < 0.1) continue;
+                if(BoostSubTau4Momtmp.DeltaR(BoostLeadTau4Momtmp) > 0.8 || BoostSubTau4Momtmp.DeltaR(BoostLeadTau4Momtmp) < 0.1) continue;
                 decayMode1 = boostedTauDecayMode->at(ibtau);
                 decayMode2 = boostedTauDecayMode->at(jbtau);
                 numTauTau++;
@@ -187,6 +187,8 @@ void SkimerBoost::Loop(TString OutputFile)
 //                break;
             }
         }
+        BoostLeadTau4Mom.SetPtEtaPhiM(boostedTauPt->at(leadtauIndex),boostedTauEta->at(leadtauIndex),boostedTauPhi->at(leadtauIndex),boostedTauMass->at(leadtauIndex));
+            BoostSubTau4Mom.SetPtEtaPhiM(boostedTauPt->at(subtauIndex),boostedTauEta->at(subtauIndex),boostedTauPhi->at(subtauIndex),boostedTauMass->at(subtauIndex));
         
         if(numTauTau < 1) continue;
         hcount->Fill(4);
