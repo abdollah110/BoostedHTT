@@ -89,9 +89,11 @@ void SkimerBoost::Loop(TString OutputFile)
     int decayMode2 = 1;
     int lepIndex = -1;
     int tauIndex= -1;
+    int NumPair=0;
     
     
     BoostTree->Branch("era", &era);
+    BoostTree->Branch("NumPair", &NumPair);
     
     BoostTree->Branch("met_px", &met_px);
     BoostTree->Branch("met_py", &met_py);
@@ -144,27 +146,33 @@ void SkimerBoost::Loop(TString OutputFile)
         bool foundApair= false;
         
         for (int imu = 0; imu < nMu; ++imu){
-            if (foundApair) break;
+//            if (foundApair) break;
             if (muPt->at(imu) < 52 || fabs(muEta->at(imu)) > 2.4) continue;
             Lep4Mom.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
             for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                 
                 if (boostedTauPt->at(ibtau) < 40 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
-                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
+//                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
+                if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
+                
                 if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
                 if (boostedTauByTightMuonRejection3->at(ibtau) < 0.5) continue;
                 //                if (boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5) continue;
-                if (boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(ibtau) < 0) continue;
+//                if (boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(ibtau) < 0) continue;
+                if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(ibtau) < -0.2) continue;
+                
                 BoostTau4Mom.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                 
                 if(BoostTau4Mom.DeltaR(Lep4Mom) > 0.8 || BoostTau4Mom.DeltaR(Lep4Mom) < 0.1) continue;
                 decayMode2 = boostedTauDecayMode->at(ibtau);
                 numLepTau++;
+                if (!foundApair){
                 lepIndex=imu;
                 tauIndex=ibtau;
+                }
                 foundApair=true;
-                break;
+//                break;
             }
         }
         
@@ -199,6 +207,7 @@ void SkimerBoost::Loop(TString OutputFile)
         pfCovMatrix10 = metcov10;
         pfCovMatrix11 = metcov11;
         era = 2017;
+        NumPair=numLepTau;
         
         
         BoostTree->Fill();
