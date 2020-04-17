@@ -162,7 +162,7 @@ void SkimerBoost::Loop(TString OutputFile)
                 
                 
                 
-                for (int jbtau = 0; jbtau > ibtau; ++jbtau){
+                for (int jbtau = ibtau+1; jbtau < nBoostedTau; ++jbtau){
                     
                     if (boostedTauPt->at(jbtau) < 40 || fabs(boostedTauEta->at(jbtau)) > 2.3 ) continue;
     //                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(jbtau) < 0.5 ) continue;
