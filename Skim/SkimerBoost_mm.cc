@@ -17,8 +17,8 @@ void SkimerBoost::Loop(TString OutputFile)
 {
             
     TH1F* hEvents = (TH1F*)gDirectory->Get("ggNtuplizer/hEvents");
-//    TH1F* hPU     = (TH1F*)gDirectory->Get("ggNtuplizer/hPU");
-//    TH1F* hPUTrue = (TH1F*)gDirectory->Get("ggNtuplizer/hPUTrue");
+    TH1F* hPU     = (TH1F*)gDirectory->Get("ggNtuplizer/hPU");
+    TH1F* hPUTrue = (TH1F*)gDirectory->Get("ggNtuplizer/hPUTrue");
     
     TFile* file = TFile::Open(OutputFile, "RECREATE");
     TTree* MyNewTree = fChain->CloneTree(0);
