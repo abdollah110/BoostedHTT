@@ -55,7 +55,7 @@ do
  IFS=""
  echo "input is " $FullDataSetName
  echo "output is " $outName
- ./SkimerBoost_mt  "root://cmsxrootd.fnal.gov/"$FullDataSetName $outName
+ ./SkimerBoost_mt  "root://cmsxrootd.fnal.gov//"$FullDataSetName $outName
 done
 
 ##################### Hadd all output root files
@@ -68,7 +68,7 @@ echo "FinalOutName is " $FinalOutName
 hadd -f $FinalOutName "skimed_"*.root
 
 ##################### Cope the output file the output directory
-xrdcp -f $FinalOutName  root://cmseos.fnal.gov/OUTPUTFILE_LOCATION/$FinalOutName
+xrdcp -f $FinalOutName  root://cmseos.fnal.gov//OUTPUTFILE_LOCATION/$FinalOutName
 
 
 END_TIME=`/bin/date`
