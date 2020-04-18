@@ -3,10 +3,10 @@ To make skimming over ggNtuples 6 files are needed:
 Skimmer.cc (the .cc code where the skimming is defined here)
 Skimmer.h (header file)
 Makefile (used to compile Skimmer.cc)
-Submit_batch.jdl  (where condor parameters are defined. Note: you need to change the location of the runPath!!)
-Submit_run.sh   (instruct condor how to run the jobs)
-InputSamples.txt  (where the list of all samples are stored. More info at  snagSample.py)
-
+InputSamples.txt  (where the list of all ggNtuples are stored, starting from /store)
+Template_Submit_batch.jdl  (where condor parameters are defined. Note: you need to change the location of the runPath!!)
+Template_Submit_run.sh   (instruct condor how to run the jobs)
+makeSubmissionPackage.py (you need to run this file with the appropriate argument to create .sh and .jdl files for condor submission)
 
 —————————————————————————————————————————————————
 No need to do it for current round of ggNtuple
@@ -34,14 +34,16 @@ Now check the Skimmer.C and decide which branches you want to save in the skimmi
  
 Steps to skim the ggNtuple:
 1) Update the .cc file and add your filtering skim
-2)Compile the .cc file (just type Makefile)
-3)List all samples you intend to make skim (from /Data   or /MC directory in eos area)
-4)In the Submit_batch.jdl file, multiply the number of the samples to 10 and quote this number in front of the Queue
-
-Now you are ready to submit jobs to condor:  
-
-By running : condor_submit Submit_batch.jdl
+2) Compile the .cc file (just type make)
+3) List all samples you intend to make skim (from /store/.... )
+4) run the makeSubmissionPackage.py  script:
+	########
+	python makeSubmissionPackage.py -x SkimerBoost_mt -i InputSample.txt -n muTau_v1 -o /store/user/abdollah/NewSkimBoost/mt/v1
+	########
 
 More info about condor is here: http://www.uscms.org/uscms_at_work/computing/setup/batch_systems.shtml#condor_1
 
-at the end you can hadd the root files 
+at the end you have to hadd the root files:
+
+1) update the had_skim.py
+2) python had_skim.py
