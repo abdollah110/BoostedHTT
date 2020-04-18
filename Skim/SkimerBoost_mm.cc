@@ -114,9 +114,11 @@ void SkimerBoost::Loop(TString OutputFile)
 int main(int argc, char* argv[]){
     
     string InputFile=argv[1];
-    string OutputFile=argv[2];    
+    string OutputFile=argv[2];
+    
     cout<< "\n===\n input is "<<InputFile  <<"  and output is "<<OutputFile<<"\n===\n";
-    SkimerBoost t("root://cmsxrootd.fnal.gov/"+InputFile);
+    
+    SkimerBoost t(InputFile);
     t.Loop(OutputFile);
     
     return 0;

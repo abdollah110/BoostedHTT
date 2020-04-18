@@ -245,7 +245,7 @@ int main(int argc, char* argv[]){
     
     cout<< "\n===\n input is "<<InputFile  <<"  and output is "<<OutputFile<<"\n===\n";
     
-    SkimerBoost t("root://cmsxrootd.fnal.gov/"+InputFile);
+    SkimerBoost t(InputFile);
     t.Loop(OutputFile);    
     return 0;
 }
