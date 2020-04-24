@@ -8,6 +8,7 @@ OUTPATH=$4
 
 echo "PROCESS: $PROCESS"
 
+############  set the enviroment and copy the neccessary files
 source /cvmfs/cms.cern.ch/cmsset_default.sh
 setenv SCRAM_ARCH slc6_amd64_gcc630
 scramv1 project CMSSW_9_4_13
@@ -21,9 +22,7 @@ eval `scramv1 runtime -sh`
 chmod a+x FastMTT
 ls
 
-############  Here is where the Skimmer is running     ############
-#find the nth line of the InputSamples_sv.txt where n is the PROCESS number
-# more info here \https://unix.stackexchange.com/questions/147560/explain-this-bash-script-echo-1
+############  run FastMTT
 FullSampleName=`sed -n "$((PROCESS+1))p"  < InputSamples_sv.txt`
 ShortName=${FullSampleName##*/}
 
@@ -36,7 +35,6 @@ echo "  output is " $outName
 ./FastMTT doES=-1 metType=-1 inputfile=$input newFile=$outName
 
 xrdcp -f $outName  root://cmseos.fnal.gov//OUTPUTFILE_LOCATION/$outName
-xrdcp *.stdout *.stderr *.condor  root://cmseos.fnal.gov//store/user/abdollah/CONDOR/
 
 
 END_TIME=`/bin/date`

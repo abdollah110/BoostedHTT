@@ -69,6 +69,7 @@ os.system('cp %s Files_%s/.'%(args.InputSample,args.Name))
 os.system('cp %s Files_%s/.'%("$CMSSW_BASE/lib/*/libTauAnalysisSVfitTF.so" ,args.Name))
 os.system('cp %s Files_%s/.'%("$CMSSW_BASE/lib/*/libHTT-utilitiesRecoilCorrections.so" ,args.Name))
 os.system('cp %s Files_%s/.'%("$CMSSW_BASE/lib/*/libTauAnalysisClassicSVfit.so" ,args.Name))
+os.system('cp %s Files_%s/.'%("$CMSSW_BASE/lib/*/*.so" ,args.Name)) # just copy all .so files
 os.system('tar -zcp -f Files_%s.tar.gz  Files_%s'%(args.Name,args.Name))
 
 
