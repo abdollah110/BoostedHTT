@@ -85,8 +85,8 @@ void SkimerBoost::Loop(TString OutputFile)
     float  eta_2 = 0;
     
     int era = 0;
-    int decayMode1 = 0;
-    int decayMode2 = 0;
+    int decayMode1 = -1;
+    int decayMode2 = -1;
     int leadtauIndex = -1;
     int subtauIndex= -1;
     int NumPair=0;
