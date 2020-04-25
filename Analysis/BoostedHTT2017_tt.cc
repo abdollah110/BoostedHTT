@@ -159,7 +159,7 @@ int main(int argc, char* argv[]) {
         bool PassTrigger_40 = ((HLTJet >> 40 & 1)==1); //HLT_AK8PFJet400_TrimMass30_v
 //        //              else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
 //        // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19; // 2017
-//        if (! PassTrigger) continue;
+        if (!(PassTrigger_40 || PassTrigger_39)) continue;
         plotFill("cutFlowTable",2 ,15,0,15);
         //=========================================================================================================
         // MET Filters
