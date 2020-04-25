@@ -178,7 +178,7 @@ int main(int argc, char* argv[]) {
         
         TLorentzVector LeadTau4Momentum,SubTau4Momentum, Z4Momentum, Met4Momentum;
         //=========================================================================================================
-        // Muon selection
+        // Lead tau selection
         int idx_leadtau= leadtauIndex;
         
         
@@ -188,10 +188,10 @@ int main(int argc, char* argv[]) {
         if (boostedTauByLooseMuonRejection3->at(idx_leadtau) < 0.5) continue;
 
 
-        LeadTau4Momentum.SetPtEtaPhiM(muPt->at(idx_leadtau),muEta->at(idx_leadtau),muPhi->at(idx_leadtau),MuMass);
+        LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_leadtau),boostedTauEta->at(idx_leadtau),boostedTauPhi->at(idx_leadtau),boostedTauMass->at(idx_leadtau));
         plotFill("cutFlowTable",3 ,15,0,15);
         //=========================================================================================================
-        // Tau selection
+        // sublead Tau selection
         int idx_subleadtau= subtauIndex;
         
         if (boostedTauPt->at(idx_subleadtau) <= 40 || fabs(boostedTauEta->at(idx_subleadtau)) >= 2.3 ) continue;
@@ -302,11 +302,11 @@ int main(int argc, char* argv[]) {
         
         higgs_pT = higgs.Pt();
         higgs_m = higgs.M();
-        OS = muCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) < 0;
-        SS =  muCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) > 0;
+        OS = boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) < 0;
+        SS =  boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) > 0;
         PassLead = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_leadtau) > 0.5 ;
         PassSub = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_subleadtau) > 0.5 ;
-        leadPt_=muPt->at(idx_leadtau);
+        leadPt_=boostedTauPt->at(idx_leadtau);
         subPt_=boostedTauPt->at(idx_subleadtau);
         vis_mass=Z4Momentum.M();
         LeadJetPt = LeadJet.Pt();
