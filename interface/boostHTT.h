@@ -442,9 +442,12 @@ using namespace std;
 //   Float_t         metcov10;
 //   Float_t         metcov11;
    Int_t           decayMode2;
+   Int_t           decayMode1;
    Int_t tauIndex;
    Int_t lepIndex;
-   
+   Int_t leadtauIndex;
+   Int_t subtauIndex;
+
 //   Float_t         tmass;
 //   Int_t           era;
 //   Float_t         met_px;

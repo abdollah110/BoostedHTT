@@ -331,6 +331,10 @@ int main(int argc, char* argv[]) {
         
         // Fill the tree
         outTr->Fill();
+    
+    
+//    plotFill("PUWeight",PUWeight ,200,0,2);
+    
     } //End of Tree
     
     

@@ -75,6 +75,7 @@ TTree *  Xttree( TFile * f_Double, string channel){
     Run_Tree->SetBranchAddress("event", &event);
     Run_Tree->SetBranchAddress("genWeight",&genWeight);
     Run_Tree->SetBranchAddress("HLTEleMuX", &HLTEleMuX);
+    Run_Tree->SetBranchAddress("HLTJet", &HLTJet);
     Run_Tree->SetBranchAddress("puTrue", &puTrue);
     Run_Tree->SetBranchAddress("nVtx",&nVtx);
     
@@ -295,6 +296,10 @@ TTree *  Xttree( TFile * f_Double, string channel){
     
     Run_Tree->SetBranchAddress("lepIndex", &lepIndex);
     Run_Tree->SetBranchAddress("tauIndex", &tauIndex);
+    Run_Tree->SetBranchAddress("decayMode1", &decayMode1);
+    Run_Tree->SetBranchAddress("leadtauIndex", &leadtauIndex);
+    Run_Tree->SetBranchAddress("subtauIndex", &subtauIndex);
+
     
     return Run_Tree;
 }
