@@ -4,7 +4,7 @@ mv _ ~/.
 mkdir _nominal
 mv *root _nominal
 
-for SYS in *;
+for SYS in _*;
 do
     mkdir NN${SYS}
 

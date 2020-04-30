@@ -1,4 +1,3 @@
-// Copyright 2018 Tyler Mitchell
 // user includes
 #include "TStopwatch.h"
 #include "TMath.h"
@@ -20,6 +19,7 @@ int main(int argc, char *argv[]) {
     string year = parser.Option("-y");
     string suffix = parser.Option("--suf");
     string tree_name = parser.Option("-t");
+    string channel = parser.Option("-c");
 
     std::string var_name = parser.Option("-v");
     std::vector<std::string> sbins = parser.MultiOption("-b", 3);
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
     read_directory(dir, &files);
     
     // initialize histogram holder
-    auto hists = new HistTool("mt", year, suffix, bins);
+    auto hists = new HistTool(channel, year, suffix, bins);
     
     // This part is tro derive the OS/SS ratio (one can actually get the 2D pt/eta binned Values as well)
     hists->histoQCD(files, dir, tree_name,  "None");    // fill histograms QCD
@@ -91,46 +91,42 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         initVectors2d(name);
         fout->cd();
         
-        float mupt_=-10;
-        float taupt_=-10;
+        float leadPt_=-10;
+        float subPt_=-10;
         float vis_mass=-10;
         float LeadJetPt = -10;
         float dR_Z_jet=-10;
-        bool Fail,Pass,PassM,FailM,PassT,FailT,OS,SS,Isolation,AntiIsolation;
-        float tmass,ht,st,Met,weight, dR_mu_tau, Metphi;
+        bool PassLead, PassSub ,OS,SS;
+        float tmass,ht,st,Met,weight, dR_tau_tau, Metphi;
         float NN_disc;
-        float IsoMuValue,BoostedTauRawIso, higgs_pT, higgs_m, m_sv;
+        float BoostedTauRawIso, higgs_pT, higgs_m, m_sv;
         
         
-        tree->SetBranchAddress("muPt",&mupt_);
-        tree->SetBranchAddress("taupt",&taupt_);
-        tree->SetBranchAddress("Pass",&Pass);
-        tree->SetBranchAddress("Fail",&Fail);
+
+
+        tree->SetBranchAddress("leadPt",&leadPt_);
+        tree->SetBranchAddress("subPt",&subPt_);
+        tree->SetBranchAddress("PassLead",&PassLead);
+        tree->SetBranchAddress("PassSub",&PassSub);
+
+
         tree->SetBranchAddress("OS",&OS);
         tree->SetBranchAddress("SS",&SS);
-        tree->SetBranchAddress("lepIso",&Isolation);
-//        tree->SetBranchAddress("lepAntiIso",&AntiIsolation);
         tree->SetBranchAddress("vis_mass",&vis_mass);
         tree->SetBranchAddress("tmass",&tmass);
         tree->SetBranchAddress("ht",&ht);
         tree->SetBranchAddress("st",&st);
         tree->SetBranchAddress("Met",&Met);
         tree->SetBranchAddress("LeadJetPt",&LeadJetPt);
-        tree->SetBranchAddress("dR_mu_tau",&dR_mu_tau);
+        tree->SetBranchAddress("dR_tau_tau",&dR_tau_tau);
         tree->SetBranchAddress("evtwt",&weight);
         tree->SetBranchAddress("NN_disc",&NN_disc);
-        tree->SetBranchAddress("IsoMuValue",&IsoMuValue);
+//        tree->SetBranchAddress("eleIDMVA",&eleIDMVA);
         tree->SetBranchAddress("BoostedTauRawIso",&BoostedTauRawIso);
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
         tree->SetBranchAddress("higgs_m",&higgs_m);
         tree->SetBranchAddress("m_sv",&m_sv);
 
-        
-        
-        
-        
-        
-        
         
         // Here we have to call OS/SS method extracter
         std::cout<<" tree->GetEntries() is "<<tree->GetEntries()<<"\n";
@@ -138,19 +134,17 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
             tree->GetEntry(i);
             
             std::map<std::string, float>  ObsName {
-                {"muPt",mupt_},
-                {"taupt",taupt_},
-                {"Pass",Pass},
-                {"lepIso",Isolation},
-//                {"lepAntiIso",AntiIsolation},
+                {"leadPt",leadPt_},
+                {"subPt",subPt_},
+                {"PassLead",PassLead},
+                {"PassSub",PassSub},
                 {"vis_mass",vis_mass},
                 {"tmass",tmass},
                 {"ht",ht},
                 {"st",st},
                 {"Met",Met},
                 {"LeadJetPt",LeadJetPt},
-                {"dR_mu_tau",dR_mu_tau},
-                {"IsoMuValue",IsoMuValue},
+                {"dR_tau_tau",dR_tau_tau},
                 {"BoostedTauRawIso",BoostedTauRawIso},
                 {"higgs_pT",higgs_pT},
                 {"higgs_m",higgs_m},
@@ -161,15 +155,16 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
             
             vbf_var1 =ObsName[var_name];
 
-            if (OS != 0  && Pass) {
+            if (OS != 0  && PassLead && PassSub) {
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
             }
 
-            if (SS != 0 && Pass ){
+            if (SS != 0 && PassLead && PassSub ){
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight,OSSS[0]);
             }
 
-            if (SS != 0  && Pass ){
+//            if (SS != 0  && Pass ){
+            if (SS != 0){
                 fillQCD_Shape(zeroJet, name, vbf_var1,  weight,OSSS[0]);
             }
         }
@@ -193,38 +188,37 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
         auto fin = new TFile((dir + "/" + ifile).c_str(), "read");
         auto tree = reinterpret_cast<TTree *>(fin->Get(tree_name.c_str()));
         
-//        float mupt_=-10;
-//        float weight=0;
-//        bool Pass, Fail;
-//        bool OS, SS, AntiIsolation;
-        float mupt_=-10;
-         bool Fail,Pass,PassM,FailM,PassT,FailT,OS,SS,Isolation,AntiIsolation;
-         float weight;
+        float leadPt_=-10;
+         bool Fail,Pass,PassM,FailM,PassT,FailT,OS,SS;
+         float weight,subPt_;
+         bool PassLead, PassSub ;
          
         
-        tree->SetBranchAddress("muPt",&mupt_);
-        tree->SetBranchAddress("Pass",&Pass);
-        tree->SetBranchAddress("Fail",&Fail);
+        tree->SetBranchAddress("leadPt",&leadPt_);
+        tree->SetBranchAddress("subPt",&subPt_);
+        tree->SetBranchAddress("PassLead",&PassLead);
+        tree->SetBranchAddress("PassSub",&PassSub);
         tree->SetBranchAddress("OS",&OS);
         tree->SetBranchAddress("SS",&SS);
-        tree->SetBranchAddress("lepIso",&Isolation);
         tree->SetBranchAddress("evtwt",&weight);
         
         for (auto i = 0; i < tree->GetEntries(); i++) {
             tree->GetEntry(i);
             
-//            std::cout<<OS <<Pass << !Isolation<<"\n";
-            if (OS != 0 && !Pass && !Isolation){
-//            if (OS != 0 &&  !Isolation){
+//            std::cout<<OS <<Pass << !lepIsoPass<<"\n";
+//            if (OS != 0 && !Pass && !lepIsoPass){
+                if (OS != 0 && (!PassLead || !PassSub )){
+//            if (OS != 0 &&  !lepIsoPass){
 //            if (OS != 0 ){
-//            std::cout<<name<< " "<<mupt_<<"  " << weight<<"\n";
-                fillQCD_OS_CR(zeroJet, name, mupt_,  weight);
+//            std::cout<<name<< " "<<leadPt_<<"  " << weight<<"\n";
+                fillQCD_OS_CR(zeroJet, name, leadPt_,  weight);
             }
-            else if (SS != 0 && !Pass && !Isolation){
-//            else if (SS != 0  && !Isolation){
+//            else if (SS != 0 && !Pass && !lepIsoPass){
+            else if (SS != 0 && (!PassLead || !PassSub )){
+//            else if (SS != 0  && !lepIsoPass){
 //            else if (SS != 0 ){
-//            std::cout<<"\t "<<name<< " "<<mupt_<<"  " << weight<<"\n";
-                fillQCD_SS_CR(zeroJet, name, mupt_,  weight);
+//            std::cout<<"\t "<<name<< " "<<leadPt_<<"  " << weight<<"\n";
+                fillQCD_SS_CR(zeroJet, name, leadPt_,  weight);
             }
         }
         fin->Close();
