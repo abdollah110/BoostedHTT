@@ -421,6 +421,11 @@ class SkimerBoost {
     vector<float>   *boostedTauphotonPtSumOutsideSignalCone;
     vector<float>   *boostedTaudz;
     vector<float>   *boostedTaudxy;
+    vector<vector<float> > *boostedTauSignalPFCands;
+    vector<vector<float> > *boostedTauSignalPFGammaCands;
+    vector<vector<float> > *boostedTauIsolationPFCands;
+    vector<vector<float> > *boostedTauIsolationPFGammaCands;
+
     
     float metcov00;
     float metcov01;
@@ -815,6 +820,10 @@ class SkimerBoost {
     TBranch        *b_boostedTauphotonPtSumOutsideSignalCone;   //!
     TBranch        *b_boostedTaudz;   //!
     TBranch        *b_boostedTaudxy;   //!
+    TBranch        *b_boostedTauSignalPFCands;   //!
+    TBranch        *b_boostedTauSignalPFGammaCands;   //!
+    TBranch        *b_boostedTauIsolationPFCands;   //!
+    TBranch        *b_boostedTauIsolationPFGammaCands;   //!
     TBranch *b_metcov00;
     TBranch *b_metcov01;
     TBranch *b_metcov10;
@@ -1214,6 +1223,11 @@ void SkimerBoost::Init(TTree *tree)
     boostedTauphotonPtSumOutsideSignalCone = 0;
     boostedTaudz = 0;
     boostedTaudxy = 0;
+    boostedTauSignalPFCands = 0;
+    boostedTauSignalPFGammaCands = 0;
+    boostedTauIsolationPFCands = 0;
+    boostedTauIsolationPFGammaCands = 0;
+
     
     metcov00 = 0;
     metcov01 = 0;
@@ -1614,6 +1628,12 @@ void SkimerBoost::Init(TTree *tree)
     fChain->SetBranchAddress("boostedTaudz", &boostedTaudz, &b_boostedTaudz);
     fChain->SetBranchAddress("boostedTaudxy", &boostedTaudxy, &b_boostedTaudxy);
     
+    fChain->SetBranchAddress("boostedTauSignalPFCands", &boostedTauSignalPFCands, &b_boostedTauSignalPFCands);
+    fChain->SetBranchAddress("boostedTauSignalPFGammaCands", &boostedTauSignalPFGammaCands, &b_boostedTauSignalPFGammaCands);
+    fChain->SetBranchAddress("boostedTauIsolationPFCands", &boostedTauIsolationPFCands, &b_boostedTauIsolationPFCands);
+    fChain->SetBranchAddress("boostedTauIsolationPFGammaCands", &boostedTauIsolationPFGammaCands, &b_boostedTauIsolationPFGammaCands);
+
+
     fChain->SetBranchAddress("metcov00", &metcov00, &b_metcov00);
     fChain->SetBranchAddress("metcov01", &metcov01, &b_metcov01);
     fChain->SetBranchAddress("metcov10", &metcov10, &b_metcov10);
