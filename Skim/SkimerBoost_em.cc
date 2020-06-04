@@ -86,8 +86,8 @@ void SkimerBoost::Loop(TString OutputFile)
     
     int era = 0;
     int decayMode2 = 1;
-    int tau1Index = -1;
-    int tau2Index= -1;
+    int lepIndex = -1;
+    int tauIndex= -1;
     int NumPair=0;
     
     
@@ -122,8 +122,8 @@ void SkimerBoost::Loop(TString OutputFile)
     BoostTree->Branch("eta_2", &eta_2);
     BoostTree->Branch("decayMode2", &decayMode2);
     
-    BoostTree->Branch("tau1Index", &tau1Index);
-    BoostTree->Branch("tau2Index", &tau2Index);
+    BoostTree->Branch("lepIndex", &lepIndex);
+    BoostTree->Branch("tauIndex", &tauIndex);
     
     for (int jentry=0; jentry<nentries;jentry++) {
         
@@ -170,8 +170,8 @@ void SkimerBoost::Loop(TString OutputFile)
                 //                decayMode2 = boostedTauDecayMode->at(ibtau);
                 numLepLep++;
                 if (!foundApair){
-                    tau1Index=imu;
-                    tau2Index=iele;
+                    lepIndex=imu;
+                    tauIndex=iele;
                 }
                 foundApair=true;
                 //                break;
