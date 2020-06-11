@@ -146,7 +146,8 @@ void SkimerBoost::Loop(TString OutputFile)
         
         for (int imu = 0; imu < nMu; ++imu){
             //            if (foundApair) break;
-            if (muPt->at(imu) < 52 || fabs(muEta->at(imu)) > 2.4) continue;
+//            if (muPt->at(imu) < 52 || fabs(muEta->at(imu)) > 2.4) continue;
+            if (muPt->at(imu) < 20 || fabs(muEta->at(imu)) > 2.4) continue;
             Lep4Mom.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
             
