@@ -4,7 +4,9 @@ Checkout a version of CMSSW
 
     export SCRAM_ARCH=slc6_amd64_gcc530scram project 
   
-    CMSSW CMSSW_9_4_5cd CMSSW_9_4_5/src
+    CMSSW CMSSW_9_4_5
+    
+    cd CMSSW_9_4_5/src
   
     cmsenv
 
@@ -21,5 +23,6 @@ compile:
   
     scram b
   
+
 
     
