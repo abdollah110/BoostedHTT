@@ -33,7 +33,10 @@ Enter to the bin directory and create a folder to store the root file:
     
     mkdir shapes
     
-copy your datacard (a file with histograms for all processes) in the ``shapes`` directory. Note that signal should be called as ``H125``
+copy your datacard (a file with histograms for all processes) in the ``shapes`` directory. Note that signal should be called as ``H125``. Change the name of the root file to ``template_boostedH.root``
+
+
+[Important: check that naming convention in your root file is compatible with the example committed to the github:]
 
 Copy the limit configuration file to the bin directory. Here you can find the limit configuration file.
 
@@ -67,12 +70,21 @@ Also try to enter the created directory and explore files inside there.
     
 creating a workspace from the datacard:
 
-    text2workspace.py H_mt_1_13TeV.txt ws.root -m 125
+    text2workspace.py H_mt_1_13TeV.txt -o ws.root -m 125
     
 compute the expected limit:
 
     combineTool.py -M AsymptoticLimits -d ws.root -m 125 -t -1
     
+The limit values will be prointed for you as the following:
+
+     -- AsymptoticLimits ( CLs ) --
+    Observed Limit: r < 1.9226
+    Expected  2.5%: r < 0.9985
+    Expected 16.0%: r < 1.3520
+    Expected 50.0%: r < 1.9219
+    Expected 84.0%: r < 2.7722
+    Expected 97.5%: r < 3.8642
 
 
     
