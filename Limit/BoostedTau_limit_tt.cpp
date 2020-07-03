@@ -21,8 +21,7 @@ int main() {
     //! [part1]
     // First define the location of the "auxiliaries" directory where we can
     // source the input files containing the datacard shapes
-//    string aux_shapes = string(getenv("CMSSW_BASE")) + "/src/auxiliaries/shapes/";
-    string aux_shapes = "shapes";
+    string aux_shapes = string(getenv("CMSSW_BASE")) + "/src/auxiliaries/shapes/";
     
     // Create an empty CombineHarvester instance that will hold all of the
     // datacard configuration and histograms etc.
@@ -36,15 +35,15 @@ int main() {
     // Here we will just define two categories for an 8TeV analysis. Each entry in
     // the vector below specifies a bin name and corresponding bin_id.
     
-    VString chns = { "mt"};
+    VString chns = { "tt"};
     
     map<string, string> input_folders = {
         //   {"et", "."},
-        {"mt", "."}
+        {"tt", "."}
     };
     
     map<string, VString> bkg_procs;
-    bkg_procs["mt"] = {"WJets", "QCD", "ttbar","Diboson","ZLL","ZJ","ZTT"};
+    bkg_procs["tt"] = {"W", "QCD", "TT","VV","ZLL","ZJ","ZTT"};
     
     VString sig_procs = {"H"};
     
@@ -52,8 +51,8 @@ int main() {
     //cats["et_13TeV"] = {
     //      {1, "EleTau_DiJet"}};
     
-    cats["mt_13TeV"] = {
-        {1, "pass"},
+    cats["tt_13TeV"] = {
+        {1, "tt_0jet"},
 //        {2, "fail"}
         
         
@@ -110,21 +109,24 @@ int main() {
     
     // Norm systematics
     
-    cb.cp().process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","ZLL","ZJ","ZTT"}}))
+    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZLL","ZJ","ZTT"}}))
     .AddSyst(cb, "CMS_lumi_$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.024));
     
-    cb.cp().bin_id({1}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","ZLL","ZJ","ZTT"}}))
-    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.1/0.9));
+//    cb.cp().bin_id({1}).process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZLL","ZJ","ZTT"}}))
+//    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.1/0.9));
     
-    cb.cp().bin_id({2}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","ZLL","ZJ","ZTT"}}))
-    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 0.9/1.1));
+//    cb.cp().bin_id({2}).process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZLL","ZJ","ZTT"}}))
+//    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 0.9/1.1));
     
-    
-    cb.cp().process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","ZLL","ZJ","ZTT"}}))
-    .AddSyst(cb, "CMS_eff_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
-    
-    cb.cp().process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","ZLL","ZJ","ZTT"}}))
-    .AddSyst(cb, "CMS_trg_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
+    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZLL","ZJ","ZTT"}}))
+    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.10));
+
+
+//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZLL","ZJ","ZTT"}}))
+//    .AddSyst(cb, "CMS_eff_e$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
+//
+//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZLL","ZJ","ZTT"}}))
+//    .AddSyst(cb, "CMS_trg_e$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
 
     cb.cp().process({"H125"})
     .AddSyst(cb, "CMS_htt_SignalNorm", "lnN", SystMap<>::init(1.10));
@@ -132,11 +134,11 @@ int main() {
     cb.cp().process({"ZTT"})
     .AddSyst(cb, "CMS_htt_ZTTNorm", "lnN", SystMap<>::init(1.10));
     
-    cb.cp().process({"ttbar"})
+    cb.cp().process({"TT"})
     .AddSyst(cb, "CMS_htt_TTNorm", "lnN", SystMap<>::init(1.10));
     
-    cb.cp().process({"Diboson"})
-    .AddSyst(cb, "CMS_htt_DibosonNorm", "lnN", SystMap<>::init(1.10));
+    cb.cp().process({"VV"})
+    .AddSyst(cb, "CMS_htt_VVNorm", "lnN", SystMap<>::init(1.10));
     
     cb.cp().process({"ZLL"})
     .AddSyst(cb, "CMS_htt_ZLLNorm", "lnN", SystMap<>::init(1.10));
@@ -144,7 +146,7 @@ int main() {
     cb.cp().process({"ZJ"})
     .AddSyst(cb, "CMS_htt_ZJNorm", "lnN", SystMap<>::init(1.10));
     
-    cb.cp().process({"WJets"})
+    cb.cp().process({"W"})
     .AddSyst(cb, "CMS_htt_WNorm", "lnN", SystMap<>::init(1.10));
     
     cb.cp().process({"QCD"})
@@ -153,10 +155,10 @@ int main() {
     
     // Shape systematics
 //
-//    cb.cp().process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","ZLL","ZJ","ZTT"}}))
+//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZLL","ZJ","ZTT"}}))
 //    .AddSyst(cb, "met_JES", "shape", SystMap<>::init(1.00));
 //
-//    cb.cp().process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","ZLL","ZJ","ZTT"}}))
+//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZLL","ZJ","ZTT"}}))
 //    .AddSyst(cb, "met_UES", "shape", SystMap<>::init(1.00));
 //
 //    cb.cp().process(ch::JoinStr({sig_procs, {"ZLL","ZJ","ZTT"}}))
@@ -226,7 +228,7 @@ int main() {
     << "\n";
     
     
-    string folder = "outputBoostedHTT_v2/V2_mt_sys";
+    string folder = "outputBoostedHTT_v4_HTTTalk/V6_tt_m_sv";
     boost::filesystem::create_directories(folder);
     boost::filesystem::create_directories(folder + "/common");
     for (auto m : masses) {
