@@ -52,7 +52,7 @@ Then complie (note whenever you change something in BoostedTau_limit.cpp you hav
     scram b -j 8
     cd -
     
-# Step to compute the limit/significance for boosted HTT analysis:
+# Steps to compute the limit/significance for boosted HTT analysis:
     
 The first step is to create a datacard from your root file:
 
