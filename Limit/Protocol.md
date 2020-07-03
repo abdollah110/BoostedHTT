@@ -19,10 +19,22 @@ Checkout combine Harvester package
  
     git clone ssh://git@gitlab.cern.ch:7999/KState-HEP-HTT/CombineHarvester.git CombineHarvester
   
-compile:
+compile (takes some time):
   
     scram b
   
+Enter to the bin directory and create a folder to store the root file:
 
+    cd CombineHarvester/CombineTools/bin
+    
+    mkdir shapes
+    
+copy your datacard (a file with histograms for all processes) in the 'shapes' directory. Note that signal should be called as ``H125``
+
+Cope the limit configuration file in the bin directory. Here you can find the limit configuration file.
+
+    
+
+    
 
     
