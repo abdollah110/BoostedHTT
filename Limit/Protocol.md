@@ -1,4 +1,4 @@
-# Step to compute the limit/significance for boosted HTT analysis:
+# Steps to setup limit package 
 
 Checkout a version of CMSSW
 
@@ -19,9 +19,13 @@ Checkout combine Harvester package
  
     git clone ssh://git@gitlab.cern.ch:7999/KState-HEP-HTT/CombineHarvester.git CombineHarvester
   
+There seems to be a buggy file in this version. first remove the file and then compile
+    
+    rm CombineHarvester/CombineTools/bin/LimitCompare.cpp
+    
 compile (takes some time):
   
-    scram b
+    scram b -j 8
   
 Enter to the bin directory and create a folder to store the root file:
 
@@ -29,12 +33,50 @@ Enter to the bin directory and create a folder to store the root file:
     
     mkdir shapes
     
-copy your datacard (a file with histograms for all processes) in the 'shapes' directory. Note that signal should be called as ``H125``
+copy your datacard (a file with histograms for all processes) in the ``shapes`` directory. Note that signal should be called as ``H125``
 
-Cope the limit configuration file in the bin directory. Here you can find the limit configuration file.
+Copy the limit configuration file to the bin directory. Here you can find the limit configuration file.
 
+    https://github.com/abdollah110/BoostedHTT/blob/boost/Limit/BoostedTau_limit.cpp
+    
+Update the ``BuildFile.xml`` by adding the following line:
+
+    <bin file="BoostedTau_limit.cpp" name="BoostedTau_limit"></bin>
+
+Then complie (note whenever you change something in BoostedTau_limit.cpp you have to complie). This creates an executable for you:
+
+    cd ..
+    scram b -j 8
+    cd -
+    
+# Step to compute the limit/significance for boosted HTT analysis:
+    
+The first step is to create a datacard from your root file:
+
+    BoostedTau_limit
+    
+This creates a datacard structure in the following directory ``outputBoostedHTT_v2/V2_mt_sys``. Change the directory whenever you run a new limit. The best is that to pass this as an argument (todo list). 
+
+Then you need to add a line to the datacrd to include bin-by-bin uncertainty (``add_auto_MC_Stat.sh`` can be found in the github):
+
+    sh add_auto_MC_Stat.sh outputBoostedHTT_v2/V2_mt_sys/
+     
+Also try to enter the created directory and explore files inside there.
+    
+    cd outputBoostedHTT_v2/V2_mt_sys/125
+    
+creating a workspace from the datacard:
+
+    text2workspace.py H_mt_1_13TeV.txt ws.root -m 125
+    
+compute the expected limit:
+
+    combineTool.py -M AsymptoticLimits -d ws.root -m 125 -t -1
     
 
+
+    
     
 
+        
     
