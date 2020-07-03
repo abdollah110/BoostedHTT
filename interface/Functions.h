@@ -110,6 +110,12 @@ TTree *  Xttree( TFile * f_Double, string channel){
     Run_Tree->SetBranchAddress("tauDecayMode",&tauDecayMode);
     Run_Tree->SetBranchAddress("tauByLooseIsolationMVArun2v1DBoldDMwLT",&tauByLooseIsolationMVArun2v1DBoldDMwLT);
     Run_Tree->SetBranchAddress("tauByVLooseIsolationMVArun2v1DBoldDMwLT",&tauByVLooseIsolationMVArun2v1DBoldDMwLT);
+    Run_Tree->SetBranchAddress("tauByIsolationMVArun2v1DBoldDMwLTraw",&tauByIsolationMVArun2v1DBoldDMwLTraw);
+    Run_Tree->SetBranchAddress("tauByIsolationMVArun2v2DBoldDMwLTraw",&tauByIsolationMVArun2v2DBoldDMwLTraw);
+    Run_Tree->SetBranchAddress("tauCombinedIsolationDeltaBetaCorrRaw3Hits",&tauCombinedIsolationDeltaBetaCorrRaw3Hits);
+//    Run_Tree->SetBranchAddress("tauByLooseCombinedIsolationDeltaBetaCorr3Hits",&tauByLooseCombinedIsolationDeltaBetaCorr3Hits);
+    
+    
     
     //########################################   Mu Info
     Run_Tree->SetBranchAddress("nMu", &nMu);
@@ -256,7 +262,14 @@ TTree *  Xttree( TFile * f_Double, string channel){
     Run_Tree->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT",&boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT);
     
     Run_Tree->SetBranchAddress("boostedTauByIsolationMVArun2v1DBoldDMwLTraw",&boostedTauByIsolationMVArun2v1DBoldDMwLTraw);
+    Run_Tree->SetBranchAddress("boostedTauCombinedIsolationDeltaBetaCorrRaw3Hits",&boostedTauCombinedIsolationDeltaBetaCorrRaw3Hits);
     
+Run_Tree->SetBranchAddress("boostedTauByLooseCombinedIsolationDeltaBetaCorr3Hits",&boostedTauByLooseCombinedIsolationDeltaBetaCorr3Hits);
+        Run_Tree->SetBranchAddress("boostedTauChargedIsoPtSum",&boostedTauChargedIsoPtSum);
+    
+
+
+
     Run_Tree->SetBranchAddress("taudaugPt",&taudaugPt);
     Run_Tree->SetBranchAddress("taudaugEta",&taudaugEta);
     Run_Tree->SetBranchAddress("taudaugPhi",&taudaugPhi);
@@ -301,6 +314,12 @@ TTree *  Xttree( TFile * f_Double, string channel){
     Run_Tree->SetBranchAddress("subtauIndex", &subtauIndex);
 
     
+    Run_Tree->SetBranchAddress("boostedTauSignalPFCands"  ,&boostedTauSignalPFCands);
+    Run_Tree->SetBranchAddress("boostedTauSignalPFGammaCands"  ,&boostedTauSignalPFGammaCands);
+    Run_Tree->SetBranchAddress("boostedTauIsolationPFCands"  ,&boostedTauIsolationPFCands);
+    Run_Tree->SetBranchAddress("boostedTauIsolationPFGammaCands"  ,&boostedTauIsolationPFGammaCands);
+
+
     return Run_Tree;
 }
 
@@ -683,6 +702,54 @@ float compTopPtWeight(float top1Pt, float top2Pt) {
 
 
 
+vector<float> getMatchedRecoTau(TLorentzVector recoTau){
+    
+    
+    vector<float> matcdedRecoTau;
+    
+    float LowestDR=100;
+    TLorentzVector tau;
+    int index=0;
+    for (int itau=0; itau < nTau; itau++){
+        
+        tau.SetPtEtaPhiM(tauPt->at(itau),tauEta->at(itau),tauPhi->at(itau),tauMass->at(itau));
+        float dr_boost_reco= recoTau.DeltaR(tau);
+        if (dr_boost_reco < LowestDR)  {
+            LowestDR= dr_boost_reco;
+            index=itau;
+        }
+    }
+    matcdedRecoTau.push_back(LowestDR);
+    matcdedRecoTau.push_back(tauByIsolationMVArun2v1DBoldDMwLTraw->at(index));
+    matcdedRecoTau.push_back(tauByIsolationMVArun2v2DBoldDMwLTraw->at(index));
+    matcdedRecoTau.push_back(tauPt->at(index));
+    matcdedRecoTau.push_back(tauEta->at(index));
+    matcdedRecoTau.push_back(tauCombinedIsolationDeltaBetaCorrRaw3Hits->at(index));
+    
+    return matcdedRecoTau;
+}
+
+
+
+TLorentzVector getMatchedGenTau(TLorentzVector recoTau){
+    
+    TLorentzVector genTau;
+    TLorentzVector SelectedGenTau;
+    float LowestDR=100;
+    for (int igen=0; igen < nMC; igen++){
+        
+        if ( fabs(mcPID->at(igen)) ==15){
+            genTau.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+            float dr_gen_reco= recoTau.DeltaR(genTau);
+            if (dr_gen_reco < LowestDR)  {
+                LowestDR= dr_gen_reco;
+                SelectedGenTau.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+//                cout<<"\t\t found a match, dR= "<<LowestDR<<"\n";
+            }
+        }
+    }
+    return SelectedGenTau;
+}
 
 
 vector<float>  GeneratorInfo(){

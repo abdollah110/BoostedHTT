@@ -117,7 +117,7 @@ int main(int argc, char* argv[]) {
     float vis_mass=-10;
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
-    bool PassLead,PassSub,OS,SS;
+    bool PassLead,PassSub,PassLeadCombined,PassSubCombined,PassLeadCharged,PassSubCharged,OS,SS;
     float tmass,ht,st,Met,FullWeight, dR_tau_tau, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
@@ -126,6 +126,10 @@ int main(int argc, char* argv[]) {
     outTr->Branch("subPt",&subPt_,"subPt/F");
     outTr->Branch("PassLead",&PassLead,"PassLead/O");
     outTr->Branch("PassSub",&PassSub,"PassSub/O");
+    outTr->Branch("PassLeadCombined",&PassLeadCombined,"PassLeadCombined/O");
+    outTr->Branch("PassSubCombined",&PassSubCombined,"PassSubCombined/O");
+    outTr->Branch("PassLeadCharged",&PassLeadCharged,"PassLeadCharged/O");
+    outTr->Branch("PassSubCharged",&PassSubCharged,"PassSubCharged/O");
     outTr->Branch("OS",&OS,"OS/O");
     outTr->Branch("SS",&SS,"SS/O");
     outTr->Branch("vis_mass",&vis_mass,"vis_mass/F");
@@ -159,7 +163,7 @@ int main(int argc, char* argv[]) {
         bool PassTrigger_40 = ((HLTJet >> 40 & 1)==1); //HLT_AK8PFJet400_TrimMass30_v
 //        //              else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
 //        // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19; // 2017
-        if (!(PassTrigger_40 || PassTrigger_39)) continue;
+//        if (!(PassTrigger_40 || PassTrigger_39)) continue;
         plotFill("cutFlowTable",2 ,15,0,15);
         //=========================================================================================================
         // MET Filters
@@ -180,30 +184,121 @@ int main(int argc, char* argv[]) {
         //=========================================================================================================
         // Lead tau selection
         int idx_leadtau= leadtauIndex;
-        
-        
+                
         if (boostedTauPt->at(idx_leadtau) <= 40 || fabs(boostedTauEta->at(idx_leadtau)) >= 2.3 ) continue;
-        if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_leadtau) < 0.5 ) continue;
+//        if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_leadtau) < 0.5 ) continue;
         if (boostedTauByMVA6VLooseElectronRejection->at(idx_leadtau) < 0.5) continue;
         if (boostedTauByLooseMuonRejection3->at(idx_leadtau) < 0.5) continue;
-
-
-        LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_leadtau),boostedTauEta->at(idx_leadtau),boostedTauPhi->at(idx_leadtau),boostedTauMass->at(idx_leadtau));
+    LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_leadtau),boostedTauEta->at(idx_leadtau),boostedTauPhi->at(idx_leadtau),boostedTauMass->at(idx_leadtau));
         plotFill("cutFlowTable",3 ,15,0,15);
+        
+        TLorentzVector leadMatch= getMatchedGenTau(LeadTau4Momentum);
+        plotFill("GenMatchedLeadTau",leadMatch.DeltaR(LeadTau4Momentum) ,20,0,1);
+        vector<float> leadRecoMatch= getMatchedRecoTau(LeadTau4Momentum);
+
         //=========================================================================================================
         // sublead Tau selection
         int idx_subleadtau= subtauIndex;
         
         if (boostedTauPt->at(idx_subleadtau) <= 40 || fabs(boostedTauEta->at(idx_subleadtau)) >= 2.3 ) continue;
-        if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_subleadtau) < 0.5 ) continue;
+//        if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_subleadtau) < 0.5 ) continue;
         if (boostedTauByMVA6VLooseElectronRejection->at(idx_subleadtau) < 0.5) continue;
         if (boostedTauByLooseMuonRejection3->at(idx_subleadtau) < 0.5) continue;
-        SubTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_subleadtau),boostedTauEta->at(idx_subleadtau),boostedTauPhi->at(idx_subleadtau),boostedTauMass->at(idx_subleadtau));
+        
+    SubTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_subleadtau),boostedTauEta->at(idx_subleadtau),boostedTauPhi->at(idx_subleadtau),boostedTauMass->at(idx_subleadtau));
         plotFill("cutFlowTable",4 ,15,0,15);
+        
+        TLorentzVector subMatch= getMatchedGenTau(SubTau4Momentum);
+        plotFill("GenMatchedSubTau",subMatch.DeltaR(SubTau4Momentum) ,20,0,1);
+        vector<float> subRecoMatch= getMatchedRecoTau(SubTau4Momentum);
+
+        dR_tau_tau= SubTau4Momentum.DeltaR(LeadTau4Momentum);
+        
+        //=========================================================================================================
+        //  Tau POG tests
+        //=========================================================================================================
+        int numIso=0;
+        int numIsoOverLap=0;
+        float EnergyIso=0;
+        float EnergyIsoOverLap=0;
+        
+        //=========== Charge PFCandidates==========
+        for (int i=0; i< boostedTauIsolationPFCands->at(idx_leadtau).size(); i++){
+            numIso++;
+            EnergyIso +=boostedTauIsolationPFCands->at(idx_leadtau)[i];
+            // overlap with subleading SignalPFCandidates
+            for (int j=0; j< boostedTauSignalPFCands->at(idx_subleadtau).size(); j++){
+                if (boostedTauIsolationPFCands->at(idx_leadtau)[i] ==  boostedTauSignalPFCands->at(idx_subleadtau)[j]) {
+                    numIsoOverLap++;
+                    EnergyIsoOverLap +=boostedTauIsolationPFCands->at(idx_leadtau)[i];
+                }
+            }
+            // overlap with subleading IsoPFCandidates
+            for (int j=0; j< boostedTauIsolationPFCands->at(idx_subleadtau).size(); j++){
+                if (boostedTauIsolationPFCands->at(idx_leadtau)[i] ==  boostedTauIsolationPFCands->at(idx_subleadtau)[j]) {
+                    numIsoOverLap++;
+                    EnergyIsoOverLap +=boostedTauIsolationPFCands->at(idx_leadtau)[i];
+                }
+            }
+        }
+        //===========  PFGammaCandidates==========
+        for (int i=0; i< boostedTauIsolationPFGammaCands->at(idx_leadtau).size(); i++){
+            numIso++;
+            EnergyIso +=boostedTauIsolationPFGammaCands->at(idx_leadtau)[i];
+            // overlap with subleading SignalPFCandidates
+            for (int j=0; j< boostedTauSignalPFGammaCands->at(idx_subleadtau).size(); j++){
+                if (boostedTauIsolationPFGammaCands->at(idx_leadtau)[i] == boostedTauSignalPFGammaCands->at(idx_subleadtau)[j]) {
+                    numIsoOverLap++;
+                    EnergyIsoOverLap +=boostedTauIsolationPFGammaCands->at(idx_leadtau)[i];
+                }
+            }
+            // overlap with subleading IsoPFCandidates
+            for (int j=0; j< boostedTauIsolationPFGammaCands->at(idx_subleadtau).size(); j++){
+                if (boostedTauIsolationPFGammaCands->at(idx_leadtau)[i] == boostedTauIsolationPFGammaCands->at(idx_subleadtau)[j]) {
+                    numIsoOverLap++;
+                    EnergyIsoOverLap +=boostedTauIsolationPFGammaCands->at(idx_leadtau)[i];
+                }
+            }
+        }
+                
+            
+            
+//        cout <<"\t leading Tau pt is "<<boostedTauPt->at(idx_leadtau)<<"\n";
+//        for (int i=0; i< boostedTauSignalPFCands->at(idx_leadtau).size(); i++)
+//            cout<<"boostedTauSignalPFCands->at(idx_leadtau)["<<i<<"] " <<boostedTauSignalPFCands->at(idx_leadtau)[i]<<"\n";
+//        for (int i=0; i< boostedTauSignalPFGammaCands->at(idx_leadtau).size(); i++)
+//            cout<<"boostedTauSignalPFGammaCands->at(idx_leadtau)["<<i<<"] " <<boostedTauSignalPFGammaCands->at(idx_leadtau)[i]<<"\n";
+//        for (int i=0; i< boostedTauIsolationPFCands->at(idx_leadtau).size(); i++)
+//            cout<<"boostedTauIsolationPFCands->at(idx_leadtau)["<<i<<"] " <<boostedTauIsolationPFCands->at(idx_leadtau)[i]<<"\n";
+//        for (int i=0; i< boostedTauIsolationPFGammaCands->at(idx_leadtau).size(); i++)
+//            cout<<"boostedTauIsolationPFGammaCands->at(idx_leadtau)["<<i<<"] " <<boostedTauIsolationPFGammaCands->at(idx_leadtau)[i]<<"\n";
+
+//        cout <<"\t Subleading Tau pt is "<<boostedTauPt->at(idx_subleadtau)<<"\n";
+//        for (int i=0; i< boostedTauSignalPFCands->at(idx_subleadtau).size(); i++)
+//            cout<<"boostedTauSignalPFCands->at(idx_subleadtau)["<<i<<"] " <<boostedTauSignalPFCands->at(idx_subleadtau)[i]<<"\n";
+//        for (int i=0; i< boostedTauSignalPFGammaCands->at(idx_subleadtau).size(); i++)
+//            cout<<"boostedTauSignalPFGammaCands->at(idx_subleadtau)["<<i<<"] " <<boostedTauSignalPFGammaCands->at(idx_subleadtau)[i]<<"\n";
+//        for (int i=0; i< boostedTauIsolationPFCands->at(idx_subleadtau).size(); i++)
+//            cout<<"boostedTauIsolationPFCands->at(idx_subleadtau)["<<i<<"] " <<boostedTauIsolationPFCands->at(idx_subleadtau)[i]<<"\n";
+//        for (int i=0; i< boostedTauIsolationPFGammaCands->at(idx_subleadtau).size(); i++)
+//            cout<<"boostedTauIsolationPFGammaCands->at(idx_subleadtau)["<<i<<"] " <<boostedTauIsolationPFGammaCands->at(idx_subleadtau)[i]<<"\n";
+
+        
+        plotFill("dR_ratio_multiplicity",dR_tau_tau,numIsoOverLap*1.0/numIso,10,0,1,10,0,1);
+        plotFill("dR_ratio_energy",dR_tau_tau,EnergyIsoOverLap*1.0/EnergyIso,10,0,1,10,0,1);
+        
+        if (dR_tau_tau < 0.5){
+                    
+            plotFill("GenMatchedLeadCombineIso",boostedTauCombinedIsolationDeltaBetaCorrRaw3Hits->at(idx_leadtau) - leadRecoMatch[5]  ,2000,-200,200);
+            plotFill("GenMatchedSubCombineIso",boostedTauCombinedIsolationDeltaBetaCorrRaw3Hits->at(idx_subleadtau) - leadRecoMatch[5]  ,2000,-200,200);
+            plotFill("GenMatchedLeadMVAIso",leadRecoMatch[1] - boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_leadtau) ,200,-1,1);
+            plotFill("GenMatchedSubMVAIso",subRecoMatch[1] - boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_subleadtau) ,200,-1,1);
+            }
+
         //=========================================================================================================
         // Event Selection
+        //=========================================================================================================
         
-        dR_tau_tau= SubTau4Momentum.DeltaR(LeadTau4Momentum);
         if( dR_tau_tau > 0.8 || dR_tau_tau < 0.1) continue;
         plotFill("cutFlowTable",5 ,15,0,15);
         
@@ -282,8 +377,6 @@ int main(int argc, char* argv[]) {
             else
                 PUWeight= PUData_/PUMC_;
             
-            // Muon Correction
-//            LepCorrection= getCorrFactorMuon94X(isData,  LeadTau4Momentum.Pt(), LeadTau4Momentum.Eta() , HistoMuId,HistoMuIso,HistoMuTrg,HistoMuTrack);
             
         }
         
@@ -306,6 +399,13 @@ int main(int argc, char* argv[]) {
         SS =  boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) > 0;
         PassLead = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_leadtau) > 0.5 ;
         PassSub = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_subleadtau) > 0.5 ;
+        PassLeadCombined = boostedTauByLooseCombinedIsolationDeltaBetaCorr3Hits->at(idx_leadtau) > 0.5 ;
+        PassSubCombined = boostedTauByLooseCombinedIsolationDeltaBetaCorr3Hits->at(idx_subleadtau) > 0.5 ;
+        PassLeadCharged = boostedTauChargedIsoPtSum->at(idx_leadtau) < 2.0 ;
+        PassSubCharged = boostedTauChargedIsoPtSum->at(idx_subleadtau) < 2.0 ;
+
+        
+        
         leadPt_=boostedTauPt->at(idx_leadtau);
         subPt_=boostedTauPt->at(idx_subleadtau);
         vis_mass=Z4Momentum.M();

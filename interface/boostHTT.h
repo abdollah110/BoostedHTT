@@ -415,6 +415,12 @@ using namespace std;
    vector<float>   *boostedTauphotonPtSumOutsideSignalCone;
    vector<float>   *boostedTaudz;
    vector<float>   *boostedTaudxy;
+   
+   vector<vector<float>> *boostedTauSignalPFCands;
+   vector<vector<float>> *boostedTauSignalPFGammaCands;
+    vector<vector<float>> *boostedTauIsolationPFCands;
+    vector<vector<float>> *boostedTauIsolationPFGammaCands;
+
    Float_t         tmass;
    Int_t           era;
 //   Float_t         met_px;
