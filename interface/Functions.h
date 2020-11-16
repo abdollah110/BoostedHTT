@@ -114,8 +114,20 @@ TTree *  Xttree( TFile * f_Double, string channel){
     Run_Tree->SetBranchAddress("tauByIsolationMVArun2v2DBoldDMwLTraw",&tauByIsolationMVArun2v2DBoldDMwLTraw);
     Run_Tree->SetBranchAddress("tauCombinedIsolationDeltaBetaCorrRaw3Hits",&tauCombinedIsolationDeltaBetaCorrRaw3Hits);
 //    Run_Tree->SetBranchAddress("tauByLooseCombinedIsolationDeltaBetaCorr3Hits",&tauByLooseCombinedIsolationDeltaBetaCorr3Hits);
+    Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNoOverLap",&boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNoOverLap);
+    Run_Tree->SetBranchAddress("boostedTauByTightIsolationMVArun2v1DBoldDMwLTNoOverLap",&boostedTauByTightIsolationMVArun2v1DBoldDMwLTNoOverLap);
+    Run_Tree->SetBranchAddress("boostedTauByIsolationMVArun2v1DBoldDMwLTrawNoOverLap",&boostedTauByIsolationMVArun2v1DBoldDMwLTrawNoOverLap);
+    Run_Tree->SetBranchAddress("boostedTauChargedIsoPtSumNoOverLap",&boostedTauChargedIsoPtSumNoOverLap);
+    Run_Tree->SetBranchAddress("boostedTauNeutralIsoPtSumNoOverLap",&boostedTauNeutralIsoPtSumNoOverLap);
     
-    
+    Run_Tree->SetBranchAddress("boostedTauNumIsolationPFChargedHadrCands"  ,&boostedTauNumIsolationPFChargedHadrCands);
+    Run_Tree->SetBranchAddress("boostedTauNumIsolationPFNeutrHadrCands"  ,&boostedTauNumIsolationPFNeutrHadrCands);
+    Run_Tree->SetBranchAddress("boostedTauNumIsolationPFGammaCands"  ,&boostedTauNumIsolationPFGammaCands);
+    Run_Tree->SetBranchAddress("boostedTauNumIsolationPFCands"  ,&boostedTauNumIsolationPFCands);
+    Run_Tree->SetBranchAddress("boostedTauNumIsolationPFChargedHadrCandsOrig"  ,&boostedTauNumIsolationPFChargedHadrCandsOrig);
+    Run_Tree->SetBranchAddress("boostedTauNumIsolationPFNeutrHadrCandsOrig"  ,&boostedTauNumIsolationPFNeutrHadrCandsOrig);
+    Run_Tree->SetBranchAddress("boostedTauNumIsolationPFGammaCandsOrig"  ,&boostedTauNumIsolationPFGammaCandsOrig);
+    Run_Tree->SetBranchAddress("boostedTauNumIsolationPFCandsOrig"  ,&boostedTauNumIsolationPFCandsOrig);
     
     //########################################   Mu Info
     Run_Tree->SetBranchAddress("nMu", &nMu);
@@ -264,10 +276,10 @@ TTree *  Xttree( TFile * f_Double, string channel){
     Run_Tree->SetBranchAddress("boostedTauByIsolationMVArun2v1DBoldDMwLTraw",&boostedTauByIsolationMVArun2v1DBoldDMwLTraw);
     Run_Tree->SetBranchAddress("boostedTauCombinedIsolationDeltaBetaCorrRaw3Hits",&boostedTauCombinedIsolationDeltaBetaCorrRaw3Hits);
     
-Run_Tree->SetBranchAddress("boostedTauByLooseCombinedIsolationDeltaBetaCorr3Hits",&boostedTauByLooseCombinedIsolationDeltaBetaCorr3Hits);
-        Run_Tree->SetBranchAddress("boostedTauChargedIsoPtSum",&boostedTauChargedIsoPtSum);
+    Run_Tree->SetBranchAddress("boostedTauByLooseCombinedIsolationDeltaBetaCorr3Hits",&boostedTauByLooseCombinedIsolationDeltaBetaCorr3Hits);
+    Run_Tree->SetBranchAddress("boostedTauChargedIsoPtSum",&boostedTauChargedIsoPtSum);
     
-
+    Run_Tree->SetBranchAddress("boostedTauNeutralIsoPtSum"  ,&boostedTauNeutralIsoPtSum);
 
 
     Run_Tree->SetBranchAddress("taudaugPt",&taudaugPt);
@@ -751,6 +763,17 @@ TLorentzVector getMatchedGenTau(TLorentzVector recoTau){
     return SelectedGenTau;
 }
 
+
+float GetHiggsPt(){
+    float Higgspt=0;
+    for (int igen=0;igen < nMC; igen++){
+        if (mcPID->at(igen) == 25){
+            Higgspt = mcPt->at(igen) ;
+            return Higgspt;
+        }
+    }
+    return Higgspt;
+}
 
 vector<float>  GeneratorInfo(){
     

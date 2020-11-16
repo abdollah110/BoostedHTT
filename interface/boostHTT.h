@@ -381,6 +381,14 @@ using namespace std;
    vector<bool>    *boostedTauByMediumIsolationMVArun2v2DBoldDMwLT;
    vector<bool>    *boostedTauByLooseIsolationMVArun2v2DBoldDMwLT;
    vector<bool>    *boostedTauByVLooseIsolationMVArun2v2DBoldDMwLT;
+
+   vector<bool>    *boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNoOverLap;
+   vector<bool>    *boostedTauByTightIsolationMVArun2v1DBoldDMwLTNoOverLap;
+   vector<float>    *boostedTauByIsolationMVArun2v1DBoldDMwLTrawNoOverLap;
+   vector<float>    *boostedTauChargedIsoPtSumNoOverLap;
+   vector<float>    *boostedTauNeutralIsoPtSumNoOverLap;
+   
+   
    vector<float>   *boostedTauEta;
    vector<float>   *boostedTauPhi;
    vector<float>   *boostedTauPt;
@@ -420,6 +428,18 @@ using namespace std;
    vector<vector<float>> *boostedTauSignalPFGammaCands;
     vector<vector<float>> *boostedTauIsolationPFCands;
     vector<vector<float>> *boostedTauIsolationPFGammaCands;
+    
+    
+//    vector<int>   boostedTauNumIsolationPFChargedHadrCands;
+//    vector<int>   boostedTauNumIsolationPFNeutrHadrCands;
+//    vector<int>   boostedTauNumIsolationPFGammaCands;
+//    vector<int>   boostedTauNumIsolationPFCands;
+    vector<int>   *boostedTauNumIsolationPFChargedHadrCandsOrig;
+    vector<int>   *boostedTauNumIsolationPFNeutrHadrCandsOrig;
+    vector<int>   *boostedTauNumIsolationPFGammaCandsOrig;
+    vector<int>   *boostedTauNumIsolationPFCandsOrig;
+
+//    vector<vector<float>> *boostedTauNeutralIsoPtSum;
 
    Float_t         tmass;
    Int_t           era;
