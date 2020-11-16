@@ -1,0 +1,18 @@
+cmslpc machine:
+
+Step 1) Run miniAOD producer on an AOD sample
+
+code location:  /uscms_data/d3/abdollah/Analysis/ValidationBoostedTau/CMSSW_9_4_16
+
+run this file: miniAOD-prod_PAT_ForDYFallII.py  to get an updated boosted Tau collection ==>outcome is EDMNtuple
+output is miniAOD-prod_PAT.root
+
+
+
+Step2) Run ConfigAnalyzer_cfg.py (similar to ggNtuple) on miniAOD to get root ntuple outof EDMNtuple
+
+code location: /uscms_data/d3/abdollah/Analysis/ValidationBoostedTau/CMSSW_9_4_16/src/BoostTau/BoostAnalyzer/test
+
+
+
+
