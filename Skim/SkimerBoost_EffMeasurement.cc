@@ -45,11 +45,11 @@ void SkimerBoost::Loop(TString OutputFile)
     fChain->SetBranchStatus("n*",1);
     //    fChain->SetBranchStatus("c*",1);
     fChain->SetBranchStatus("jet*",1);
-    fChain->SetBranchStatus("AK8*",1);
+//    fChain->SetBranchStatus("AK8*",1);
     fChain->SetBranchStatus("ele*",1);
     fChain->SetBranchStatus("mu*",1);
     //    fChain->SetBranchStatus("pho",0);
-    fChain->SetBranchStatus("tau*",1);
+//    fChain->SetBranchStatus("tau*",1);
     fChain->SetBranchStatus("m*",1);
     fChain->SetBranchStatus("b*",1);
     
@@ -89,9 +89,12 @@ void SkimerBoost::Loop(TString OutputFile)
             Mu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
             float IsoMu=muPFChIso->at(imu)/muPt->at(imu);
-            if ( (muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu) )  > 0.0)
-                IsoMu= ( muPFChIso->at(imu) + muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu))/muPt->at(imu);
-            
+//            if ( (muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu) )  > 0.0)
+//                IsoMu= ( muPFChIso->at(imu) + muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu))/muPt->at(imu);
+            if ( (muPFNeuIso03->at(imu) + muPFPhoIso03->at(imu) - 0.5* muPFPUIso03->at(imu) )  > 0.0)
+                IsoMu= ( muPFChIso03->at(imu) + muPFNeuIso03->at(imu) + muPFPhoIso03->at(imu) - 0.5* muPFPUIso03->at(imu))/muPt->at(imu);
+
+
             bool MuId=( (muIDbit->at(imu) >> 2 & 1)  && fabs(muD0->at(imu)) < 0.045 && fabs(muDz->at(imu)) < 0.2); //Tight Muon Id
             
             
@@ -107,9 +110,9 @@ void SkimerBoost::Loop(TString OutputFile)
             
                 if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
-                if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
+                if (boostedTauagainstElectronVLooseMVA62018->at(ibtau) < 0.5) continue;
                 if (boostedTauByTightMuonRejection3->at(ibtau) < 0.5) continue;
-                if (boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5) continue;
+                if (boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) < 0.5) continue;
                 
                 BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                 if(BoostedTau4Momentum.DeltaR(Mu4Momentum) > 0.8 || BoostedTau4Momentum.DeltaR(Mu4Momentum) < 0.1) continue;
