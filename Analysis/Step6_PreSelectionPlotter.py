@@ -26,7 +26,7 @@ verbos_ = True
 RB_=1
 
 process=[
-    ['H125','H125',0],
+    ['H125','HTT',0],
     ['VV','Diboson',-1],
 #    ['SingleTop','SingleTop',-1],
     ['TT','ttbar',-1],

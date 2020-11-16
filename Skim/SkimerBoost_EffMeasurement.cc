@@ -50,7 +50,7 @@ void SkimerBoost::Loop(TString OutputFile)
     fChain->SetBranchStatus("mu*",1);
     //    fChain->SetBranchStatus("pho",0);
 //    fChain->SetBranchStatus("tau*",1);
-    fChain->SetBranchStatus("m*",1);
+//    fChain->SetBranchStatus("m*",1);
     fChain->SetBranchStatus("b*",1);
     
     TH1F* hcount = new TH1F("hcount", "", 10, 0, 10);
@@ -147,7 +147,8 @@ int main(int argc, char* argv[]){
     
     cout<< "\n===\n input is "<<InputFile  <<"  and output is "<<OutputFile<<"\n===\n";
     
-    SkimerBoost t("root://cmsxrootd.fnal.gov/"+InputFile);
+//    SkimerBoost t("root://cmsxrootd.fnal.gov/"+InputFile);
+    SkimerBoost t(InputFile);
     t.Loop(OutputFile);
     
     return 0;
