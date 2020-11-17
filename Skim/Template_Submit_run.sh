@@ -18,8 +18,8 @@ echo ${_CONDOR_SCRATCH_DIR}
 cd ${_CONDOR_SCRATCH_DIR}
 echo $PWD , "for job running"
 setenv SCRAM_ARCH slc6_amd64_gcc530
-scramv1 project CMSSW_9_4_13
-cd CMSSW_9_4_13/src
+scramv1 project CMSSW_10_2_22
+cd CMSSW_10_2_22/src
 xrdcp root://cmseos.fnal.gov//store/user/abdollah/TarFile.tar.gz   .
 tar -xf TarFile.tar.gz
 rm TarFile.tar.gz
