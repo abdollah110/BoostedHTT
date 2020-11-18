@@ -75,7 +75,8 @@ void SkimerBoost::Loop(TString OutputFile)
         if(jentry % 10000 == 0) cout << "Processed " << jentry << " events out of " <<nentries<<endl;
         
         hcount->Fill(1);
-        hcount->Fill(2,genWeight);
+        if (!isData)
+            hcount->Fill(2,genWeight);
         
         if (pfMET < 30) continue;
         hcount->Fill(3);
@@ -135,8 +136,8 @@ void SkimerBoost::Loop(TString OutputFile)
     MyNewTree->AutoSave();
     hEvents->Write();
     hcount->Write();
-    hPU->Write();
-    hPUTrue->Write();
+    if (hPU) hPU->Write();
+    if (hPUTrue) hPUTrue->Write();
     file->Close();
 }
 
