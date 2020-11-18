@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
     auto fin = TFile::Open(fname.c_str());
     std::cout << "Loading Ntuple..." << std::endl;
     TTree *  Run_Tree;
-    Run_Tree= Xttree(fin);
+    Run_Tree= Xttree(fin,"mutau_tree");
     
     //    auto HistoTot = reinterpret_cast<TH1D*>(fin->Get("ggNtuplizer/hEvents"));
     TH1F * HistoTot = (TH1F*) fin->Get("hcount");
@@ -116,16 +116,12 @@ int main(int argc, char* argv[]) {
         int numBJet=numBJets(BJetPtCut,CSVCut);
         if (numBJet > 0) continue;
         
-        // HT cut
-        float ht= getHT(JetPtCut);
-        if (ht < 200) continue;
+
         
         //electron veto
         int numele =getNumElectron();
         if (numele > 0) continue;
         
-        //Leading jet
-        TLorentzVector LeadJet= getLeadJet();
         
         
         //MET Shape systematics
@@ -249,8 +245,13 @@ int main(int argc, char* argv[]) {
                 }
                 
                 
+                // HT cut
+                float ht= getHT(JetPtCut, Mu4Momentum, BoostedTau4Momentum);
+                if (ht < 200) continue;
                 
-                
+                //Leading jet
+                TLorentzVector LeadJet= getLeadJet(Mu4Momentum, BoostedTau4Momentum);
+
                 //###############################################################################################
                 //  BoostedTau Isolation Categorization
                 //###############################################################################################
