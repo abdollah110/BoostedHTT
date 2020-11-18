@@ -61,284 +61,6 @@ float dR_(float ieta, float iphi, float jeta, float jphi){
 
 
 
-TTree *  Xttree( TFile * f_Double, string channel){
-    
-    TTree *Run_Tree = (TTree*) f_Double->Get(channel.c_str());
-    
-    cout.setf(ios::fixed, ios::floatfield);
-    cout.precision(6);
-    
-    //########################################   General Info
-    Run_Tree->SetBranchAddress("isData", &isData);
-    Run_Tree->SetBranchAddress("run", &run);
-    Run_Tree->SetBranchAddress("lumis", &lumis);
-    Run_Tree->SetBranchAddress("event", &event);
-    Run_Tree->SetBranchAddress("genWeight",&genWeight);
-    Run_Tree->SetBranchAddress("HLTEleMuX", &HLTEleMuX);
-    Run_Tree->SetBranchAddress("HLTJet", &HLTJet);
-    Run_Tree->SetBranchAddress("puTrue", &puTrue);
-    Run_Tree->SetBranchAddress("nVtx",&nVtx);
-    
-    //########################################   MC Info
-    Run_Tree->SetBranchAddress("nMC", &nMC);
-    Run_Tree->SetBranchAddress("mcPID", &mcPID);
-    Run_Tree->SetBranchAddress("mcStatus", &mcStatus);
-    Run_Tree->SetBranchAddress("mcPt", &mcPt );
-    Run_Tree->SetBranchAddress("mcEta", &mcEta );
-    Run_Tree->SetBranchAddress("mcPhi", &mcPhi );
-    Run_Tree->SetBranchAddress("mcE", &mcE );
-    Run_Tree->SetBranchAddress("mcMass", &mcMass );
-    Run_Tree->SetBranchAddress("mcMomPID", &mcMomPID );
-    Run_Tree->SetBranchAddress("mcGMomPID", &mcGMomPID );
-    Run_Tree->SetBranchAddress("mcStatusFlag",&mcStatusFlag);
-    
-    //########################################   Tau Info
-    Run_Tree->SetBranchAddress("nTau", &nTau);
-    Run_Tree->SetBranchAddress("tauPt"  ,&tauPt);
-    Run_Tree->SetBranchAddress("tauEta"  ,&tauEta);
-    Run_Tree->SetBranchAddress("tauPhi"  ,&tauPhi);
-    Run_Tree->SetBranchAddress("tauMass"  ,&tauMass);
-    Run_Tree->SetBranchAddress("tauCharge"  ,&tauCharge);
-    Run_Tree->SetBranchAddress("taupfTausDiscriminationByDecayModeFinding", &taupfTausDiscriminationByDecayModeFinding);
-    Run_Tree->SetBranchAddress("tauByTightMuonRejection3", &tauByTightMuonRejection3);
-    Run_Tree->SetBranchAddress("tauByLooseMuonRejection3", &tauByLooseMuonRejection3);
-    Run_Tree->SetBranchAddress("tauByMVA6MediumElectronRejection"  ,&tauByMVA6MediumElectronRejection);
-    Run_Tree->SetBranchAddress("tauByLooseCombinedIsolationDeltaBetaCorr3Hits",&tauByLooseCombinedIsolationDeltaBetaCorr3Hits);
-    Run_Tree->SetBranchAddress("tauByMediumCombinedIsolationDeltaBetaCorr3Hits",&tauByMediumCombinedIsolationDeltaBetaCorr3Hits);
-    Run_Tree->SetBranchAddress("tauByMVA6LooseElectronRejection", &tauByMVA6LooseElectronRejection);
-    Run_Tree->SetBranchAddress("tauDxy",&tauDxy);
-    Run_Tree->SetBranchAddress("tauDecayMode",&tauDecayMode);
-    Run_Tree->SetBranchAddress("tauByLooseIsolationMVArun2v1DBoldDMwLT",&tauByLooseIsolationMVArun2v1DBoldDMwLT);
-    Run_Tree->SetBranchAddress("tauByVLooseIsolationMVArun2v1DBoldDMwLT",&tauByVLooseIsolationMVArun2v1DBoldDMwLT);
-    Run_Tree->SetBranchAddress("tauByIsolationMVArun2v1DBoldDMwLTraw",&tauByIsolationMVArun2v1DBoldDMwLTraw);
-    Run_Tree->SetBranchAddress("tauByIsolationMVArun2v2DBoldDMwLTraw",&tauByIsolationMVArun2v2DBoldDMwLTraw);
-    Run_Tree->SetBranchAddress("tauCombinedIsolationDeltaBetaCorrRaw3Hits",&tauCombinedIsolationDeltaBetaCorrRaw3Hits);
-//    Run_Tree->SetBranchAddress("tauByLooseCombinedIsolationDeltaBetaCorr3Hits",&tauByLooseCombinedIsolationDeltaBetaCorr3Hits);
-    Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNoOverLap",&boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNoOverLap);
-    Run_Tree->SetBranchAddress("boostedTauByTightIsolationMVArun2v1DBoldDMwLTNoOverLap",&boostedTauByTightIsolationMVArun2v1DBoldDMwLTNoOverLap);
-    Run_Tree->SetBranchAddress("boostedTauByIsolationMVArun2v1DBoldDMwLTrawNoOverLap",&boostedTauByIsolationMVArun2v1DBoldDMwLTrawNoOverLap);
-    Run_Tree->SetBranchAddress("boostedTauChargedIsoPtSumNoOverLap",&boostedTauChargedIsoPtSumNoOverLap);
-    Run_Tree->SetBranchAddress("boostedTauNeutralIsoPtSumNoOverLap",&boostedTauNeutralIsoPtSumNoOverLap);
-    
-    Run_Tree->SetBranchAddress("boostedTauNumIsolationPFChargedHadrCands"  ,&boostedTauNumIsolationPFChargedHadrCands);
-    Run_Tree->SetBranchAddress("boostedTauNumIsolationPFNeutrHadrCands"  ,&boostedTauNumIsolationPFNeutrHadrCands);
-    Run_Tree->SetBranchAddress("boostedTauNumIsolationPFGammaCands"  ,&boostedTauNumIsolationPFGammaCands);
-    Run_Tree->SetBranchAddress("boostedTauNumIsolationPFCands"  ,&boostedTauNumIsolationPFCands);
-    Run_Tree->SetBranchAddress("boostedTauNumIsolationPFChargedHadrCandsOrig"  ,&boostedTauNumIsolationPFChargedHadrCandsOrig);
-    Run_Tree->SetBranchAddress("boostedTauNumIsolationPFNeutrHadrCandsOrig"  ,&boostedTauNumIsolationPFNeutrHadrCandsOrig);
-    Run_Tree->SetBranchAddress("boostedTauNumIsolationPFGammaCandsOrig"  ,&boostedTauNumIsolationPFGammaCandsOrig);
-    Run_Tree->SetBranchAddress("boostedTauNumIsolationPFCandsOrig"  ,&boostedTauNumIsolationPFCandsOrig);
-    
-    //########################################   Mu Info
-    Run_Tree->SetBranchAddress("nMu", &nMu);
-    Run_Tree->SetBranchAddress("muPt"  ,&muPt);
-    Run_Tree->SetBranchAddress("muEta"  ,&muEta);
-    Run_Tree->SetBranchAddress("muPhi"  ,&muPhi);
-    Run_Tree->SetBranchAddress("muIsoTrk", &muIsoTrk);
-    Run_Tree->SetBranchAddress("muCharge",&muCharge);
-    Run_Tree->SetBranchAddress("muIDbit",&muIDbit);//NEW
-    Run_Tree->SetBranchAddress("muPFChIso", &muPFChIso);
-    Run_Tree->SetBranchAddress("muPFPhoIso", &muPFPhoIso);
-    Run_Tree->SetBranchAddress("muPFNeuIso", &muPFNeuIso);
-    Run_Tree->SetBranchAddress("muPFPUIso", &muPFPUIso);
-    Run_Tree->SetBranchAddress("muD0",&muD0);
-    Run_Tree->SetBranchAddress("muDz",&muDz);
-    
-    //########################################   Ele Info
-    Run_Tree->SetBranchAddress("nEle", &nEle);
-    Run_Tree->SetBranchAddress("eleCharge", &eleCharge);
-    Run_Tree->SetBranchAddress("eleChargeConsistent", &eleChargeConsistent);
-    Run_Tree->SetBranchAddress("eleEn", &eleEn);
-    Run_Tree->SetBranchAddress("eleSCEn", &eleSCEn);
-    //    Run_Tree->SetBranchAddress("eleESEn", &eleESEn);
-    Run_Tree->SetBranchAddress("eleESEnP1", &eleESEnP1);
-    Run_Tree->SetBranchAddress("eleESEnP2", &eleESEnP2);
-    Run_Tree->SetBranchAddress("eleD0", &eleD0);
-    Run_Tree->SetBranchAddress("eleDz", &eleDz);
-    Run_Tree->SetBranchAddress("eleSIP", &eleSIP);
-    Run_Tree->SetBranchAddress("elePt", &elePt);
-    Run_Tree->SetBranchAddress("eleEta", &eleEta);
-    Run_Tree->SetBranchAddress("elePhi", &elePhi);
-    //    Run_Tree->SetBranchAddress("eleR9", &eleR9);
-    //    Run_Tree->SetBranchAddress("eleCalibPt", &eleCalibPt);
-    //    Run_Tree->SetBranchAddress("eleCalibEn", &eleCalibEn);
-    Run_Tree->SetBranchAddress("eleSCEta", &eleSCEta);
-    //    Run_Tree->SetBranchAddress("eleSCPhi", &eleSCPhi);
-    //    Run_Tree->SetBranchAddress("eleSCRawEn", &eleSCRawEn);
-    //    Run_Tree->SetBranchAddress("eleSCEtaWidth", &eleSCEtaWidth);
-    //    Run_Tree->SetBranchAddress("eleSCPhiWidth", &eleSCPhiWidth);
-    //    Run_Tree->SetBranchAddress("eleHoverE", &eleHoverE);
-    //    Run_Tree->SetBranchAddress("eleEoverP", &eleEoverP);
-    //    Run_Tree->SetBranchAddress("eleEoverPout", &eleEoverPout);
-    //    Run_Tree->SetBranchAddress("eleEoverPInv", &eleEoverPInv);
-    //    Run_Tree->SetBranchAddress("eleBrem", &eleBrem);
-    //    Run_Tree->SetBranchAddress("eledEtaAtVtx", &eledEtaAtVtx);
-    //    Run_Tree->SetBranchAddress("eledPhiAtVtx", &eledPhiAtVtx);
-    ////    Run_Tree->SetBranchAddress("eledEtaAtCalo", &eledEtaAtCalo);
-    //    Run_Tree->SetBranchAddress("eleSigmaIEtaIEtaFull5x5", &eleSigmaIEtaIEtaFull5x5);
-    //    Run_Tree->SetBranchAddress("eleSigmaIPhiIPhiFull5x5", &eleSigmaIPhiIPhiFull5x5);
-    Run_Tree->SetBranchAddress("eleConvVeto", &eleConvVeto);
-    Run_Tree->SetBranchAddress("eleMissHits", &eleMissHits);
-    Run_Tree->SetBranchAddress("eleESEffSigmaRR", &eleESEffSigmaRR);
-    Run_Tree->SetBranchAddress("elePFChIso", &elePFChIso);
-    Run_Tree->SetBranchAddress("elePFPhoIso", &elePFPhoIso);
-    Run_Tree->SetBranchAddress("elePFNeuIso", &elePFNeuIso);
-    Run_Tree->SetBranchAddress("elePFPUIso", &elePFPUIso);
-    Run_Tree->SetBranchAddress("elePFClusEcalIso", &elePFClusEcalIso);
-    Run_Tree->SetBranchAddress("elePFClusHcalIso", &elePFClusHcalIso);
-    //    Run_Tree->SetBranchAddress("elePFMiniIso", &elePFMiniIso);
-    Run_Tree->SetBranchAddress("eleIDMVAIso", &eleIDMVAIso);
-    Run_Tree->SetBranchAddress("eleIDMVANoIso", &eleIDMVANoIso);
-    //    Run_Tree->SetBranchAddress("eledEtaseedAtVtx", &eledEtaseedAtVtx);
-    //    Run_Tree->SetBranchAddress("eleE1x5", &eleE1x5);
-    //    Run_Tree->SetBranchAddress("eleE2x5", &eleE2x5);
-    //    Run_Tree->SetBranchAddress("eleE5x5", &eleE5x5);
-    //    Run_Tree->SetBranchAddress("eleE1x5Full5x5", &eleE1x5Full5x5);
-    //    Run_Tree->SetBranchAddress("eleE2x5Full5x5", &eleE2x5Full5x5);
-    //    Run_Tree->SetBranchAddress("eleE5x5Full5x5", &eleE5x5Full5x5);
-    //    Run_Tree->SetBranchAddress("eleR9Full5x5", &eleR9Full5x5);
-    //    Run_Tree->SetBranchAddress("eleEcalDrivenSeed", &eleEcalDrivenSeed);
-    //    Run_Tree->SetBranchAddress("eleDr03EcalRecHitSumEt", &eleDr03EcalRecHitSumEt);
-    //    Run_Tree->SetBranchAddress("eleDr03HcalDepth1TowerSumEt", &eleDr03HcalDepth1TowerSumEt);
-    //    Run_Tree->SetBranchAddress("eleDr03HcalDepth2TowerSumEt", &eleDr03HcalDepth2TowerSumEt);
-    //    Run_Tree->SetBranchAddress("eleDr03HcalTowerSumEt", &eleDr03HcalTowerSumEt);
-    //    Run_Tree->SetBranchAddress("eleDr03TkSumPt", &eleDr03TkSumPt);
-    //    Run_Tree->SetBranchAddress("elecaloEnergy", &elecaloEnergy);
-    //    Run_Tree->SetBranchAddress("eleTrkdxy", &eleTrkdxy);
-    //    Run_Tree->SetBranchAddress("eleKFHits", &eleKFHits);
-    //    Run_Tree->SetBranchAddress("eleKFChi2", &eleKFChi2);
-    //    Run_Tree->SetBranchAddress("eleIDbit", &eleIDbit);
-    
-    //########################################   Jet Info
-    Run_Tree->SetBranchAddress("nJet",&nJet);
-    Run_Tree->SetBranchAddress("jetPt",&jetPt);
-    Run_Tree->SetBranchAddress("jetEta",&jetEta);
-    Run_Tree->SetBranchAddress("jetPhi",&jetPhi);
-    Run_Tree->SetBranchAddress("jetEn",&jetEn);
-    Run_Tree->SetBranchAddress("jetCSV2BJetTags",&jetCSV2BJetTags);
-    Run_Tree->SetBranchAddress("jetPFLooseId",&jetPFLooseId);
-    Run_Tree->SetBranchAddress("jetPUID",&jetPUID);
-    Run_Tree->SetBranchAddress("jetRawPt",&jetRawPt);
-    Run_Tree->SetBranchAddress("jetJECUnc",&jetJECUnc);
-    Run_Tree->SetBranchAddress("jetRawEn",&jetRawEn);
-    Run_Tree->SetBranchAddress("jetHadFlvr",&jetHadFlvr);
-    //    Run_Tree->SetBranchAddress("jetP4Smear",&jetP4Smear);
-    //    Run_Tree->SetBranchAddress("jetP4SmearUp",&jetP4SmearUp);
-    //    Run_Tree->SetBranchAddress("jetP4SmearDo",&jetP4SmearDo);
-    
-    
-    
-    //########################################   MET Info
-    Run_Tree->SetBranchAddress("pfMET",&pfMET);
-    Run_Tree->SetBranchAddress("met_JESUp",&met_JESUp);
-    Run_Tree->SetBranchAddress("met_JESDown",&met_JESDown);
-    Run_Tree->SetBranchAddress("met_UESUp",&met_UESUp);
-    Run_Tree->SetBranchAddress("met_UESDown",&met_UESDown);
-    
-    
-    Run_Tree->SetBranchAddress("pfMETPhi",&pfMETPhi);
-    Run_Tree->SetBranchAddress("metphi_JESUp",&metphi_JESUp);
-    Run_Tree->SetBranchAddress("metphi_JESDown",&metphi_JESDown);
-    Run_Tree->SetBranchAddress("metphi_UESUp",&metphi_UESUp);
-    Run_Tree->SetBranchAddress("metphi_UESDown",&metphi_UESDown);
-    
-    Run_Tree->SetBranchAddress("metFilters",&metFilters);
-    Run_Tree->SetBranchAddress("genHT",&genHT);
-    
-    //    Run_Tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
-    //    Run_Tree->SetBranchAddress("pdfSystWeightId",&pdfSystWeightId);
-    //    Run_Tree->SetBranchAddress("pdfWeight",&pdfWeight);
-    
-    
-    
-    //########################################   Boosted Tau
-    Run_Tree->SetBranchAddress("nBoostedTau",&nBoostedTau);
-    Run_Tree->SetBranchAddress("boostedTauPt",&boostedTauPt);
-    Run_Tree->SetBranchAddress("boostedTauEta",&boostedTauEta);
-    Run_Tree->SetBranchAddress("boostedTauPhi",&boostedTauPhi);
-    Run_Tree->SetBranchAddress("boostedTauMass",&boostedTauMass);
-    Run_Tree->SetBranchAddress("boostedTauDecayMode",&boostedTauDecayMode);
-    Run_Tree->SetBranchAddress("boostedTauCharge",&boostedTauCharge);
-    Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v2DBoldDMwLT",&boostedTauByLooseIsolationMVArun2v2DBoldDMwLT);
-    
-    Run_Tree->SetBranchAddress("boostedTaupfTausDiscriminationByDecayModeFinding",&boostedTaupfTausDiscriminationByDecayModeFinding);
-    Run_Tree->SetBranchAddress("boostedTauByMVA6VLooseElectronRejection",&boostedTauByMVA6VLooseElectronRejection);
-    Run_Tree->SetBranchAddress("boostedTauByMVA6TightElectronRejection",&boostedTauByMVA6TightElectronRejection);
-    Run_Tree->SetBranchAddress("boostedTauByTightMuonRejection3",&boostedTauByTightMuonRejection3);
-    Run_Tree->SetBranchAddress("boostedTauByLooseMuonRejection3",&boostedTauByLooseMuonRejection3);
-    
-    
-    Run_Tree->SetBranchAddress("boostedTauByTightIsolationMVArun2v1DBoldDMwLT",&boostedTauByTightIsolationMVArun2v1DBoldDMwLT);
-    Run_Tree->SetBranchAddress("boostedTauByMediumIsolationMVArun2v1DBoldDMwLT",&boostedTauByMediumIsolationMVArun2v1DBoldDMwLT);
-    Run_Tree->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBoldDMwLT",&boostedTauByLooseIsolationMVArun2v1DBoldDMwLT);
-    Run_Tree->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT",&boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT);
-    
-    Run_Tree->SetBranchAddress("boostedTauByIsolationMVArun2v1DBoldDMwLTraw",&boostedTauByIsolationMVArun2v1DBoldDMwLTraw);
-    Run_Tree->SetBranchAddress("boostedTauCombinedIsolationDeltaBetaCorrRaw3Hits",&boostedTauCombinedIsolationDeltaBetaCorrRaw3Hits);
-    
-    Run_Tree->SetBranchAddress("boostedTauByLooseCombinedIsolationDeltaBetaCorr3Hits",&boostedTauByLooseCombinedIsolationDeltaBetaCorr3Hits);
-    Run_Tree->SetBranchAddress("boostedTauChargedIsoPtSum",&boostedTauChargedIsoPtSum);
-    
-    Run_Tree->SetBranchAddress("boostedTauNeutralIsoPtSum"  ,&boostedTauNeutralIsoPtSum);
-
-
-    Run_Tree->SetBranchAddress("taudaugPt",&taudaugPt);
-    Run_Tree->SetBranchAddress("taudaugEta",&taudaugEta);
-    Run_Tree->SetBranchAddress("taudaugPhi",&taudaugPhi);
-    Run_Tree->SetBranchAddress("taudaugMass",&taudaugMass);
-    Run_Tree->SetBranchAddress("numGenTau",&numGenTau);
-    
-    
-    
-    Run_Tree->SetBranchAddress("era", &era);
-    Run_Tree->SetBranchAddress("met_px", &met_px);
-    Run_Tree->SetBranchAddress("met_py", &met_py);
-    //    Run_Tree->SetBranchAddress("met", &met);
-    //    Run_Tree->SetBranchAddress("metphi", &metphi);
-    Run_Tree->SetBranchAddress("m_1", &m_1);
-    Run_Tree->SetBranchAddress("px_1", &px_1);
-    Run_Tree->SetBranchAddress("py_1", &py_1);
-    Run_Tree->SetBranchAddress("pz_1", &pz_1);
-    Run_Tree->SetBranchAddress("e_1", &e_1);
-    Run_Tree->SetBranchAddress("pt_1", &pt_1);
-    Run_Tree->SetBranchAddress("phi_1", &phi_1);
-    Run_Tree->SetBranchAddress("eta_1", &eta_1);
-    Run_Tree->SetBranchAddress("m_2", &m_2);
-    Run_Tree->SetBranchAddress("px_2", &px_2);
-    Run_Tree->SetBranchAddress("py_2", &py_2);
-    Run_Tree->SetBranchAddress("pz_2", &pz_2);
-    Run_Tree->SetBranchAddress("e_2", &e_2);
-    Run_Tree->SetBranchAddress("pt_2", &pt_2);
-    Run_Tree->SetBranchAddress("phi_2", &phi_2);
-    Run_Tree->SetBranchAddress("eta_2", &eta_2);
-    Run_Tree->SetBranchAddress("metcov00", &metcov00);
-    Run_Tree->SetBranchAddress("metcov01", &metcov01);
-    Run_Tree->SetBranchAddress("metcov10", &metcov10);
-    Run_Tree->SetBranchAddress("metcov11", &metcov11);
-    Run_Tree->SetBranchAddress("decayMode2", &decayMode2);
-    Run_Tree->SetBranchAddress("m_sv", &m_sv);
-    Run_Tree->SetBranchAddress("pt_sv", &pt_sv);
-    
-    Run_Tree->SetBranchAddress("lepIndex", &lepIndex);
-    Run_Tree->SetBranchAddress("tauIndex", &tauIndex);
-    Run_Tree->SetBranchAddress("decayMode1", &decayMode1);
-    Run_Tree->SetBranchAddress("leadtauIndex", &leadtauIndex);
-    Run_Tree->SetBranchAddress("subtauIndex", &subtauIndex);
-
-    
-    Run_Tree->SetBranchAddress("boostedTauSignalPFCands"  ,&boostedTauSignalPFCands);
-    Run_Tree->SetBranchAddress("boostedTauSignalPFGammaCands"  ,&boostedTauSignalPFGammaCands);
-    Run_Tree->SetBranchAddress("boostedTauIsolationPFCands"  ,&boostedTauIsolationPFCands);
-    Run_Tree->SetBranchAddress("boostedTauIsolationPFGammaCands"  ,&boostedTauIsolationPFGammaCands);
-
-
-    return Run_Tree;
-}
-
-
-
-
-
 //########################################
 // Pileup files
 //########################################
@@ -563,21 +285,21 @@ float FuncBosonKFactor(std::string X){
 
 
 
-int getNumTau(){
-    
-    
-    int numTau=0;
-    for  (int itau=0 ; itau < nTau; itau++){
-        
-        if (tauPt->at(itau) < 20  || fabs(tauEta->at(itau)) > 2.3 ) continue;
-        
-        bool TauIdIso =  taupfTausDiscriminationByDecayModeFinding->at(itau) > 0.5 && tauByLooseMuonRejection3->at(itau) > 0 && tauByMVA6LooseElectronRejection->at(itau) > 0 && tauByLooseIsolationMVArun2v1DBoldDMwLT->at(itau) > 0;
-        
-        if (!TauIdIso) continue;
-        numTau++;
-    }
-    return numTau;
-}
+//int getNumTau(){
+//
+//
+//    int numTau=0;
+//    for  (int itau=0 ; itau < nTau; itau++){
+//
+//        if (tauPt->at(itau) < 20  || fabs(tauEta->at(itau)) > 2.3 ) continue;
+//
+//        bool TauIdIso =  taupfTausDiscriminationByDecayModeFinding->at(itau) > 0.5 && tauByLooseMuonRejection3->at(itau) > 0 && tauByMVA6LooseElectronRejection->at(itau) > 0 && tauByLooseIsolationMVArun2v1DBoldDMwLT->at(itau) > 0;
+//
+//        if (!TauIdIso) continue;
+//        numTau++;
+//    }
+//    return numTau;
+//}
 
 
 
@@ -714,32 +436,32 @@ float compTopPtWeight(float top1Pt, float top2Pt) {
 
 
 
-vector<float> getMatchedRecoTau(TLorentzVector recoTau){
-    
-    
-    vector<float> matcdedRecoTau;
-    
-    float LowestDR=100;
-    TLorentzVector tau;
-    int index=0;
-    for (int itau=0; itau < nTau; itau++){
-        
-        tau.SetPtEtaPhiM(tauPt->at(itau),tauEta->at(itau),tauPhi->at(itau),tauMass->at(itau));
-        float dr_boost_reco= recoTau.DeltaR(tau);
-        if (dr_boost_reco < LowestDR)  {
-            LowestDR= dr_boost_reco;
-            index=itau;
-        }
-    }
-    matcdedRecoTau.push_back(LowestDR);
-    matcdedRecoTau.push_back(tauByIsolationMVArun2v1DBoldDMwLTraw->at(index));
-    matcdedRecoTau.push_back(tauByIsolationMVArun2v2DBoldDMwLTraw->at(index));
-    matcdedRecoTau.push_back(tauPt->at(index));
-    matcdedRecoTau.push_back(tauEta->at(index));
-    matcdedRecoTau.push_back(tauCombinedIsolationDeltaBetaCorrRaw3Hits->at(index));
-    
-    return matcdedRecoTau;
-}
+//vector<float> getMatchedRecoTau(TLorentzVector recoTau){
+//
+//
+//    vector<float> matcdedRecoTau;
+//
+//    float LowestDR=100;
+//    TLorentzVector tau;
+//    int index=0;
+//    for (int itau=0; itau < nTau; itau++){
+//
+//        tau.SetPtEtaPhiM(tauPt->at(itau),tauEta->at(itau),tauPhi->at(itau),tauMass->at(itau));
+//        float dr_boost_reco= recoTau.DeltaR(tau);
+//        if (dr_boost_reco < LowestDR)  {
+//            LowestDR= dr_boost_reco;
+//            index=itau;
+//        }
+//    }
+//    matcdedRecoTau.push_back(LowestDR);
+//    matcdedRecoTau.push_back(tauByIsolationMVArun2v1DBoldDMwLTraw->at(index));
+//    matcdedRecoTau.push_back(tauByIsolationMVArun2v2DBoldDMwLTraw->at(index));
+//    matcdedRecoTau.push_back(tauPt->at(index));
+//    matcdedRecoTau.push_back(tauEta->at(index));
+//    matcdedRecoTau.push_back(tauCombinedIsolationDeltaBetaCorrRaw3Hits->at(index));
+//
+//    return matcdedRecoTau;
+//}
 
 
 
@@ -1135,14 +857,15 @@ int ZCategory(TLorentzVector tauCandidate) {
         if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 13 && mcStatusFlag->at(igen) >> 10 & 1) return 4;
     }
     TLorentzVector genTau;
-    for (int i=0; i < numGenTau  ; i++){
-        //        cout<<taudaugPt->at(i)<<" "<<taudaugEta->at(i)<<" "<<taudaugPhi->at(i)<<" "<<taudaugMass->at(i)<<"\n";
-        //        cout<<taudaugMass->at(i)<<"\n";
-        genTau.SetPtEtaPhiM(taudaugPt->at(i),taudaugEta->at(i),taudaugPhi->at(i),taudaugMass->at(i));
-        if (tauCandidate.DeltaR(genTau) < 0.2  && taudaugPt->at(i) > 15)
-            return 5;
-    }
-    return 6;
+//    for (int i=0; i < numGenTau  ; i++){
+//        //        cout<<taudaugPt->at(i)<<" "<<taudaugEta->at(i)<<" "<<taudaugPhi->at(i)<<" "<<taudaugMass->at(i)<<"\n";
+//        //        cout<<taudaugMass->at(i)<<"\n";
+//        genTau.SetPtEtaPhiM(taudaugPt->at(i),taudaugEta->at(i),taudaugPhi->at(i),taudaugMass->at(i));
+//        if (tauCandidate.DeltaR(genTau) < 0.2  && taudaugPt->at(i) > 15)
+//            return 5;
+//    }
+//    return 6;
+    return 5;
 }
 
 //

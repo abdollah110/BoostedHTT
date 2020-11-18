@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
     auto fin = TFile::Open(fname.c_str());
     std::cout << "Loading Ntuple..." << std::endl;
     TTree *  Run_Tree;
-    Run_Tree= Xttree(fin);
+    Run_Tree= Xttree(fin,"EventTree");
     
     //    auto HistoTot = reinterpret_cast<TH1D*>(fin->Get("ggNtuplizer/hEvents"));
     TH1F * HistoTot = (TH1F*) fin->Get("hcount");
@@ -116,16 +116,12 @@ int main(int argc, char* argv[]) {
         int numBJet=numBJets(BJetPtCut,CSVCut);
         if (numBJet > 0) continue;
         
-        // HT cut
-        float ht= getHT(JetPtCut);
-        if (ht < 200) continue;
+
         
         //electron veto
         int numele =getNumElectron();
         if (numele > 0) continue;
         
-        //Leading jet
-        TLorentzVector LeadJet= getLeadJet();
         
         
         //MET Shape systematics
@@ -229,7 +225,9 @@ int main(int argc, char* argv[]) {
                 
                 if (boostedTauPt->at(ibtau) <= 20 || fabs(boostedTauEta->at(ibtau)) >= 2.3 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
-                if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
+//                if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
+                if (boostedTauagainstElectronVLooseMVA62018->at(ibtau) < 0.5) continue;
+                
                 if (boostedTauByTightMuonRejection3->at(ibtau) < 0.5) continue;
                 
                 BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
@@ -249,20 +247,32 @@ int main(int argc, char* argv[]) {
                 }
                 
                 
+                // HT cut
+                float ht= getHT(JetPtCut, Mu4Momentum, BoostedTau4Momentum);
+                if (ht < 200) continue;
                 
-                
+                //Leading jet
+                TLorentzVector LeadJet= getLeadJet(Mu4Momentum, BoostedTau4Momentum);
+
                 //###############################################################################################
                 //  BoostedTau Isolation Categorization
                 //###############################################################################################
                 
                 const int size_tauCat = 6;
-                bool Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
-                bool Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
-                bool PassM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
-                bool FailM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
-                bool PassT = boostedTauByTightIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
-                bool FailT = boostedTauByTightIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
-                
+//                bool Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
+//                bool Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
+//                bool PassM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
+//                bool FailM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
+//                bool PassT = boostedTauByTightIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
+//                bool FailT = boostedTauByTightIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
+
+                bool Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5 ;
+                bool Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) < 0.5 ;
+                bool PassM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5 ;
+                bool FailM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) < 0.5 ;
+                bool PassT = boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5 ;
+                bool FailT = boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) < 0.5 ;
+
                 
                 bool Tau_category[size_tauCat] = {Pass, Fail,PassM, FailM,PassT, FailT};
                 std::string Tau_Cat[size_tauCat] = {"_Pass", "_Fail","_PassM", "_FailM","_PassT", "_FailT"};
