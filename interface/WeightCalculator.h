@@ -148,10 +148,19 @@ float XSection(std::string OutName) {
 //    {"data", 1.0},
 
 
-else if (OutName.find("ZZ") != string::npos) return  12.14 ;
-else if (OutName.find("WZ") != string::npos) return  27.57 ;
-else if (OutName.find("WW") != string::npos) return  75.88 ;
-
+//else if (OutName.find("ZZ") != string::npos) return  12.14 ;
+//else if (OutName.find("WZ") != string::npos) return  27.57 ;
+//else if (OutName.find("WW") != string::npos) return  75.88 ;
+else if (OutName.find("ZZ4l") != string::npos) return   1.212;
+else if (OutName.find("ZZ2l2q") != string::npos) return  3.22;
+else if (OutName.find("WZ3l1nu") != string::npos) return  4.708;
+else if (OutName.find("WZ3l1nu") != string::npos) return  4.708;
+else if (OutName.find("WZ2l2Q") != string::npos) return  5.595;
+else if (OutName.find("WZ1l1nu2q") != string::npos) return  10.71;
+else if (OutName.find("VV2l2nu") != string::npos) return  11.95;
+else if (OutName.find("Tbar-tchan") != string::npos) return  26.23;
+else if (OutName.find("Tbar-tW") != string::npos) return  35.6;
+else if (OutName.find("T-tW") != string::npos) return  35.6;
         
     
       else if (OutName.find("ZZTo2L2Nu_powheg") != string::npos) return  0.564 ;
