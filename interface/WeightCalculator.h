@@ -156,6 +156,7 @@ else if (OutName.find("ZZ2l2q") != string::npos) return  3.22;
 else if (OutName.find("WZ3l1nu") != string::npos) return  4.708;
 else if (OutName.find("WZ3l1nu") != string::npos) return  4.708;
 else if (OutName.find("WZ2l2Q") != string::npos) return  5.595;
+else if (OutName.find("WZ2l2q") != string::npos) return  5.595;
 else if (OutName.find("WZ1l1nu2q") != string::npos) return  10.71;
 else if (OutName.find("VV2l2nu") != string::npos) return  11.95;
 else if (OutName.find("Tbar-tchan") != string::npos) return  26.23;
