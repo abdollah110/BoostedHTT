@@ -188,7 +188,7 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
         auto tree = reinterpret_cast<TTree *>(fin->Get(tree_name.c_str()));
         
         float lepPt_=-10;
-         bool FailL,PassT,PassL,FailM,PassT,FailT,OS,SS,lepIsoPass;
+         bool FailL,PassL,PassL,FailM,PassT,FailT,OS,SS,lepIsoPass;
          float weight;
          
         
