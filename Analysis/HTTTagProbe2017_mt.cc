@@ -247,7 +247,7 @@ int main(int argc, char* argv[]) {
             
             
             
-            float tmass = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  Met,  Metphi);
+            tmass = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  Met,  Metphi);
             if (tmass > 40) continue;
             
             for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
@@ -312,8 +312,8 @@ int main(int argc, char* argv[]) {
                 bool LepPassIsolation= IsoMu < LeptonIsoCut;
                 
                 const int size_isoCat = 2;
-                bool Isolation = LepPassIsolation;
-                bool AntiIsolation =  !LepPassIsolation;
+                Isolation = LepPassIsolation;
+                AntiIsolation =  !LepPassIsolation;
                 
                 bool Iso_category[size_isoCat] = {Isolation, AntiIsolation};
                 std::string iso_Cat[size_isoCat] = {"_Iso", "_AntiIso"};
@@ -324,8 +324,8 @@ int main(int argc, char* argv[]) {
                 float chargelt= muCharge->at(imu) * boostedTauCharge->at(ibtau);
                 
                 const int size_q = 2;
-                bool q_OS = chargelt < 0;
-                bool q_SS =  chargelt > 0;
+                q_OS = chargelt < 0;
+                q_SS =  chargelt > 0;
                 
                 bool Q_category[size_q] = {q_OS, q_SS};
                 std::string Q_Cat[size_q] = {"_OS", "_SS"};
@@ -335,7 +335,7 @@ int main(int argc, char* argv[]) {
                 //  Weights
                 //###############################################################################################
 
-                float FullWeight = LumiWeight*MuonCor *ZCorrection;
+                FullWeight = LumiWeight*MuonCor *ZCorrection;
                 if (isData) FullWeight=1;
 
                 //###############################################################################################

@@ -84,7 +84,8 @@ HistTool::HistTool(std::string channel_prefix, std::string year, std::string suf
 
 // x-axis
 //bins_NN{0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0}, // This is for 0jet
-bins_NN(bins), // This is for 0jet
+//bins_NN(bins), // This is for 0jet
+bins_NN({20,0,200}),
 bins_FAKE({20,0,2000}),
 channel_prefix(channel_prefix),
 categories{
