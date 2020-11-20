@@ -81,8 +81,8 @@ int main(int argc, char* argv[]) {
     float tmass,ht,st,Met,FullWeight, dR_lep_tau, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight, LeadJetPt;
     bool Isolation, AntiIsolation;
     float mupt_,taupt_, ZMass;
-    
-    
+
+
     outTr->Branch("muPt",&mupt_,"muPt/F");
     outTr->Branch("taupt",&taupt_,"taupt/F");
     outTr->Branch("PassL",&PassL,"PassL/O");
@@ -102,8 +102,8 @@ int main(int argc, char* argv[]) {
     outTr->Branch("LeadJetPt",&LeadJetPt,"LeadJetPt/F");
     outTr->Branch("dR_lep_tau",&dR_lep_tau,"dR_lep_tau/F");
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
-    
-    
+                    
+                    
     
     
     Int_t nentries_wtn = (Int_t) Run_Tree->GetEntries();
@@ -145,7 +145,7 @@ int main(int argc, char* argv[]) {
         int numBJet=numBJets(BJetPtCut,CSVCut);
         if (numBJet > 0) continue;
         
-        
+
         
         //electron veto
         int numele =getNumElectron();
@@ -254,7 +254,7 @@ int main(int argc, char* argv[]) {
                 
                 if (boostedTauPt->at(ibtau) <= 20 || fabs(boostedTauEta->at(ibtau)) >= 2.3 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
-                //                if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
+//                if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
                 if (boostedTauagainstElectronVLooseMVA62018->at(ibtau) < 0.5) continue;
                 
                 if (boostedTauByTightMuonRejection3->at(ibtau) < 0.5) continue;
@@ -277,31 +277,31 @@ int main(int argc, char* argv[]) {
                 
                 
                 // HT cut
-                ht= getHT(JetPtCut, Mu4Momentum, BoostedTau4Momentum);
+                 ht= getHT(JetPtCut, Mu4Momentum, BoostedTau4Momentum);
                 if (ht < 200) continue;
                 
                 //Leading jet
                 TLorentzVector LeadJet= getLeadJet(Mu4Momentum, BoostedTau4Momentum);
-                
+
                 //###############################################################################################
                 //  BoostedTau Isolation Categorization
                 //###############################################################################################
                 
                 const int size_tauCat = 6;
-                //                bool Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
-                //                bool Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
-                //                bool PassM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
-                //                bool FailM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
-                //                bool PassT = boostedTauByTightIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
-                //                bool FailT = boostedTauByTightIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
-                
-                PassL = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5 ;
-                FailL = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) < 0.5 ;
-                PassM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5 ;
-                FailM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) < 0.5 ;
-                PassT = boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5 ;
-                FailT = boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) < 0.5 ;
-                
+//                bool Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
+//                bool Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
+//                bool PassM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
+//                bool FailM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
+//                bool PassT = boostedTauByTightIsolationMVArun2v1DBoldDMwLT->at(ibtau) > 0.5 ;
+//                bool FailT = boostedTauByTightIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5 ;
+
+                 PassL = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5 ;
+                 FailL = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) < 0.5 ;
+                 PassM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5 ;
+                 FailM = boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) < 0.5 ;
+                 PassT = boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5 ;
+                 FailT = boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) < 0.5 ;
+
                 
                 bool Tau_category[size_tauCat] = {PassL, FailL,PassM, FailM,PassT, FailT};
                 std::string Tau_Cat[size_tauCat] = {"_PassL", "_FailL","_PassM", "_FailM","_PassT", "_FailT"};
@@ -334,19 +334,23 @@ int main(int argc, char* argv[]) {
                 //###############################################################################################
                 //  Weights
                 //###############################################################################################
-                
+
                 float FullWeight = LumiWeight*MuonCor *ZCorrection;
                 if (isData) FullWeight=1;
-                
+
                 //###############################################################################################
                 //  make Tree
                 //###############################################################################################
                 
                 mupt_=muPt->at(imu);
-                taupt_=boostedTauPt->at(ibtau);
-                ZMass=Z4Momentum.M();
+                 taupt_=boostedTauPt->at(ibtau);
+                 ZMass=Z4Momentum.M();
                 LeadJetPt = LeadJet.Pt();
                 float dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
+                
+                
+
+                
                 
                 //###############################################################################################
                 // Fill Histograms
@@ -358,14 +362,14 @@ int main(int argc, char* argv[]) {
                             if (Iso_category[iso]) {
                                 for (int iq = 0; iq < size_q; iq++) {
                                     if (Q_category[iq]) {
-                                        
-                                        
+
+
                                         std::string FullStringName = Tau_Cat[tt] +iso_Cat[iso] + Q_Cat[iq] ;
-                                        
+
                                         //                                This check is used to make sure that each event is just filled once for any of the categories ==> No doube-counting of events  (this is specially important for ttbar events where we have many jets and leptons)
                                         if (!( std::find(HistNamesFilled.begin(), HistNamesFilled.end(), FullStringName) != HistNamesFilled.end())){
                                             HistNamesFilled.push_back(FullStringName);
-                                            
+
                                             //1 D histograms
                                             plotFill("ZMass"+FullStringName,Z4Momentum.M() ,20,0,100,FullWeight);
                                             plotFill("tmass"+FullStringName,tmass ,25,0,50,FullWeight);
@@ -375,13 +379,13 @@ int main(int argc, char* argv[]) {
                                             plotFill("MET"+FullStringName,Met ,30,0,300,FullWeight);
                                             plotFill("LeadJetPt"+FullStringName,LeadJet.Pt() ,25,0,1000,FullWeight);
                                             plotFill("dR_Z_jet"+FullStringName,LeadJet.DeltaR(Z4Momentum) ,25,0,5,FullWeight);
-                                            
-                                            
+
+
                                             //2 D histograms
                                             plotFill("LepDR_MET"+FullStringName, dR_lep_tau, Met, 20,0.4,0.8 ,30,0,300,FullWeight);
                                             plotFill("LepDR_HT"+FullStringName, dR_lep_tau, ht, 20,0.4,0.8 ,25,0,1000,FullWeight);
                                             plotFill("LepDR_LeadJet"+FullStringName, dR_lep_tau, LeadJet.Pt(), 20,0.4,0.8 ,25,0,1000,FullWeight);
-                                            
+
                                         }
                                     }
                                 }
@@ -389,21 +393,20 @@ int main(int argc, char* argv[]) {
                         }
                     }
                 }
-                
-                if (! isFilledOnce ){
-                    outTr->Fill();
-                    isFilledOnce= true;
-                }
-                
+
                 
             }//boostedTau loop
         }//muon loop
-        
-        
-        
+
+        if (! isFilledOnce ){
+        outTr->Fill();
+        isFilledOnce= true;
+        }
+
+
     } //End of Tree
     
-    //    outTr->Fill();
+//    outTr->Fill();
     
     fout->cd();
     map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();

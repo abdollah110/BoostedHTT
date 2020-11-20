@@ -497,6 +497,11 @@ float dR_(float ieta, float iphi, float jeta, float jphi){
        Run_Tree->SetBranchAddress("muPFPhoIso", &muPFPhoIso);
        Run_Tree->SetBranchAddress("muPFNeuIso", &muPFNeuIso);
        Run_Tree->SetBranchAddress("muPFPUIso", &muPFPUIso);
+       Run_Tree->SetBranchAddress("muPFChIso03", &muPFChIso03);
+       Run_Tree->SetBranchAddress("muPFPhoIso03", &muPFPhoIso03);
+       Run_Tree->SetBranchAddress("muPFNeuIso03", &muPFNeuIso03);
+       Run_Tree->SetBranchAddress("muPFPUIso03", &muPFPUIso03);
+
        Run_Tree->SetBranchAddress("muD0",&muD0);
        Run_Tree->SetBranchAddress("muDz",&muDz);
    
