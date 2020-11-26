@@ -115,13 +115,13 @@ void SkimerBoost::Loop(TString OutputFile)
                 if (boostedTauagainstElectronVLooseMVA62018->at(ibtau) < 0.5) continue;
                 if (boostedTauByTightMuonRejection3->at(ibtau) < 0.5) continue;
 //                if (boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) < 0.5) continue;
-                if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < 0.0) continue;
+//                if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < 0.0) continue;
                 
                 
                 
                 BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                 if(BoostedTau4Momentum.DeltaR(Mu4Momentum) > 0.8 || BoostedTau4Momentum.DeltaR(Mu4Momentum) < 0.1) continue;
-                if(muCharge->at(imu) * boostedTauCharge->at(ibtau) > 0) continue;
+//                if(muCharge->at(imu) * boostedTauCharge->at(ibtau) > 0) continue;
                 
                 numMuTau++;
                 
