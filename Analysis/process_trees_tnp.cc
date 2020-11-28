@@ -90,7 +90,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         
         float lepPt_=-10;
         float taupt_=-10;
-        float vis_mass=-10;
+        float ZMass=-10;
         float LeadJetPt = -10;
         float dR_Z_jet=-10;
         bool FailL,PassL,PassM,FailM,PassT,FailT,OS,SS,lepIsoPass,eleIDMVA;
@@ -103,10 +103,10 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         tree->SetBranchAddress("taupt",&taupt_);
         tree->SetBranchAddress("PassL",&PassL);
         tree->SetBranchAddress("FailL",&FailL);
-        tree->SetBranchAddress("OS",&OS);
-        tree->SetBranchAddress("SS",&SS);
-        tree->SetBranchAddress("lepIsoPass",&lepIsoPass);
-        tree->SetBranchAddress("vis_mass",&vis_mass);
+        tree->SetBranchAddress("q_OS",&OS);
+        tree->SetBranchAddress("q_SS",&SS);
+        tree->SetBranchAddress("lepIso",&lepIsoPass);
+        tree->SetBranchAddress("ZMass",&ZMass);
         tree->SetBranchAddress("tmass",&tmass);
         tree->SetBranchAddress("ht",&ht);
         tree->SetBranchAddress("st",&st);
@@ -127,13 +127,15 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         std::cout<<" tree->GetEntries() is "<<tree->GetEntries()<<"\n";
         for (auto i = 0; i < tree->GetEntries(); i++) {
             tree->GetEntry(i);
-            if (weight > 100) continue;
+            if (weight > 1000) continue;
+            if (weight < 1e-10) continue;
+
             std::map<std::string, float>  ObsName {
                 {"lepPt",lepPt_},
                 {"taupt",taupt_},
                 {"PassL",PassL},
                 {"lepIsoPass",lepIsoPass},
-                {"vis_mass",vis_mass},
+                {"ZMass",ZMass},
                 {"tmass",tmass},
                 {"ht",ht},
                 {"st",st},
@@ -151,11 +153,11 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
             
             vbf_var1 =ObsName[var_name];
 
-            if (OS != 0  && PassL) {
+            if (OS != 0  && PassL && lepIsoPass) {
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
             }
 
-            if (SS != 0 && PassL ){
+            if (SS != 0 && PassL && lepIsoPass){
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight,OSSS[0]);
             }
 
@@ -192,26 +194,27 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
         tree->SetBranchAddress("muPt",&lepPt_);
         tree->SetBranchAddress("PassL",&PassL);
         tree->SetBranchAddress("FailL",&FailL);
-        tree->SetBranchAddress("OS",&OS);
-        tree->SetBranchAddress("SS",&SS);
+        tree->SetBranchAddress("q_OS",&OS);
+        tree->SetBranchAddress("q_SS",&SS);
         tree->SetBranchAddress("lepIso",&lepIsoPass);
         tree->SetBranchAddress("evtwt",&weight);
         
         for (auto i = 0; i < tree->GetEntries(); i++) {
             tree->GetEntry(i);
-            if (weight > 100) continue;
+            if (weight > 1000) continue;
+            if (weight < 1e-10) continue;
             
 
-            if (OS != 0 && !PassL && !lepIsoPass){
+            if (OS != 0 && !lepIsoPass){
 //                if (OS != 0 && !PassL ){
 //            if (OS != 0 &&  !lepIsoPass){
-                fillQCD_OS_CR(zeroJet, name, PassL,  weight);
+                fillQCD_OS_CR(zeroJet, name, lepPt_,  weight);
             }
-            else if (SS != 0 && !PassL && !lepIsoPass){
+            else if (SS != 0 && !lepIsoPass){
 //            else if (SS != 0 && !PassL ){
 //            else if (SS != 0  && !lepIsoPass){
 //            else if (SS != 0 ){
-                fillQCD_SS_CR(zeroJet, name, PassL,  weight);
+                fillQCD_SS_CR(zeroJet, name, lepPt_,  weight);
             }
         }
         fin->Close();

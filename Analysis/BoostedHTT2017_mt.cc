@@ -42,7 +42,9 @@ int main(int argc, char* argv[]) {
     auto InputFile = TFile::Open(fname.c_str());
     std::cout << "Loading Ntuple..." << std::endl;
     TTree *  Run_Tree;
-    Run_Tree= Xttree(InputFile,"mutau_tree");
+//    Run_Tree= Xttree(InputFile,"mutau_tree");
+    Run_Tree= Xttree(InputFile,"EventTree");
+    
     
     //    auto HistoTot = reinterpret_cast<TH1D*>(InputFile->Get("ggNtuplizer/hEvents"));
     TH1F * HistoTot = (TH1F*) InputFile->Get("hcount");
@@ -196,7 +198,7 @@ int main(int argc, char* argv[]) {
         
         if (boostedTauPt->at(idx_tau) <= 40 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_tau) < 0.5 ) continue;
-        if (boostedTauByMVA6VLooseElectronRejection->at(idx_tau) < 0.5) continue;
+//        if (boostedTauByMVA6VLooseElectronRejection->at(idx_tau) < 0.5) continue;
         if (boostedTauByTightMuonRejection3->at(idx_tau) < 0.5) continue;
         BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
         plotFill("cutFlowTable",4 ,15,0,15);
@@ -211,8 +213,8 @@ int main(int argc, char* argv[]) {
         if (tmass > 80) continue;
         plotFill("cutFlowTable",6 ,15,0,15);
         
-        if (m_sv < 10) continue;
-        plotFill("cutFlowTable",7 ,15,0,15);
+//        if (m_sv < 10) continue;
+//        plotFill("cutFlowTable",7 ,15,0,15);
         
         // BJet veto
         int numBJet=numBJets(BJetPtCut,CSVCut);

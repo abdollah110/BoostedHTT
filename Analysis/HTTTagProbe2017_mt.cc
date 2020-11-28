@@ -80,7 +80,7 @@ int main(int argc, char* argv[]) {
     bool FailL,PassL,FailM,PassM,FailT,PassT,OS,SS,lepIsoPass,IsoLepValue, q_SS, q_OS;
     float tmass,ht,st,Met,FullWeight, dR_lep_tau, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight, LeadJetPt;
     bool Isolation, AntiIsolation;
-    float mupt_,taupt_, ZMass;
+    float mupt_,taupt_, ZMass, LeptonIso;
 
 
     outTr->Branch("muPt",&mupt_,"muPt/F");
@@ -102,15 +102,16 @@ int main(int argc, char* argv[]) {
     outTr->Branch("LeadJetPt",&LeadJetPt,"LeadJetPt/F");
     outTr->Branch("dR_lep_tau",&dR_lep_tau,"dR_lep_tau/F");
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
-                    
-                    
+    outTr->Branch("LeptonIso",&LeptonIso,"LeptonIso/F");
     
+                    
+                    
+    plotFill("cutFlowTable",1 ,15,0,15);
     
     Int_t nentries_wtn = (Int_t) Run_Tree->GetEntries();
     cout<<"nentries_wtn===="<<nentries_wtn<<"\n";
     for (Int_t i = 0; i < nentries_wtn; i++) {
-        //                    for (Int_t i = 0; i < 10000; i++) {
-        
+        plotFill("cutFlowTable",2 ,15,0,15);
         Run_Tree->GetEntry(i);
         if (i % 1000 == 0) fprintf(stdout, "\r  Processed events: %8d of %8d ", i, nentries_wtn);
         fflush(stdout);
@@ -118,6 +119,7 @@ int main(int argc, char* argv[]) {
         // Trigger
         bool PassTrigger = ((HLTEleMuX >> 19 & 1)==1); // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19; // 2017
         if (! PassTrigger) continue;
+        plotFill("cutFlowTable",3 ,15,0,15);
         
         //  This part is to avoid of the duplicate of mu-tau pair from one events
         std::vector<string> HistNamesFilled;
@@ -144,13 +146,13 @@ int main(int argc, char* argv[]) {
         // BJet veto
         int numBJet=numBJets(BJetPtCut,CSVCut);
         if (numBJet > 0) continue;
-        
+        plotFill("cutFlowTable",4 ,15,0,15);
 
         
         //electron veto
         int numele =getNumElectron();
         if (numele > 0) continue;
-        
+        plotFill("cutFlowTable",5 ,15,0,15);
         
         
         //MET Shape systematics
@@ -171,7 +173,7 @@ int main(int argc, char* argv[]) {
         for (int imu = 0; imu < nMu; ++imu){
             
             if (muPt->at(imu) <= 30 || fabs(muEta->at(imu)) >= 2.4) continue;
-            
+            plotFill("cutFlowTable",6 ,15,0,15);
             float IsoMu=muPFChIso03->at(imu)/muPt->at(imu);
             if ( (muPFNeuIso03->at(imu) + muPFPhoIso03->at(imu) - 0.5* muPFPUIso03->at(imu) )  > 0.0)
                 IsoMu= ( muPFChIso03->at(imu) + muPFNeuIso03->at(imu) + muPFPhoIso03->at(imu) - 0.5* muPFPUIso03->at(imu))/muPt->at(imu);
@@ -181,7 +183,7 @@ int main(int argc, char* argv[]) {
             if (!MuId ) continue;
             Mu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             //                float MuonCor=getCorrFactorMuon94X(isData,  muPt->at(imu), muEta->at(imu) , HistoMuId,HistoMuIso,HistoMuTrg,HistoMuTrack);
-            
+            plotFill("cutFlowTable",7 ,15,0,15);
             
             float MuonCor=1;
             if (!isData){
@@ -249,37 +251,40 @@ int main(int argc, char* argv[]) {
             
             tmass = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  Met,  Metphi);
             if (tmass > 40) continue;
-            
+            plotFill("cutFlowTable",8 ,15,0,15);
             for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                 
                 if (boostedTauPt->at(ibtau) <= 20 || fabs(boostedTauEta->at(ibtau)) >= 2.3 ) continue;
+                plotFill("cutFlowTable",9 ,15,0,15);
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
+                plotFill("cutFlowTable",10 ,15,0,15);
 //                if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
                 if (boostedTauagainstElectronVLooseMVA62018->at(ibtau) < 0.5) continue;
-                
+                plotFill("cutFlowTable",11 ,15,0,15);
                 if (boostedTauByTightMuonRejection3->at(ibtau) < 0.5) continue;
-                
+                plotFill("cutFlowTable",12 ,15,0,15);
                 BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                 dR_lep_tau= BoostedTau4Momentum.DeltaR(Mu4Momentum);
-                if( dR_lep_tau > 0.8 || dR_lep_tau < 0.3) continue;
+//                if( dR_lep_tau > 0.8 || dR_lep_tau < 0.3) continue;
+                if( dR_lep_tau > 0.8 || dR_lep_tau < 0.4) continue;
                 Z4Momentum=BoostedTau4Momentum+Mu4Momentum;
+                plotFill("cutFlowTable",13 ,15,0,15);
                 
-                
-                // Separate Drell-Yan
-                int Zcateg = ZCategory(BoostedTau4Momentum);
-                if (name == "ZLL" && Zcateg > 4) {
-                    continue;
-                } else if ((name == "ZTT") &&Zcateg != 5) {
-                    continue;
-                } else if (name == "ZJ" && Zcateg != 6) {
-                    continue;
-                }
+//                // Separate Drell-Yan
+//                int Zcateg = ZCategory(BoostedTau4Momentum);
+//                if (name == "ZLL" && Zcateg > 4) {
+//                    continue;
+//                } else if ((name == "ZTT") &&Zcateg != 5) {
+//                    continue;
+//                } else if (name == "ZJ" && Zcateg != 6) {
+//                    continue;
+//                }
                 
                 
                 // HT cut
                  ht= getHT(JetPtCut, Mu4Momentum, BoostedTau4Momentum);
                 if (ht < 200) continue;
-                
+                plotFill("cutFlowTable",15 ,15,0,15);
                 //Leading jet
                 TLorentzVector LeadJet= getLeadJet(Mu4Momentum, BoostedTau4Momentum);
 
@@ -347,10 +352,7 @@ int main(int argc, char* argv[]) {
                  ZMass=Z4Momentum.M();
                 LeadJetPt = LeadJet.Pt();
                 float dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
-                
-                
-
-                
+                LeptonIso=IsoMu;
                 
                 //###############################################################################################
                 // Fill Histograms

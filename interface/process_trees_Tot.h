@@ -161,7 +161,9 @@ systematics{
                 fakes_1d_OS_CR.at(cat)->Fill(var1, 1);
                 fakes_1d_OS_CR_Up.at(cat)->Fill(var1, 1);
                 fakes_1d_OS_CR_Down.at(cat)->Fill(var1, 1);
-            } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZJ"|| name == "ZLL" || name == "EWKZ" ) {
+//            } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZJ"|| name == "ZLL" || name == "EWKZ" ) {
+                } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+
                 fakes_1d_OS_CR.at(cat)->Fill(var1, -1*weight);
                 fakes_1d_OS_CR_Up.at(cat)->Fill(var1, -1*weight*0.9);
                 fakes_1d_OS_CR_Down.at(cat)->Fill(var1, -1*weight*1.1);
@@ -174,7 +176,8 @@ systematics{
                 fakes_1d_SS_CR.at(cat)->Fill(var1, 1);
                 fakes_1d_SS_CR_Up.at(cat)->Fill(var1, 1);
                 fakes_1d_SS_CR_Down.at(cat)->Fill(var1, 1);
-            } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZJ"|| name == "ZLL" || name == "EWKZ" ) {
+//            } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZJ"|| name == "ZLL" || name == "EWKZ" ) {
+                } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" ||  name == "EWKZ" ) {
                 fakes_1d_SS_CR.at(cat)->Fill(var1, -1*weight);
                 fakes_1d_SS_CR_Up.at(cat)->Fill(var1, -1*weight*0.9);
                 fakes_1d_SS_CR_Down.at(cat)->Fill(var1, -1*weight*1.1);
@@ -188,7 +191,8 @@ systematics{
                 fakes_1d_norm.at(cat)->Fill(var1, 1*OSSS_val);
                 fakes_1d_norm_Up.at(cat)->Fill(var1, 1*OSSS_val);
                 fakes_1d_norm_Down.at(cat)->Fill(var1, 1*OSSS_val);
-            } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZJ"|| name == "ZLL" || name == "EWKZ" ) {
+//            } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZJ"|| name == "ZLL" || name == "EWKZ" ) {
+                } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
                 fakes_1d_norm.at(cat)->Fill(var1, -1*OSSS_val*weight);
                 fakes_1d_norm_Up.at(cat)->Fill(var1, -1*OSSS_val*weight*0.9);
                 fakes_1d_norm_Down.at(cat)->Fill(var1, -1*OSSS_val*weight*1.1);

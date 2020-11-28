@@ -110,7 +110,7 @@ int main(int argc, char* argv[]) {
     auto fin = TFile::Open(fname.c_str());
     std::cout << "Loading Ntuple..." << std::endl;
     TTree *  Run_Tree;
-    Run_Tree= Xttree(fin);
+    Run_Tree= Xttree(fin,"EventTree");
     
     //    auto HistoTot = reinterpret_cast<TH1D*>(fin->Get("ggNtuplizer/hEvents"));
     TH1F * HistoTot = (TH1F*) fin->Get("hcount");
@@ -179,20 +179,20 @@ int main(int argc, char* argv[]) {
         float PUWeight = 1;
         
         
-        // BJet veto
-        int numBJet=numBJets(BJetPtCut,CSVCut);
-        if (numBJet > 0) continue;
-        
-        // HT cut
-        float ht= getHT(JetPtCut);
-        if (ht < 200) continue;
+//        // BJet veto
+//        int numBJet=numBJets(BJetPtCut,CSVCut);
+//        if (numBJet > 0) continue;
+//
+//        // HT cut
+//        float ht= getHT(JetPtCut);
+//        if (ht < 200) continue;
         
         //electron veto
         int numele =getNumElectron();
         if (numele > 0) continue;
         
         //Leading jet
-        TLorentzVector LeadJet= getLeadJet();
+//        TLorentzVector LeadJet= getLeadJet();
         
         
         
@@ -332,7 +332,11 @@ int main(int argc, char* argv[]) {
             
                     if (ZCandida.M() < 40) continue;
 
+//             float ht= getHT(JetPtCut, Mu4Momentum, Mu4Momentum_sub);
+             float ht= getHTInc(JetPtCut);
+            if (ht < 200) continue;
             
+//            TLorentzVector LeadJet= getLeadJet(Mu4Momentum, BoostedTau4Momentum);
             
             
             //###############################################################################################

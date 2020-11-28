@@ -1395,7 +1395,18 @@ float getHT( float SimpleJetPtCut, TLorentzVector lep4Mom, TLorentzVector tau4Mo
     }
     return HT;
 }
-
+float getHTInc( float SimpleJetPtCut){
+    TLorentzVector  Jet;
+    float HT=0;
+    for (int ijet= 0 ; ijet < nJet ; ijet++){
+        Jet.SetPtEtaPhiE(jetPt->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
+//        if (Jet.DeltaR(lep4Mom) < 0.1) continue;
+//        if (Jet.DeltaR(tau4Mom) < 0.1) continue;
+        if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 3.0 )
+            HT += jetPt->at(ijet);
+    }
+    return HT;
+}
 //###########       ST   ###########################################################
 float getST( float SimpleJetPtCut){
     float ST=0;
