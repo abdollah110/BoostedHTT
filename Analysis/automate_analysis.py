@@ -79,7 +79,7 @@ for ifile in fileList:
 
     if 'DYJets' in sample:
 #        names = ['ZLL', 'ZTT','ZJ']
-        names = ['ZLL']
+        names = ['ZTT']
     elif 'TT' in sample:
         names = ['TT']
     elif 'WJets' in sample or 'EWK' in sample:

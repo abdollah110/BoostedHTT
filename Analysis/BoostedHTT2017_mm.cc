@@ -179,9 +179,9 @@ int main(int argc, char* argv[]) {
         float PUWeight = 1;
         
         
-//        // BJet veto
-//        int numBJet=numBJets(BJetPtCut,CSVCut);
-//        if (numBJet > 0) continue;
+        // BJet veto
+        int numBJet=numBJets(BJetPtCut,CSVCut);
+        if (numBJet > 0) continue;
 //
 //        // HT cut
 //        float ht= getHT(JetPtCut);
@@ -358,7 +358,8 @@ int main(int argc, char* argv[]) {
                                 if (Q_category[iq]) {
                                     
                                     
-                                    float FullWeight = LumiWeight *MuonCor *ZCorrection;
+//                                    float FullWeight = LumiWeight *MuonCor *ZCorrection;
+                                    float FullWeight = LumiWeight *MuonCor *1;
                                     std::string FullStringName = Q_Cat[iq] ;
                                     
                                     //                                This check is used to make sure that each event is just filled once for any of the categories ==> No doube-counting of events  (this is specially important for ttbar events where we have many jets and leptons)
