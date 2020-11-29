@@ -1,20 +1,21 @@
 import plotter
 
 plots = [
-    ('NN_disc', 'D_{NN}', 3),
-#    ('m_sv', 'm_{SVFit}', 3.0),
-    ('higgs_pT', 'Higgs p_{T}', 3.0),
-    ('higgs_m', 'Higgs mass', 3.0),
-    ('tmass', 'm_{T}', 3.0),
-    ('Met', 'Missing E_{T}', 3.0),
-#    ('vis_mass', 'm_{Visible}', 3.0),
-    ('taupt', 'tau p_{T}', 3.0),
-    ('muPt', 'Muon p_{T}', 3.0),
-    ('IsoMu', '#mu rel isolation', 3.0),
-    ('dR_mu_tau', 'dR_mu_tau', 3.0),
-    ('LeadJetPt', 'LeadJetPt', 3.0),
-    ('BoostedTauRawIso', 'BoostedTauRawIso', 3.0),
-    ('ht', 'ht', 3.0),
+#    ('NN_disc', 'D_{NN}', 3),
+##    ('m_sv', 'm_{SVFit}', 3.0),
+#    ('higgs_pT', 'Higgs p_{T}', 3.0),
+#    ('higgs_m', 'Higgs mass', 3.0),
+#    ('tmass', 'm_{T}', 3.0),
+#    ('Met', 'Missing E_{T}', 3.0),
+##    ('vis_mass', 'm_{Visible}', 3.0),
+#    ('taupt', 'tau p_{T}', 3.0),
+#    ('muPt', 'Muon p_{T}', 3.0),
+#    ('IsoMu', '#mu rel isolation', 3.0),
+#    ('dR_mu_tau', 'dR_mu_tau', 3.0),
+#    ('LeadJetPt', 'LeadJetPt', 3.0),
+#    ('BoostedTauRawIso', 'BoostedTauRawIso', 3.0),
+#    ('ht', 'ht', 3.0),
+    ('ZMass', 'ZMass', 3.0),
 ]
 
 categories = ['_0jet']

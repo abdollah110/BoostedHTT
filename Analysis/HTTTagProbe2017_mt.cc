@@ -340,7 +340,8 @@ int main(int argc, char* argv[]) {
                 //  Weights
                 //###############################################################################################
 
-                FullWeight = LumiWeight*MuonCor *ZCorrection;
+//                FullWeight = LumiWeight*MuonCor *ZCorrection;
+                FullWeight = LumiWeight*MuonCor * 1;
                 if (isData) FullWeight=1;
 
                 //###############################################################################################

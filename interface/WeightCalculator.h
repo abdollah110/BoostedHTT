@@ -98,12 +98,19 @@ float XSection(std::string OutName) {
     else if (OutName.find("WJetsToLNu_Pt-600ToInf") != string::npos) return  0.4524   ;
     
     //    else if (OutName.find("DYJetsToLL_M-50") != string::npos) return          5765.4 ;
-    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  354.3   ;
-    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   83.12 ;
-    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.047 ;
-    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.3921 ;
-    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.03636 ;
-    
+//    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  354.3   ; $$$$ Wrong XS
+//    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   83.12 ; $$$$ Wrong XS
+//    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.047 ; $$$$ Wrong XS
+//    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.3921 ; $$$$ Wrong XS
+//    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.03636 ; $$$$ Wrong XS
+    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  407.9   ;
+    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   96.8 ;
+    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.774 ;
+    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.5164 ;
+    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.04796 ;
+
+
+
     // SM Higgs
     else if (OutName.find("ggH125") != string::npos) return 48.58* 0.0627;
     else if (OutName.find("qqH125") != string::npos) return 3.782 * 0.0627;

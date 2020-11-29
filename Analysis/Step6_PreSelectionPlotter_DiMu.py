@@ -37,7 +37,8 @@ InputFilesLocation=sys.argv[1]
 
 verbos_ = True
 RB_=1
-bcde_to_bcdef= (4.767+ 9.583+4.224+9.261)/(4.767+ 9.583+4.224+9.261+13.463)
+#bcde_to_bcdef= (4.767+ 9.583+4.224+9.261)/(4.767+ 9.583+4.224+9.261+13.463)
+bcde_to_bcdef=1
 
 #process=[
 #['VV','VV',-1],
