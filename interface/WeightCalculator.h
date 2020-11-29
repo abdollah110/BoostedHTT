@@ -89,14 +89,19 @@ float XSection(std::string OutName) {
     else if (OutName.find("QCD") != string::npos) return     720648000  * 0.00042 ;
     
     //    https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#W_jets
-    
+//    https://cms-gen-dev.cern.ch/xsdb/?searchQuery=DAS=DYJetsToLL_Pt-100To250_TuneCP5_13TeV-amcatnloFXFX-pythia8
     //    else if (OutName.find("WJetsToLNu") != string::npos) return  61526.7   ;
-    else if (OutName.find("WJetsToLNu_Pt-50To100") != string::npos) return  8053   ;
-    else if (OutName.find("WJetsToLNu_Pt-100To250") != string::npos) return  676.3   ;
-    else if (OutName.find("WJetsToLNu_Pt-250To400") != string::npos) return  23.94   ;
-    else if (OutName.find("WJetsToLNu_Pt-400To600") != string::npos) return  3.031   ;
-    else if (OutName.find("WJetsToLNu_Pt-600ToInf") != string::npos) return  0.4524   ;
-    
+//    else if (OutName.find("WJetsToLNu_Pt-50To100") != string::npos) return  8053   ;
+//    else if (OutName.find("WJetsToLNu_Pt-100To250") != string::npos) return  676.3   ;
+//    else if (OutName.find("WJetsToLNu_Pt-250To400") != string::npos) return  23.94   ;
+//    else if (OutName.find("WJetsToLNu_Pt-400To600") != string::npos) return  3.031   ;
+//    else if (OutName.find("WJetsToLNu_Pt-600ToInf") != string::npos) return  0.4524   ;
+    else if (OutName.find("WJetsToLNu_Pt-50To100") != string::npos) return  3570.0   ;
+    else if (OutName.find("WJetsToLNu_Pt-100To250") != string::npos) return  779.1   ;
+    else if (OutName.find("WJetsToLNu_Pt-250To400") != string::npos) return  27.98   ;
+    else if (OutName.find("WJetsToLNu_Pt-400To600") != string::npos) return  3.604   ;
+    else if (OutName.find("WJetsToLNu_Pt-600ToInf") != string::npos) return  0.5545   ;
+
     //    else if (OutName.find("DYJetsToLL_M-50") != string::npos) return          5765.4 ;
 //    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  354.3   ; $$$$ Wrong XS
 //    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   83.12 ; $$$$ Wrong XS
