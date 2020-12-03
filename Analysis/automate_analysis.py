@@ -90,7 +90,7 @@ for ifile in fileList:
         names = ['TT']
     elif 'WJets' in sample or 'EWK' in sample:
         names = ['W']
-    elif 'data' in sample.lower():
+    elif 'data' in sample.lower() or 'run' in sample.lower():
         names = ['data_obs']
     elif 'ggH125' in sample:
         names = ['ggH125']
