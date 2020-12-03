@@ -52,7 +52,7 @@ else:
     fileList = [ifile for ifile in glob(options.path+'/*') if '.root' in ifile]
 
 
-def getSyst2016(name):
+def getSystematics(name):
   systs = ['']
   
   
@@ -65,8 +65,8 @@ def getSyst2016(name):
 #  if name == 'TT':
 #    systs += ['ttbarShape_Up', 'ttbarShape_Down']
 
-  if name == 'ZLL' or name == 'ZTT' or name == 'ZJ':
-    systs += ['dyShape_Up', 'dyShape_Down', 'zmumuShape_Up', 'zmumuShape_Down']
+#  if name == 'ZLL' or name == 'ZTT' or name == 'ZJ':
+#    systs += ['dyShape_Up', 'dyShape_Down', 'zmumuShape_Up', 'zmumuShape_Down']
 
   return systs
 
@@ -112,7 +112,7 @@ for ifile in fileList:
 
     if options.syst and not 'Data' in sample.lower():
         for name in names:
-            for isyst in getSyst2016(name):
+            for isyst in getSystematics(name):
                 #AM
                 try:
                     makedirs('Output/trees/{}'.format(options.output_dir+'/_'+isyst))

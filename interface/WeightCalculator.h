@@ -29,10 +29,17 @@ float TT_FulLep_BR= 0.1061;
 float TT_SemiLep_BR= 0.4392;
 float TT_Had_BR= 0.4544;
 
+float getLuminsoity(int year) {
+    if (year == 2016) return 35900.;
+    else if (year == 2017) return 41500.;
+    else if (year == 2018) return 59610.;
+    else return 0;
+}
 
 float XSection(std::string OutName) {
 
     if (OutName.find("Data") != string::npos) return 1;   // As we have large cut at Skim, this one is not
+    else if (OutName.find("SingleMuon") != string::npos) return 1;   // As we have large cut at Skim, this one is not
     
     //Di Boson
     else if (OutName.find("ZZ4l") != string::npos) return   1.212;
