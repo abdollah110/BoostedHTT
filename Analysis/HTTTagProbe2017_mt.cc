@@ -75,6 +75,8 @@ int main(int argc, char* argv[]) {
     float eleMass= 0.000511;
     float JetPtCut=30;
     float BJetPtCut=20;
+    float muonPtCut=30;
+    if (year==2018) muonPtCut=35;
     
     //    float CSVCut=   0.9535   ;                  //  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
     float CSVCut=   0.8838   ;                  //  medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
@@ -124,7 +126,7 @@ int main(int argc, char* argv[]) {
         
         // Trigger
         bool PassTrigger = ((HLTEleMuX >> 19 & 1)==1); // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19; // 2017
-        if (! PassTrigger) continue;
+        if (year==2017 && ! PassTrigger) continue;
         plotFill("cutFlowTable",3 ,15,0,15);
         
         //  This part is to avoid of the duplicate of mu-tau pair from one events
@@ -178,7 +180,7 @@ int main(int argc, char* argv[]) {
         
         for (int imu = 0; imu < nMu; ++imu){
             
-            if (muPt->at(imu) <= 30 || fabs(muEta->at(imu)) >= 2.4) continue;
+            if (muPt->at(imu) <= muonPtCut || fabs(muEta->at(imu)) >= 2.4) continue;
             plotFill("cutFlowTable",6 ,15,0,15);
             float IsoMu=muPFChIso03->at(imu)/muPt->at(imu);
             if ( (muPFNeuIso03->at(imu) + muPFPhoIso03->at(imu) - 0.5* muPFPUIso03->at(imu) )  > 0.0)
