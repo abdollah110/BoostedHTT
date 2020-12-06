@@ -164,20 +164,13 @@ int main(int argc, char* argv[]) {
         
         
         //MET Shape systematics
-        Met=pfMET;
-        float Metphi=pfMETPhi;
-        
-        TLorentzVector  MET_UESUp, MET_UESDown, MET_JESUp, MET_JESDown;
-        MET_UESUp.SetPxPyPzE(pfmetcorr_ex_UESUp, pfmetcorr_ey_UESUp, 0, sqrt(pfmetcorr_ex_UESUp * pfmetcorr_ex_UESUp + pfmetcorr_ey_UESUp * pfmetcorr_ey_UESUp));
-        MET_UESDown.SetPxPyPzE(pfmetcorr_ex_UESDown, pfmetcorr_ey_UESDown, 0, sqrt(pfmetcorr_ex_UESDown * pfmetcorr_ex_UESDown + pfmetcorr_ey_UESDown * pfmetcorr_ey_UESDown));
-        MET_JESUp.SetPxPyPzE(pfmetcorr_ex_JESUp, pfmetcorr_ey_JESUp, 0, sqrt(pfmetcorr_ex_JESUp * pfmetcorr_ex_JESUp + pfmetcorr_ey_JESUp * pfmetcorr_ey_JESUp));
-        MET_JESDown.SetPxPyPzE(pfmetcorr_ex_JESDown, pfmetcorr_ey_JESDown, 0, sqrt(pfmetcorr_ex_JESDown * pfmetcorr_ex_JESDown + pfmetcorr_ey_JESDown * pfmetcorr_ey_JESDown));
-        
-        if (syst == "met_JESUp") {Met = MET_JESUp.Pt(); Metphi=MET_JESUp.Phi();}
-        if (syst == "met_JESDown") {Met = MET_JESDown.Pt();  Metphi=MET_JESDown.Phi();}
-        if (syst == "met_UESUp") {Met = MET_UESUp.Pt();  Metphi=MET_UESUp.Phi();}
-        if (syst == "met_UESDown") {Met = MET_UESDown.Pt();  Metphi=MET_UESDown.Phi();}
-        if (Met < 50 ) continue ;
+         Met=pfMET;
+         float Metphi=pfMETPhi;
+         if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
+         if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
+         if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
+         if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
+         if (Met < 50 ) continue ;
         
         //############################################################################################
         //###########       Loop over MuTau events   #################################################
