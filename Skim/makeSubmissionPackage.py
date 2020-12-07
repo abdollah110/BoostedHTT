@@ -59,7 +59,7 @@ os.system('mkdir Files_%s'%args.Name)
 os.system('cp Submit_run_%s.sh Files_%s/.'%(args.Name,args.Name))
 os.system('cp Submit_batch_%s.jdl Files_%s/.'%(args.Name,args.Name))
 os.system('cp %s Files_%s/.'%(args.exe,args.Name))
-os.system('cp %s Files_%s/.'%(args.InputSample,args.Name))
+os.system('cp %s Files_%s/InputSamples.txt'%(args.InputSample,args.Name))
 os.system('tar -zcp -f Files_%s.tar.gz  Files_%s'%(args.Name,args.Name))
 
 os.system('xrdcp -f Files_%s.tar.gz root://cmseos.fnal.gov://store/user/${LOGNAME}/.'%args.Name)
