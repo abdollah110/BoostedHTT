@@ -42,6 +42,8 @@ void SkimerBoost::Loop(TString OutputFile)
     fChain->SetBranchStatus("pu*",1);
     fChain->SetBranchStatus("mc*",1);
     fChain->SetBranchStatus("pfMET*",1);
+    fChain->SetBranchStatus("pf*",1);
+    fChain->SetBranchStatus("r*",1);
     fChain->SetBranchStatus("n*",1);
     //    fChain->SetBranchStatus("c*",1);
     fChain->SetBranchStatus("jet*",1);
