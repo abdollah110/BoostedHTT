@@ -137,6 +137,14 @@ public :
    Float_t         pfmetcorr_ey_JESUp;
    Float_t         pfmetcorr_ex_JESDown;
    Float_t         pfmetcorr_ey_JESDown;
+   Float_t         met_reso_Up;
+   Float_t         met_reso_Down;
+   Float_t         met_resp_Up;
+   Float_t         met_resp_Down;
+   Float_t         metphi_reso_Up;
+   Float_t         metphi_reso_Down;
+   Float_t         metphi_resp_Up;
+   Float_t         metphi_resp_Down;
    Int_t           nEle;
    vector<int>     *eleCharge;
    vector<int>     *eleChargeConsistent;
@@ -487,6 +495,14 @@ public :
    TBranch        *b_pfmetcorr_ey_JESUp;   //!
    TBranch        *b_pfmetcorr_ex_JESDown;   //!
    TBranch        *b_pfmetcorr_ey_JESDown;   //!
+   TBranch        *b_met_reso_Up;   //!
+   TBranch        *b_met_reso_Down;   //!
+   TBranch        *b_met_resp_Up;   //!
+   TBranch        *b_met_resp_Down;   //!
+   TBranch        *b_metphi_reso_Up;   //!
+   TBranch        *b_metphi_reso_Down;   //!
+   TBranch        *b_metphi_resp_Up;   //!
+   TBranch        *b_metphi_resp_Down;   //!
    TBranch        *b_nEle;   //!
    TBranch        *b_eleCharge;   //!
    TBranch        *b_eleChargeConsistent;   //!
@@ -1173,6 +1189,14 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("metphi_JESDown", &metphi_JESDown, &b_metphi_JESDown);
    fChain->SetBranchAddress("metphi_UESUp", &metphi_UESUp, &b_metphi_UESUp);
    fChain->SetBranchAddress("metphi_UESDown", &metphi_UESDown, &b_metphi_UESDown);
+   fChain->SetBranchAddress("met_reso_Up", &met_reso_Up, &b_met_reso_Up);
+   fChain->SetBranchAddress("met_reso_Down", &met_reso_Down, &b_met_reso_Down);
+   fChain->SetBranchAddress("met_resp_Up", &met_resp_Up, &b_met_resp_Up);
+   fChain->SetBranchAddress("met_resp_Down", &met_resp_Down, &b_met_resp_Down);
+   fChain->SetBranchAddress("metphi_reso_Up", &metphi_reso_Up, &b_metphi_reso_Up);
+   fChain->SetBranchAddress("metphi_reso_Down", &metphi_reso_Down, &b_metphi_reso_Down);
+   fChain->SetBranchAddress("metphi_resp_Up", &metphi_resp_Up, &b_metphi_resp_Up);
+   fChain->SetBranchAddress("metphi_resp_Down", &metphi_resp_Down, &b_metphi_resp_Down);
    fChain->SetBranchAddress("pfmetcorr_ex_UESUp", &pfmetcorr_ex_UESUp, &b_pfmetcorr_ex_UESUp);
    fChain->SetBranchAddress("pfmetcorr_ey_UESUp", &pfmetcorr_ey_UESUp, &b_pfmetcorr_ey_UESUp);
    fChain->SetBranchAddress("pfmetcorr_ex_UESDown", &pfmetcorr_ex_UESDown, &b_pfmetcorr_ex_UESDown);

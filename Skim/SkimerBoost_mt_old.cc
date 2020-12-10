@@ -23,13 +23,6 @@ void SkimerBoost::Loop(TString OutputFile)
     TFile* file = TFile::Open(OutputFile, "RECREATE");
     TTree* BoostTree = fChain->CloneTree(0);
     
-    int year=0;
-    if (string(file->GetName()).find("2016") != string::npos) year =2016;
-    else if (string(file->GetName()).find("2017") != string::npos ) year =2017;
-    else if (string(file->GetName()).find("2018") != string::npos) year =2018;
-    else (std::cout << "Year is not specificed in the outFile name !\n");
-
-
     fChain->SetBranchStatus("*",0);
     fChain->SetBranchStatus("vt*",1);
     fChain->SetBranchStatus("EventTag",1);
@@ -92,10 +85,9 @@ void SkimerBoost::Loop(TString OutputFile)
     float  eta_2 = 0;
     
     int era = 0;
-    int decayMode1 = -1;
-    int decayMode2 = -1;
-    int leadtauIndex = -1;
-    int subtauIndex= -1;
+    int decayMode2 = 1;
+    int lepIndex = -1;
+    int tauIndex= -1;
     int NumPair=0;
     
     
@@ -128,11 +120,10 @@ void SkimerBoost::Loop(TString OutputFile)
     BoostTree->Branch("pt_2", &pt_2);
     BoostTree->Branch("phi_2", &phi_2);
     BoostTree->Branch("eta_2", &eta_2);
-    BoostTree->Branch("decayMode1", &decayMode1);
     BoostTree->Branch("decayMode2", &decayMode2);
     
-    BoostTree->Branch("leadtauIndex", &leadtauIndex);
-    BoostTree->Branch("subtauIndex", &subtauIndex);
+    BoostTree->Branch("lepIndex", &lepIndex);
+    BoostTree->Branch("tauIndex", &tauIndex);
     
     for (int jentry=0; jentry<nentries;jentry++) {
         
@@ -149,10 +140,14 @@ void SkimerBoost::Loop(TString OutputFile)
         if (pfMET < 50) continue;
         hcount->Fill(3);
         
-        TLorentzVector BoostSubTau4Mom, BoostLeadTau4Mom,BoostSubTau4Momtmp, BoostLeadTau4Momtmp;
-        auto numTauTau(0);
+        TLorentzVector BoostTau4Mom, Lep4Mom;
+        auto numLepTau(0);
         bool foundApair= false;
         
+        for (int imu = 0; imu < nMu; ++imu){
+//            if (foundApair) break;
+            if (muPt->at(imu) < 52 || fabs(muEta->at(imu)) > 2.4) continue;
+            Lep4Mom.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
             for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                 
@@ -160,83 +155,65 @@ void SkimerBoost::Loop(TString OutputFile)
 //                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
                 
-//                if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
-                if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5) continue;
-//                if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(ibtau) < 0) continue;
+                if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
+                if (boostedTauByTightMuonRejection3->at(ibtau) < 0.5) continue;
+                //                if (boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5) continue;
+//                if (boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(ibtau) < 0) continue;
+                if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(ibtau) < -0.2) continue;
                 
-                BoostLeadTau4Momtmp.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
+                BoostTau4Mom.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                 
-                
-                
-                for (int jbtau = ibtau+1; jbtau < nBoostedTau; ++jbtau){
-                    
-                    if (boostedTauPt->at(jbtau) < 40 || fabs(boostedTauEta->at(jbtau)) > 2.3 ) continue;
-    //                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(jbtau) < 0.5 ) continue;
-                    if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(jbtau) < 0.5 ) continue;
-                    
-//                    if (boostedTauByMVA6VLooseElectronRejection->at(jbtau) < 0.5) continue;
-                    if (boostedTauByLooseMuonRejection3->at(jbtau) < 0.5) continue;
-//                    if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(jbtau) < 0) continue;
-                    
-                    BoostSubTau4Momtmp.SetPtEtaPhiM(boostedTauPt->at(jbtau),boostedTauEta->at(jbtau),boostedTauPhi->at(jbtau),boostedTauMass->at(jbtau));
-                                
-
-                if(BoostSubTau4Momtmp.DeltaR(BoostLeadTau4Momtmp) > 0.8 || BoostSubTau4Momtmp.DeltaR(BoostLeadTau4Momtmp) < 0.1) continue;
-                decayMode1 = boostedTauDecayMode->at(ibtau);
-                decayMode2 = boostedTauDecayMode->at(jbtau);
-                numTauTau++;
+                if(BoostTau4Mom.DeltaR(Lep4Mom) > 0.8 || BoostTau4Mom.DeltaR(Lep4Mom) < 0.1) continue;
+                decayMode2 = boostedTauDecayMode->at(ibtau);
+                numLepTau++;
                 if (!foundApair){
-                leadtauIndex=ibtau;
-                subtauIndex=jbtau;
+                lepIndex=imu;
+                tauIndex=ibtau;
                 }
                 foundApair=true;
 //                break;
             }
         }
         
-        
-        if(numTauTau < 1) continue;
+        if(numLepTau < 1) continue;
         hcount->Fill(4);
         
-    BoostLeadTau4Mom.SetPtEtaPhiM(boostedTauPt->at(leadtauIndex),boostedTauEta->at(leadtauIndex),boostedTauPhi->at(leadtauIndex),boostedTauMass->at(leadtauIndex));
-    BoostSubTau4Mom.SetPtEtaPhiM(boostedTauPt->at(subtauIndex),boostedTauEta->at(subtauIndex),boostedTauPhi->at(subtauIndex),boostedTauMass->at(subtauIndex));
-    
         met_px = pfMET*sin(pfMETPhi);
         met_py = pfMET*cos(pfMETPhi);
         met = pfMET;
         metphi = pfMETPhi;
         
-        m_1 = BoostLeadTau4Mom.M();
-        px_1 = BoostLeadTau4Mom.Px();
-        py_1 = BoostLeadTau4Mom.Py();
-        pz_1 = BoostLeadTau4Mom.Pz();
-        e_1 = BoostLeadTau4Mom.E();
-        pt_1 = BoostLeadTau4Mom.Pt();
-        phi_1 = BoostLeadTau4Mom.Phi();
-        eta_1 = BoostLeadTau4Mom.Eta();
+        m_1 = Lep4Mom.M();
+        px_1 = Lep4Mom.Px();
+        py_1 = Lep4Mom.Py();
+        pz_1 = Lep4Mom.Pz();
+        e_1 = Lep4Mom.E();
+        pt_1 = Lep4Mom.Pt();
+        phi_1 = Lep4Mom.Phi();
+        eta_1 = Lep4Mom.Eta();
         
-        m_2 = BoostSubTau4Mom.M();
-        px_2 = BoostSubTau4Mom.Px();
-        py_2 = BoostSubTau4Mom.Py();
-        pz_2 = BoostSubTau4Mom.Pz();
-        e_2 = BoostSubTau4Mom.E();
-        pt_2 = BoostSubTau4Mom.Pt();
-        phi_2 = BoostSubTau4Mom.Phi();
-        eta_2 = BoostSubTau4Mom.Eta();
+        m_2 = BoostTau4Mom.M();
+        px_2 = BoostTau4Mom.Px();
+        py_2 = BoostTau4Mom.Py();
+        pz_2 = BoostTau4Mom.Pz();
+        e_2 = BoostTau4Mom.E();
+        pt_2 = BoostTau4Mom.Pt();
+        phi_2 = BoostTau4Mom.Phi();
+        eta_2 = BoostTau4Mom.Eta();
         
         pfCovMatrix00 = metcov00;
         pfCovMatrix01 = metcov01;
         pfCovMatrix10 = metcov10;
         pfCovMatrix11 = metcov11;
-        era = year;
-        NumPair=numTauTau;
+        era = 2017;
+        NumPair=numLepTau;
         
         
         BoostTree->Fill();
     }
     
     
-    BoostTree->SetName("tautau_tree");
+    BoostTree->SetName("mutau_tree");
     BoostTree->AutoSave();
     hEvents->Write();
     hcount->Write();

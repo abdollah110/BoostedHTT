@@ -23,31 +23,39 @@ void SkimerBoost::Loop(TString OutputFile)
     TFile* file = TFile::Open(OutputFile, "RECREATE");
     TTree* MyNewTree = fChain->CloneTree(0);
     
-    fChain->SetBranchStatus("*",0);
-    fChain->SetBranchStatus("vt*",1);
-    fChain->SetBranchStatus("EventTag",1);
-    fChain->SetBranchStatus("run",1);
-    fChain->SetBranchStatus("event",1);
-    fChain->SetBranchStatus("lumis",1);
-    fChain->SetBranchStatus("isData",1);
-    fChain->SetBranchStatus("HLT*",1);
-    fChain->SetBranchStatus("gen*",1);
-    fChain->SetBranchStatus("pdf*",1);
-    fChain->SetBranchStatus("pthat",1);
-    fChain->SetBranchStatus("processID",1);
-    fChain->SetBranchStatus("rho*",1);
-    fChain->SetBranchStatus("pu*",1);
-    fChain->SetBranchStatus("mc*",1);
-    fChain->SetBranchStatus("pfMET*",1);
-    fChain->SetBranchStatus("n*",1);
-    //    fChain->SetBranchStatus("c*",1);
-    fChain->SetBranchStatus("jet*",1);
-    fChain->SetBranchStatus("AK8*",1);
-    fChain->SetBranchStatus("ele*",1);
-    fChain->SetBranchStatus("mu*",1);
-    fChain->SetBranchStatus("tau*",1);
-    fChain->SetBranchStatus("m*",1);
-    fChain->SetBranchStatus("b*",1);
+    int year=0;
+    if (string(file->GetName()).find("2016") != string::npos) year =2016;
+    else if (string(file->GetName()).find("2017") != string::npos ) year =2017;
+    else if (string(file->GetName()).find("2018") != string::npos) year =2018;
+    else (std::cout << "Year is not specificed in the outFile name !\n");
+
+
+    fChain->SetBranchStatus("*",1);
+//    fChain->SetBranchStatus("*",0);
+//    fChain->SetBranchStatus("vt*",1);
+//    fChain->SetBranchStatus("EventTag",1);
+//    fChain->SetBranchStatus("run",1);
+//    fChain->SetBranchStatus("event",1);
+//    fChain->SetBranchStatus("lumis",1);
+//    fChain->SetBranchStatus("isData",1);
+//    fChain->SetBranchStatus("HLT*",1);
+//    fChain->SetBranchStatus("gen*",1);
+//    fChain->SetBranchStatus("pdf*",1);
+//    fChain->SetBranchStatus("pthat",1);
+//    fChain->SetBranchStatus("processID",1);
+//    fChain->SetBranchStatus("rho*",1);
+//    fChain->SetBranchStatus("pu*",1);
+//    fChain->SetBranchStatus("mc*",1);
+//    fChain->SetBranchStatus("pfMET*",1);
+//    fChain->SetBranchStatus("n*",1);
+//    //    fChain->SetBranchStatus("c*",1);
+//    fChain->SetBranchStatus("jet*",1);
+//    fChain->SetBranchStatus("AK8*",1);
+//    fChain->SetBranchStatus("ele*",1);
+//    fChain->SetBranchStatus("mu*",1);
+//    fChain->SetBranchStatus("tau*",1);
+//    fChain->SetBranchStatus("m*",1);
+//    fChain->SetBranchStatus("b*",1);
     
     TH1F* hcount = new TH1F("hcount", "", 10, 0, 10);
     
@@ -85,11 +93,11 @@ void SkimerBoost::Loop(TString OutputFile)
             
             
             for (int jmu = imu+1; jmu < nMu; ++jmu){
-                if (muPt->at(jmu) < 10 || fabs(muEta->at(jmu)) > 2.4) continue;
+                if (muPt->at(jmu) < 30 || fabs(muEta->at(jmu)) > 2.4) continue;
                 
                 SubMu4Momentum.SetPtEtaPhiM(muPt->at(jmu),muEta->at(jmu),muPhi->at(jmu),MuMass);
                                 
-                if(LeadMu4Momentum.DeltaR(SubMu4Momentum) > 1.0 ) continue;
+                if(LeadMu4Momentum.DeltaR(SubMu4Momentum) > 0.8 || LeadMu4Momentum.DeltaR(SubMu4Momentum) < 0.1 ) continue;
                 numDiMu++;
             }
         }
