@@ -19,7 +19,13 @@ int main(int argc, char* argv[]) {
     std::string output_dir = parser.Option("-d");
     std::string syst = parser.Option("-u");
     std::string fname = path + sample + ".root";
+    std::string year_str = parser.Option("-y");
     
+    stringstream yearstream(year_str);
+    int year=0;
+    yearstream >> year;
+
+
     std::string systname = "";
     if (!syst.empty()) {
         systname = "_" + syst;
@@ -239,14 +245,14 @@ int main(int argc, char* argv[]) {
         
         //=========================================================================================================
         // Separate Drell-Yan processes
-        int Zcateg = ZCategory(BoostedTau4Momentum);
-        if (name == "ZLL" && Zcateg > 4) {
-            continue;
-        } else if ((name == "ZTT") &&Zcateg != 5) {
-            continue;
-        } else if (name == "ZJ" && Zcateg != 6) {
-            continue;
-        }
+//        int Zcateg = ZCategory(BoostedTau4Momentum);
+//        if (name == "ZLL" && Zcateg > 4) {
+//            continue;
+//        } else if ((name == "ZTT") &&Zcateg != 5) {
+//            continue;
+//        } else if (name == "ZJ" && Zcateg != 6) {
+//            continue;
+//        }
         
         //=========================================================================================================
         // Weights & Correction
@@ -264,7 +270,7 @@ int main(int argc, char* argv[]) {
         if (!isData){
             
             // Lumi weight
-            LumiWeight = luminosity * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
+            LumiWeight = getLuminsoity(year) * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
             
             // Pilu up weights
             int puNUmmc=int(puTrue->at(0)*5);
