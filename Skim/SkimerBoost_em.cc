@@ -161,7 +161,7 @@ void SkimerBoost::Loop(TString OutputFile)
             
             for (int iele = 0; iele < nEle; ++iele){
                 //            if (foundApair) break;
-                if (elePt->at(iele) < 15 || fabs(eleEta->at(iele)) > 2.5) continue;
+                if (elePt->at(iele) < 20 || fabs(eleEta->at(iele)) > 2.5) continue;
                 
                 
                 bool eleMVAId= false;
