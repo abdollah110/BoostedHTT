@@ -130,15 +130,15 @@ int main(int argc, char* argv[]) {
     float vis_mass=-10;
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
-    bool Fail,Pass,OS,SS,lepIsoPass;
+    bool FailL,PassL,OS,SS,lepIsoPass;
     float tmass,ht,st,Met,FullWeight, dR_lep_tau, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight, eleIDMVA, IsoLepValue;
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
     outTr->Branch("evtwtZpt",&wtnom_zpt_weight,"evtwtZPt/F");
     outTr->Branch("lepPt",&lepPt_,"lepPt/F");
     outTr->Branch("taupt",&taupt_,"taupt/F");
-    outTr->Branch("Pass",&Pass,"Pass/O");
-    outTr->Branch("Fail",&Fail,"Fail/O");
+    outTr->Branch("PassL",&PassL,"PassL/O");
+    outTr->Branch("FailL",&FailL,"FailL/O");
     outTr->Branch("OS",&OS,"OS/O");
     outTr->Branch("SS",&SS,"SS/O");
     outTr->Branch("lepIsoPass",&lepIsoPass,"lepIsoPass/O");
@@ -226,8 +226,9 @@ int main(int argc, char* argv[]) {
         
         if (boostedTauPt->at(idx_tau) <= 40 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_tau) < 0.5 ) continue;
-        if (boostedTauByMVA6TightElectronRejection->at(idx_tau) < 0.5) continue;
+        if (boostedTauagainstElectronTightMVA62018->at(idx_tau) < 0.5) continue;
         if (boostedTauByLooseMuonRejection3->at(idx_tau) < 0.5) continue;
+
         BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
         plotFill("cutFlowTable",4 ,15,0,15);
         //=========================================================================================================
@@ -357,8 +358,8 @@ int main(int argc, char* argv[]) {
         higgs_m = higgs.M();
         OS = eleCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) < 0;
         SS =  eleCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) > 0;
-        Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) > 0.5 ;
-        Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) < 0.5 ;
+        PassL = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
+        FailL = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) < 0.5 ;
         lepIsoPass= IsoLepValue < LeptonIsoCut;
         eleIDMVA=eleIDMVANoIso->at(idx_lep);
         lepPt_=elePt->at(idx_lep);

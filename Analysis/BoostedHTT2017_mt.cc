@@ -201,7 +201,8 @@ int main(int argc, char* argv[]) {
         
         if (boostedTauPt->at(idx_tau) <= 40 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_tau) < 0.5 ) continue;
-//        if (boostedTauByMVA6VLooseElectronRejection->at(idx_tau) < 0.5) continue;
+
+        if (boostedTauagainstElectronVLooseMVA62018->at(idx_tau) < 0.5) continue;
         if (boostedTauByTightMuonRejection3->at(idx_tau) < 0.5) continue;
         BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
         plotFill("cutFlowTable",4 ,15,0,15);
@@ -320,8 +321,8 @@ int main(int argc, char* argv[]) {
         higgs_m = higgs.M();
         OS = muCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) < 0;
         SS =  muCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) > 0;
-        Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) > 0.5 ;
-        Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLT->at(idx_tau) < 0.5 ;
+        Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
+        Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) < 0.5 ;
         lepIsoPass= IsoLepValue < LeptonIsoCut;
         lepPt_=muPt->at(idx_lep);
         taupt_=boostedTauPt->at(idx_tau);
