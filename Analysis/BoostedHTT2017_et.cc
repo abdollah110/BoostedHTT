@@ -79,11 +79,8 @@ int main(int argc, char* argv[]) {
     //########################################
     
     TH1F *  HistoPUData =HistPUData();
-    
-//    size_t isInputData = InputFile->find("Data");
-    size_t isInputData = fname.find("Data");
     TH1F * HistoPUMC = new TH1F();
-    if (isInputData== string::npos)
+    if (! (fname.find("Data") != string::npos || fname.find("Run") != string::npos ))
         HistoPUMC=HistPUMC(InputFile);
     
     

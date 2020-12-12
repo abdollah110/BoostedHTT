@@ -48,8 +48,8 @@ int main(int argc, char* argv[]) {
     auto InputFile = TFile::Open(fname.c_str());
     std::cout << "Loading Ntuple..." << std::endl;
     TTree *  Run_Tree;
-//    Run_Tree= Xttree(InputFile,"mutau_tree");
-    Run_Tree= Xttree(InputFile,"EventTree");
+    Run_Tree= Xttree(InputFile,"mutau_tree");
+//    Run_Tree= Xttree(InputFile,"EventTree");
     
     
     //    auto HistoTot = reinterpret_cast<TH1D*>(InputFile->Get("ggNtuplizer/hEvents"));
@@ -75,11 +75,8 @@ int main(int argc, char* argv[]) {
     //########################################
     
     TH1F *  HistoPUData =HistPUData();
-    
-//    size_t isInputData = InputFile->find("Data");
-    size_t isInputData = fname.find("Data");
     TH1F * HistoPUMC = new TH1F();
-    if (isInputData== string::npos)
+    if (! (fname.find("Data") != string::npos || fname.find("Run") != string::npos ))
         HistoPUMC=HistPUMC(InputFile);
     
     
