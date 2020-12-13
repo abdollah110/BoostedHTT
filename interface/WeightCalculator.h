@@ -66,11 +66,11 @@ float XSection(std::string OutName) {
     else if (OutName.find("WZTo3LNu_amcNLO") != string::npos) return  4.42965 ;
     //       else if (OutName.find("WZToLNu2Q_powheg") != string::npos) return  10.71 ;
     else if (OutName.find("WZTo1L1Nu2Q_amcNLO") != string::npos) return  10.71 ;
+    else if (OutName.find("WW1l1nu2q") != string::npos) return  49.997 ;
     // The missing one is WZto4Q
     //else if (OutName.find("ZZ") != string::npos) return  12.14 ;
     //else if (OutName.find("WZ") != string::npos) return  27.57 ;
     //else if (OutName.find("WW") != string::npos) return  75.88 ;
-    
     
     
     //Single Top
@@ -90,6 +90,7 @@ float XSection(std::string OutName) {
     else if (OutName.find("TTTo2L2Nu") != string::npos) return (831.76*TT_FulLep_BR);
     else if (OutName.find("TTToHadronic") != string::npos) return (831.76*TT_Had_BR);
     else if (OutName.find("TTToSemiLeptonic") != string::npos) return (831.76*TT_SemiLep_BR);
+    else if (OutName.find("TT") != string::npos) return (831.76);
     
     else if (OutName.find("EWK_DYToLL") != string::npos ) return      3.987;
     else if (OutName.find("QCD_Pt-20toInf_MuEnrichedPt15") != string::npos) return     720648000  * 0.00042 ;
