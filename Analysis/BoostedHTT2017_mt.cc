@@ -122,15 +122,15 @@ int main(int argc, char* argv[]) {
     float vis_mass=-10;
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
-    bool Fail,Pass,OS,SS,lepIsoPass,IsoLepValue;
+    bool FailL,PassL,OS,SS,lepIsoPass,IsoLepValue;
     float tmass,ht,st,Met,FullWeight, dR_lep_tau, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
     outTr->Branch("evtwtZpt",&wtnom_zpt_weight,"evtwtZPt/F");
     outTr->Branch("lepPt",&lepPt_,"lepPt/F");
     outTr->Branch("taupt",&taupt_,"taupt/F");
-    outTr->Branch("Pass",&Pass,"Pass/O");
-    outTr->Branch("Fail",&Fail,"Fail/O");
+    outTr->Branch("PassL",&PassL,"PassL/O");
+    outTr->Branch("FailL",&FailL,"FailL/O");
     outTr->Branch("OS",&OS,"OS/O");
     outTr->Branch("SS",&SS,"SS/O");
     outTr->Branch("lepIsoPass",&lepIsoPass,"lepIsoPass/O");
@@ -321,8 +321,8 @@ int main(int argc, char* argv[]) {
         higgs_m = higgs.M();
         OS = muCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) < 0;
         SS =  muCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) > 0;
-        Pass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
-        Fail = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) < 0.5 ;
+        PassL = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
+        FailL = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) < 0.5 ;
         lepIsoPass= IsoLepValue < LeptonIsoCut;
         lepPt_=muPt->at(idx_lep);
         taupt_=boostedTauPt->at(idx_tau);
