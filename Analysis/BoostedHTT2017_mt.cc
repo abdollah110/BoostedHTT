@@ -217,8 +217,8 @@ int main(int argc, char* argv[]) {
         if (tmass > 80) continue;
         plotFill("cutFlowTable",6 ,15,0,15);
         
-//        if (m_sv < 10) continue;
-//        plotFill("cutFlowTable",7 ,15,0,15);
+        if (m_sv < 10) continue;
+        plotFill("cutFlowTable",7 ,15,0,15);
         
         // BJet veto
         int numBJet=numBJets(BJetPtCut,CSVCut);
