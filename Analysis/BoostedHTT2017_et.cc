@@ -171,7 +171,7 @@ int main(int argc, char* argv[]) {
 //      else if (name.find("HLT_Ele35_WPTight_Gsf_v")                              != string::npos) bitEleMuX =  3; // 2017
 //      else if (name.find("HLT_Ele115_CaloIdVT_GsfTrkIdT_v")                      != string::npos) bitEleMuX = 38; // 2017
 
-        cout<<(HLTEleMuX >> 0 & 1) << (HLTEleMuX >> 1 & 1) <<(HLTEleMuX >> 2 & 1)<<(HLTEleMuX >> 3 & 1)<<(HLTEleMuX >> 4 & 1)<<"\n";
+//        cout<<(HLTEleMuX >> 0 & 1) << (HLTEleMuX >> 1 & 1) <<(HLTEleMuX >> 2 & 1)<<(HLTEleMuX >> 3 & 1)<<(HLTEleMuX >> 4 & 1)<<"\n";
         bool TriggerEle35 = ((HLTEleMuX >> 3 & 1)==1);
         bool TriggerEle115 = ((HLTEleMuX >> 38 & 1)==1);
         
