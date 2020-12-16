@@ -19,13 +19,16 @@ class Predictor:
       self.data = pd.HDFStore(data_name)['df']
 #      self.data = pd.HDFStore('datasets/testData_wis.h5')['df']
     except:
+      print 'data is not loaded properly'
       self.bad = True
 
     # open the trained model
     try:
-      self.model = load_model('models/{}.hdf5'.format(model_name))
+#      self.model = load_model('models/{}.hdf5'.format(model_name))
+      self.model = load_model('{}'.format(model_name))
 #      self.model=   load_model('models/outputModel_wis.hdf5')
     except:
+      print 'model is not loaded properly'
       self.bad = True
 
   def make_prediction(self, fname, channel):
@@ -51,6 +54,7 @@ class Predictor:
     try:
       guess = self.data_copy.loc[index, 'guess_sig']
     except:
+#      print 'guess not found'
       guess= -999
     
     return guess
@@ -106,6 +110,8 @@ def main(args):
         channel = 'mt'
     elif args.treename == 'etau_tree':
         channel = 'et'
+    elif args.treename == 'emu_tree':
+        channel = 'em'
     else:
         raise Exception('Hey. Bad channel. No. Try again.')
 

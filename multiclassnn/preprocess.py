@@ -6,7 +6,7 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 # Variables used for selection. These shouldn't be normalized
 selection_vars = [
-                  'Pass',
+                  'PassL',
 ]
 
 # Variables that could be used as NN input. These should be normalized
@@ -19,15 +19,15 @@ scaled_vars = [
 def loadFile(ifile, category):
     from root_pandas import read_root
 
-    if 'mutau' in ifile:
+    if 'mutau' in ifile or 'mt' in ifile:
         channel = 'mt'
-    elif 'etau' in ifile:
+    elif 'etau' in ifile or 'et' in ifile:
         channel = 'et'
-##    elif 'emu' in ifile:
-##        channel = 'em'
-#    else:
-#        raise Exception(
-#            'Input files must have MUTAU or ETAU or EMU in the provided path. You gave {}, ya goober.'.format(ifile))
+    elif 'emu' in ifile or 'em' in ifile:
+        channel = 'em'
+    else:
+        raise Exception(
+            'Input files must have MUTAU or ETAU or EMU in the provided path. You gave {}, ya goober.'.format(ifile))
 
     filename = ifile.split('/')[-1]
     print 'Loading input file...', filename
@@ -42,7 +42,7 @@ def loadFile(ifile, category):
     # preselection
     slim_df = input_df[
 #                (input_df['Pass'] > 0)  & (input_df['OS'] > 0)
-                (input_df['Pass'] > 0) 
+                (input_df['PassL'] > 0) 
     #            (input_df['njets'] > 1) & (input_df['mjj'] > 300)
         ]
     
@@ -86,9 +86,10 @@ def loadFile(ifile, category):
 
 
 def main(args):
-    
-    input_files = [ifile for ifile in glob('{}/*.root'.format(args.mu_input_dir)) if args.mu_input_dir != None ]
-    input_files += [ifile for ifile in glob('{}/*.root'.format(args.el_input_dir)) if args.el_input_dir != None ]
+
+    input_files = [ifile for ifile in glob('{}/*.root'.format(args.input_dir))]
+#    input_files = [ifile for ifile in glob('{}/*.root'.format(args.mu_input_dir)) if args.mu_input_dir != None ]
+#    input_files += [ifile for ifile in glob('{}/*.root'.format(args.el_input_dir)) if args.el_input_dir != None ]
 #    input_files = [ifile for ifile in glob('{}/*.root'.format(args.lep_input_dir)) if args.lep_input_dir != None ]
     for ifile in input_files:
         print 'file is ', ifile
@@ -146,6 +147,8 @@ if __name__ == "__main__":
                         dest='el_input_dir', default=None, help='path to etau input files')
     parser.add_argument('--mu-input', '-m',  action='store',
                         dest='mu_input_dir', default=None, help='path to mutau input files')
+    parser.add_argument('-input', '-i',  action='store',
+                        dest='input_dir', default=None, help='path to mutau input files')
     parser.add_argument('--l-input', '-l',  action='store',
                         dest='lep_input_dir', default=None, help='path to ltau input files')
     parser.add_argument('--output', '-o', action='store', dest='output',

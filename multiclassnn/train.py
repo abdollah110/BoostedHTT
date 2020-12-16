@@ -53,25 +53,36 @@ def main(args):
 
     etau   = vbf_processes[(vbf_processes['lepton'] == 'et')]
     mutau  = vbf_processes[(vbf_processes['lepton'] == 'mt')]
+    emu  = vbf_processes[(vbf_processes['lepton'] == 'em')]
 
 
     ## do event selection
-#    selected_mt = pd.DataFrame()
+    selected_mt = pd.DataFrame()
     selected_et = pd.DataFrame()
+    selected_em = pd.DataFrame()
     combine= pd.DataFrame()
 
     ## electron-tau channel selection (all in vbf_process for now)
     if len(etau) > 0:
         selected_et = etau
-#        combine = pd.concat([selected_et])
+        print '\n\nchannel is etau'
+        combine = pd.concat([selected_et])
         
     ## muon-tau channel selection (all in vbf_process for now)
     if len(mutau) > 0:
         selected_mt = mutau
-#        combine = pd.concat([selected_mt])
+        print '\n\nchannel is mutau'
+        combine = pd.concat([selected_mt])
+
+
+    if len(emu) > 0:
+        selected_em = emu
+        print '\n\nchannel is emu'
+        combine = pd.concat([selected_em])
+
 
     ## combine channels into total dataset
-    combine = pd.concat([selected_et, selected_mt])
+#    combine = pd.concat([selected_et, selected_mt])
 
 
     
