@@ -295,7 +295,7 @@ int main(int argc, char* argv[]) {
             // Muon Correction
             float MuIdCorrection = getCorrFactorMuonId(year, isData,  Lep4Momentum.Pt(), Lep4Momentum.Eta() ,HistoMuId);
             float MuTrgCorrection = getCorrFactorMuonTrg(isData,  Lep4Momentum.Pt(), Lep4Momentum.Eta() ,HistoMuTrg);
-            
+            cout <<Lep4Momentum.Pt() <<"  " <<Lep4Momentum.Eta() << MuIdCorrection  << " " <<MuTrgCorrection<<"\n";
             LepCorrection= MuIdCorrection * MuTrgCorrection;
             
             // give inputs to workspace
