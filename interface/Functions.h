@@ -724,11 +724,17 @@ float dR_(float ieta, float iphi, float jeta, float jphi){
 //########################################
 
 
-TH1F *  HistPUData(string year){
+TH1F *  HistPUData(string year_str){
 //    TFile * PUData= TFile::Open("data/Data_nPU_new.root");
-    TFile * PUData= TFile::Open(("data/pu_distributions_data_"+year+".root").c_str());
+    TFile * PUData= TFile::Open(("data/pu_distributions_data_"+year_str+".root").c_str());
     TH1F * HistoPUData= (TH1F *) PUData->Get("pileup");
 //    HistoPUData->Rebin(2); No need to rebin anymore
+    stringstream yearstream(year_str);
+    int year=0;
+    yearstream >> year;
+
+    if (year == 2016 || year == 2017)
+        HistoPUData->Rebin(10);        
     HistoPUData->Scale(1.0/HistoPUData->Integral());
     return HistoPUData;
 }
@@ -738,6 +744,7 @@ TH1F *  HistPUMC(TFile *f_Double){
     //    TH1F * HistoPUMC= (TH1F *) PUMC->Get("pileup");
     TFile * PUMC= TFile::Open(f_Double->GetName());
     TH1F * HistoPUMC= (TH1F *) PUMC->Get("hPUTrue");
+    HistoPUMC->Rebin(5);
     HistoPUMC->Scale(1.0/HistoPUMC->Integral());
     //        cout << "HistoPUMC integral= "<<HistoPUMC->Integral()<<"\n";
     return HistoPUMC;
