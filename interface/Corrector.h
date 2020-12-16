@@ -910,23 +910,62 @@ float Cor94X_Trg_Ele25(float pt,float eta,TGraphAsymmErrors **  Ele25Trg){
 
 
 
-
-
-float getCorrFactorMuon94X(bool isData, float pt, float eta, TH2F ** HistoId, TH2F ** HistoIso,TH2F ** HistoTrg, TGraphAsymmErrors * graph) {
-    if (isData)
+float getCorrFactorMuonId(int year, bool isData, float pt, float eta, TH2F ** HistoId){
+    if (isData){
         return 1;
+        }
     else{
-        
-        float Weighted_TriggerSF=Cor94X_Trigger_Mu_EtaPt(pt,fabs(eta),HistoTrg[0]);
-//        float Tracking_SF=Cor94X_TRK_Mu(eta, graph);
-        float Tracking_SF=Cor94X_TRK_Mu(eta);
-        float Weighted_IDSF=Cor94X_ID_Mu(pt,eta,HistoId[0]);
-//        float Weighted_IsoSF=Cor94X_Iso_Mu(pt,eta,HistoIso[0]);
-        
-        return (Weighted_TriggerSF * Tracking_SF * Weighted_IDSF);
-//        return (Weighted_TriggerSF * Tracking_SF * Weighted_IDSF * Weighted_IsoSF );
+        if (pt > 120 ) pt=120;
+        if (year == 2016)
+            return HistoId[0]->GetBinContent(HistoId[0]->GetXaxis()->FindBin(eta), HistoId[0]->GetYaxis()->FindBin(pt));
+        else
+            return HistoId[0]->GetBinContent(HistoId[0]->GetXaxis()->FindBin(pt),HistoId[0]->GetYaxis()->FindBin(fabs(eta)));
+
     }
 }
+
+float getCorrFactorMuonTrg(bool isData, float pt, float eta, TH2F ** HistoTrg){
+    if (isData){
+        return 1;
+    }
+    else{
+        if (pt > 1000) pt=1000;
+        return HistoTrg[0]->GetBinContent(HistoTrg[0]->GetXaxis()->FindBin(pt),HistoTrg[0]->GetYaxis()->FindBin(fabs(eta)));
+    }
+}
+
+
+float getCorrFactorEleId( bool isData, float pt, float eta, TH2F ** HistoId){
+    if (isData){
+        return 1;
+        }
+    else{
+        if (pt > 500 ) pt=500;
+            return HistoId[0]->GetBinContent(HistoId[0]->GetXaxis()->FindBin(eta), HistoId[0]->GetYaxis()->FindBin(pt));
+
+    }
+}
+
+
+
+
+
+
+//float getCorrFactorMuon94X(bool isData, float pt, float eta, TH2F ** HistoId, TH2F ** HistoIso,TH2F ** HistoTrg, TGraphAsymmErrors * graph) {
+//    if (isData)
+//        return 1;
+//    else{
+//
+//        float Weighted_TriggerSF=Cor94X_Trigger_Mu_EtaPt(pt,fabs(eta),HistoTrg[0]);
+////        float Tracking_SF=Cor94X_TRK_Mu(eta, graph);
+//        float Tracking_SF=Cor94X_TRK_Mu(eta);
+//        float Weighted_IDSF=Cor94X_ID_Mu(pt,eta,HistoId[0]);
+////        float Weighted_IsoSF=Cor94X_Iso_Mu(pt,eta,HistoIso[0]);
+//
+//        return (Weighted_TriggerSF * Tracking_SF * Weighted_IDSF);
+////        return (Weighted_TriggerSF * Tracking_SF * Weighted_IDSF * Weighted_IsoSF );
+//    }
+//}
 
 
 

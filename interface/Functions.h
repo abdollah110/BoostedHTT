@@ -577,6 +577,7 @@ float dR_(float ieta, float iphi, float jeta, float jphi){
        Run_Tree->SetBranchAddress("jetPhi",&jetPhi);
        Run_Tree->SetBranchAddress("jetEn",&jetEn);
        Run_Tree->SetBranchAddress("jetCSV2BJetTags",&jetCSV2BJetTags);
+       Run_Tree->SetBranchAddress("jetDeepCSVTags_b", &jetDeepCSVTags_b);
        Run_Tree->SetBranchAddress("jetPFLooseId",&jetPFLooseId);
        Run_Tree->SetBranchAddress("jetPUID",&jetPUID);
        Run_Tree->SetBranchAddress("jetRawPt",&jetRawPt);
@@ -723,10 +724,11 @@ float dR_(float ieta, float iphi, float jeta, float jphi){
 //########################################
 
 
-TH1F *  HistPUData(){
-    TFile * PUData= TFile::Open("data/Data_nPU_new.root");
+TH1F *  HistPUData(string year){
+//    TFile * PUData= TFile::Open("data/Data_nPU_new.root");
+    TFile * PUData= TFile::Open(("data/pu_distributions_data_"+year+".root").c_str());
     TH1F * HistoPUData= (TH1F *) PUData->Get("pileup");
-    HistoPUData->Rebin(2);
+//    HistoPUData->Rebin(2); No need to rebin anymore
     HistoPUData->Scale(1.0/HistoPUData->Integral());
     return HistoPUData;
 }
@@ -745,16 +747,61 @@ TH1F *  HistPUMC(TFile *f_Double){
 //########################################
 // Muon Id, Iso, Trigger and Tracker Eff files
 //########################################
-TH2F**  FuncHistMuTrigger(){
-    
-    TFile * MuCorrTrg_BCDEF= TFile::Open(("../interface/MuSF/EfficienciesAndSF_RunBtoF_Nov17Nov2017.root"));
-    //    TH1F * HistoMuTrg_BCDEF= (TH1F *) MuCorrTrg_BCDEF->Get("Mu50_EtaBins/eta_ratio");
-    //    TH1F * HistoMuTrg_BCDEF= (TH1F *) MuCorrTrg_BCDEF->Get("Mu50_EtaBins/pt_abseta_ratio");
-    TH2F * HistoMuTrg_BCDEF= (TH2F *) MuCorrTrg_BCDEF->Get("IsoMu27_PtEtaBins/pt_abseta_ratio");
-    
-    static TH2F* HistoMuTrg[2]={HistoMuTrg_BCDEF};
-    return HistoMuTrg;
+TH2F**  FuncHistMuTrigger_50(int year){
+    if (year == 2016){
+        TFile * FileMuTrg= TFile::Open(("data/SF_Muon_Trg_2016_BCDEF.root"));
+        TH2F * HistoMuTrg= (TH2F *) FileMuTrg->Get("Mu50_OR_TkMu50_PtEtaBins/pt_abseta_ratio");
+        static TH2F* HistoMuTrg_arr[1]={HistoMuTrg};
+        return  HistoMuTrg_arr;
+    }
+    else if (year == 2017){
+        TFile * FileMuTrg= TFile::Open(("data/SF_Muon_Trg_2017.root"));
+        TH2F * HistoMuTrg= (TH2F *) FileMuTrg->Get("Mu50_PtEtaBins/pt_abseta_ratio");
+        static TH2F* HistoMuTrg_arr[1]={HistoMuTrg};
+        return  HistoMuTrg_arr;
+    }
+    else if (year == 2018){
+        TFile * FileMuTrg= TFile::Open(("data/SF_Muon_Trg_2018.root"));
+        TH2F * HistoMuTrg= (TH2F *) FileMuTrg->Get("Mu50_OR_OldMu100_OR_TkMu100_PtEtaBins/pt_abseta_ratio");
+        static TH2F* HistoMuTrg_arr[1]={HistoMuTrg};
+        return  HistoMuTrg_arr;
+    }
 }
+    
+TH2F**  FuncHistMuTrigger_27(int year){
+    if (year == 2016){
+        TFile * FileMuTrg= TFile::Open(("data/SF_Muon_Trg_2016_BCDEF.root"));
+        TH2F * HistoMuTrg= (TH2F *) FileMuTrg->Get("IsoMu24_OR_IsoTkMu24_PtEtaBins/pt_abseta_ratio");
+        static TH2F* HistoMuTrg_arr[1]={HistoMuTrg};
+        return  HistoMuTrg_arr;
+    }
+    else if (year == 2017){
+        TFile * FileMuTrg= TFile::Open(("data/SF_Muon_Trg_2017.root"));
+        TH2F * HistoMuTrg= (TH2F *) FileMuTrg->Get("IsoMu27_PtEtaBins/pt_abseta_ratio");
+        static TH2F* HistoMuTrg_arr[1]={HistoMuTrg};
+        return  HistoMuTrg_arr;
+    }
+    else if (year == 2018){
+        TFile * FileMuTrg= TFile::Open(("data/SF_Muon_Trg_2018.root"));
+        TH2F * HistoMuTrg= (TH2F *) FileMuTrg->Get("IsoMu24_PtEtaBins/pt_abseta_ratio");
+        static TH2F* HistoMuTrg_arr[1]={HistoMuTrg};
+        return  HistoMuTrg_arr;
+    }
+}
+    
+    
+//}
+//
+//
+//
+//    TFile * MuCorrTrg_BCDEF= TFile::Open(("../interface/MuSF/EfficienciesAndSF_RunBtoF_Nov17Nov2017.root"));
+//    //    TH1F * HistoMuTrg_BCDEF= (TH1F *) MuCorrTrg_BCDEF->Get("Mu50_EtaBins/eta_ratio");
+//    //    TH1F * HistoMuTrg_BCDEF= (TH1F *) MuCorrTrg_BCDEF->Get("Mu50_EtaBins/pt_abseta_ratio");
+//    TH2F * HistoMuTrg_BCDEF= (TH2F *) MuCorrTrg_BCDEF->Get("IsoMu27_PtEtaBins/pt_abseta_ratio");
+//
+//    static TH2F* HistoMuTrg_arr[2]={HistoMuTrg_BCDEF};
+//    return HistoMuTrg;
+//}
 
 
 TGraphAsymmErrors * FuncHistMuTrack(){
@@ -766,16 +813,25 @@ TGraphAsymmErrors * FuncHistMuTrack(){
 }
 
 
-TH2F**  FuncHistMuId(){
-    
-    
-    
-    TFile * MuCorrId_BCDEF= TFile::Open(("../interface/pileup-hists/RunBCDEF_SF_ID.root"));
-    TH2F * HistoMuId_BCDEF= (TH2F *) MuCorrId_BCDEF->Get("NUM_MediumID_DEN_genTracks_pt_abseta");
-    
-    static TH2F* HistoMuId[1]={HistoMuId_BCDEF};
-    
-    return  HistoMuId;
+TH2F**  FuncHistMuId(int year){
+    if (year == 2016){
+        TFile * FileMuId= TFile::Open(("data/SF_Muon_Id_2016_BCDEF.root"));
+        TH2F * HistoMuId= (TH2F *) FileMuId->Get("NUM_MediumID_DEN_genTracks_eta_pt");
+        static TH2F* HistoMuId_arr[1]={HistoMuId};
+        return  HistoMuId_arr;
+    }
+    else if (year == 2017){
+        TFile * FileMuId= TFile::Open(("data/SF_Muon_Id_2017.root"));
+        TH2F * HistoMuId= (TH2F *) FileMuId->Get("NUM_MediumID_DEN_genTracks_pt_abseta");
+        static TH2F* HistoMuId_arr[1]={HistoMuId};
+        return  HistoMuId_arr;
+    }
+    else if (year == 2018){
+        TFile * FileMuId= TFile::Open(("data/SF_Muon_Id_2018.root"));
+        TH2F * HistoMuId= (TH2F *) FileMuId->Get("NUM_MediumID_DEN_TrackerMuons_pt_abseta");
+        static TH2F* HistoMuId_arr[1]={HistoMuId};
+        return  HistoMuId_arr;
+    }
 }
 
 
@@ -784,9 +840,9 @@ TH2F**  FuncHistMuIso(){
     TFile * MuCorrIso_BCDEF= TFile::Open(("../interface/pileup-hists/RunBCDEF_SF_ISO.root"));
     TH2F * HistoMuIso_BCDEF= (TH2F *) MuCorrIso_BCDEF->Get("NUM_LooseRelIso_DEN_MediumID_pt_abseta");
     
-    static  TH2F* HistoMuIso[1]={HistoMuIso_BCDEF};
+    static  TH2F* HistoMuIso_arr[1]={HistoMuIso_BCDEF};
     
-    return HistoMuIso;
+    return HistoMuIso_arr;
 }
 
 
@@ -794,6 +850,20 @@ TH2F**  FuncHistMuIso(){
 //########################################
 // Ele Id, Iso, Trigger and Tracker Eff files
 //########################################
+
+//
+//
+////    TFile * EleCorrMVAIdIso90= TFile::Open(("../interface/pileup-hists/egammaEffi.txt_EGM2D.root"));
+//    TFile * EleCorrMVAIdIso90= TFile::Open(("data/2017_ElectronMVA90noiso.root"));
+//    TH2F * HistoEleMVAIdIso90= (TH2F *) EleCorrMVAIdIso90->Get("EGamma_SF2D");
+////    TH2F * HistoEleMVAIdIso90_EffMC= (TH2F *) EleCorrMVAIdIso90->Get("EGamma_EffMC2D");
+////    TH2F * HistoEleMVAIdIso90_EffData= (TH2F *) EleCorrMVAIdIso90->Get("EGamma_EffData2D");
+//
+//    TFile * EleCorrReco= TFile::Open(("data/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root"));
+//    TH2F * HistoEleReco= (TH2F *) EleCorrReco->Get("EGamma_SF2D");
+//
+//
+//
 
 
 
@@ -810,19 +880,35 @@ TH2F** FuncHistEleReco(){
     
 }
 
-TH2F** FuncHistEleId(){
-    
-    TFile * eleIdF= TFile::Open(("../interface/EleSF/2017_ElectronMVA80.root"));
-    TH2F * eleIdHisto= (TH2F *) eleIdF->Get("EGamma_SF2D");
-    
-    static  TH2F* HistoElId[1]={eleIdHisto};
-    
-    return HistoElId;
-    
-    
+TH2F**  FuncHistEleId(int year){
+    if (year == 2016){
+        TFile * FileEleId= TFile::Open(("data/SF_Electron_Id_2016.root"));
+        TH2F * HistoEleId= (TH2F *) FileEleId->Get("EGamma_SF2D");
+        static TH2F* HistoEleId_arr[1]={HistoEleId};
+        return  HistoEleId_arr;
+    }
+    else if (year == 2017){
+        TFile * FileEleId= TFile::Open(("data/SF_Electron_Id_2017.root"));
+        TH2F * HistoEleId= (TH2F *) FileEleId->Get("EGamma_SF2D");
+        static TH2F* HistoEleId_arr[1]={HistoEleId};
+        return  HistoEleId_arr;
+    }
+    else if (year == 2018){
+        TFile * FileEleId= TFile::Open(("data/SF_Electron_Id_2018.root"));
+        TH2F * HistoEleId= (TH2F *) FileEleId->Get("EGamma_SF2D");
+        static TH2F* HistoEleId_arr[1]={HistoEleId};
+        return  HistoEleId_arr;
+    }
 }
 
 
+TH2F**  FuncHistEleTrigger(int year){
+
+        TFile * FileEleTrg= TFile::Open(("data/SF_Electron_Trg_2016.root"));
+        TH2F * HistoEleTrg= (TH2F *) FileEleTrg->Get("Ele27_WPTight_Gsf");
+        static TH2F* HistoEleTrg_arr[1]={HistoEleTrg};
+        return  HistoEleTrg_arr;
+}
 
 //########################################
 // Electron MVA IdIso files
@@ -977,8 +1063,13 @@ int getNumElectron(){
         else if ( fabs (eleSCEta->at(jele)) >=  1.5 && eleIDMVAIso->at(jele) >  -0.69  ) eleMVAIdExtra= true;
         else eleMVAIdExtra= false;
         
+        float IsoLepValue=elePFChIso->at(jele)/elePt->at(jele);
+        if ( (elePFNeuIso->at(jele) + elePFPhoIso->at(jele) - 0.5* elePFPUIso->at(jele) )  > 0.0)
+            IsoLepValue= ( elePFChIso->at(jele) + elePFNeuIso->at(jele) + elePFPhoIso->at(jele) - 0.5* elePFPUIso->at(jele))/elePt->at(jele);
+
+
         
-        if (eleMVAIdExtra)
+        if (eleMVAIdExtra && IsoLepValue < 0.15)
             numElectron++;
     }
     return numElectron;
@@ -1358,6 +1449,7 @@ float FuncFinalBTagSF(bool isData, TH2F ** Btagg_TT, float BJetPtCut, float CSVC
             
             
             if ( jetCSV2BJetTags->at(ijet) >  CSVCut ){
+//            if ( jetDeepCSVTags_b->at(ijet) >  CSVCut ){
                 EffJet= getBtagEfficiency( isData, 1,  jetPt->at(ijet), fabs(jetEta->at(ijet)), Btagg_TT);
                 SF= GetBJetSF(isData, jetPt->at(ijet), jetPt->at(ijet), HadronFlavor);
                 P_Data_P_mc=SF*EffJet/EffJet;
@@ -1385,7 +1477,9 @@ float FuncFinalBTagSF(bool isData, TH2F ** Btagg_TT, float BJetPtCut, float CSVC
 int numBJets( float BJetPtCut, float CSVCut){
     int numBJet=0;
     for (int ijet= 0 ; ijet < nJet ; ijet++){
-        if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > BJetPtCut && fabs(jetEta->at(ijet)) < 2.4  && jetCSV2BJetTags->at(ijet) >  CSVCut)
+        if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > BJetPtCut && fabs(jetEta->at(ijet)) < 2.4  &&
+        jetDeepCSVTags_b->at(ijet) >  CSVCut)
+        //         jetCSV2BJetTags->at(ijet) >  CSVCut)
             numBJet++;
     }
     return numBJet;

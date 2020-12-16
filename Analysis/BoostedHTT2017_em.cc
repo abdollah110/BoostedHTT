@@ -65,16 +65,16 @@ int main(int argc, char* argv[]) {
     //########################################
     // Muon Id, Iso, Trigger and Tracker Eff files
     //########################################
-    TH2F** HistoMuId=FuncHistMuId();
-    TH2F** HistoMuIso=FuncHistMuIso();
-    TH2F** HistoMuTrg=FuncHistMuTrigger();
-    TGraphAsymmErrors * HistoMuTrack=FuncHistMuTrack();
-    
+    TH2F** HistoMuId=FuncHistMuId(year);
+//    TH2F** HistoMuIso=FuncHistMuIso();
+    TH2F** HistoMuTrg=FuncHistMuTrigger_27(year);
+//    TGraphAsymmErrors * HistoMuTrack=FuncHistMuTrack();
+    TH2F** HistoEleId=FuncHistEleId(year);
     //########################################
     // Pileup files
     //########################################
     
-    TH1F *  HistoPUData =HistPUData();
+    TH1F *  HistoPUData =HistPUData(year_str);
     TH1F * HistoPUMC = new TH1F();
     if (! (fname.find("Data") != string::npos || fname.find("Run") != string::npos ))
         HistoPUMC=HistPUMC(InputFile);
@@ -109,8 +109,12 @@ int main(int argc, char* argv[]) {
     float JetPtCut=30;
     float BJetPtCut=20;
     
-    //    float CSVCut=   0.9535   ;                  //  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
-    float CSVCut=   0.8838   ;                  //  medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
+    float DeepCSVCut=   1000   ;                  //  medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
+    if (year== 2016) DeepCSVCut =    0.6321 ;
+    if (year== 2017) DeepCSVCut =    0.4941 ;
+    if (year== 2018) DeepCSVCut =   0.4184  ;
+
+
     float LeptonIsoCut=0.30;
     bool debug= false;
     //    float luminosity=    35867;
@@ -126,9 +130,10 @@ int main(int argc, char* argv[]) {
     float tmass,tmass2, ht,st,Met,FullWeight, dR_mu_ele, Metphi, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
-    outTr->Branch("evtwtZpt",&wtnom_zpt_weight,"evtwtZPt/F");
+//    outTr->Branch("evtwtZpt",&wtnom_zpt_weight,"evtwtZPt/F");
     outTr->Branch("lepPt",&lepPt_,"lepPt/F");
     outTr->Branch("elept",&elept_,"elept/F");
+    outTr->Branch("taupt",&elept_,"taupt/F");
     outTr->Branch("PassL",&PassL,"PassL/O");
     outTr->Branch("FailL",&FailL,"FailL/O");
     outTr->Branch("OS",&OS,"OS/O");
@@ -229,16 +234,21 @@ int main(int argc, char* argv[]) {
         if( dR_mu_ele > 0.8 || dR_mu_ele < 0.1) continue;
         plotFill("cutFlowTable",5 ,15,0,15);
         
-        tmass = TMass_F(Lep4Momentum.Pt(), Lep4Momentum.Px(), Lep4Momentum.Py(),  Met,  Metphi);
-        tmass2 = TMass_F(Ele4Momentum.Pt(), Ele4Momentum.Px(), Ele4Momentum.Py(),  Met,  Metphi);
-        if (tmass > 80 || tmass2 > 80) continue;
+        
+        Met4Momentum.SetPtEtaPhiM(pfMET, 0, pfMETPhi, 0);
+        Z4Momentum=Ele4Momentum+Lep4Momentum;
+        TLorentzVector higgs = Ele4Momentum+Lep4Momentum +Met4Momentum;
+
+        
+        tmass = TMass_F(Z4Momentum.Pt(), Z4Momentum.Px(), Z4Momentum.Py(),  Met,  Metphi);
+        if (tmass > 80 ) continue;
         plotFill("cutFlowTable",6 ,15,0,15);
         
-//        if (m_sv < 10) continue;
-//        plotFill("cutFlowTable",7 ,15,0,15);
+        if (m_sv < 50) continue;
+        plotFill("cutFlowTable",7 ,15,0,15);
         
         // BJet veto
-        int numBJet=numBJets(BJetPtCut,CSVCut);
+        int numBJet=numBJets(BJetPtCut,DeepCSVCut);
         if (numBJet > 0) continue;
         plotFill("cutFlowTable",8 ,15,0,15);
         
@@ -296,7 +306,12 @@ int main(int argc, char* argv[]) {
             
             // Pilu up weights
             int puNUmmc=int(puTrue->at(0)*5);
-            int puNUmdata=int(puTrue->at(0)*5);
+//            int puNUmdata=int(puTrue->at(0)*5);
+            int puNUmdata=0;
+            if (year == 2016 || year == 2017)
+                 puNUmdata=int(puTrue->at(0)*10);
+            else if (year == 2018)
+                 puNUmdata=int(puTrue->at(0));
             float PUMC_=HistoPUMC->GetBinContent(puNUmmc+1);
             float PUData_=HistoPUData->GetBinContent(puNUmdata+1);
             if (PUMC_ ==0)
@@ -304,14 +319,19 @@ int main(int argc, char* argv[]) {
             else
                 PUWeight= PUData_/PUMC_;
             
+            
             // Muon Correction
-            LepCorrection= getCorrFactorMuon94X(isData,  Lep4Momentum.Pt(), Lep4Momentum.Eta() , HistoMuId,HistoMuIso,HistoMuTrg,HistoMuTrack);
+            float MuIdCorrection = getCorrFactorMuonId(year, isData,  Lep4Momentum.Pt(), Lep4Momentum.Eta() ,HistoMuId);
+            float MuTrgCorrection = getCorrFactorMuonTrg(isData,  Lep4Momentum.Pt(), Lep4Momentum.Eta() ,HistoMuTrg);
+            float EleIdCorrection = getCorrFactorEleId(isData,  Lep4Momentum.Pt(), eleSCEta->at(idx_lep) ,HistoEleId);
+            
+            LepCorrection= MuIdCorrection * MuTrgCorrection * EleIdCorrection;
             
             // give inputs to workspace
-            htt_sf->var("m_pt")->setVal(muPt->at(idx_lep));
-            htt_sf->var("m_eta")->setVal(muEta->at(idx_lep));
-            htt_sf->var("z_gen_mass")->setVal(ZBosonMass);
-            htt_sf->var("z_gen_pt")->setVal(ZBosonPt);
+//            htt_sf->var("m_pt")->setVal(muPt->at(idx_lep));
+//            htt_sf->var("m_eta")->setVal(muEta->at(idx_lep));
+//            htt_sf->var("z_gen_mass")->setVal(ZBosonMass);
+//            htt_sf->var("z_gen_pt")->setVal(ZBosonPt);
 
         
 //            if (name == "EWKZ" || name == "ZL" || name == "ZTT" || name == "ZLL") {
@@ -330,16 +350,13 @@ int main(int argc, char* argv[]) {
         
         plotFill("LumiWeight",LumiWeight ,1000,0,10000);
         plotFill("LepCorrection",LepCorrection ,100,0,2);
-        plotFill("nom_zpt_weight",nom_zpt_weight ,100,0,2);
+//        plotFill("nom_zpt_weight",nom_zpt_weight ,100,0,2);
         plotFill("PUWeight",PUWeight ,200,0,2);
         
         //###############################################################################################
         //  tree branches
         //###############################################################################################
         
-        Met4Momentum.SetPtEtaPhiM(pfMET, 0, pfMETPhi, 0);
-        Z4Momentum=Ele4Momentum+Lep4Momentum;
-        TLorentzVector higgs = Ele4Momentum+Lep4Momentum +Met4Momentum;
         
         higgs_pT = higgs.Pt();
         higgs_m = higgs.M();
@@ -357,8 +374,9 @@ int main(int argc, char* argv[]) {
 //        BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_ele);
         m_sv_=m_sv;
         //  Weights
-        FullWeight = LumiWeight*LepCorrection*nom_zpt_weight;
-        wtnom_zpt_weight=nom_zpt_weight;
+        FullWeight = LumiWeight*LepCorrection;
+//        FullWeight = LumiWeight*LepCorrection*nom_zpt_weight;
+//        wtnom_zpt_weight=nom_zpt_weight;
         
         // Fill the tree
         outTr->Fill();

@@ -63,22 +63,14 @@ int main(int argc, char* argv[]) {
     //########################################
     // Electron MVA IdIso files
     //########################################
-//    TFile * EleCorrMVAIdIso90= TFile::Open(("../interface/pileup-hists/egammaEffi.txt_EGM2D.root"));
-    TFile * EleCorrMVAIdIso90= TFile::Open(("data/2017_ElectronMVA90noiso.root"));
-    TH2F * HistoEleMVAIdIso90= (TH2F *) EleCorrMVAIdIso90->Get("EGamma_SF2D");
-//    TH2F * HistoEleMVAIdIso90_EffMC= (TH2F *) EleCorrMVAIdIso90->Get("EGamma_EffMC2D");
-//    TH2F * HistoEleMVAIdIso90_EffData= (TH2F *) EleCorrMVAIdIso90->Get("EGamma_EffData2D");
-
-    TFile * EleCorrReco= TFile::Open(("data/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root"));
-    TH2F * HistoEleReco= (TH2F *) EleCorrReco->Get("EGamma_SF2D");
-
-
+        TH2F** HistoEleId=FuncHistEleId(year);
+//        TH2F** HistoEleTrg=FuncHistEleTrigger(year); // Not available yet
 
     //########################################
     // Pileup files
     //########################################
     
-    TH1F *  HistoPUData =HistPUData();
+    TH1F *  HistoPUData =HistPUData(year_str);
     TH1F * HistoPUMC = new TH1F();
     if (! (fname.find("Data") != string::npos || fname.find("Run") != string::npos ))
         HistoPUMC=HistPUMC(InputFile);
@@ -117,8 +109,12 @@ int main(int argc, char* argv[]) {
     float JetPtCut=30;
     float BJetPtCut=20;
     
-    //    float CSVCut=   0.9535   ;                  //  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
-    float CSVCut=   0.8838   ;                  //  medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
+    float DeepCSVCut=   1000   ;                  //  loose  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
+    if (year== 2016) DeepCSVCut =    0.2217 ;
+    if (year== 2017) DeepCSVCut =    0.1522 ;
+    if (year== 2018) DeepCSVCut =   0.1241  ;
+    
+    
     float LeptonIsoCut=0.15;
     bool debug= false;
     //    float luminosity=    35867;
@@ -243,11 +239,11 @@ int main(int argc, char* argv[]) {
         if (tmass > 80) continue;
         plotFill("cutFlowTable",6 ,15,0,15);
         
-        if (m_sv < 10) continue;
+        if (m_sv < 50) continue;
         plotFill("cutFlowTable",7 ,15,0,15);
         
         // BJet veto
-        int numBJet=numBJets(BJetPtCut,CSVCut);
+        int numBJet=numBJets(BJetPtCut,DeepCSVCut);
         if (numBJet > 0) continue;
         plotFill("cutFlowTable",8 ,15,0,15);
         
@@ -298,8 +294,8 @@ int main(int argc, char* argv[]) {
         // give inputs to workspace
         htt_sf->var("e_pt")->setVal(elePt->at(idx_lep));
         htt_sf->var("e_eta")->setVal(eleEta->at(idx_lep));
-        htt_sf_v2->var("z_gen_mass")->setVal(ZBosonMass);
-        htt_sf_v2->var("z_gen_pt")->setVal(ZBosonPt);
+//        htt_sf_v2->var("z_gen_mass")->setVal(ZBosonMass);
+//        htt_sf_v2->var("z_gen_pt")->setVal(ZBosonPt);
 
         if (!isData){
             
@@ -308,7 +304,12 @@ int main(int argc, char* argv[]) {
             
             // Pilu up weights
             int puNUmmc=int(puTrue->at(0)*5);
-            int puNUmdata=int(puTrue->at(0)*5);
+            //            int puNUmdata=int(puTrue->at(0)*5);
+            int puNUmdata=0;
+            if (year == 2016 || year == 2017)
+                 puNUmdata=int(puTrue->at(0)*10);
+            else if (year == 2018)
+                 puNUmdata=int(puTrue->at(0));
             float PUMC_=HistoPUMC->GetBinContent(puNUmmc+1);
             float PUData_=HistoPUData->GetBinContent(puNUmdata+1);
             if (PUMC_ ==0)
@@ -316,16 +317,23 @@ int main(int argc, char* argv[]) {
             else
                 PUWeight= PUData_/PUMC_;
             
-    
-            // Lepton Correction
-            LeptonIdCor= getCorrFactorElectron94X(isData,  Lep4Momentum.Pt(), eleSCEta->at(idx_lep) , HistoEleReco, HistoEleMVAIdIso90);
+
+
+            // Electron Correction
+            float EleIdCorrection = getCorrFactorEleId(isData,  Lep4Momentum.Pt(), eleSCEta->at(idx_lep) ,HistoEleId);
+//            float EleTrgCorrection = getCorrFactorMuonTrg(isData,  Lep4Momentum.Pt(), Lep4Momentum.Eta() ,HistoEleTrg);
+            
+//            LepCorrection= EleIdCorrection;
+
+//            // Lepton Correction
+//            LeptonIdCor= getCorrFactorElectron94X(isData,  Lep4Momentum.Pt(), eleSCEta->at(idx_lep) , HistoEleReco, HistoEleMVAIdIso90);
             
             if (Lep4Momentum.Pt() < 120)
             LeptonTrgCor = htt_sf->function("e_trg_ic_ratio")->getVal();
 
 //            cout << "  Lep4Momentum.Pt(), eleSCEta->at(idx_lep)"<< Lep4Momentum.Pt() <<" " <<eleSCEta->at(idx_lep) <<"   id="<< LeptonIdCor <<"  trg="<< LeptonTrgCor<<"\n";
             
-            LepCorrection = LeptonIdCor * LeptonTrgCor;
+            LepCorrection = EleIdCorrection * LeptonTrgCor;
 
         
 //            if (name == "EWKZ" || name == "ZL" || name == "ZTT" || name == "ZLL") {
@@ -344,7 +352,7 @@ int main(int argc, char* argv[]) {
         
         plotFill("LumiWeight",LumiWeight ,1000,0,10000);
         plotFill("LepCorrection",LepCorrection ,100,0,2);
-        plotFill("nom_zpt_weight",nom_zpt_weight ,100,0,2);
+//        plotFill("nom_zpt_weight",nom_zpt_weight ,100,0,2);
         plotFill("PUWeight",PUWeight ,200,0,2);
         
         //###############################################################################################
@@ -371,8 +379,9 @@ int main(int argc, char* argv[]) {
         BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_tau);
         m_sv_=m_sv;
         //  Weights
-        FullWeight = LumiWeight*LepCorrection*nom_zpt_weight;
-        wtnom_zpt_weight=nom_zpt_weight;
+        FullWeight = LumiWeight*LepCorrection;
+//        FullWeight = LumiWeight*LepCorrection*nom_zpt_weight;
+//        wtnom_zpt_weight=nom_zpt_weight;
         
         // Fill the tree
         outTr->Fill();
