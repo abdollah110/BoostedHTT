@@ -302,16 +302,21 @@ int main(int argc, char* argv[]) {
             // Lumi weight
             LumiWeight = getLuminsoity(year) * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
             
-            // Pilu up weights
-            int puNUmmc=int(puTrue->at(0)*5);
-            //            int puNUmdata=int(puTrue->at(0)*5);
-            int puNUmdata=0;
-            if (year == 2016 || year == 2017)
-                 puNUmdata=int(puTrue->at(0)*10);
-            else if (year == 2018)
-                 puNUmdata=int(puTrue->at(0));
-            float PUMC_=HistoPUMC->GetBinContent(puNUmmc+1);
-            float PUData_=HistoPUData->GetBinContent(puNUmdata+1);
+//            // Pilu up weights
+//            int puNUmmc=int(puTrue->at(0)*5);
+//            //            int puNUmdata=int(puTrue->at(0)*5);
+//            int puNUmdata=0;
+//            if (year == 2016 || year == 2017)
+//                 puNUmdata=int(puTrue->at(0)*10);
+//            else if (year == 2018)
+//                 puNUmdata=int(puTrue->at(0));
+//            float PUMC_=HistoPUMC->GetBinContent(puNUmmc+1);
+//            float PUData_=HistoPUData->GetBinContent(puNUmdata+1);
+            
+            float PUMC_=HistoPUMC->GetBinContent(puTrue->at(0)+1);
+            float PUData_=HistoPUData->GetBinContent(puTrue->at(0)+1);
+
+
             if (PUMC_ ==0)
                 cout<<"PUMC_ is zero!!! & num pileup= "<< puTrue->at(0)<<"\n";
             else
