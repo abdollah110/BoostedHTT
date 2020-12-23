@@ -87,13 +87,13 @@ void SkimerBoost::Loop(TString OutputFile)
         
         auto numDiMu(0);
         for (int imu = 0; imu < nMu; ++imu){
-            if (muPt->at(imu) < 30 || fabs(muEta->at(imu)) > 2.4) continue;
+            if (muPt->at(imu) < 50 || fabs(muEta->at(imu)) > 2.4) continue;
             
             LeadMu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
             
             for (int jmu = imu+1; jmu < nMu; ++jmu){
-                if (muPt->at(jmu) < 30 || fabs(muEta->at(jmu)) > 2.4) continue;
+                if (muPt->at(jmu) < 10 || fabs(muEta->at(jmu)) > 2.4) continue;
                 
                 SubMu4Momentum.SetPtEtaPhiM(muPt->at(jmu),muEta->at(jmu),muPhi->at(jmu),MuMass);
                                 
