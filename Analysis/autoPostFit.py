@@ -1,6 +1,5 @@
 import plotter
 
-
 plots = [
     ('NN_disc', 'D_{NN}', 3),
     ('m_sv', 'm_{SVFit}', 3.0),
@@ -11,12 +10,11 @@ plots = [
     ('vis_mass', 'm_{Visible}', 3.0),
     ('taupt', 'tau p_{T}', 3.0),
     ('muPt', 'Muon p_{T}', 3.0),
-#    ('IsoMu', '#mu rel isolation', 3.0),
-    ('dR_lep_tau', 'dR_lep_tau', 3.0),
+    ('IsoMu', '#mu rel isolation', 3.0),
+    ('dR_mu_tau', 'dR_mu_tau', 3.0),
     ('LeadJetPt', 'LeadJetPt', 3.0),
-#    ('BoostedTauRawIso', 'BoostedTauRawIso', 3.0),
+    ('BoostedTauRawIso', 'BoostedTauRawIso', 3.0),
     ('ht', 'ht', 3.0),
-##    ('ZMass', 'ZMass', 3.0),
 ]
 
 categories = ['_0jet']

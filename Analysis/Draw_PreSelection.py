@@ -9,8 +9,10 @@ import sys
 #InputFilesLocation = 'NewOutFiles_BoostedHTT2017_/'
 #InputFilesLocation = 'NN_nominal/'
 
+
+
 ForAN=1
-def add_lumi():
+def add_lumi(year):
     lowX=0.59
     lowY=0.835
     lumi  = ROOT.TPaveText(lowX, lowY+0.06, lowX+0.30, lowY+0.16, "NDC")
@@ -20,7 +22,10 @@ def add_lumi():
     lumi.SetTextColor(    1 )
     lumi.SetTextSize(0.06)
     lumi.SetTextFont (   42 )
-    lumi.AddText("41.5 fb^{-1} (13 TeV)")
+    if year ==2017:
+        lumi.AddText("41.5 fb^{-1} (13 TeV)")
+    if year ==2018:
+        lumi.AddText("59.6 fb^{-1} (13 TeV)")
     return lumi
 
 def add_CMS():
@@ -59,6 +64,10 @@ def make_legend():
         return output
 
 InputFilesLocation=sys.argv[1]
+year=0
+if '2017' in InputFilesLocation: year =2017
+if '2018' in InputFilesLocation: year =2018
+
 def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbarCR,MTLegend):
 #    yMin*=0.1
     ROOT.gStyle.SetFrameLineWidth(3)
@@ -87,16 +96,17 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     TT=file.Get(categoriy).Get("ttbar")
     TT.Rebin(RB_)
 
-    ZTT=file.Get(categoriy).Get("ZTT")
+#    ZTT=file.Get(categoriy).Get("ZTT")
+    ZTT=file.Get(categoriy).Get("DYJets125")
     ZTT.Rebin(RB_)
     
-    ZJ=file.Get(categoriy).Get("ZJ")
-    ZJ.Rebin(RB_)
-    
-    ZLL=file.Get(categoriy).Get("ZLL")
-    ZLL.Rebin(RB_)
+#    ZJ=file.Get(categoriy).Get("ZJ")
+#    ZJ.Rebin(RB_)
+#
+#    ZLL=file.Get(categoriy).Get("ZLL")
+#    ZLL.Rebin(RB_)
 
-    signal=file.Get(categoriy).Get("H125")
+    signal=file.Get(categoriy).Get("HTT")
     signal.Rebin(RB_)
     signal.Scale(50)
 
@@ -120,10 +130,10 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     QCD.SetFillColor(ROOT.TColor.GetColor(408, 106, 154))
     W.SetFillColor(ROOT.TColor.GetColor(200, 2, 285))
     TT.SetFillColor(ROOT.TColor.GetColor(208, 376, 124))
-    ZLL.SetFillColor(ROOT.TColor.GetColor(150, 132, 232))
+#    ZLL.SetFillColor(ROOT.TColor.GetColor(150, 132, 232))
     VV.SetFillColor(ROOT.TColor.GetColor(200, 282, 232))
     ZTT.SetFillColor(ROOT.TColor.GetColor(108, 226, 354))
-    ZJ.SetFillColor(ROOT.TColor.GetColor(300, 200, 20))
+#    ZJ.SetFillColor(ROOT.TColor.GetColor(300, 200, 20))
 #    signal.SetLineColor(ROOT.TColor.GetColor(100, 100, 20))
     
     
@@ -147,8 +157,8 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     ZTT.SetLineColor(ROOT.kBlack)
     VV.SetLineColor(ROOT.kBlack)
     signal.SetLineColor(ROOT.kRed)
-    ZLL.SetLineColor(ROOT.kBlack)
-    ZJ.SetLineColor(ROOT.kBlack)
+#    ZLL.SetLineColor(ROOT.kBlack)
+#    ZJ.SetLineColor(ROOT.kBlack)
     Data.SetLineColor(ROOT.kBlack)
     Data.SetLineWidth(2)
 
@@ -157,8 +167,8 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     stack.Add(W)
     stack.Add(VV)
     stack.Add(TT)
-    stack.Add(ZLL)    
-    stack.Add(ZJ)
+#    stack.Add(ZLL)
+#    stack.Add(ZJ)
     stack.Add(ZTT)
     
 
@@ -166,9 +176,9 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     errorBand.Add(QCD)
     errorBand.Add(TT)
     errorBand.Add(VV)
-    errorBand.Add(ZLL)
+#    errorBand.Add(ZLL)
     errorBand.Add(ZTT)
-    errorBand.Add(ZJ)
+#    errorBand.Add(ZJ)
     
     errorBand.SetMarkerSize(0)
     errorBand.SetFillColor(16)
@@ -200,25 +210,25 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     Data.SetMinimum(yMin)
     Data.Draw("e")
     stack.Draw("histsame")
-    signal.Draw("same")
+#    signal.Draw("same")
     errorBand.Draw("e2same")
     Data.Draw("esame")
 
     legende=make_legend()
     legende.AddEntry(Data,"Data","elp")
-    legende.AddEntry(ZJ,"ZJ","f")
+#    legende.AddEntry(ZJ,"ZJ","f")
     legende.AddEntry(TT,"t#bar{t}+jets","f")
-    legende.AddEntry(ZLL,"ZLL","f")
+#    legende.AddEntry(ZLL,"ZLL","f")
     legende.AddEntry(ZTT,"ZTT","f")
     legende.AddEntry(VV,"Diboson","f")
     legende.AddEntry(W,"W+iets","f")
     legende.AddEntry(QCD,"QCD multijet","f")
-    legende.AddEntry(signal,"H125","l")
+#    legende.AddEntry(signal,"H125","l")
     legende.AddEntry(errorBand,"Uncertainty","f")
 
     legende.Draw()
 
-    l1=add_lumi()
+    l1=add_lumi(year)
     l1.Draw("same")
     l2=add_CMS()
     l2.Draw("same")
@@ -326,7 +336,7 @@ FileNamesInfo=[
 #               ["_tmass_JetMet","M_{T}(jet,MET) (GeV)","",5,1],
                ["ZMass","visible M_{l#tau} (GeV)","",1,.1],
 #               ["dR","deltaR_{e#tau}","",5,.1],
-               ["tmass","tmass{l,MET}","",1,.1],
+               ["tmass","m_{T}(l,MET)","",1,.1],
                ["ht","jet HT (GeV)","",1,.1],
                
                
@@ -362,11 +372,11 @@ logStat=[0]
 #    Charge= ["_OS","_SS"]
 
 region= [
-['_Pass','pass'],
+['_PassL','pass'],
 #['_Fail','fail'],
-#['_PassM','pass'],
+['_PassM','pass'],
 #['_FailM','fail'],
-#['_PassT','pass'],
+['_PassT','pass'],
 #['_FailT','fail']
 ]
 #region= ["_Fail"]

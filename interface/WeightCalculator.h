@@ -67,6 +67,8 @@ float XSection(std::string OutName) {
     //       else if (OutName.find("WZToLNu2Q_powheg") != string::npos) return  10.71 ;
     else if (OutName.find("WZTo1L1Nu2Q_amcNLO") != string::npos) return  10.71 ;
     else if (OutName.find("WW1l1nu2q") != string::npos) return  49.997 ;
+    else if (OutName.find("WZ1l3nu") != string::npos) return  3.05 ;
+
     // The missing one is WZto4Q
     //else if (OutName.find("ZZ") != string::npos) return  12.14 ;
     //else if (OutName.find("WZ") != string::npos) return  27.57 ;

@@ -31,7 +31,7 @@ style_map = {
 #        "ZJ": style_map_tuple(GetColor(200, 282, 232), no_color, 1, 0, 1),
     },
     "signals": {
-        "H125": style_map_tuple(no_color, GetColor("#FF0000"), 1, 3, 1),
+        "JJH125": style_map_tuple(no_color, GetColor("#FF0000"), 1, 3, 1),
 #         "MG__GGH2Jets_sm_M125": style_map_tuple(no_color, GetColor("#0000FF"), 1, 3, 1),
 #         "MG__GGH2Jets_pseudoscalar_M125": style_map_tuple(no_color, GetColor("#00AAFF"), 1, 3, 1),
 #        # use JHU for 2018 because MG isn't available
@@ -112,7 +112,7 @@ def fillLegend(data, backgrounds,backgrounds_EWK, signals, stat):
     leg.AddEntry(data, 'Data', 'lep')
 
     # signals
-    leg.AddEntry(signals['H125'], ' SM Higgs(125)x50', 'l')
+    leg.AddEntry(signals['JJH125'], ' SM Higgs(125)x50', 'l')
 #    leg.AddEntry(signals['MG__GGH2Jets_pseudoscalar_M125'], 'ggH PS Higgs(125)x50', 'l')
 ##    leg.AddEntry(signals['JHU_GGH2Jets_sm_M125'], 'ggH SM Higgs(125)x50', 'l')
 ##    leg.AddEntry(signals['JHU_GGH2Jets_pseudoscalar_M125'], 'ggH PS Higgs(125)x50', 'l')
@@ -190,7 +190,7 @@ def blindData(data, signal, background):
     for ibin in range(data.GetNbinsX()+1):
         sig = signal.GetBinContent(ibin)
         bkg = background.GetBinContent(ibin)
-        if bkg > 0 and sig / ROOT.TMath.Sqrt(bkg + pow(0.09*bkg, 2)) >= 0.3:
+        if bkg > 0 and sig / ROOT.TMath.Sqrt(bkg + pow(0.09*bkg, 2)) >= 0.2:
             err = data.GetBinError(ibin)
             data.SetBinContent(ibin, -1)
             data.SetBinError(ibin, err)
@@ -204,7 +204,7 @@ def blindData(data, signal, background):
 
 def BuildPlot(args):
     print "ifile,category,category ", args.input ,args.category ,args.variable
-    InputFile=args.input.replace('vis_mass',args.variable)
+    InputFile=args.input.replace('m_sv',args.variable)
     ifile = ROOT.TFile(InputFile)
     category = ifile.Get(args.category)
 #    variable = category.Get(args.variable)
@@ -254,12 +254,12 @@ def BuildPlot(args):
     stack.Draw('hist')
     formatStack(stack)
 
-#    combo_signal = signals['H125'].Clone()
-##    combo_signal = signals['JHU_GGH2Jets_pseudoscalar_M125'].Clone()
-#    combo_signal.Scale(signals['ggH125'].Integral()/combo_signal.Integral())
+    combo_signal = signals['JJH125'].Clone()
+#    combo_signal = signals['JHU_GGH2Jets_pseudoscalar_M125'].Clone()
+#    combo_signal.Scale(signals['JJH125'].Integral()/combo_signal.Integral())
 #    combo_signal.Add(signals['ggH125'])
 #    combo_signal.Add(signals['VBF125'])
-#    data_hist = blindData(data_hist, combo_signal, stat)
+    data_hist = blindData(data_hist, combo_signal, stat)
 
     # draw the plots
     data_hist.Draw('same lep')
@@ -286,7 +286,9 @@ def BuildPlot(args):
     if 'em_' in args.category:
         lepLabel = "e#mu"
     elif 'mt_' in args.category:
-        lepLabel = "#mu#tau_{#mu}"
+        lepLabel = "#mu#tau_{h}"
+    elif 'et_' in args.category:
+        lepLabel = "e#tau_{h}"
     if args.year == '2016':
         lumi = "35.9 fb^{-1}"
     elif args.year == '2017':

@@ -34,11 +34,19 @@ ROOT.gROOT.SetBatch(True)
 InputFilesLocation=sys.argv[1]
 #InputFilesLocation = 'NewOutFiles_BoostedHTT2017_mm_/'
 #InputFilesLocation = 'NewOutFiles_BoostedHTT2017_old/'
+year=0
+if '2017' in InputFilesLocation: year =2017
+if '2018' in InputFilesLocation: year =2018
+
 
 verbos_ = True
-RB_=1
+#RB_=1
+RB_=60
 #bcde_to_bcdef= (4.767+ 9.583+4.224+9.261)/(4.767+ 9.583+4.224+9.261+13.463)
 bcde_to_bcdef=1
+if year ==2018:
+    bcde_to_bcdef=0.95
+
 
 #process=[
 #['VV','VV',-1],
@@ -54,8 +62,8 @@ process=[
 #    ['SingleTop','SingleTop',-1],
     ['TT','ttbar',-1],
     ['ZTT','DYJets125',-1],
-    ['ZLL','ZLL',-1],
-    ['ZJ','ZJ',-1],
+#    ['ZLL','ZLL',-1],
+#    ['ZJ','ZJ',-1],
     ['W','WJets',-1],
     ['Data','data_obs',+1],
 ]
@@ -92,7 +100,6 @@ def MakeTheHistogram(channel,NormMC,qcdOS,qcdSS,templateqcd,templateqcdShape,reg
     allFiles=[]
     for pro in process:
         ################################################
-        #  Filling SingleTop
         ################################################
         print "--------------------------------------------------->     Processing %s"%pro[0]
         tDirectory.cd()

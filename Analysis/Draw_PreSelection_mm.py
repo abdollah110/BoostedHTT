@@ -8,10 +8,14 @@ import sys
 InputFilesLocation=sys.argv[1]
 #bcde_to_bcdef= (4.767+ 9.583+4.224+9.261)/(4.767+ 9.583+4.224+9.261+13.463)
 bcde_to_bcdef=1
+year=0
+if '2017' in InputFilesLocation: year =2017
+if '2018' in InputFilesLocation: year =2018
+
 
 ForAN=1
 RB_=20
-def add_lumi():
+def add_lumi(year):
     lowX=0.59
     lowY=0.835
     lumi  = ROOT.TPaveText(lowX, lowY+0.06, lowX+0.30, lowY+0.16, "NDC")
@@ -21,7 +25,10 @@ def add_lumi():
     lumi.SetTextColor(    1 )
     lumi.SetTextSize(0.06)
     lumi.SetTextFont (   42 )
-    lumi.AddText("41.5 fb^{-1} (13 TeV)")
+    if year ==2017:
+        lumi.AddText("41.5 fb^{-1} (13 TeV)")
+    if year ==2018:
+        lumi.AddText("59.6 fb^{-1} (13 TeV)")
     return lumi
 
 def add_CMS():
@@ -294,7 +301,7 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
 
     legende.Draw()
 
-    l1=add_lumi()
+    l1=add_lumi(year)
     l1.Draw("same")
     l2=add_CMS()
     l2.Draw("same")

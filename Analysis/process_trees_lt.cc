@@ -6,6 +6,7 @@
 #include <iomanip>      // std::setprecision
 
 
+using namespace std;
 
 
 using std::string;
@@ -16,7 +17,7 @@ int main(int argc, char *argv[]) {
     CLParser parser(argc, argv);
     bool doSyst = parser.Flag("-s");
     string dir = parser.Option("-d");
-    string year = parser.Option("-y");
+//    string year = parser.Option("-y");
     string suffix = parser.Option("--suf");
     string tree_name = parser.Option("-t");
     string channel = parser.Option("-c");
@@ -24,14 +25,19 @@ int main(int argc, char *argv[]) {
     std::string var_name = parser.Option("-v");
     std::vector<std::string> sbins = parser.MultiOption("-b", 3);
     
+    
+    string year;
+    if (dir.find("2016") != string::npos) year ="2016";
+    else if (dir.find("2017") != string::npos ) year ="2017";
+    else if (dir.find("2018") != string::npos) year ="2018";
+    else (std::cout << "Year is not specificed in the outFile name !\n");
+    
     // get the provided histogram binning
     std::vector<int> bins;
     for (auto sbin : sbins) {
         bins.push_back(std::stoi(sbin));
     }
-    
-    
-    
+        
     
     // get input file directory
     if (dir.empty()) {
@@ -39,22 +45,17 @@ int main(int argc, char *argv[]) {
         return -1;
     }
     
-    
     // read all files from input directory
     vector<string> files;
     read_directory(dir, &files);
-    
     // initialize histogram holder
     auto hists = new HistTool(channel, year, suffix, bins);
-    
     // This part is tro derive the OS/SS ratio (one can actually get the 2D pt/eta binned Values as well)
     hists->histoQCD(files, dir, tree_name,  "None");    // fill histograms QCD
-    
     std::vector<float>  OSSS= hists->Get_OS_SS_ratio();
     std::cout<<"\n\n\n\n OSSS  "<<OSSS[0]<<"\n";
     
     hists->histoLoop(year, files, dir, tree_name,var_name,OSSS, "None","");    // fill histograms
-    
     std::vector<std::string> ListSys{ "",
         //        "_JetRelBal_Up","_JetRelSam_Up",
         //        "_JetRelBal_Down","_JetRelSam_Down",
@@ -64,7 +65,6 @@ int main(int argc, char *argv[]) {
         //        "_JetHFyear_Down","_JetHFyear_Up",
         //        "_RecoilReso_Up","_RecoilReso_Down","_RecoilResp_Up","_RecoilResp_Down"
     };
-    
     
     hists->writeTemplates();  // write histograms to file
     hists->fout->Close();
@@ -154,6 +154,9 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
             
             vbf_var1 =ObsName[var_name];
 
+            float DY_SF_factor= 0.8;
+            if (name != "Data" && name != "JJH125" && name != "H125") weight = weight*DY_SF_factor;
+            
             if (OS != 0  && PassL) {
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
             }
