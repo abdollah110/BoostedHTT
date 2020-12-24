@@ -70,8 +70,8 @@ int main(int argc, char* argv[]) {
 
     TH1F *  HistoPUData =HistPUData(year_str);
     TH1F * HistoPUMC = new TH1F();
-    if (! (fname.find("Data") != string::npos || fname.find("Run") != string::npos ))
-        HistoPUMC=HistPUMC(fin);
+//    if (! (fname.find("Data") != string::npos || fname.find("Run") != string::npos ))
+//        HistoPUMC=HistPUMC(fin);
 
 
     //###############################################################################################
@@ -171,13 +171,13 @@ int main(int argc, char* argv[]) {
                     // Lumi weight
                     LumiWeight = getLuminsoity(year) * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
                     
-                    float PUMC_=HistoPUMC->GetBinContent(puTrue->at(0)+1);
-                    float PUData_=HistoPUData->GetBinContent(puTrue->at(0)+1);
-                    
-                    if (PUMC_ ==0)
-                        cout<<"PUMC_ is zero!!! & num pileup= "<< puTrue->at(0)<<"\n";
-                    else
-                        PUWeight= PUData_/PUMC_;
+//                    float PUMC_=HistoPUMC->GetBinContent(puTrue->at(0)+1);
+//                    float PUData_=HistoPUData->GetBinContent(puTrue->at(0)+1);
+//                    
+//                    if (PUMC_ ==0)
+//                        cout<<"PUMC_ is zero!!! & num pileup= "<< puTrue->at(0)<<"\n";
+//                    else
+//                        PUWeight= PUData_/PUMC_;
                     
                     // Muon Correction
                     float LeadMuIdCorrection = getCorrFactorMuonId(year, isData,  LeadMu4Momentum.Pt(), LeadMu4Momentum.Eta() ,HistoMuId);
