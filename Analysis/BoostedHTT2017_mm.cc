@@ -1,72 +1,3 @@
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////  This code is to pre-select the events. This ise used as a base for background estimation, ...
-//// To run this code one first needs to compile it:
-////1) ./Mask.sh   CodexAnalyzer_Preselection.cc
-////2)  ./CodexAnalyzer_Preselection.exe  output.root   input.root
-//// To run this on all data and MC samples run the following:
-//// source RunFullSamples_PreSelection.sh
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//#include "../interface/Functions.h"
-//#include <string>
-//#include <ostream>
-//#include <vector>
-//
-//
-//int main(int argc, char** argv) {
-//    using namespace std;
-//
-//    std::string out = *(argv + 1);
-//
-//    cout << "\n\n\n OUTPUT NAME IS:    " << out << endl;     //PRINTING THE OUTPUT name
-//    TFile *fout = TFile::Open(out.c_str(), "RECREATE");
-//
-//    myMap1 = new std::map<std::string, TH1F*>();
-//    myMap2 = new map<string, TH2F*>();
-//
-//    std::vector<string> input;
-//    for (int f = 2; f < argc; f++) {
-//        input.push_back(*(argv + f));
-//        cout <<"INPUT NAME IS:   " << input[f - 2] << "\n";
-//    }
-//
-//    //###############################################################################################
-//    //  Fix Parameters
-//    //###############################################################################################
-//    float MuMass= 0.10565837;
-//    float eleMass= 0.000511;
-//    float LeptonPtCut_=60;
-//    float TauPtCut_=20;
-//    float JetPtCut=30;
-//    float BJetPtCut=20;
-//
-//    float ElectronPtCut_=15;
-//    //    float CSVCut=   0.9535   ;                  //  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
-//    float CSVCut=   0.8838   ;                  //  medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
-//    float LeptonIsoCut=0.20;
-
-//    float luminosity=    33000;
-//    //########################################################################################################################################################
-//    //########################################################################################################################################################
-//    //########################################################################################################################################################
-//    //                                                  Loop over inout ROOT files
-//    //########################################################################################################################################################
-//    //########################################################################################################################################################
-//    //########################################################################################################################################################
-//    for (int k = 0; k < input.size(); k++) {
-//
-//        TFile *f_Double = TFile::Open(input[k].c_str());
-//        cout << "\n  Now is running on ------->   " << std::string(f_Double->GetName()) << "\n";
-//
-//        std::string InputROOT= std::string(f_Double->GetName());
-//        TFile * myFile = TFile::Open(f_Double->GetName());
-//        TH1F * HistoTot = (TH1F*) myFile->Get("hcount");
-//
-//        TTree *  Run_Tree;
-//        Run_Tree= Xttree(f_Double);
-//
-//
-
-
 #include "../interface/Functions.h"
 #include <string>
 #include <ostream>
@@ -124,16 +55,25 @@ int main(int argc, char* argv[]) {
     
     myMap1 = new std::map<std::string, TH1F*>();
     myMap2 = new map<string, TH2F*>();
-    
-    
-    // H->tau tau scale factors
-    TFile*  htt_sf_file = TFile::Open(("data/htt_scalefactors_legacy_"+year_str+".root").c_str(), "READ");
-    RooWorkspace *htt_sf = reinterpret_cast<RooWorkspace*>(htt_sf_file->Get("w"));
-    htt_sf_file->Close();
-    
-    // Z-pT reweighting
-    TFile *zpt_file = new TFile("data/zpt_weights_2016_BtoH.root");
-    auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("zptmass_histo"));
+        
+    //########################################
+    // Muon Id, Iso, Trigger and Tracker Eff files
+    //########################################
+    TH2F** HistoMuId=FuncHistMuId(year);
+    //    TH2F** HistoMuIso=FuncHistMuIso();
+    TH2F** HistoMuTrg=FuncHistMuTrigger_50(year);
+    //    TGraphAsymmErrors * HistoMuTrack=FuncHistMuTrack();
+
+    //########################################
+    // Pileup files
+    //########################################
+
+    TH1F *  HistoPUData =HistPUData(year_str);
+    TH1F * HistoPUMC = new TH1F();
+    if (! (fname.find("Data") != string::npos || fname.find("Run") != string::npos ))
+        HistoPUMC=HistPUMC(fin);
+
+
     //###############################################################################################
     //  Fix Parameters
     //###############################################################################################
@@ -143,14 +83,15 @@ int main(int argc, char* argv[]) {
     float BJetPtCut=20;
     float muonPtCut=30;
     if (year==2018) muonPtCut=35;
-
     
-    //    float CSVCut=   0.9535   ;                  //  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
-    float CSVCut=   0.8838   ;                  //  medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
+    
+    float DeepCSVCut=   1000   ;                  //  loose  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
+    if (year== 2016) DeepCSVCut =     0.8953  ;
+    if (year== 2017) DeepCSVCut =     0.8001  ;
+    if (year== 2018) DeepCSVCut =    0.7527   ;
+    
     float LeptonIsoCut=0.20;
     bool debug= false;
-    //    float luminosity=    35867;
-    //    float luminosity=    41530;
     
     
     Int_t nentries_wtn = (Int_t) Run_Tree->GetEntries();
@@ -162,9 +103,15 @@ int main(int argc, char* argv[]) {
         if (i % 10000 == 0) fprintf(stdout, "\r  Processed events: %8d of %8d ", i, nentries_wtn);
         fflush(stdout);
         
+        
+        //=========================================================================================================
         // Trigger
-        bool PassTrigger = ((HLTEleMuX >> 19 & 1)==1); // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19; // 2017
-        if (year==2017 && ! PassTrigger) continue;
+        bool PassTrigger = ((HLTEleMuX >> 21 & 1)==1);
+        //              else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
+        // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19; // 2017
+        if (! PassTrigger) continue;
+        plotFill("cutFlowTable",2 ,15,0,15);
+        
         
         //  This part is to avoid of the duplicate of mu-tau pair from one events
         std::vector<string> HistNamesFilled;
@@ -178,196 +125,80 @@ int main(int argc, char* argv[]) {
         float ZBosonPt=genInfo[2];
         float ZBosonMass=genInfo[4];
         
-        // Lumi weight
-        float LumiWeight = 1;
-        if (!isData){
-            LumiWeight = getLuminsoity(year) * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
-        }
-        
-        // Pilu up weights
-        float PUWeight = 1;
-        
-        
         // BJet veto
-        int numBJet=numBJets(BJetPtCut,CSVCut);
+        int numBJet=numBJets(BJetPtCut,DeepCSVCut);
         if (numBJet > 0) continue;
-        //
-        //        // HT cut
-        //        float ht= getHT(JetPtCut);
-        //        if (ht < 200) continue;
         
         //electron veto
         int numele =getNumElectron();
         if (numele > 0) continue;
-        
-        //Leading jet
-        //        TLorentzVector LeadJet= getLeadJet();
-        
-        
         
         
         //############################################################################################
         //###########       Loop over MuJet events   #################################################
         //############################################################################################
         
-        TLorentzVector Mu4Momentum, Mu4Momentum_sub, ZCandida;
+        TLorentzVector LeadMu4Momentum, SubMu4Momentum, ZCandida;
         
-        if (debug) cout<< "test 1\n";
-        
-        bool EventPass= false;
         for (int imu = 0; imu < nMu; ++imu){
-            if (EventPass) break;
             
-            
-            if (muPt->at(imu) <= muonPtCut || fabs(muEta->at(imu)) >= 2.4) continue;
-            
-            Mu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
-            
-            float IsoMu=muPFChIso->at(imu)/muPt->at(imu);
-            if ( (muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu) )  > 0.0)
-                IsoMu= ( muPFChIso->at(imu) + muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu))/muPt->at(imu);
-            
-            bool MuId=( (muIDbit->at(imu) >> 2 & 1)  && fabs(muD0->at(imu)) < 0.045 && fabs(muDz->at(imu)) < 0.2); //Medium Muon Id
-            
-            
+            if (muPt->at(imu) <= 52 || fabs(muEta->at(imu)) >= 2.4) continue;
+            bool MuId=( (muIDbit->at(imu) >> 2 & 1)  && fabs(muD0->at(imu)) < 0.045 && fabs(muDz->at(imu)) < 0.2);
             if (!MuId ) continue;
-            if (IsoMu > 0.2 ) continue;
-            
-            
-            
-            float MuonCor=1;
-            if (!isData){
-                // give inputs to workspace
-                htt_sf->var("m_pt")->setVal(muPt->at(imu));
-                htt_sf->var("m_eta")->setVal(muEta->at(imu));
-                htt_sf->var("z_gen_mass")->setVal(ZBosonMass);
-                htt_sf->var("z_gen_pt")->setVal(ZBosonPt);
-                //                cout<<"\t\t ZBosonMass= "<<ZBosonMass <<"  ZBosonPt "<<ZBosonPt<<"\n";
-                
-                
-                // muon ID SF
-                MuonCor *= htt_sf->function("m_id_kit_ratio")->getVal();
-                // muon Iso SF
-                MuonCor *= htt_sf->function("m_iso_kit_ratio")->getVal();
-                
-                auto single_data_eff = htt_sf->function("m_trg24_27_kit_data")->getVal();
-                auto single_mc_eff = htt_sf->function("m_trg24_27_kit_mc")->getVal();
-                auto single_eff = single_data_eff / single_mc_eff;
-                MuonCor *=single_eff;
-                MuonCor *= htt_sf->function("m_trk_ratio")->getVal();
-                
-                //                if (InputROOT.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
-                //                    if (name.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
-                
-            }
-            
-            
-            
-//            float nom_zpt_weight=1.0;
-//            float zmumuWeight=1.0;
-//
-//            if (name == "EWKZ" || name == "ZL" || name == "ZTT" || name == "ZLL") {
-//
-//
-//                // Z-pT Reweighting
-//                nom_zpt_weight = zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
-//                if (syst == "dyShape_Up") {
-//                    nom_zpt_weight = 1.1 * nom_zpt_weight - 0.1;
-//                } else if (syst == "dyShape_Down") {
-//                    nom_zpt_weight = 0.9 * nom_zpt_weight + 0.1;
-//                }
-//
-//
-//
-//                if (syst == "zmumuShape_Up") {
-//                    zmumuWeight= htt_sf->function("zptmass_weight_nom")->getVal() * htt_sf->function("zptmass_weight_nom")->getVal();
-//                } else if (syst == "zmumuShape_Down") {
-//                    // no weight for shift down
-//                }
-//                else{
-//                    zmumuWeight= htt_sf->function("zptmass_weight_nom")->getVal();
-//                }
-//            }
-//            plotFill("nom_zpt_weight",nom_zpt_weight ,100,0,2);
-//            plotFill("zmumuWeight",zmumuWeight ,100,0,2);
-//            float ZCorrection=nom_zpt_weight*zmumuWeight;
-//            plotFill("ZCorrection",ZCorrection ,100,0,2);
-//
-//
-//
-//
-            
-            
-            
-            
+            LeadMu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
             for (int jmu = imu+1; jmu < nMu; ++jmu){
                 if (muPt->at(jmu) <= 10 || fabs(muEta->at(jmu)) >= 2.4) continue;
-                
-                Mu4Momentum_sub.SetPtEtaPhiM(muPt->at(jmu),muEta->at(jmu),muPhi->at(jmu),MuMass);
-                
-                
-                float IsoMu_sub=muPFChIso03->at(jmu)/muPt->at(jmu);
-                if ( (muPFNeuIso03->at(jmu) + muPFPhoIso03->at(jmu) - 0.5* muPFPUIso03->at(jmu) )  > 0.0)
-                    IsoMu_sub= ( muPFChIso03->at(jmu) + muPFNeuIso03->at(jmu) + muPFPhoIso03->at(jmu) - 0.5* muPFPUIso03->at(jmu))/muPt->at(jmu);
-                
-                bool MuId_sub=( (muIDbit->at(jmu) >> 2 & 1)  && fabs(muD0->at(jmu)) < 0.045 && fabs(muDz->at(jmu)) < 0.2); //Tight Muon Id
-                
-                
+                bool MuId_sub=( (muIDbit->at(jmu) >> 2 & 1)  && fabs(muD0->at(jmu)) < 0.045 && fabs(muDz->at(jmu)) < 0.2);
                 if (!MuId_sub ) continue;
-                if (IsoMu_sub > 0.2 ) continue;
+                SubMu4Momentum.SetPtEtaPhiM(muPt->at(jmu),muEta->at(jmu),muPhi->at(jmu),MuMass);
                 
+                ZCandida=SubMu4Momentum+LeadMu4Momentum;
+                if (ZCandida.M() < 60 ||  ZCandida.M() > 120 ) continue;
                 
-                //                    float MuonCor=1;
+                float ht= getHTInc(JetPtCut);
+                //                if (ht < 200) continue;
+                
+                //###############################################################################################
+                //  Weight
+                //###############################################################################################
+                float LumiWeight = 1;
+                float PUWeight = 1;
+                float LepCorrection=1;
+
                 if (!isData){
-                    // give inputs to workspace
-                    htt_sf->var("m_pt")->setVal(muPt->at(imu));
-                    htt_sf->var("m_eta")->setVal(muEta->at(imu));
-                    htt_sf->var("m_iso")->setVal(IsoMu);
                     
-                    htt_sf->var("z_gen_mass")->setVal(ZBosonMass);
-                    htt_sf->var("z_gen_pt")->setVal(ZBosonPt);
-                    //                cout<<"\t\t ZBosonMass= "<<ZBosonMass <<"  ZBosonPt "<<ZBosonPt<<"\n";
+                    // Lumi weight
+                    LumiWeight = getLuminsoity(year) * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
                     
+                    float PUMC_=HistoPUMC->GetBinContent(puTrue->at(0)+1);
+                    float PUData_=HistoPUData->GetBinContent(puTrue->at(0)+1);
                     
-                    MuonCor *= htt_sf->function("m_trk_ratio")->getVal();
-                    MuonCor *= htt_sf->function("m_idiso_ic_ratio")->getVal();
-                                                
+                    if (PUMC_ ==0)
+                        cout<<"PUMC_ is zero!!! & num pileup= "<< puTrue->at(0)<<"\n";
+                    else
+                        PUWeight= PUData_/PUMC_;
                     
-                    auto single_data_eff = htt_sf->function("m_trg24_27_kit_data")->getVal();
-                    auto single_mc_eff = htt_sf->function("m_trg24_27_kit_mc")->getVal();
-                    auto single_eff = single_data_eff / single_mc_eff;
-                    MuonCor *=single_eff;
-                    
-                    //                if (InputROOT.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
-                    //                if (name.find("DY") != string::npos) MuonCor *= htt_sf->function("zptmass_weight_nom")->getVal();
+                    // Muon Correction
+                    float LeadMuIdCorrection = getCorrFactorMuonId(year, isData,  LeadMu4Momentum.Pt(), LeadMu4Momentum.Eta() ,HistoMuId);
+                    float SubMuIdCorrection = getCorrFactorMuonId(year, isData,  SubMu4Momentum.Pt(), SubMu4Momentum.Eta() ,HistoMuId);
+                    float MuTrgCorrection = getCorrFactorMuonTrg(isData,  LeadMu4Momentum.Pt(), LeadMu4Momentum.Eta() ,HistoMuTrg);
+                    LepCorrection= LeadMuIdCorrection *SubMuIdCorrection * MuTrgCorrection;
                     
                 }
                 
-                plotFill("MuonCor",MuonCor ,100,0,2);
-                
-                
-                if(Mu4Momentum_sub.DeltaR(Mu4Momentum) > 1.0 ) continue;
-                ZCandida=Mu4Momentum_sub+Mu4Momentum;
-                
-                
-                if (ZCandida.M() < 40) continue;
-                
-                //             float ht= getHT(JetPtCut, Mu4Momentum, Mu4Momentum_sub);
-                float ht= getHTInc(JetPtCut);
-                if (ht < 200) continue;
-                
-                //            TLorentzVector LeadJet= getLeadJet(Mu4Momentum, BoostedTau4Momentum);
-                
+                plotFill("LumiWeight",LumiWeight ,1000,0,10000);
+                plotFill("LepCorrection",LepCorrection ,100,0,2);
+                plotFill("PUWeight",PUWeight ,200,0,2);
                 
                 //###############################################################################################
                 //  Charge Categorization
                 //###############################################################################################
-                float chargelt= muCharge->at(imu) * muCharge->at(jmu);
+                float chargeMuMu= muCharge->at(imu) * muCharge->at(jmu);
                 
                 const int size_q = 2;
-                bool q_OS = chargelt < 0;
-                bool q_SS =  chargelt > 0;
+                bool q_OS = chargeMuMu < 0;
+                bool q_SS =  chargeMuMu > 0;
                 
                 bool Q_category[size_q] = {q_OS, q_SS};
                 std::string Q_Cat[size_q] = {"_OS", "_SS"};
@@ -379,8 +210,7 @@ int main(int argc, char* argv[]) {
                     if (Q_category[iq]) {
                         
                         
-                        //                                    float FullWeight = LumiWeight *MuonCor *ZCorrection;
-                        float FullWeight = LumiWeight *MuonCor *1;
+                        float FullWeight = LumiWeight*LepCorrection;
                         std::string FullStringName = Q_Cat[iq] ;
                         
                         //                                This check is used to make sure that each event is just filled once for any of the categories ==> No doube-counting of events  (this is specially important for ttbar events where we have many jets and leptons)
@@ -389,8 +219,7 @@ int main(int argc, char* argv[]) {
                             
                             
                             
-                            plotFill("dR"+FullStringName,Mu4Momentum_sub.DeltaR(Mu4Momentum) ,100,0,1,FullWeight);
-                            plotFill("IsoMu"+FullStringName,IsoMu ,100,0,2,FullWeight);
+                            plotFill("dR"+FullStringName,SubMu4Momentum.DeltaR(LeadMu4Momentum) ,100,0,1,FullWeight);
                             plotFill("ZMass"+FullStringName,ZCandida.M() ,60,60,120,FullWeight);
                             plotFill("ht"+FullStringName,ht ,100,0,1000,FullWeight);
                             
