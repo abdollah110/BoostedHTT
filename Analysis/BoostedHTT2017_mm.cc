@@ -18,7 +18,13 @@ int main(int argc, char* argv[]) {
     std::string output_dir = parser.Option("-d");
     std::string syst = parser.Option("-u");
     std::string fname = path + sample + ".root";
-    std::string year_str = parser.Option("-y");
+//    std::string year_str = parser.Option("-y");
+    
+    std::string year_str;
+    if (path.find("2016") != string::npos) year_str = "2016";
+    else if (path.find("2017") != string::npos) year_str = "2017";
+    else if (path.find("2018") != string::npos) year_str = "2018";
+    else cout<<"Which year are you looking for \n\n";
     
     stringstream yearstream(year_str);
     int year=0;
@@ -156,8 +162,8 @@ int main(int argc, char* argv[]) {
                 ZCandida=SubMu4Momentum+LeadMu4Momentum;
                 if (ZCandida.M() < 60 ||  ZCandida.M() > 120 ) continue;
                 
-                float ht= getHTInc(JetPtCut);
-                //                if (ht < 200) continue;
+                float ht= getHT(JetPtCut, LeadMu4Momentum, SubMu4Momentum);
+                if (ht < 200) continue;
                 
                 //###############################################################################################
                 //  Weight
@@ -173,7 +179,7 @@ int main(int argc, char* argv[]) {
                     
 //                    float PUMC_=HistoPUMC->GetBinContent(puTrue->at(0)+1);
 //                    float PUData_=HistoPUData->GetBinContent(puTrue->at(0)+1);
-//                    
+//
 //                    if (PUMC_ ==0)
 //                        cout<<"PUMC_ is zero!!! & num pileup= "<< puTrue->at(0)<<"\n";
 //                    else

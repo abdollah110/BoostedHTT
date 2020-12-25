@@ -119,7 +119,7 @@ float XSection(std::string OutName) {
 //    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.047 ; $$$$ Wrong XS
 //    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.3921 ; $$$$ Wrong XS
 //    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.03636 ; $$$$ Wrong XS
-    else if (OutName.find("DYJetsToLL_Pt-0To50") != string::npos) return  106300.0   ;
+    else if (OutName.find("DYJetsToLL_Pt-0To50") != string::npos) return  106300.0 / 12.8  ;// 12.8 is what I found by looking at the lower tail of the ht distribution between data and MC
     else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  407.9   ;
     else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   96.8 ;
     else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.774 ;

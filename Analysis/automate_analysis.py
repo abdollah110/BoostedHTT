@@ -32,10 +32,10 @@ parser.add_option('--prefix', '-P', action='store',
                   default=None, dest='prefix',
                   help='prefix to strip'
                   )
-parser.add_option('--year', '-y', action='store',
-                default=None, dest='year',
-                help='prefix to strip'
-)
+#parser.add_option('--year', '-y', action='store',
+#                default=None, dest='year',
+#                help='prefix to strip'
+#)
 
 parser.add_option('--output-dir', '-o', action='store',
                   default='', dest='output_dir', 
@@ -43,7 +43,7 @@ parser.add_option('--output-dir', '-o', action='store',
                   )
 (options, args) = parser.parse_args()
 prefix = options.prefix
-year = options.year
+#year = options.year
 suffix = '.root'
 
 try:
@@ -107,7 +107,8 @@ for ifile in fileList:
     else:
         names = ['VV']
 
-    callstring = './%s -p %s -s %s -d %s -y %s' % (options.exe, tosample, sample, options.output_dir, year)
+#    callstring = './%s -p %s -s %s -d %s -y %s' % (options.exe, tosample, sample, options.output_dir, year)
+    callstring = './{} -p {} -s {} -d {} '.format(options.exe, tosample, sample, options.output_dir)
 
 
     try:
