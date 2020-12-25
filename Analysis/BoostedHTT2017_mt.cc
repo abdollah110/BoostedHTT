@@ -19,8 +19,14 @@ int main(int argc, char* argv[]) {
     std::string output_dir = parser.Option("-d");
     std::string syst = parser.Option("-u");
     std::string fname = path + sample + ".root";
-    std::string year_str = parser.Option("-y");
-    
+//    std::string year_str = parser.Option("-y");
+
+    std::string year_str;
+    if (path.find("2016") != string::npos) year_str = "2016";
+    else if (path.find("2017") != string::npos) year_str = "2017";
+    else if (path.find("2018") != string::npos) year_str = "2018";
+    else cout<<"Which year are you looking for \n\n";
+
     stringstream yearstream(year_str);
     int year=0;
     yearstream >> year;

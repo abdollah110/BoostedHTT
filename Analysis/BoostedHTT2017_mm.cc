@@ -165,6 +165,7 @@ int main(int argc, char* argv[]) {
                 float ht= getHT(JetPtCut, LeadMu4Momentum, SubMu4Momentum);
                 if (ht < 200) continue;
                 
+                if (SubMu4Momentum.DeltaR(LeadMu4Momentum) > 0.8 || SubMu4Momentum.DeltaR(LeadMu4Momentum) < 0.1) continue;
                 //###############################################################################################
                 //  Weight
                 //###############################################################################################
@@ -227,7 +228,9 @@ int main(int argc, char* argv[]) {
                             
                             plotFill("dR"+FullStringName,SubMu4Momentum.DeltaR(LeadMu4Momentum) ,100,0,1,FullWeight);
                             plotFill("ZMass"+FullStringName,ZCandida.M() ,60,60,120,FullWeight);
-                            plotFill("ht"+FullStringName,ht ,100,0,1000,FullWeight);
+                            plotFill("ht"+FullStringName,ht ,120,0,1200,FullWeight);
+                            plotFill("ZPt"+FullStringName,ZCandida.Pt() ,100,0,1000,FullWeight);
+                            plotFill("2DZMassPt"+FullStringName,ZCandida.M(),ZCandida.Pt(),60,60,120,100,0,1000,FullWeight);
                             
                             
                         }
