@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+# Analysis]$ python automate_analysis.py -e BoostedHTT2017_mt.exe -p /eos/uscms/store/user/abdollah/SkimBoostedH/2018/mt/v1_fast_Hadd/ -o boost_mt_2018_v2 
 ############################################################
 ## Script to automate running an analyzer on all files in ##
 ## a directory.                                           ##
@@ -28,10 +28,10 @@ parser.add_option('--path', '-p', action='store',
                   default='root_files/', dest='path',
                   help='path to input file directory'
                   )
-parser.add_option('--prefix', '-P', action='store',
-                  default=None, dest='prefix',
-                  help='prefix to strip'
-                  )
+#parser.add_option('--prefix', '-P', action='store',
+#                  default=None, dest='prefix',
+#                  help='prefix to strip'
+#                  )
 #parser.add_option('--year', '-y', action='store',
 #                default=None, dest='year',
 #                help='prefix to strip'
@@ -42,7 +42,7 @@ parser.add_option('--output-dir', '-o', action='store',
                   help='name of output directory after Output/trees'
                   )
 (options, args) = parser.parse_args()
-prefix = options.prefix
+#prefix = options.prefix
 #year = options.year
 suffix = '.root'
 
@@ -79,8 +79,8 @@ def getSystematics(name):
 for ifile in fileList:
     print ifile
     sample = ifile.split('/')[-1].split(suffix)[0]
-    if prefix:
-      sample = sample.replace(prefix, '')
+#    if prefix:
+#      sample = sample.replace(prefix, '')
     tosample = ifile.replace(sample+suffix,'')
 
     if 'DYJets' in sample:
