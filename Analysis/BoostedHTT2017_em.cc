@@ -58,7 +58,6 @@ int main(int argc, char* argv[]) {
     Run_Tree= Xttree(InputFile,"emu_tree");
 //    Run_Tree= Xttree(InputFile,"EventTree");
     
-    
     //    auto HistoTot = reinterpret_cast<TH1D*>(InputFile->Get("ggNtuplizer/hEvents"));
     TH1F * HistoTot = (TH1F*) InputFile->Get("hcount");
     auto fout = new TFile(filename.c_str(), "RECREATE");
@@ -67,7 +66,6 @@ int main(int argc, char* argv[]) {
     myMap2 = new map<string, TH2F*>();
     
     TTree * outTr=  new TTree("emu_tree","emu_tree");
-    
     
     //########################################
     // Muon Id, Iso, Trigger and Tracker Eff files
@@ -85,7 +83,6 @@ int main(int argc, char* argv[]) {
     TH1F * HistoPUMC = new TH1F();
     if (! (fname.find("Data") != string::npos || fname.find("Run") != string::npos ))
         HistoPUMC=HistPUMC(InputFile);
-    
     
     
     
@@ -116,12 +113,12 @@ int main(int argc, char* argv[]) {
     float JetPtCut=30;
     float BJetPtCut=20;
     
-    float DeepCSVCut=   1000   ;                  //  medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
-    if (year== 2016) DeepCSVCut =    0.6321 ;
-    if (year== 2017) DeepCSVCut =    0.4941 ;
-    if (year== 2018) DeepCSVCut =   0.4184  ;
+    float DeepCSVCut=   1000   ;                  //  Tight  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
+    if (year== 2016) DeepCSVCut =     0.8953  ;
+    if (year== 2017) DeepCSVCut =    0.8001  ;
+    if (year== 2018) DeepCSVCut =    0.7527   ;
 
-
+    
     float LeptonIsoCut=0.30;
     bool debug= false;
     //    float luminosity=    35867;
@@ -161,7 +158,6 @@ int main(int argc, char* argv[]) {
     outTr->Branch("higgs_m",&higgs_m,"higgs_m/F");
     outTr->Branch("m_sv",&m_sv_,"m_sv/F");
     
-    
     Int_t nentries_wtn = (Int_t) Run_Tree->GetEntries();
     cout<<"nentries_wtn===="<<nentries_wtn<<"\n";
     for (Int_t i = 0; i < nentries_wtn; i++) {
@@ -174,16 +170,18 @@ int main(int argc, char* argv[]) {
         //=========================================================================================================
         // Trigger
 //        bool PassTrigger = ((HLTEleMuX >> 21 & 1)==1);
-        bool PassTrigger = ((HLTEleMuX >> 19 & 1)==1);
+//        bool PassTrigger = ((HLTEleMuX >> 19 & 1)==1);
+        bool TriggerEle115 = ((HLTEleMuX >> 38 & 1)==1);
+        bool TriggerMu50 = ((HLTEleMuX >> 21 & 1)==1);
+        bool TriggerMu27 = ((HLTEleMuX >> 19 & 1)==1);
         //              else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
         // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19; // 2017
-        if (! PassTrigger) continue;
+//        if (! PassTrigger) continue;
         plotFill("cutFlowTable",2 ,15,0,15);
         //=========================================================================================================
         // MET Filters
         // Here we apply MET Filters
         // Here we apply prefire weights
-        
         //=========================================================================================================
         //MET Shape systematics
         Met=pfMET;
@@ -197,23 +195,22 @@ int main(int argc, char* argv[]) {
         TLorentzVector Lep4Momentum,Ele4Momentum, Z4Momentum, Met4Momentum;
         //=========================================================================================================
         // Muon selection
-        int idx_lep= lepIndex;
+        int idx_mu= lepIndex;
         
-        if (muPt->at(idx_lep) <= 30 || fabs(muEta->at(idx_lep)) >= 2.4) continue;
+        if (muPt->at(idx_mu) <= 30 || fabs(muEta->at(idx_mu)) >= 2.4) continue;
         
-        IsoLep1Value=muPFChIso->at(idx_lep)/muPt->at(idx_lep);
-        if ( (muPFNeuIso->at(idx_lep) + muPFPhoIso->at(idx_lep) - 0.5* muPFPUIso->at(idx_lep) )  > 0.0)
-            IsoLep1Value= ( muPFChIso->at(idx_lep) + muPFNeuIso->at(idx_lep) + muPFPhoIso->at(idx_lep) - 0.5* muPFPUIso->at(idx_lep))/muPt->at(idx_lep);
+        IsoLep1Value=muPFChIso->at(idx_mu)/muPt->at(idx_mu);
+        if ( (muPFNeuIso->at(idx_mu) + muPFPhoIso->at(idx_mu) - 0.5* muPFPUIso->at(idx_mu) )  > 0.0)
+            IsoLep1Value= ( muPFChIso->at(idx_mu) + muPFNeuIso->at(idx_mu) + muPFPhoIso->at(idx_mu) - 0.5* muPFPUIso->at(idx_mu))/muPt->at(idx_mu);
         
-        bool MuId=( (muIDbit->at(idx_lep) >> 2 & 1)  && fabs(muD0->at(idx_lep)) < 0.045 && fabs(muDz->at(idx_lep)) < 0.2); //CutBasedIdMediumPrompt)) pow(2,  2);
+        bool MuId=( (muIDbit->at(idx_mu) >> 2 & 1)  && fabs(muD0->at(idx_mu)) < 0.045 && fabs(muDz->at(idx_mu)) < 0.2); //CutBasedIdMediumPrompt)) pow(2,  2);
         
         if (!MuId ) continue;
-        Lep4Momentum.SetPtEtaPhiM(muPt->at(idx_lep),muEta->at(idx_lep),muPhi->at(idx_lep),MuMass);
+        Lep4Momentum.SetPtEtaPhiM(muPt->at(idx_mu),muEta->at(idx_mu),muPhi->at(idx_mu),MuMass);
         plotFill("cutFlowTable",3 ,15,0,15);
         //=========================================================================================================
         // Tau selection
         int idx_ele= tauIndex;
-        
         if (elePt->at(idx_ele) <= 20 || fabs(eleEta->at(idx_ele)) >= 2.5) continue;
                 
         bool eleMVAId= false;
@@ -222,7 +219,6 @@ int main(int argc, char* argv[]) {
         else if ( fabs (eleSCEta->at(idx_ele)) >=  1.5 && eleIDMVANoIso->at(idx_ele) >   0.357   ) eleMVAId= true;
         else eleMVAId= false;
         if (!eleMVAId) continue;
-
 
         IsoLep2Value=elePFChIso->at(idx_ele)/elePt->at(idx_ele);
         if ( (elePFNeuIso->at(idx_ele) + elePFPhoIso->at(idx_ele) - 0.5* elePFPUIso->at(idx_ele) )  > 0.0)
@@ -234,6 +230,12 @@ int main(int argc, char* argv[]) {
         Ele4Momentum.SetPtEtaPhiM(elePt->at(idx_ele),eleEta->at(idx_ele),elePhi->at(idx_ele),eleMass);
         
         plotFill("cutFlowTable",4 ,15,0,15);
+        
+        //=========================================================================================================
+        if (muPt->at(idx_mu) >= 52 && ! TriggerMu50) continue;
+        else if (elePt->at(idx_ele) >= 120 && ! TriggerEle115) continue;
+        else if (! TriggerMu27) continue;
+        
         //=========================================================================================================
         // Event Selection
         
@@ -253,7 +255,6 @@ int main(int argc, char* argv[]) {
         
         if (m_sv < 50) continue;
         plotFill("cutFlowTable",7 ,15,0,15);
-        
         // BJet veto
         int numBJet=numBJets(BJetPtCut,DeepCSVCut);
         if (numBJet > 0) continue;
@@ -271,7 +272,6 @@ int main(int argc, char* argv[]) {
         int numele =getNumElectron();
         if (numele > 1) continue;
         plotFill("cutFlowTable",10 ,15,0,15);
-        
         
         //muon veto
         int numMu =getNumMuon();
@@ -305,7 +305,6 @@ int main(int argc, char* argv[]) {
         float ZBosonPt=genInfo[3];
         float ZBosonMass=genInfo[4];
 
-        
         if (!isData){
             
             // Lumi weight
@@ -330,17 +329,15 @@ int main(int argc, char* argv[]) {
             else
                 PUWeight= PUData_/PUMC_;
             
-            
             // Muon Correction
             float MuIdCorrection = getCorrFactorMuonId(year, isData,  Lep4Momentum.Pt(), Lep4Momentum.Eta() ,HistoMuId);
             float MuTrgCorrection = getCorrFactorMuonTrg(isData,  Lep4Momentum.Pt(), Lep4Momentum.Eta() ,HistoMuTrg);
-            float EleIdCorrection = getCorrFactorEleId(isData,  Lep4Momentum.Pt(), eleSCEta->at(idx_lep) ,HistoEleId);
-            
+            float EleIdCorrection = getCorrFactorEleId(isData,  Lep4Momentum.Pt(), eleSCEta->at(idx_ele) ,HistoEleId);
             LepCorrection= MuIdCorrection * MuTrgCorrection * EleIdCorrection;
             
             // give inputs to workspace
-//            htt_sf->var("m_pt")->setVal(muPt->at(idx_lep));
-//            htt_sf->var("m_eta")->setVal(muEta->at(idx_lep));
+//            htt_sf->var("m_pt")->setVal(muPt->at(idx_mu));
+//            htt_sf->var("m_eta")->setVal(muEta->at(idx_mu));
 //            htt_sf->var("z_gen_mass")->setVal(ZBosonMass);
 //            htt_sf->var("z_gen_pt")->setVal(ZBosonPt);
 
@@ -371,13 +368,13 @@ int main(int argc, char* argv[]) {
         
         higgs_pT = higgs.Pt();
         higgs_m = higgs.M();
-        OS = muCharge->at(idx_lep) * eleCharge->at(idx_ele) < 0;
-        SS =  muCharge->at(idx_lep) * eleCharge->at(idx_ele) > 0;
+        OS = muCharge->at(idx_mu) * eleCharge->at(idx_ele) < 0;
+        SS =  muCharge->at(idx_mu) * eleCharge->at(idx_ele) > 0;
         PassL = IsoLep2Value < LeptonIsoCut ;
         FailL = IsoLep2Value > LeptonIsoCut ;
         lep1IsoPass= IsoLep1Value < LeptonIsoCut;
         lep2IsoPass= IsoLep2Value < LeptonIsoCut;
-        lepPt_=muPt->at(idx_lep);
+        lepPt_=muPt->at(idx_mu);
         elept_=elePt->at(idx_ele);
         vis_mass=Z4Momentum.M();
         LeadJetPt = LeadJet.Pt();
