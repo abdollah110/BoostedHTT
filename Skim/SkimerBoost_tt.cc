@@ -30,30 +30,30 @@ void SkimerBoost::Loop(TString OutputFile)
     else (std::cout << "Year is not specificed in the outFile name !\n");
 
 
-    fChain->SetBranchStatus("*",0);
-    fChain->SetBranchStatus("vt*",1);
-    fChain->SetBranchStatus("EventTag",1);
-    fChain->SetBranchStatus("run",1);
-    fChain->SetBranchStatus("event",1);
-    fChain->SetBranchStatus("lumis",1);
-    fChain->SetBranchStatus("isData",1);
-    fChain->SetBranchStatus("HLT*",1);
-    fChain->SetBranchStatus("gen*",1);
-    fChain->SetBranchStatus("pdf*",1);
-    fChain->SetBranchStatus("pthat",1);
-    fChain->SetBranchStatus("processID",1);
-    fChain->SetBranchStatus("rho*",1);
-    fChain->SetBranchStatus("pu*",1);
-    fChain->SetBranchStatus("mc*",1);
-    fChain->SetBranchStatus("pfMET*",1);
-    fChain->SetBranchStatus("n*",1);
-    fChain->SetBranchStatus("jet*",1);
-    fChain->SetBranchStatus("AK8*",1);
-    fChain->SetBranchStatus("ele*",1);
-    fChain->SetBranchStatus("mu*",1);
-    fChain->SetBranchStatus("tau*",1);
-    fChain->SetBranchStatus("m*",1);
-    fChain->SetBranchStatus("b*",1);
+    fChain->SetBranchStatus("*",1);
+//    fChain->SetBranchStatus("vt*",1);
+//    fChain->SetBranchStatus("EventTag",1);
+//    fChain->SetBranchStatus("run",1);
+//    fChain->SetBranchStatus("event",1);
+//    fChain->SetBranchStatus("lumis",1);
+//    fChain->SetBranchStatus("isData",1);
+//    fChain->SetBranchStatus("HLT*",1);
+//    fChain->SetBranchStatus("gen*",1);
+//    fChain->SetBranchStatus("pdf*",1);
+//    fChain->SetBranchStatus("pthat",1);
+//    fChain->SetBranchStatus("processID",1);
+//    fChain->SetBranchStatus("rho*",1);
+//    fChain->SetBranchStatus("pu*",1);
+//    fChain->SetBranchStatus("mc*",1);
+//    fChain->SetBranchStatus("pfMET*",1);
+//    fChain->SetBranchStatus("n*",1);
+//    fChain->SetBranchStatus("jet*",1);
+//    fChain->SetBranchStatus("AK8*",1);
+//    fChain->SetBranchStatus("ele*",1);
+//    fChain->SetBranchStatus("mu*",1);
+//    fChain->SetBranchStatus("tau*",1);
+//    fChain->SetBranchStatus("m*",1);
+//    fChain->SetBranchStatus("b*",1);
     
     TH1F* hcount = new TH1F("hcount", "", 10, 0, 10);
     
@@ -162,6 +162,8 @@ void SkimerBoost::Loop(TString OutputFile)
                 
 //                if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
                 if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5) continue;
+                if (boostedTauagainstElectronVLooseMVA62018->at(ibtau) < 0.5) continue;
+                if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < 0) continue;
 //                if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(ibtau) < 0) continue;
                 
                 BoostLeadTau4Momtmp.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
@@ -176,6 +178,8 @@ void SkimerBoost::Loop(TString OutputFile)
                     
 //                    if (boostedTauByMVA6VLooseElectronRejection->at(jbtau) < 0.5) continue;
                     if (boostedTauByLooseMuonRejection3->at(jbtau) < 0.5) continue;
+                    if (boostedTauagainstElectronVLooseMVA62018->at(jbtau) < 0.5) continue;
+                    if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(jbtau) < 0) continue;
 //                    if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(jbtau) < 0) continue;
                     
                     BoostSubTau4Momtmp.SetPtEtaPhiM(boostedTauPt->at(jbtau),boostedTauEta->at(jbtau),boostedTauPhi->at(jbtau),boostedTauMass->at(jbtau));
