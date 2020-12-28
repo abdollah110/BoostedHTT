@@ -99,6 +99,16 @@ int main(int argc, char* argv[]) {
     float dR_Z_jet=-10;
     bool PassLead,PassSub,PassLeadCombined,PassSubCombined,PassLeadCharged,PassSubCharged,OS,SS;
     float tmass,ht,st,Met,FullWeight, dR_tau_tau, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
+            // Trigger
+        bool PassTrigger_37;
+        bool PassTrigger_38;
+        bool PassTrigger_39;
+        bool PassTrigger_40;
+        bool PassTrigger_41;
+        bool PassTrigger_42;
+        bool PassTrigger_43;
+        bool PassTrigger_44;
+
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
     //    outTr->Branch("evtwtZpt",&wtnom_zpt_weight,"evtwtZPt/F");
@@ -124,6 +134,15 @@ int main(int argc, char* argv[]) {
     outTr->Branch("higgs_pT",&higgs_pT,"higgs_pT/F");
     outTr->Branch("higgs_m",&higgs_m,"higgs_m/F");
     outTr->Branch("m_sv",&m_sv_,"m_sv/F");
+    outTr->Branch("PassTrigger_37",&PassTrigger_37,"PassTrigger_37/O");
+    outTr->Branch("PassTrigger_38",&PassTrigger_38);
+    outTr->Branch("PassTrigger_39",&PassTrigger_39);
+    outTr->Branch("PassTrigger_40",&PassTrigger_40);
+    outTr->Branch("PassTrigger_41",&PassTrigger_41);
+    outTr->Branch("PassTrigger_42",&PassTrigger_42);
+    outTr->Branch("PassTrigger_43",&PassTrigger_43);
+    outTr->Branch("PassTrigger_44",&PassTrigger_44);
+    
     
     
     Int_t nentries_wtn = (Int_t) Run_Tree->GetEntries();
@@ -137,10 +156,14 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",1 ,15,0,15);
         //=========================================================================================================
         // Trigger
-        bool PassTrigger_37 = ((HLTJet >> 37 & 1)==1); //HLT_AK8PFHT800_TrimMass50_v
-        bool PassTrigger_38 = ((HLTJet >> 38 & 1)==1); //HLT_PFHT1050_v
-        bool PassTrigger_39 = ((HLTJet >> 39 & 1)==1); //HLT_PFHT500_PFMET100_PFMHT100_IDTight_v
-        bool PassTrigger_40 = ((HLTJet >> 40 & 1)==1); //HLT_AK8PFJet400_TrimMass30_v
+         PassTrigger_37 = ((HLTJet >> 37 & 1)==1); //HLT_AK8PFHT800_TrimMass50_v
+         PassTrigger_38 = ((HLTJet >> 38 & 1)==1); //HLT_PFHT1050_v
+         PassTrigger_39 = ((HLTJet >> 39 & 1)==1); //HLT_PFHT500_PFMET100_PFMHT100_IDTight_v
+         PassTrigger_40 = ((HLTJet >> 40 & 1)==1); //HLT_AK8PFJet400_TrimMass30_v
+         PassTrigger_41 = ((HLTJet >> 41 & 1)==1);
+         PassTrigger_42 = ((HLTJet >> 42 & 1)==1);
+         PassTrigger_43 = ((HLTJet >> 43 & 1)==1);
+         PassTrigger_44 = ((HLTJet >> 44 & 1)==1);
         //        //              else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
         //        // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19; // 2017
         //        if (!(PassTrigger_40 || PassTrigger_39)) continue;
@@ -361,6 +384,10 @@ int main(int argc, char* argv[]) {
         plotFill("trg_39",PassTrigger_39 ,2,0,2);
         plotFill("trg_40",PassTrigger_40 ,2,0,2);
         plotFill("Trg_39_40",PassTrigger_39*PassTrigger_40 ,2,0,2);
+        plotFill("trg_41",PassTrigger_41 ,2,0,2);
+        plotFill("trg_42",PassTrigger_42 ,2,0,2);
+        plotFill("trg_43",PassTrigger_43 ,2,0,2);
+        plotFill("trg_44",PassTrigger_44 ,2,0,2);
         
         
     } //End of Tree
