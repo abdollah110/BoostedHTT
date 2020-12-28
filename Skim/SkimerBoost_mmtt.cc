@@ -58,7 +58,7 @@ void SkimerBoost::Loop(TString OutputFile)
             hcount->Fill(2,genWeight);
         
         
-        TLorentzVector LeadMu4Momentum, SubMu4Momentum, ZBoson4Momentum, LeadTau4Momentum, SubLeadTau4Momentum;
+        TLorentzVector LeadMu4Momentum, SubMu4Momentum, ZBoson4Momentum, LeadTau4Momentum, SubTau4Momentum;
         
         auto numMuMuTauTau(0);
         for (int imu = 0; imu < nMu; ++imu){
@@ -82,13 +82,17 @@ void SkimerBoost::Loop(TString OutputFile)
                     if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < 0) continue;
                     LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                     
+                    if (LeadTau4Momentum.DeltaR(LeadMu4Momentum) < 0.1 || LeadTau4Momentum.DeltaR(SubMu4Momentum) < 0.1 ) continue;
+                    
                     for (int jbtau = ibtau+1; jbtau < nBoostedTau; ++jbtau){
                         if (boostedTauPt->at(jbtau) < 30 || fabs(boostedTauEta->at(jbtau)) > 2.3 ) continue;
                         if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(jbtau) < 0.5 ) continue;
                         if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(jbtau) < 0) continue;
-                        SubLeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(jbtau),boostedTauEta->at(jbtau),boostedTauPhi->at(jbtau),boostedTauMass->at(jbtau));
+                        SubTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(jbtau),boostedTauEta->at(jbtau),boostedTauPhi->at(jbtau),boostedTauMass->at(jbtau));
                         
-                        if(SubLeadTau4Momentum.DeltaR(LeadTau4Momentum) > 0.8 || SubLeadTau4Momentum.DeltaR(LeadTau4Momentum) < 0.1) continue;
+                        if(SubTau4Momentum.DeltaR(LeadTau4Momentum) > 0.8 || SubTau4Momentum.DeltaR(LeadTau4Momentum) < 0.1) continue;
+                        
+                        if (SubTau4Momentum.DeltaR(LeadMu4Momentum) < 0.1 || SubTau4Momentum.DeltaR(SubMu4Momentum) < 0.1 ) continue;
                         
                         numMuMuTauTau++;
                     }
