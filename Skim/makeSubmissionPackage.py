@@ -56,20 +56,22 @@ Out_batch.close()
 logName=os.environ['LOGNAME']
 os.system('rm -r Files_%s'%args.Name)
 os.system('mkdir Files_%s'%args.Name)
-os.system('cp Submit_run_%s.sh Files_%s/.'%(args.Name,args.Name))
-os.system('cp Submit_batch_%s.jdl Files_%s/.'%(args.Name,args.Name))
+os.system('mv Submit_run_%s.sh Files_%s/.'%(args.Name,args.Name))
+os.system('mv Submit_batch_%s.jdl Files_%s/.'%(args.Name,args.Name))
 os.system('cp %s Files_%s/.'%(args.exe,args.Name))
 os.system('cp %s Files_%s/.'%(args.InputSample,args.Name))
 os.system('tar -zcp -f Files_%s.tar.gz  Files_%s'%(args.Name,args.Name))
 
 os.system('xrdcp -f Files_%s.tar.gz root://cmseos.fnal.gov://store/user/${LOGNAME}/.'%args.Name)
-    
+
+os.system('mv Files_%s.tar.gz Files_%s/.'%(args.Name,args.Name))
     
 ## Print the condos submit command
 print 'total number of jobs to be submitted will be %d'%(count*10)
 print 'Just run the following command:'
 print '................................'
-print 'condor_submit Submit_batch_%s.jdl'%args.Name
+#print 'condor_submit Submit_batch_%s.jdl'%args.Name
+print 'cd Files_%s/; condor_submit Submit_batch_%s.jdl; cd -'%(args.Name,args.Name)
 print '................................'
 
 
