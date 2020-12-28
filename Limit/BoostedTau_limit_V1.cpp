@@ -25,6 +25,7 @@ using namespace std;
 int main(int argc, char** argv) {
 
     string postfix="";
+    string prefix="";
     string year = "2016";
     string inputFile="";
     string WP="WP";
@@ -39,6 +40,7 @@ int main(int argc, char** argv) {
 //      ("input_folder_tt", po::value<string>(&input_folder_tt)->default_value("USCMS"))
 //      ("input_folder_mm", po::value<string>(&input_folder_mm)->default_value("USCMS"))
 //      ("input_folder_ttbar", po::value<string>(&input_folder_ttbar)->default_value("USCMS"))
+      ("prefix", po::value<string>(&prefix)->default_value(""))
       ("postfix", po::value<string>(&postfix)->default_value(""))
       ("Var", po::value<string>(&Var)->default_value(""))
 //      ("vbfcateStr_tt", po::value<string>(&vbfcateStr_tt)->default_value("tt_vbf_ggHMELA_bin"))
@@ -94,16 +96,18 @@ int main(int argc, char** argv) {
     // Here we will just define two categories for an 8TeV analysis. Each entry in
     // the vector below specifies a bin name and corresponding bin_id.
     
-    VString chns = { "mt","et"};
+    VString chns = { "mt","et","em"};
     
     map<string, string> input_folders = {
-       {"mt", "."},
-        {"et", "."}
+        {"mt", "."},
+        {"et", "."},
+        {"em", "."}
     };
     
     map<string, VString> bkg_procs;
     bkg_procs["mt"] = {"W", "QCD", "TT","VV","ZTT"};
     bkg_procs["et"] = {"W", "QCD", "TT","VV","ZTT"};
+    bkg_procs["em"] = {"W", "TT","VV","ZTT"};
     
     VString sig_procs = {"JJH"};
     
@@ -120,7 +124,10 @@ int main(int argc, char** argv) {
         {1, "et_0jet"},
 //        {2, "fail"}
     };
-    
+    cats["em_13TeV"] = {
+        {1, "em_0jet"},
+//        {2, "fail"}
+    };
     
     
     // ch::Categories is just a typedef of vector<pair<int, string>>
@@ -153,7 +160,7 @@ int main(int argc, char** argv) {
     for (string era : {"13TeV"}) {
         for (string chn : chns) {
             
-            string file = aux_shapes + input_folders[chn] + "/V1_"+year+"_"+Var+".root";
+            string file = aux_shapes + input_folders[chn] + "/"+prefix+"_"+year+"_"+Var+".root";
             cb.cp().channel({chn}).era({era}).backgrounds().ExtractShapes(
                                                                           file, "$BIN/$PROCESS", "$BIN/$PROCESS_$SYSTEMATIC");
             cb.cp().channel({chn}).era({era}).signals().ExtractShapes(
