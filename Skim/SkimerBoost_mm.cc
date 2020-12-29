@@ -114,8 +114,8 @@ void SkimerBoost::Loop(TString OutputFile)
     MyNewTree->AutoSave();
     hEvents->Write();
     hcount->Write();
-    hPU->Write();
-    hPUTrue->Write();
+    if (hPU) hPU->Write();
+    if (hPUTrue) hPUTrue->Write();
     file->Close();
 }
 

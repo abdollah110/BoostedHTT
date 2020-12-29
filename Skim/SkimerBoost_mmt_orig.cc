@@ -29,7 +29,6 @@ void SkimerBoost::Loop(TString OutputFile)
     else if (string(file->GetName()).find("2018") != string::npos) year =2018;
     else (std::cout << "Year is not specificed in the outFile name !\n");
     std::cout << "Year is ---> "<< year <<"\n";
-
     
     fChain->SetBranchStatus("*",1);
     
@@ -62,33 +61,34 @@ void SkimerBoost::Loop(TString OutputFile)
         TLorentzVector LeadMu4Momentum, SubMu4Momentum, ZBoson4Momentum, LeadTau4Momentum;
         
         auto  numMuMuTau(0);
-        for (int imu = 0; imu < nMu; ++imu){
-            if (muPt->at(imu) < 30 || fabs(muEta->at(imu)) > 2.4) continue;
-            if (!(muIDbit->at(imu) >> 0 & 1)) continue;
-            LeadMu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
+//        for (int imu = 0; imu < nMu; ++imu){
+//            if (muPt->at(imu) < 30 || fabs(muEta->at(imu)) > 2.4) continue;
+//            if (!(muIDbit->at(imu) >> 0 & 1)) continue;
+//            LeadMu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
-            for (int jmu = imu+1; jmu < nMu; ++jmu){
-                if (muPt->at(jmu) < 10 || fabs(muEta->at(jmu)) > 2.4) continue;
-                if (!(muIDbit->at(jmu) >> 0 & 1)) continue;
-                SubMu4Momentum.SetPtEtaPhiM(muPt->at(jmu),muEta->at(jmu),muPhi->at(jmu),MuMass);
-                
-                if(LeadMu4Momentum.DeltaR(SubMu4Momentum) > 0.8 || LeadMu4Momentum.DeltaR(SubMu4Momentum) < 0.1 ) continue;
-                ZBoson4Momentum=LeadMu4Momentum+SubMu4Momentum;
-                if (ZBoson4Momentum.M() < 60 || ZBoson4Momentum.M() > 120) continue;
-                if (muCharge->at(imu) * muCharge->at(jmu) > 0) continue;
-                
-                for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
-                    if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
-                    if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
-                    if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < 0) continue;
-                    LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
+//            cout<<"mu 1 \n";
+//            for (int jmu = imu+1; jmu < nMu; ++jmu){
+//                if (muPt->at(jmu) < 10 || fabs(muEta->at(jmu)) > 2.4) continue;
+//                if (!(muIDbit->at(jmu) >> 0 & 1)) continue;
+//                SubMu4Momentum.SetPtEtaPhiM(muPt->at(jmu),muEta->at(jmu),muPhi->at(jmu),MuMass);
+//            cout<<"mu 2 \n";
+//                if(LeadMu4Momentum.DeltaR(SubMu4Momentum) > 0.8 || LeadMu4Momentum.DeltaR(SubMu4Momentum) < 0.1 ) continue;
+//                ZBoson4Momentum=LeadMu4Momentum+SubMu4Momentum;
+//                if (ZBoson4Momentum.M() < 60 || ZBoson4Momentum.M() > 120) continue;
+//                if (muCharge->at(imu) * muCharge->at(jmu) > 0) continue;
+//                cout<<"mu 3 \n";
+//                for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
+//                    if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
+//                    if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
+//                    if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < 0) continue;
+//                    LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
+//                    cout<<"mu 4 \n";
+//                    if (LeadTau4Momentum.DeltaR(LeadMu4Momentum) < 0.5 || LeadTau4Momentum.DeltaR(SubMu4Momentum) < 0.5 ) continue;
                     
-                    if (LeadTau4Momentum.DeltaR(LeadMu4Momentum) < 0.5 || LeadTau4Momentum.DeltaR(SubMu4Momentum) < 0.5 ) continue;
-                    
-                    numMuMuTau++;
-                }
-            }
-        }
+//                    numMuMuTau++;
+//                }
+//            }
+//        }
         
         if( numMuMuTau < 1) continue;
         hcount->Fill(3);
@@ -98,12 +98,12 @@ void SkimerBoost::Loop(TString OutputFile)
         MyNewTree->Fill();
     }
     
-    
+    MyNewTree->SetName("mumutau_tree");
     MyNewTree->AutoSave();
     hEvents->Write();
     hcount->Write();
-    if (hPU) hPU->Write();
-    if (hPUTrue) hPUTrue->Write();
+    hPU->Write();
+    hPUTrue->Write();
     file->Close();
 }
 
