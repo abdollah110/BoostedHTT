@@ -372,7 +372,55 @@ vector<bool>    *boostedTaubyVVTightDeepTau2017v1VSmu;
 vector<bool>    *boostedTauagainstElectronVLooseMVA62018;
 vector<bool>    *boostedTauagainstElectronLooseMVA62018;
 vector<bool>    *boostedTauagainstElectronTightMVA62018;
-
+    Int_t           nAK8Jet;
+   vector<float>   *AK8JetPt;
+   vector<float>   *AK8JetEn;
+   vector<float>   *AK8JetRawPt;
+   vector<float>   *AK8JetRawEn;
+   vector<float>   *AK8JetEta;
+   vector<float>   *AK8JetPhi;
+   vector<float>   *AK8JetMass;
+   vector<float>   *AK8Jet_tau1;
+   vector<float>   *AK8Jet_tau2;
+   vector<float>   *AK8Jet_tau3;
+   vector<int>     *AK8Jetnconstituents;
+   vector<bool>    *AK8JetPFLooseId;
+   vector<bool>    *AK8JetPFTightLepVetoId;
+   vector<float>   *AK8JetSoftDropMass;
+   vector<float>   *AK8JetSoftDropMassCorr;
+   vector<float>   *AK8JetPrunedMass;
+   vector<float>   *AK8JetPrunedMassCorr;
+   vector<float>   *AK8JetpfBoostedDSVBTag;
+   vector<float>   *AK8JetCSV;
+   vector<float>   *AK8JetJECUnc;
+   vector<float>   *AK8JetL2L3corr;
+   vector<float>   *AK8puppiPt;
+   vector<float>   *AK8puppiMass;
+   vector<float>   *AK8puppiEta;
+   vector<float>   *AK8puppiPhi;
+   vector<float>   *AK8puppiSDL2L3corr;
+   vector<float>   *AK8puppiSDMass;
+   vector<float>   *AK8puppiSDMassL2L3Corr;
+   vector<int>     *AK8JetPartonID;
+   vector<int>     *AK8JetHadFlvr;
+   vector<int>     *nAK8SDSJ;
+   vector<vector<float> > *AK8SDSJPt;
+   vector<vector<float> > *AK8SDSJEta;
+   vector<vector<float> > *AK8SDSJPhi;
+   vector<vector<float> > *AK8SDSJMass;
+   vector<vector<float> > *AK8SDSJE;
+   vector<vector<int> > *AK8SDSJCharge;
+   vector<vector<int> > *AK8SDSJFlavour;
+   vector<vector<float> > *AK8SDSJCSV;
+   vector<int>     *nAK8puppiSDSJ;
+   vector<vector<float> > *AK8puppiSDSJPt;
+   vector<vector<float> > *AK8puppiSDSJEta;
+   vector<vector<float> > *AK8puppiSDSJPhi;
+   vector<vector<float> > *AK8puppiSDSJMass;
+   vector<vector<float> > *AK8puppiSDSJE;
+   vector<vector<int> > *AK8puppiSDSJCharge;
+   vector<vector<int> > *AK8puppiSDSJFlavour;
+   vector<vector<float> > *AK8puppiSDSJCSV;
 
 
 
@@ -725,7 +773,55 @@ TBranch        *b_boostedTaubyVVTightDeepTau2017v1VSmu;   //!
 TBranch        *b_boostedTauagainstElectronVLooseMVA62018;   //!
 TBranch        *b_boostedTauagainstElectronLooseMVA62018;   //!
 TBranch        *b_boostedTauagainstElectronTightMVA62018;   //!
-
+   TBranch        *b_nAK8Jet;   //!
+   TBranch        *b_AK8JetPt;   //!
+   TBranch        *b_AK8JetEn;   //!
+   TBranch        *b_AK8JetRawPt;   //!
+   TBranch        *b_AK8JetRawEn;   //!
+   TBranch        *b_AK8JetEta;   //!
+   TBranch        *b_AK8JetPhi;   //!
+   TBranch        *b_AK8JetMass;   //!
+   TBranch        *b_AK8Jet_tau1;   //!
+   TBranch        *b_AK8Jet_tau2;   //!
+   TBranch        *b_AK8Jet_tau3;   //!
+   TBranch        *b_AK8Jetnconstituents;   //!
+   TBranch        *b_AK8JetPFLooseId;   //!
+   TBranch        *b_AK8JetPFTightLepVetoId;   //!
+   TBranch        *b_AK8JetSoftDropMass;   //!
+   TBranch        *b_AK8JetSoftDropMassCorr;   //!
+   TBranch        *b_AK8JetPrunedMass;   //!
+   TBranch        *b_AK8JetPrunedMassCorr;   //!
+   TBranch        *b_AK8JetpfBoostedDSVBTag;   //!
+   TBranch        *b_AK8JetCSV;   //!
+   TBranch        *b_AK8JetJECUnc;   //!
+   TBranch        *b_AK8JetL2L3corr;   //!
+   TBranch        *b_AK8puppiPt;   //!
+   TBranch        *b_AK8puppiMass;   //!
+   TBranch        *b_AK8puppiEta;   //!
+   TBranch        *b_AK8puppiPhi;   //!
+   TBranch        *b_AK8puppiSDL2L3corr;   //!
+   TBranch        *b_AK8puppiSDMass;   //!
+   TBranch        *b_AK8puppiSDMassL2L3Corr;   //!
+   TBranch        *b_AK8JetPartonID;   //!
+   TBranch        *b_AK8JetHadFlvr;   //!
+   TBranch        *b_nAK8SDSJ;   //!
+   TBranch        *b_AK8SDSJPt;   //!
+   TBranch        *b_AK8SDSJEta;   //!
+   TBranch        *b_AK8SDSJPhi;   //!
+   TBranch        *b_AK8SDSJMass;   //!
+   TBranch        *b_AK8SDSJE;   //!
+   TBranch        *b_AK8SDSJCharge;   //!
+   TBranch        *b_AK8SDSJFlavour;   //!
+   TBranch        *b_AK8SDSJCSV;   //!
+   TBranch        *b_nAK8puppiSDSJ;   //!
+   TBranch        *b_AK8puppiSDSJPt;   //!
+   TBranch        *b_AK8puppiSDSJEta;   //!
+   TBranch        *b_AK8puppiSDSJPhi;   //!
+   TBranch        *b_AK8puppiSDSJMass;   //!
+   TBranch        *b_AK8puppiSDSJE;   //!
+   TBranch        *b_AK8puppiSDSJCharge;   //!
+   TBranch        *b_AK8puppiSDSJFlavour;   //!
+   TBranch        *b_AK8puppiSDSJCSV;   //!
 
 
 //

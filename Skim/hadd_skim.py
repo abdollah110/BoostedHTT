@@ -7,7 +7,8 @@ import argparse
 
 parser = argparse.ArgumentParser(description='create sumission files from the existing templates')
 
-parser.add_argument('-g','--ggntuple',action='store', default='/eos/uscms/store/user/tmitchel/BoostedH/An2017/MC/*/*',dest='ggntuple',  help='the name of the INpitSamples')
+#parser.add_argument('-g','--ggntuple',action='store', default='/eos/uscms/store/user/tmitchel/BoostedH/An2017/MC/*/*',dest='ggntuple',  help='the name of the INpitSamples')
+parser.add_argument('-i','--input',action='store', default='Files_mmt_18_v1/InputSample_18_mu.txt',dest='ggntuple',  help='the name of the InputSamples')
 parser.add_argument('-s','--skim',action='store',
     default='/eos/uscms/store/user/abdollah/SkimBoost/mm/v4',dest='skim', help='Location of the output file')
 parser.add_argument('-n','--name',action='store',
@@ -29,14 +30,17 @@ if not os.path.exists(HaddLoc):
     os.makedirs(HaddLoc)
 
 outFile=open('_run_to_hadd_{}.sh'.format(args.name),'w')
-for gl in glob.glob(ggNtupleFiles):
+Input=open(ggNtupleFiles,'r')
+Lines=Input.readlines()
+for gl in Lines:
+#for gl in glob.glob(ggNtupleFiles):
     print  'gl is {}'.format(gl)
-    sample=gl.rpartition('/')[-1].replace('crab_','')
+#    sample=gl.rpartition('/')[-1].replace('crab_','')
+    sample=((gl.rpartition("crab_")[-1]).rpartition("/")[0]).rpartition("/")[0]
+    print 'sample is {}'.format(sample)
     outFile.write('hadd %s/%s.root    %s/*%s*.root \n'%(HaddLoc,sample,skimFiles,sample))
 #    os.system('hadd %s/%s.root    %s/%s*.root'%(HaddLoc,sample,skimFiles,sample))
 
 outFile.close()
     
-
-
 

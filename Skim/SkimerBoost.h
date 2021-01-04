@@ -391,6 +391,55 @@ public :
    vector<bool>    *boostedTauagainstElectronVLooseMVA62018;
    vector<bool>    *boostedTauagainstElectronLooseMVA62018;
    vector<bool>    *boostedTauagainstElectronTightMVA62018;
+    Int_t           nAK8Jet;
+   vector<float>   *AK8JetPt;
+   vector<float>   *AK8JetEn;
+   vector<float>   *AK8JetRawPt;
+   vector<float>   *AK8JetRawEn;
+   vector<float>   *AK8JetEta;
+   vector<float>   *AK8JetPhi;
+   vector<float>   *AK8JetMass;
+   vector<float>   *AK8Jet_tau1;
+   vector<float>   *AK8Jet_tau2;
+   vector<float>   *AK8Jet_tau3;
+   vector<int>     *AK8Jetnconstituents;
+   vector<bool>    *AK8JetPFLooseId;
+   vector<bool>    *AK8JetPFTightLepVetoId;
+   vector<float>   *AK8JetSoftDropMass;
+   vector<float>   *AK8JetSoftDropMassCorr;
+   vector<float>   *AK8JetPrunedMass;
+   vector<float>   *AK8JetPrunedMassCorr;
+   vector<float>   *AK8JetpfBoostedDSVBTag;
+   vector<float>   *AK8JetCSV;
+   vector<float>   *AK8JetJECUnc;
+   vector<float>   *AK8JetL2L3corr;
+   vector<float>   *AK8puppiPt;
+   vector<float>   *AK8puppiMass;
+   vector<float>   *AK8puppiEta;
+   vector<float>   *AK8puppiPhi;
+   vector<float>   *AK8puppiSDL2L3corr;
+   vector<float>   *AK8puppiSDMass;
+   vector<float>   *AK8puppiSDMassL2L3Corr;
+   vector<int>     *AK8JetPartonID;
+   vector<int>     *AK8JetHadFlvr;
+   vector<int>     *nAK8SDSJ;
+   vector<vector<float> > *AK8SDSJPt;
+   vector<vector<float> > *AK8SDSJEta;
+   vector<vector<float> > *AK8SDSJPhi;
+   vector<vector<float> > *AK8SDSJMass;
+   vector<vector<float> > *AK8SDSJE;
+   vector<vector<int> > *AK8SDSJCharge;
+   vector<vector<int> > *AK8SDSJFlavour;
+   vector<vector<float> > *AK8SDSJCSV;
+   vector<int>     *nAK8puppiSDSJ;
+   vector<vector<float> > *AK8puppiSDSJPt;
+   vector<vector<float> > *AK8puppiSDSJEta;
+   vector<vector<float> > *AK8puppiSDSJPhi;
+   vector<vector<float> > *AK8puppiSDSJMass;
+   vector<vector<float> > *AK8puppiSDSJE;
+   vector<vector<int> > *AK8puppiSDSJCharge;
+   vector<vector<int> > *AK8puppiSDSJFlavour;
+   vector<vector<float> > *AK8puppiSDSJCSV;
 
    // List of branches
    TBranch        *b_run;   //!
@@ -749,7 +798,56 @@ public :
    TBranch        *b_boostedTauagainstElectronVLooseMVA62018;   //!
    TBranch        *b_boostedTauagainstElectronLooseMVA62018;   //!
    TBranch        *b_boostedTauagainstElectronTightMVA62018;   //!
-
+   TBranch        *b_nAK8Jet;   //!
+   TBranch        *b_AK8JetPt;   //!
+   TBranch        *b_AK8JetEn;   //!
+   TBranch        *b_AK8JetRawPt;   //!
+   TBranch        *b_AK8JetRawEn;   //!
+   TBranch        *b_AK8JetEta;   //!
+   TBranch        *b_AK8JetPhi;   //!
+   TBranch        *b_AK8JetMass;   //!
+   TBranch        *b_AK8Jet_tau1;   //!
+   TBranch        *b_AK8Jet_tau2;   //!
+   TBranch        *b_AK8Jet_tau3;   //!
+   TBranch        *b_AK8Jetnconstituents;   //!
+   TBranch        *b_AK8JetPFLooseId;   //!
+   TBranch        *b_AK8JetPFTightLepVetoId;   //!
+   TBranch        *b_AK8JetSoftDropMass;   //!
+   TBranch        *b_AK8JetSoftDropMassCorr;   //!
+   TBranch        *b_AK8JetPrunedMass;   //!
+   TBranch        *b_AK8JetPrunedMassCorr;   //!
+   TBranch        *b_AK8JetpfBoostedDSVBTag;   //!
+   TBranch        *b_AK8JetCSV;   //!
+   TBranch        *b_AK8JetJECUnc;   //!
+   TBranch        *b_AK8JetL2L3corr;   //!
+   TBranch        *b_AK8puppiPt;   //!
+   TBranch        *b_AK8puppiMass;   //!
+   TBranch        *b_AK8puppiEta;   //!
+   TBranch        *b_AK8puppiPhi;   //!
+   TBranch        *b_AK8puppiSDL2L3corr;   //!
+   TBranch        *b_AK8puppiSDMass;   //!
+   TBranch        *b_AK8puppiSDMassL2L3Corr;   //!
+   TBranch        *b_AK8JetPartonID;   //!
+   TBranch        *b_AK8JetHadFlvr;   //!
+   TBranch        *b_nAK8SDSJ;   //!
+   TBranch        *b_AK8SDSJPt;   //!
+   TBranch        *b_AK8SDSJEta;   //!
+   TBranch        *b_AK8SDSJPhi;   //!
+   TBranch        *b_AK8SDSJMass;   //!
+   TBranch        *b_AK8SDSJE;   //!
+   TBranch        *b_AK8SDSJCharge;   //!
+   TBranch        *b_AK8SDSJFlavour;   //!
+   TBranch        *b_AK8SDSJCSV;   //!
+   TBranch        *b_nAK8puppiSDSJ;   //!
+   TBranch        *b_AK8puppiSDSJPt;   //!
+   TBranch        *b_AK8puppiSDSJEta;   //!
+   TBranch        *b_AK8puppiSDSJPhi;   //!
+   TBranch        *b_AK8puppiSDSJMass;   //!
+   TBranch        *b_AK8puppiSDSJE;   //!
+   TBranch        *b_AK8puppiSDSJCharge;   //!
+   TBranch        *b_AK8puppiSDSJFlavour;   //!
+   TBranch        *b_AK8puppiSDSJCSV;   //!
+   
    SkimerBoost(TString fileNamem);
    virtual ~SkimerBoost();
    virtual Int_t    Cut(Long64_t entry);
@@ -1089,6 +1187,54 @@ void SkimerBoost::Init(TTree *tree)
    boostedTauagainstElectronVLooseMVA62018 = 0;
    boostedTauagainstElectronLooseMVA62018 = 0;
    boostedTauagainstElectronTightMVA62018 = 0;
+      AK8JetPt = 0;
+   AK8JetEn = 0;
+   AK8JetRawPt = 0;
+   AK8JetRawEn = 0;
+   AK8JetEta = 0;
+   AK8JetPhi = 0;
+   AK8JetMass = 0;
+   AK8Jet_tau1 = 0;
+   AK8Jet_tau2 = 0;
+   AK8Jet_tau3 = 0;
+   AK8Jetnconstituents = 0;
+   AK8JetPFLooseId = 0;
+   AK8JetPFTightLepVetoId = 0;
+   AK8JetSoftDropMass = 0;
+   AK8JetSoftDropMassCorr = 0;
+   AK8JetPrunedMass = 0;
+   AK8JetPrunedMassCorr = 0;
+   AK8JetpfBoostedDSVBTag = 0;
+   AK8JetCSV = 0;
+   AK8JetJECUnc = 0;
+   AK8JetL2L3corr = 0;
+   AK8puppiPt = 0;
+   AK8puppiMass = 0;
+   AK8puppiEta = 0;
+   AK8puppiPhi = 0;
+   AK8puppiSDL2L3corr = 0;
+   AK8puppiSDMass = 0;
+   AK8puppiSDMassL2L3Corr = 0;
+   AK8JetPartonID = 0;
+   AK8JetHadFlvr = 0;
+   nAK8SDSJ = 0;
+   AK8SDSJPt = 0;
+   AK8SDSJEta = 0;
+   AK8SDSJPhi = 0;
+   AK8SDSJMass = 0;
+   AK8SDSJE = 0;
+   AK8SDSJCharge = 0;
+   AK8SDSJFlavour = 0;
+   AK8SDSJCSV = 0;
+   nAK8puppiSDSJ = 0;
+   AK8puppiSDSJPt = 0;
+   AK8puppiSDSJEta = 0;
+   AK8puppiSDSJPhi = 0;
+   AK8puppiSDSJMass = 0;
+   AK8puppiSDSJE = 0;
+   AK8puppiSDSJCharge = 0;
+   AK8puppiSDSJFlavour = 0;
+   AK8puppiSDSJCSV = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
@@ -1451,6 +1597,55 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("boostedTauagainstElectronVLooseMVA62018", &boostedTauagainstElectronVLooseMVA62018, &b_boostedTauagainstElectronVLooseMVA62018);
    fChain->SetBranchAddress("boostedTauagainstElectronLooseMVA62018", &boostedTauagainstElectronLooseMVA62018, &b_boostedTauagainstElectronLooseMVA62018);
    fChain->SetBranchAddress("boostedTauagainstElectronTightMVA62018", &boostedTauagainstElectronTightMVA62018, &b_boostedTauagainstElectronTightMVA62018);
+   fChain->SetBranchAddress("nAK8Jet", &nAK8Jet, &b_nAK8Jet);
+   fChain->SetBranchAddress("AK8JetPt", &AK8JetPt, &b_AK8JetPt);
+   fChain->SetBranchAddress("AK8JetEn", &AK8JetEn, &b_AK8JetEn);
+   fChain->SetBranchAddress("AK8JetRawPt", &AK8JetRawPt, &b_AK8JetRawPt);
+   fChain->SetBranchAddress("AK8JetRawEn", &AK8JetRawEn, &b_AK8JetRawEn);
+   fChain->SetBranchAddress("AK8JetEta", &AK8JetEta, &b_AK8JetEta);
+   fChain->SetBranchAddress("AK8JetPhi", &AK8JetPhi, &b_AK8JetPhi);
+   fChain->SetBranchAddress("AK8JetMass", &AK8JetMass, &b_AK8JetMass);
+   fChain->SetBranchAddress("AK8Jet_tau1", &AK8Jet_tau1, &b_AK8Jet_tau1);
+   fChain->SetBranchAddress("AK8Jet_tau2", &AK8Jet_tau2, &b_AK8Jet_tau2);
+   fChain->SetBranchAddress("AK8Jet_tau3", &AK8Jet_tau3, &b_AK8Jet_tau3);
+   fChain->SetBranchAddress("AK8Jetnconstituents", &AK8Jetnconstituents, &b_AK8Jetnconstituents);
+   fChain->SetBranchAddress("AK8JetPFLooseId", &AK8JetPFLooseId, &b_AK8JetPFLooseId);
+   fChain->SetBranchAddress("AK8JetPFTightLepVetoId", &AK8JetPFTightLepVetoId, &b_AK8JetPFTightLepVetoId);
+   fChain->SetBranchAddress("AK8JetSoftDropMass", &AK8JetSoftDropMass, &b_AK8JetSoftDropMass);
+   fChain->SetBranchAddress("AK8JetSoftDropMassCorr", &AK8JetSoftDropMassCorr, &b_AK8JetSoftDropMassCorr);
+   fChain->SetBranchAddress("AK8JetPrunedMass", &AK8JetPrunedMass, &b_AK8JetPrunedMass);
+   fChain->SetBranchAddress("AK8JetPrunedMassCorr", &AK8JetPrunedMassCorr, &b_AK8JetPrunedMassCorr);
+   fChain->SetBranchAddress("AK8JetpfBoostedDSVBTag", &AK8JetpfBoostedDSVBTag, &b_AK8JetpfBoostedDSVBTag);
+   fChain->SetBranchAddress("AK8JetCSV", &AK8JetCSV, &b_AK8JetCSV);
+   fChain->SetBranchAddress("AK8JetJECUnc", &AK8JetJECUnc, &b_AK8JetJECUnc);
+   fChain->SetBranchAddress("AK8JetL2L3corr", &AK8JetL2L3corr, &b_AK8JetL2L3corr);
+   fChain->SetBranchAddress("AK8puppiPt", &AK8puppiPt, &b_AK8puppiPt);
+   fChain->SetBranchAddress("AK8puppiMass", &AK8puppiMass, &b_AK8puppiMass);
+   fChain->SetBranchAddress("AK8puppiEta", &AK8puppiEta, &b_AK8puppiEta);
+   fChain->SetBranchAddress("AK8puppiPhi", &AK8puppiPhi, &b_AK8puppiPhi);
+   fChain->SetBranchAddress("AK8puppiSDL2L3corr", &AK8puppiSDL2L3corr, &b_AK8puppiSDL2L3corr);
+   fChain->SetBranchAddress("AK8puppiSDMass", &AK8puppiSDMass, &b_AK8puppiSDMass);
+   fChain->SetBranchAddress("AK8puppiSDMassL2L3Corr", &AK8puppiSDMassL2L3Corr, &b_AK8puppiSDMassL2L3Corr);
+   fChain->SetBranchAddress("AK8JetPartonID", &AK8JetPartonID, &b_AK8JetPartonID);
+   fChain->SetBranchAddress("AK8JetHadFlvr", &AK8JetHadFlvr, &b_AK8JetHadFlvr);
+   fChain->SetBranchAddress("nAK8SDSJ", &nAK8SDSJ, &b_nAK8SDSJ);
+   fChain->SetBranchAddress("AK8SDSJPt", &AK8SDSJPt, &b_AK8SDSJPt);
+   fChain->SetBranchAddress("AK8SDSJEta", &AK8SDSJEta, &b_AK8SDSJEta);
+   fChain->SetBranchAddress("AK8SDSJPhi", &AK8SDSJPhi, &b_AK8SDSJPhi);
+   fChain->SetBranchAddress("AK8SDSJMass", &AK8SDSJMass, &b_AK8SDSJMass);
+   fChain->SetBranchAddress("AK8SDSJE", &AK8SDSJE, &b_AK8SDSJE);
+   fChain->SetBranchAddress("AK8SDSJCharge", &AK8SDSJCharge, &b_AK8SDSJCharge);
+   fChain->SetBranchAddress("AK8SDSJFlavour", &AK8SDSJFlavour, &b_AK8SDSJFlavour);
+   fChain->SetBranchAddress("AK8SDSJCSV", &AK8SDSJCSV, &b_AK8SDSJCSV);
+   fChain->SetBranchAddress("nAK8puppiSDSJ", &nAK8puppiSDSJ, &b_nAK8puppiSDSJ);
+   fChain->SetBranchAddress("AK8puppiSDSJPt", &AK8puppiSDSJPt, &b_AK8puppiSDSJPt);
+   fChain->SetBranchAddress("AK8puppiSDSJEta", &AK8puppiSDSJEta, &b_AK8puppiSDSJEta);
+   fChain->SetBranchAddress("AK8puppiSDSJPhi", &AK8puppiSDSJPhi, &b_AK8puppiSDSJPhi);
+   fChain->SetBranchAddress("AK8puppiSDSJMass", &AK8puppiSDSJMass, &b_AK8puppiSDSJMass);
+   fChain->SetBranchAddress("AK8puppiSDSJE", &AK8puppiSDSJE, &b_AK8puppiSDSJE);
+   fChain->SetBranchAddress("AK8puppiSDSJCharge", &AK8puppiSDSJCharge, &b_AK8puppiSDSJCharge);
+   fChain->SetBranchAddress("AK8puppiSDSJFlavour", &AK8puppiSDSJFlavour, &b_AK8puppiSDSJFlavour);
+   fChain->SetBranchAddress("AK8puppiSDSJCSV", &AK8puppiSDSJCSV, &b_AK8puppiSDSJCSV);   
    Notify();
 }
 

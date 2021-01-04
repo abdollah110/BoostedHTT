@@ -424,6 +424,8 @@ TTree *  Xttree( TFile * f_Double, string channel){
     
     
     
+    
+    
     //########################################   General Info
     Run_Tree->SetBranchAddress("isData", &isData);
     Run_Tree->SetBranchAddress("run", &run);
@@ -599,6 +601,58 @@ TTree *  Xttree( TFile * f_Double, string channel){
     //       Run_Tree->SetBranchAddress("pfMETPhi_T1UESDo", &pfMETPhi_T1UESDo, &b_pfMETPhi_T1UESDo);
     
     
+    //########################################   AK8 Info
+
+   Run_Tree->SetBranchAddress("nAK8Jet", &nAK8Jet, &b_nAK8Jet);
+   Run_Tree->SetBranchAddress("AK8JetPt", &AK8JetPt, &b_AK8JetPt);
+   Run_Tree->SetBranchAddress("AK8JetEn", &AK8JetEn, &b_AK8JetEn);
+   Run_Tree->SetBranchAddress("AK8JetRawPt", &AK8JetRawPt, &b_AK8JetRawPt);
+   Run_Tree->SetBranchAddress("AK8JetRawEn", &AK8JetRawEn, &b_AK8JetRawEn);
+   Run_Tree->SetBranchAddress("AK8JetEta", &AK8JetEta, &b_AK8JetEta);
+   Run_Tree->SetBranchAddress("AK8JetPhi", &AK8JetPhi, &b_AK8JetPhi);
+   Run_Tree->SetBranchAddress("AK8JetMass", &AK8JetMass, &b_AK8JetMass);
+   Run_Tree->SetBranchAddress("AK8Jet_tau1", &AK8Jet_tau1, &b_AK8Jet_tau1);
+   Run_Tree->SetBranchAddress("AK8Jet_tau2", &AK8Jet_tau2, &b_AK8Jet_tau2);
+   Run_Tree->SetBranchAddress("AK8Jet_tau3", &AK8Jet_tau3, &b_AK8Jet_tau3);
+   Run_Tree->SetBranchAddress("AK8Jetnconstituents", &AK8Jetnconstituents, &b_AK8Jetnconstituents);
+   Run_Tree->SetBranchAddress("AK8JetPFLooseId", &AK8JetPFLooseId, &b_AK8JetPFLooseId);
+   Run_Tree->SetBranchAddress("AK8JetPFTightLepVetoId", &AK8JetPFTightLepVetoId, &b_AK8JetPFTightLepVetoId);
+   Run_Tree->SetBranchAddress("AK8JetSoftDropMass", &AK8JetSoftDropMass, &b_AK8JetSoftDropMass);
+   Run_Tree->SetBranchAddress("AK8JetSoftDropMassCorr", &AK8JetSoftDropMassCorr, &b_AK8JetSoftDropMassCorr);
+   Run_Tree->SetBranchAddress("AK8JetPrunedMass", &AK8JetPrunedMass, &b_AK8JetPrunedMass);
+   Run_Tree->SetBranchAddress("AK8JetPrunedMassCorr", &AK8JetPrunedMassCorr, &b_AK8JetPrunedMassCorr);
+   Run_Tree->SetBranchAddress("AK8JetpfBoostedDSVBTag", &AK8JetpfBoostedDSVBTag, &b_AK8JetpfBoostedDSVBTag);
+   Run_Tree->SetBranchAddress("AK8JetCSV", &AK8JetCSV, &b_AK8JetCSV);
+   Run_Tree->SetBranchAddress("AK8JetJECUnc", &AK8JetJECUnc, &b_AK8JetJECUnc);
+   Run_Tree->SetBranchAddress("AK8JetL2L3corr", &AK8JetL2L3corr, &b_AK8JetL2L3corr);
+   Run_Tree->SetBranchAddress("AK8puppiPt", &AK8puppiPt, &b_AK8puppiPt);
+   Run_Tree->SetBranchAddress("AK8puppiMass", &AK8puppiMass, &b_AK8puppiMass);
+   Run_Tree->SetBranchAddress("AK8puppiEta", &AK8puppiEta, &b_AK8puppiEta);
+   Run_Tree->SetBranchAddress("AK8puppiPhi", &AK8puppiPhi, &b_AK8puppiPhi);
+   Run_Tree->SetBranchAddress("AK8puppiSDL2L3corr", &AK8puppiSDL2L3corr, &b_AK8puppiSDL2L3corr);
+   Run_Tree->SetBranchAddress("AK8puppiSDMass", &AK8puppiSDMass, &b_AK8puppiSDMass);
+   Run_Tree->SetBranchAddress("AK8puppiSDMassL2L3Corr", &AK8puppiSDMassL2L3Corr, &b_AK8puppiSDMassL2L3Corr);
+   Run_Tree->SetBranchAddress("AK8JetPartonID", &AK8JetPartonID, &b_AK8JetPartonID);
+   Run_Tree->SetBranchAddress("AK8JetHadFlvr", &AK8JetHadFlvr, &b_AK8JetHadFlvr);
+   Run_Tree->SetBranchAddress("nAK8SDSJ", &nAK8SDSJ, &b_nAK8SDSJ);
+   Run_Tree->SetBranchAddress("AK8SDSJPt", &AK8SDSJPt, &b_AK8SDSJPt);
+   Run_Tree->SetBranchAddress("AK8SDSJEta", &AK8SDSJEta, &b_AK8SDSJEta);
+   Run_Tree->SetBranchAddress("AK8SDSJPhi", &AK8SDSJPhi, &b_AK8SDSJPhi);
+   Run_Tree->SetBranchAddress("AK8SDSJMass", &AK8SDSJMass, &b_AK8SDSJMass);
+   Run_Tree->SetBranchAddress("AK8SDSJE", &AK8SDSJE, &b_AK8SDSJE);
+   Run_Tree->SetBranchAddress("AK8SDSJCharge", &AK8SDSJCharge, &b_AK8SDSJCharge);
+   Run_Tree->SetBranchAddress("AK8SDSJFlavour", &AK8SDSJFlavour, &b_AK8SDSJFlavour);
+   Run_Tree->SetBranchAddress("AK8SDSJCSV", &AK8SDSJCSV, &b_AK8SDSJCSV);
+   Run_Tree->SetBranchAddress("nAK8puppiSDSJ", &nAK8puppiSDSJ, &b_nAK8puppiSDSJ);
+   Run_Tree->SetBranchAddress("AK8puppiSDSJPt", &AK8puppiSDSJPt, &b_AK8puppiSDSJPt);
+   Run_Tree->SetBranchAddress("AK8puppiSDSJEta", &AK8puppiSDSJEta, &b_AK8puppiSDSJEta);
+   Run_Tree->SetBranchAddress("AK8puppiSDSJPhi", &AK8puppiSDSJPhi, &b_AK8puppiSDSJPhi);
+   Run_Tree->SetBranchAddress("AK8puppiSDSJMass", &AK8puppiSDSJMass, &b_AK8puppiSDSJMass);
+   Run_Tree->SetBranchAddress("AK8puppiSDSJE", &AK8puppiSDSJE, &b_AK8puppiSDSJE);
+   Run_Tree->SetBranchAddress("AK8puppiSDSJCharge", &AK8puppiSDSJCharge, &b_AK8puppiSDSJCharge);
+   Run_Tree->SetBranchAddress("AK8puppiSDSJFlavour", &AK8puppiSDSJFlavour, &b_AK8puppiSDSJFlavour);
+   Run_Tree->SetBranchAddress("AK8puppiSDSJCSV", &AK8puppiSDSJCSV, &b_AK8puppiSDSJCSV);
+   
     
     //########################################   MET Info
     Run_Tree->SetBranchAddress("pfMET",&pfMET);
