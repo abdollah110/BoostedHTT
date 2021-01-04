@@ -31,31 +31,6 @@ void SkimerBoost::Loop(TString OutputFile)
     
     
     fChain->SetBranchStatus("*",1);
-    //    fChain->SetBranchStatus("*",0);
-    //    fChain->SetBranchStatus("vt*",1);
-    //    fChain->SetBranchStatus("EventTag",1);
-    //    fChain->SetBranchStatus("run",1);
-    //    fChain->SetBranchStatus("event",1);
-    //    fChain->SetBranchStatus("lumis",1);
-    //    fChain->SetBranchStatus("isData",1);
-    //    fChain->SetBranchStatus("HLT*",1);
-    //    fChain->SetBranchStatus("gen*",1);
-    //    fChain->SetBranchStatus("pdf*",1);
-    //    fChain->SetBranchStatus("pthat",1);
-    //    fChain->SetBranchStatus("processID",1);
-    //    fChain->SetBranchStatus("rho*",1);
-    //    fChain->SetBranchStatus("pu*",1);
-    //    fChain->SetBranchStatus("mc*",1);
-    //    fChain->SetBranchStatus("pfMET*",1);
-    //    fChain->SetBranchStatus("n*",1);
-    //    //    fChain->SetBranchStatus("c*",1);
-    //    fChain->SetBranchStatus("jet*",1);
-    //    fChain->SetBranchStatus("AK8*",1);
-    //    fChain->SetBranchStatus("ele*",1);
-    //    fChain->SetBranchStatus("mu*",1);
-    //    fChain->SetBranchStatus("tau*",1);
-    //    fChain->SetBranchStatus("m*",1);
-    //    fChain->SetBranchStatus("b*",1);
     
     TH1F* hcount = new TH1F("hcount", "", 10, 0, 10);
     
@@ -87,22 +62,14 @@ void SkimerBoost::Loop(TString OutputFile)
         
         auto numMuAK8Jet(0);
         for (int imu = 0; imu < nMu; ++imu){
-            if (muPt->at(imu) < 50 || fabs(muEta->at(imu)) > 2.4) continue;
+            if (muPt->at(imu) < 53 || fabs(muEta->at(imu)) > 2.4) continue;
             
             LeadMu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
             
             for (int ijet=0; ijet < nAK8Jet ; ijet ++){
-                
-                if (AK8JetPt->at(ijet) < 150 || fabs(AK8JetEta->at(ijet)) > 3.0 ) continue;
-                                    
-                for (int j = 0; j < AK8puppiSDSJMass->at(ijet).size(); j++){
-                    
-                    if (AK8puppiSDSJMass->at(ijet).at(j) > 20){
-                    numMuAK8Jet++;
-                    }
-                }
-                
+                if (AK8JetPt->at(ijet) < 200  || AK8JetSoftDropMass < 0 || fabs(AK8JetEta->at(ijet)) > 2.5 ) continue;
+                numMuAK8Jet++;
             }
         }
         
