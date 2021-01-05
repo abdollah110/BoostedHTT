@@ -183,7 +183,7 @@ int main(int argc, char* argv[]) {
          PassTrigger_44 = ((HLTJet >> 44 & 1)==1); //HLT_AK8PFHT900_TrimMass50_v
         //        //              else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
         //        // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19; // 2017
-        //        if (!(PassTrigger_40 || PassTrigger_39)) continue;
+        if ( isData && (!(PassTrigger_40 || PassTrigger_41))) continue;
         plotFill("cutFlowTable",2 ,15,0,15);
         //=========================================================================================================
         // MET Filters
@@ -308,7 +308,7 @@ int main(int argc, char* argv[]) {
 
         // measure trigger efficiency for MC
         TriggerWeight = getTriggerWeight(year, isData,  AK8JetPt->at(ijet) , AK8JetSoftDropMass->at(ijet) ,triggerEff);
-            cout<< " AK8JetPt->at(ijet) , AK8JetSoftDropMass->at(ijet) " <<AK8JetPt->at(ijet) <<"  "<< AK8JetSoftDropMass->at(ijet) << " --> " <<TriggerWeight<<"\n";
+//            cout<< " AK8JetPt->at(ijet) , AK8JetSoftDropMass->at(ijet) " <<AK8JetPt->at(ijet) <<"  "<< AK8JetSoftDropMass->at(ijet) << " --> " <<TriggerWeight<<"\n";
 
         }
         
