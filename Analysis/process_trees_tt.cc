@@ -169,7 +169,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
                 {"higgs_pT",higgs_pT},
                 {"higgs_m",higgs_m},
                 {"m_sv",m_sv},
-                {"NN_disc",NN_disc}
+//                {"NN_disc",NN_disc}
             };
             
             
