@@ -73,6 +73,13 @@ int main(int argc, char* argv[]) {
     if (! (fname.find("Data") != string::npos || fname.find("Run") != string::npos ))
         HistoPUMC=HistPUMC(InputFile);
     
+    
+    //###############################################################################################
+    // 2D TRigger Efficiency
+    //###############################################################################################
+    auto trgEff = TFile::Open("out2DTrg.root");
+    TH2F * triggerEff = (TH2F *) trgEff->Get("TrgEfficiency2D");
+    
     //###############################################################################################
     // Parameters
     //###############################################################################################
@@ -191,7 +198,7 @@ int main(int argc, char* argv[]) {
         if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
         if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
         if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
-        if (Met < 50 ) continue ;
+//        if (Met < 50 ) continue ;
         
         TLorentzVector LeadTau4Momentum,SubTau4Momentum, Z4Momentum, Met4Momentum;
         //=========================================================================================================
@@ -200,14 +207,10 @@ int main(int argc, char* argv[]) {
         
         if (boostedTauPt->at(idx_leadtau) <= 40 || fabs(boostedTauEta->at(idx_leadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_leadtau) < 0.5 ) continue;
-        if (boostedTauagainstElectronVLooseMVA62018->at(idx_leadtau) < 0.5) continue;
-        if (boostedTauByLooseMuonRejection3->at(idx_leadtau) < 0.5) continue;
+//        if (boostedTauagainstElectronVLooseMVA62018->at(idx_leadtau) < 0.5) continue;
+//        if (boostedTauByLooseMuonRejection3->at(idx_leadtau) < 0.5) continue;
         LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_leadtau),boostedTauEta->at(idx_leadtau),boostedTauPhi->at(idx_leadtau),boostedTauMass->at(idx_leadtau));
         plotFill("cutFlowTable",3 ,15,0,15);
-        
-//        TLorentzVector leadMatch= getMatchedGenTau(LeadTau4Momentum);
-//        plotFill("GenMatchedLeadTau",leadMatch.DeltaR(LeadTau4Momentum) ,20,0,1);
-//        vector<float> leadRecoMatch= getMatchedRecoTau(LeadTau4Momentum);
         
         //=========================================================================================================
         // sublead Tau selection
@@ -215,77 +218,23 @@ int main(int argc, char* argv[]) {
         
         if (boostedTauPt->at(idx_subleadtau) <= 40 || fabs(boostedTauEta->at(idx_subleadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_subleadtau) < 0.5 ) continue;
-        if (boostedTauagainstElectronVLooseMVA62018->at(idx_subleadtau) < 0.5) continue;
-        if (boostedTauByLooseMuonRejection3->at(idx_subleadtau) < 0.5) continue;
+//        if (boostedTauagainstElectronVLooseMVA62018->at(idx_subleadtau) < 0.5) continue;
+//        if (boostedTauByLooseMuonRejection3->at(idx_subleadtau) < 0.5) continue;
         
         SubTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_subleadtau),boostedTauEta->at(idx_subleadtau),boostedTauPhi->at(idx_subleadtau),boostedTauMass->at(idx_subleadtau));
         plotFill("cutFlowTable",4 ,15,0,15);
         
-//        TLorentzVector subMatch= getMatchedGenTau(SubTau4Momentum);
-//        plotFill("GenMatchedSubTau",subMatch.DeltaR(SubTau4Momentum) ,20,0,1);
-//        vector<float> subRecoMatch= getMatchedRecoTau(SubTau4Momentum);
-        
         dR_tau_tau= SubTau4Momentum.DeltaR(LeadTau4Momentum);
+
+
+        //=========================================================================================================
+        // Cut on AK8 (for trigger purposes)
+        for (int ijet=0; ijet < nAK8Jet ; ijet ++){
+            if (AK8JetPt->at(ijet) < 500  || AK8JetSoftDropMass->at(ijet) < 40 || fabs(AK8JetEta->at(ijet)) > 2.5 ) continue;
+
         
-//        //=========================================================================================================
-//        //  Tau POG tests
-//        //=========================================================================================================
-//        int numIso=0;
-//        int numIsoOverLap=0;
-//        float EnergyIso=0;
-//        float EnergyIsoOverLap=0;
-//
-//        //=========== Charge PFCandidates==========
-//        for (int i=0; i< boostedTauIsolationPFCands->at(idx_leadtau).size(); i++){
-//            numIso++;
-//            EnergyIso +=boostedTauIsolationPFCands->at(idx_leadtau)[i];
-//            // overlap with subleading SignalPFCandidates
-//            for (int j=0; j< boostedTauSignalPFCands->at(idx_subleadtau).size(); j++){
-//                if (boostedTauIsolationPFCands->at(idx_leadtau)[i] ==  boostedTauSignalPFCands->at(idx_subleadtau)[j]) {
-//                    numIsoOverLap++;
-//                    EnergyIsoOverLap +=boostedTauIsolationPFCands->at(idx_leadtau)[i];
-//                }
-//            }
-//            // overlap with subleading IsoPFCandidates
-//            for (int j=0; j< boostedTauIsolationPFCands->at(idx_subleadtau).size(); j++){
-//                if (boostedTauIsolationPFCands->at(idx_leadtau)[i] ==  boostedTauIsolationPFCands->at(idx_subleadtau)[j]) {
-//                    numIsoOverLap++;
-//                    EnergyIsoOverLap +=boostedTauIsolationPFCands->at(idx_leadtau)[i];
-//                }
-//            }
-//        }
-//        //===========  PFGammaCandidates==========
-//        for (int i=0; i< boostedTauIsolationPFGammaCands->at(idx_leadtau).size(); i++){
-//            numIso++;
-//            EnergyIso +=boostedTauIsolationPFGammaCands->at(idx_leadtau)[i];
-//            // overlap with subleading SignalPFCandidates
-//            for (int j=0; j< boostedTauSignalPFGammaCands->at(idx_subleadtau).size(); j++){
-//                if (boostedTauIsolationPFGammaCands->at(idx_leadtau)[i] == boostedTauSignalPFGammaCands->at(idx_subleadtau)[j]) {
-//                    numIsoOverLap++;
-//                    EnergyIsoOverLap +=boostedTauIsolationPFGammaCands->at(idx_leadtau)[i];
-//                }
-//            }
-//            // overlap with subleading IsoPFCandidates
-//            for (int j=0; j< boostedTauIsolationPFGammaCands->at(idx_subleadtau).size(); j++){
-//                if (boostedTauIsolationPFGammaCands->at(idx_leadtau)[i] == boostedTauIsolationPFGammaCands->at(idx_subleadtau)[j]) {
-//                    numIsoOverLap++;
-//                    EnergyIsoOverLap +=boostedTauIsolationPFGammaCands->at(idx_leadtau)[i];
-//                }
-//            }
-//        }
-//
-//
-//        plotFill("dR_ratio_multiplicity",dR_tau_tau,numIsoOverLap*1.0/numIso,10,0,1,10,0,1);
-//        plotFill("dR_ratio_energy",dR_tau_tau,EnergyIsoOverLap*1.0/EnergyIso,10,0,1,10,0,1);
-//
-//        if (dR_tau_tau < 0.5){
-//
-//            plotFill("GenMatchedLeadCombineIso",boostedTauCombinedIsolationDeltaBetaCorrRaw3Hits->at(idx_leadtau) - leadRecoMatch[5]  ,2000,-200,200);
-//            plotFill("GenMatchedSubCombineIso",boostedTauCombinedIsolationDeltaBetaCorrRaw3Hits->at(idx_subleadtau) - leadRecoMatch[5]  ,2000,-200,200);
-//            plotFill("GenMatchedLeadMVAIso",leadRecoMatch[1] - boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_leadtau) ,200,-1,1);
-//            plotFill("GenMatchedSubMVAIso",subRecoMatch[1] - boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_subleadtau) ,200,-1,1);
-//        }
-//
+        
+
         //=========================================================================================================
         // Event Selection
         //=========================================================================================================
@@ -301,20 +250,22 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",7 ,15,0,15);
         
         // BJet veto
-        int numBJet=numBJets(BJetPtCut,DeepCSVCut);
-        if (numBJet > 0) continue;
-        plotFill("cutFlowTable",8 ,15,0,15);
+//        int numBJet=numBJets(BJetPtCut,DeepCSVCut);
+//        if (numBJet > 0) continue;
+//        plotFill("cutFlowTable",8 ,15,0,15);
         
-        // HT cut
-        ht= getHT(JetPtCut, LeadTau4Momentum, SubTau4Momentum);
-        if (ht < 200) continue;
-        plotFill("cutFlowTable",9 ,15,0,15);
-        
-        // ST definition
-        st= getST(JetPtCut);
-        if (st < 500) continue;
-        plotFill("cutFlowTable",10 ,15,0,15);
-        
+//        // HT cut
+//        ht= getHT(JetPtCut, LeadTau4Momentum, SubTau4Momentum);
+//        if (ht < 200) continue;
+//        plotFill("cutFlowTable",9 ,15,0,15);
+//
+//        // ST definition
+//        st= getST(JetPtCut);
+//        if (st < 500) continue;
+//        plotFill("cutFlowTable",10 ,15,0,15);
+
+
+
         //electron veto
         int numele =getNumElectron();
         if (numele > 0) continue;
@@ -331,6 +282,7 @@ int main(int argc, char* argv[]) {
         
         float LumiWeight = 1;
         float PUWeight = 1;
+        float TriggerWeight = 1;
         float LepCorrection=1;
         //        float nom_zpt_weight=1.0;
         //  GenInfo
@@ -351,11 +303,18 @@ int main(int argc, char* argv[]) {
                 cout<<"PUMC_ is zero!!! & num pileup= "<< puTrue->at(0)<<"\n";
             else
                 PUWeight= PUData_/PUMC_;
-            
+
+
+
+        // measure trigger efficiency for MC
+        TriggerWeight = getTriggerWeight(year, isData,  AK8JetPt->at(ijet) , AK8JetSoftDropMass->at(ijet) ,triggerEff);
+            cout<< " AK8JetPt->at(ijet) , AK8JetSoftDropMass->at(ijet) " <<AK8JetPt->at(ijet) <<"  "<< AK8JetSoftDropMass->at(ijet) << " --> " <<TriggerWeight<<"\n";
+
         }
         
         plotFill("LumiWeight",LumiWeight ,1000,0,10000);
         plotFill("LepCorrection",LepCorrection ,100,0,2);
+        plotFill("TriggerWeight",TriggerWeight ,100,0,1);
         //        plotFill("nom_zpt_weight",nom_zpt_weight ,100,0,2);
         plotFill("PUWeight",PUWeight ,200,0,2);
         
@@ -382,7 +341,7 @@ int main(int argc, char* argv[]) {
         BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_subleadtau);
         m_sv_=m_sv;
         //  Weights
-        FullWeight = LumiWeight*LepCorrection;
+        FullWeight = LumiWeight*LepCorrection * TriggerWeight;
         //        wtnom_zpt_weight=nom_zpt_weight;
         
         // Fill the tree
@@ -401,6 +360,7 @@ int main(int argc, char* argv[]) {
         plotFill("trg_43",PassTrigger_43 ,2,0,2);
         plotFill("trg_44",PassTrigger_44 ,2,0,2);
         
+        }// end of loop on AK8
         
     } //End of Tree
     

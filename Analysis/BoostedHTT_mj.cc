@@ -85,13 +85,13 @@ int main(int argc, char* argv[]) {
         
         for (int ijet=0; ijet < nAK8Jet ; ijet ++){
             
-            if (AK8JetPt->at(ijet) < 200  || AK8JetSoftDropMass < 0 || fabs(AK8JetEta->at(ijet)) > 2.5) continue;
+            if (AK8JetPt->at(ijet) < 200  || AK8JetSoftDropMass->at(ijet) < 0 || fabs(AK8JetEta->at(ijet)) > 2.5) continue;
             plotFill("trgEff_Before",AK8JetPt->at(ijet),AK8JetSoftDropMass->at(ijet),40,0,2000,30,0,300);
             if (HLT_AK8PFJet400_TrimMass30){
                 plotFill("trgEff_After",AK8JetPt->at(ijet),AK8JetSoftDropMass->at(ijet) ,40,0,2000,30,0,300);
             }
             
-            if (AK8JetPt->at(ijet) < 450  || AK8JetSoftDropMass < 0 || fabs(AK8JetEta->at(ijet)) > 2.5) continue;
+            if (AK8JetPt->at(ijet) < 450  || AK8JetSoftDropMass->at(ijet) < 0 || fabs(AK8JetEta->at(ijet)) > 2.5) continue;
             plotFill("finalTrgEff_Before",AK8JetSoftDropMass->at(ijet),30,0,300);
             if (HLT_AK8PFJet400_TrimMass30){
                 plotFill("finalTrgEff_After",AK8JetSoftDropMass->at(ijet),30,0,300);
