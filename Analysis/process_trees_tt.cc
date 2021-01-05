@@ -16,14 +16,30 @@ int main(int argc, char *argv[]) {
     CLParser parser(argc, argv);
     bool doSyst = parser.Flag("-s");
     string dir = parser.Option("-d");
-    string year = parser.Option("-y");
+//    string year = parser.Option("-y");
     string suffix = parser.Option("--suf");
-    string tree_name = parser.Option("-t");
-    string channel = parser.Option("-c");
+//    string tree_name = parser.Option("-t");
+//    string channel = parser.Option("-c");
 
     std::string var_name = parser.Option("-v");
     std::vector<std::string> sbins = parser.MultiOption("-b", 3);
-    
+
+    string year;
+    if (dir.find("2016") != string::npos) year ="2016";
+    else if (dir.find("2017") != string::npos ) year ="2017";
+    else if (dir.find("2018") != string::npos) year ="2018";
+    else (std::cout << "Year is not specificed in the outFile name !\n");
+
+
+    string channel, tree_name;
+    if (dir.find("_em_") != string::npos) {channel ="em"; tree_name="emu_tree";}
+    else if (dir.find("_et_") != string::npos ) {channel ="et";tree_name="etau_tree";}
+    else if (dir.find("_mt_") != string::npos) {channel ="mt";tree_name="mutau_tree";}
+    else if (dir.find("_tt_") != string::npos) {channel ="tt";tree_name="tautau_tree";}
+    else if (dir.find("_mm_") != string::npos) {channel ="mm";tree_name="mumu_tree";}
+    else (std::cout << "channel is not specificed in the outFile name !\n");
+
+
     // get the provided histogram binning
     std::vector<int> bins;
     for (auto sbin : sbins) {
@@ -96,7 +112,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         float vis_mass=-10;
         float LeadJetPt = -10;
         float dR_Z_jet=-10;
-        bool PassLead, PassSub ,OS,SS;
+        bool PassLead, PassSub ,OS,SS, PassTrigger_40, PassTrigger_39;
         float tmass,ht,st,Met,weight, dR_tau_tau, Metphi;
         float NN_disc;
         float BoostedTauRawIso, higgs_pT, higgs_m, m_sv;
@@ -108,6 +124,9 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         tree->SetBranchAddress("subPt",&subPt_);
         tree->SetBranchAddress("PassLead",&PassLead);
         tree->SetBranchAddress("PassSub",&PassSub);
+        
+        tree->SetBranchAddress("PassTrigger_39",&PassTrigger_39);
+        tree->SetBranchAddress("PassTrigger_40",&PassTrigger_40);
 
 
         tree->SetBranchAddress("OS",&OS);
@@ -133,6 +152,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         for (auto i = 0; i < tree->GetEntries(); i++) {
             tree->GetEntry(i);
             
+            if (!(PassTrigger_39 || PassTrigger_40)) continue;
             std::map<std::string, float>  ObsName {
                 {"leadPt",leadPt_},
                 {"subPt",subPt_},
@@ -189,7 +209,7 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
         auto tree = reinterpret_cast<TTree *>(fin->Get(tree_name.c_str()));
         
         float leadPt_=-10;
-         bool Fail,Pass,PassM,FailM,PassT,FailT,OS,SS;
+         bool Fail,Pass,PassM,FailM,PassT,FailT,OS,SS, PassTrigger_40, PassTrigger_39;
          float weight,subPt_;
          bool PassLead, PassSub ;
          
@@ -201,9 +221,14 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
         tree->SetBranchAddress("OS",&OS);
         tree->SetBranchAddress("SS",&SS);
         tree->SetBranchAddress("evtwt",&weight);
+        tree->SetBranchAddress("PassTrigger_39",&PassTrigger_39);
+        tree->SetBranchAddress("PassTrigger_40",&PassTrigger_40);
+
         
         for (auto i = 0; i < tree->GetEntries(); i++) {
             tree->GetEntry(i);
+            
+            if (!(PassTrigger_39 || PassTrigger_40)) continue;
             
 //            std::cout<<OS <<Pass << !lepIsoPass<<"\n";
 //            if (OS != 0 && !Pass && !lepIsoPass){

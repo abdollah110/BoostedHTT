@@ -9,34 +9,14 @@ parser.add_option('--exe', '-e', action='store',
                 help='executable'
                 )
 
-#parser.add_option('--year', '-y', action='store',
-#                default=False, dest='year',
-#                help='Which year'
-#                )
-
 parser.add_option('--input', '-i', action='store',
                     default=False, dest='inputFile',
                     help='Location of input file'
-)
-
-parser.add_option('--channel', '-c', action='store',
-                    default=False, dest='channel',
-                    help='which channel, et, mt, ..'
-)
-
-
-#parser.add_option('--treeName', '-t', action='store',
-#                    default=False, dest='treeName',
-#                    help='Location of input file'
-#)
-
-
+                )
 
 
 (options, args) = parser.parse_args()
-#year=options.year
 InputFile=options.inputFile
-channel=options.channel
 
 year=0
 if '2016' in InputFile:
@@ -48,21 +28,32 @@ elif '2018' in InputFile:
 else:
     print 'which year ???'
 
-treeName='0'
-if 'mt' in channel:
-    treeName = 'mutau_tree'
-elif 'et' in channel:
-    treeName = 'etau_tree'
-elif 'em' in channel:
+channel=''
+treeName=''
+
+if '_em_' in InputFile:
+    channel = 'em'
     treeName = 'emu_tree'
+elif '_mt_' in InputFile:
+    channel = 'mt'
+    treeName = 'mutau_tree'
+elif '_et_' in InputFile:
+    channel = 'et'
+    treeName = 'etau_tree'
+elif '_tt_' in InputFile:
+    channel = 'tt'
+    treeName = 'tautau_tree'
+elif '_mm_' in InputFile:
+    channel = 'mm'
+    treeName = 'mumu_tree'
 else:
-    print 'which year ???'
+    print 'which channel ???'
 
 
 
 Variable=[
 #            ['Met',20,0,400],
-            ['muPt',15,0,300],
+#            ['muPt',15,0,300],
             ['taupt',15,0,300],
 ##            ['leadPt',15,0,300],
 ##            ['subPt',15,0,300],
@@ -85,4 +76,4 @@ Variable=[
 ]
 for var in Variable:
     print '=====> start making datacard for ', var
-    os.system('./%s -y %s -t %s  -c %s -d %s   --suf %s -v %s -b %f %f %f '%(options.exe, year, treeName, channel, options.inputFile, var[0],var[0],var[1],var[2],var[3]))
+    os.system('./%s -y %s -t %s  -c %s -d %s   --suf %s -v %s -b %f %f %f '%(options.exe, year, treeName, channel, InputFile, var[0],var[0],var[1],var[2],var[3]))

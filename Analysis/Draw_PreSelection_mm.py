@@ -9,8 +9,11 @@ InputFilesLocation=sys.argv[1]
 #bcde_to_bcdef= (4.767+ 9.583+4.224+9.261)/(4.767+ 9.583+4.224+9.261+13.463)
 bcde_to_bcdef=1
 year=0
-if '2017' in InputFilesLocation: year =2017
-if '2018' in InputFilesLocation: year =2018
+if '2016' in InputFilesLocation: year =2016
+elif '2017' in InputFilesLocation: year =2017
+elif '2018' in InputFilesLocation: year =2018
+else: print 'Which year are you looking for\n'
+print 'processing {}'.format(year)
 
 
 ForAN=1
@@ -25,6 +28,8 @@ def add_lumi(year):
     lumi.SetTextColor(    1 )
     lumi.SetTextSize(0.06)
     lumi.SetTextFont (   42 )
+    if year ==2016:
+        lumi.AddText("35.9 fb^{-1} (13 TeV)")
     if year ==2017:
         lumi.AddText("41.5 fb^{-1} (13 TeV)")
     if year ==2018:

@@ -31,7 +31,15 @@ int main(int argc, char *argv[]) {
     else if (dir.find("2017") != string::npos ) year ="2017";
     else if (dir.find("2018") != string::npos) year ="2018";
     else (std::cout << "Year is not specificed in the outFile name !\n");
-    
+
+    string channel, tree_name;
+    if (dir.find("_em_") != string::npos) channel ="em"; tree_name="emu_tree";
+    else if (dir.find("_et_") != string::npos ) channel ="et";tree_name="etau_tree";
+    else if (dir.find("_mt_") != string::npos) channel ="mt";tree_name="mutau_tree";
+    else if (dir.find("_tt_") != string::npos) channel ="tt";tree_name="tautau_tree";
+    else if (dir.find("_mm_") != string::npos) channel ="mm";tree_name="mumu_tree";
+    else (std::cout << "channel is not specificed in the outFile name !\n");
+
     // get the provided histogram binning
     std::vector<int> bins;
     for (auto sbin : sbins) {
@@ -154,8 +162,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
             
             vbf_var1 =ObsName[var_name];
 
-            float DY_SF_factor= 0.8;
-            if (name != "Data" && name != "JJH125" && name != "H125") weight = weight*DY_SF_factor;
+//            float DY_SF_factor= 0.8;
+//            if (name != "Data" && name != "JJH125" && name != "H125") weight = weight*DY_SF_factor;
             
             if (OS != 0  && PassL) {
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);

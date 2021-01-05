@@ -35,17 +35,21 @@ InputFilesLocation=sys.argv[1]
 #InputFilesLocation = 'NewOutFiles_BoostedHTT2017_mm_/'
 #InputFilesLocation = 'NewOutFiles_BoostedHTT2017_old/'
 year=0
-if '2017' in InputFilesLocation: year =2017
-if '2018' in InputFilesLocation: year =2018
+if '2016' in InputFilesLocation: year =2016
+elif '2017' in InputFilesLocation: year =2017
+elif '2018' in InputFilesLocation: year =2018
+else: print 'Which year are you looking for\n'
+print 'processing {}'.format(year)
+
 
 
 verbos_ = True
-#RB_=1
-RB_=60
+RB_=1
+#RB_=60
 #bcde_to_bcdef= (4.767+ 9.583+4.224+9.261)/(4.767+ 9.583+4.224+9.261+13.463)
 bcde_to_bcdef=1
-if year ==2018:
-    bcde_to_bcdef=0.95
+#if year ==2018:
+#    bcde_to_bcdef=0.95
 
 
 #process=[
