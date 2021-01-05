@@ -71,11 +71,13 @@ int main(int argc, char* argv[]) {
         if (i % 1000 == 0) fprintf(stdout, "\r  Processed events: %8d of %8d ", i, nentries_wtn);
         fflush(stdout);
         //=========================================================================================================
+        float JetPtCut=30;
         // Trigger
-        bool PassTrigger = ((HLTEleMuX >> 21 & 1)==1);
+        bool HLT_Mu50 = ((HLTEleMuX >> 21 & 1)==1);
         bool HLT_AK8PFJet400_TrimMass30 = ((HLTJet >> 40 & 1)==1);
+        bool HLT_PFHT500_PFMET100_PFMHT100_IDTight = ((HLTJet >> 39 & 1)==1);
         //              else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
-        if (! PassTrigger) continue;
+        if (! HLT_Mu50) continue;
         
         //        else if (name.find("HLT_AK8PFHT800_TrimMass50_v")                                     != string::npos) bitJet = 37;
         //        else if (name.find("HLT_PFHT1050_v")                                                  != string::npos) bitJet = 38;
@@ -98,6 +100,20 @@ int main(int argc, char* argv[]) {
             }
             
         }
+        
+        float PFHT= getST(JetPtCut);
+        float PFMET=pfMET;
+        
+        
+        plotFill("ht_met_trgEff_Before",PFHT,PFMET,40,0,2000,50,0,500);
+        if (HLT_PFHT500_PFMET100_PFMHT100_IDTight){
+            plotFill("ht_met_trgEff_After",PFHT,PFMET,40,0,2000,50,0,500);
+        }
+        
+        if (PFHT > 550)
+            plotFill("ht_met_1D_TrgEff_Before",PFMET,50,0,500);
+        if (PFHT > 550 && HLT_PFHT500_PFMET100_PFMHT100_IDTight)
+            plotFill("ht_met_1D_TrgEff_After",PFMET,50,0,500);
         
     } //End of Tree
     
