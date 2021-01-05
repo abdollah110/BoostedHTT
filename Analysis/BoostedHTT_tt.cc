@@ -233,11 +233,11 @@ int main(int argc, char* argv[]) {
             if (dR_(boostedTauEta->at(idx_leadtau),boostedTauPhi->at(idx_leadtau),AK8JetEta->at(ijet),AK8JetPhi->at(ijet)) < 0.5) continue;
             if (dR_(boostedTauEta->at(idx_subleadtau),boostedTauPhi->at(idx_subleadtau),AK8JetEta->at(ijet),AK8JetPhi->at(ijet)) < 0.5) continue;
             
-            if (AK8JetPt->at(ijet) < 500  ) continue;
+            if (AK8JetPt->at(ijet) < 450  ) continue;
             plotFill("cutFlowTable",5 ,15,0,15);
             if (fabs(AK8JetEta->at(ijet)) > 2.5 ) continue;
             plotFill("cutFlowTable", 6,15,0,15);
-            if ( AK8JetSoftDropMass->at(ijet) < 40 ) continue;
+            if ( AK8JetSoftDropMass->at(ijet) < 30 ) continue;
             plotFill("cutFlowTable",7 ,15,0,15);
             
             
@@ -336,6 +336,9 @@ int main(int argc, char* argv[]) {
             TLorentzVector higgs = SubTau4Momentum+LeadTau4Momentum +Met4Momentum;
             
             higgs_pT = higgs.Pt();
+            if (higgs_pT < 250 ) continue;
+            plotFill("cutFlowTable",13 ,15,0,15);
+
             higgs_m = higgs.M();
             OS = boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) < 0;
             SS =  boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) > 0;
