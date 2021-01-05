@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
     
     
     std::string systname = "";
-
+    
     // create output file
     auto suffix = "_output.root";
     auto prefix = "Output/trees/" + output_dir + "/"+systname+"/";
@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) {
         //=========================================================================================================
         // Trigger
         bool PassTrigger = ((HLTEleMuX >> 21 & 1)==1);
-        bool HLT_AK8PFHT800_TrimMass50 = ((HLTEleMuX >> 37 & 1)==1);
+        bool HLT_AK8PFJet400_TrimMass30 = ((HLTJet >> 40 & 1)==1);
         //              else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
         if (! PassTrigger) continue;
         
@@ -85,19 +85,20 @@ int main(int argc, char* argv[]) {
         
         for (int ijet=0; ijet < nAK8Jet ; ijet ++){
             
-            if (AK8JetPt->at(ijet) < 150 || fabs(AK8JetEta->at(ijet)) > 3.0 ) continue;
-            
-            for (int j = 0; j < AK8puppiSDSJMass->at(ijet).size(); j++){
-                if (AK8puppiSDSJMass->at(ijet).at(j) > 20){
-                    
-                    plotFill("trgEff_Before",AK8JetPt->at(ijet),AK8puppiSDSJMass->at(ijet).at(j),100,0,2000,100,0,1000);
-                    
-                    if (HLT_AK8PFHT800_TrimMass50){
-                        plotFill("trgEff_After",AK8JetPt->at(ijet),AK8puppiSDSJMass->at(ijet).at(j),100,0,2000,100,0,1000);
-                    }
-                }
+            if (AK8JetPt->at(ijet) < 200  || AK8JetSoftDropMass < 0 || fabs(AK8JetEta->at(ijet)) > 2.5) continue;
+            plotFill("trgEff_Before",AK8JetPt->at(ijet),AK8JetSoftDropMass->at(ijet),40,0,2000,30,0,300);
+            if (HLT_AK8PFJet400_TrimMass30){
+                plotFill("trgEff_After",AK8JetPt->at(ijet),AK8JetSoftDropMass->at(ijet) ,40,0,2000,30,0,300);
             }
+            
+            if (AK8JetPt->at(ijet) < 450  || AK8JetSoftDropMass < 0 || fabs(AK8JetEta->at(ijet)) > 2.5) continue;
+            plotFill("finalTrgEff_Before",AK8JetSoftDropMass->at(ijet),30,0,300);
+            if (HLT_AK8PFJet400_TrimMass30){
+                plotFill("finalTrgEff_After",AK8JetSoftDropMass->at(ijet),30,0,300);
+            }
+            
         }
+        
     } //End of Tree
     
     
@@ -107,7 +108,7 @@ int main(int argc, char* argv[]) {
     
     for (; iMap1 != jMap1; ++iMap1)
     nplot1(iMap1->first)->Write();
-//    outTr->Write();
+    //    outTr->Write();
     
     map<string, TH2F*>::const_iterator iMap2 = myMap2->begin();
     map<string, TH2F*>::const_iterator jMap2 = myMap2->end();

@@ -108,6 +108,10 @@ int main(int argc, char* argv[]) {
         bool PassTrigger_42;
         bool PassTrigger_43;
         bool PassTrigger_44;
+        bool PassTrigger_20;
+        bool PassTrigger_21;
+        bool PassTrigger_22;
+
 
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
@@ -142,6 +146,9 @@ int main(int argc, char* argv[]) {
     outTr->Branch("PassTrigger_42",&PassTrigger_42);
     outTr->Branch("PassTrigger_43",&PassTrigger_43);
     outTr->Branch("PassTrigger_44",&PassTrigger_44);
+    outTr->Branch("PassTrigger_20",&PassTrigger_20);
+    outTr->Branch("PassTrigger_21",&PassTrigger_21);
+    outTr->Branch("PassTrigger_22",&PassTrigger_22);
     
     
     
@@ -156,6 +163,9 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",1 ,15,0,15);
         //=========================================================================================================
         // Trigger
+         PassTrigger_20 = ((HLTJet >> 20 & 1)==1); //HLT_AK8PFHT700_TrimR0p1PT0p3Mass50_v // only 2016?
+         PassTrigger_21 = ((HLTJet >> 21 & 1)==1); //HLT_AK8PFJet360_TrimMass30_v // only 2016?
+         PassTrigger_22 = ((HLTJet >> 22 & 1)==1); //HLT_PFHT300_PFMET110_v // only 2016?
          PassTrigger_37 = ((HLTJet >> 37 & 1)==1); //HLT_AK8PFHT800_TrimMass50_v // not effective
          PassTrigger_38 = ((HLTJet >> 38 & 1)==1); //HLT_PFHT1050_v  NOT Effective at all
          PassTrigger_39 = ((HLTJet >> 39 & 1)==1); //HLT_PFHT500_PFMET100_PFMHT100_IDTight_v
@@ -378,7 +388,9 @@ int main(int argc, char* argv[]) {
         // Fill the tree
         outTr->Fill();
         
-        
+        plotFill("trg_20",PassTrigger_20 ,2,0,2);
+        plotFill("trg_21",PassTrigger_21 ,2,0,2);
+        plotFill("trg_22",PassTrigger_22 ,2,0,2);
         plotFill("trg_37",PassTrigger_37 ,2,0,2);
         plotFill("trg_38",PassTrigger_38 ,2,0,2);
         plotFill("trg_39",PassTrigger_39 ,2,0,2);
