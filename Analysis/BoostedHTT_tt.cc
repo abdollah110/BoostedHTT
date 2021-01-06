@@ -264,13 +264,13 @@ int main(int argc, char* argv[]) {
         }
         else
             continue;
-//        }
-//        else if (PFHT > 700 && PFMET+MHT > 280){
-//            if (!isData ||  (isData && PassTrigger_39)){
-//                TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MHT);
-//            }
-//            else
-//                continue;
+        }
+        else if (PFHT > 700 && PFMET+MHT > 280){
+            if (!isData ||  (isData && PassTrigger_39)){
+                TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MHT);
+            }
+            else
+                continue;
         }
         else {
             
