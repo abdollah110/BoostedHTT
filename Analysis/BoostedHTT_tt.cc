@@ -212,7 +212,7 @@ int main(int argc, char* argv[]) {
         // Lead tau selection
         int idx_leadtau= leadtauIndex;
         
-        if (boostedTauPt->at(idx_leadtau) <= 40 || fabs(boostedTauEta->at(idx_leadtau)) >= 2.3 ) continue;
+        if (boostedTauPt->at(idx_leadtau) <= 30 || fabs(boostedTauEta->at(idx_leadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_leadtau) < 0.5 ) continue;
         //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_leadtau) < 0.5) continue;
         //        if (boostedTauByLooseMuonRejection3->at(idx_leadtau) < 0.5) continue;
@@ -223,7 +223,7 @@ int main(int argc, char* argv[]) {
         // sublead Tau selection
         int idx_subleadtau= subtauIndex;
         
-        if (boostedTauPt->at(idx_subleadtau) <= 40 || fabs(boostedTauEta->at(idx_subleadtau)) >= 2.3 ) continue;
+        if (boostedTauPt->at(idx_subleadtau) <= 30 || fabs(boostedTauEta->at(idx_subleadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_subleadtau) < 0.5 ) continue;
         //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_subleadtau) < 0.5) continue;
         //        if (boostedTauByLooseMuonRejection3->at(idx_subleadtau) < 0.5) continue;
@@ -276,26 +276,7 @@ int main(int argc, char* argv[]) {
             
             continue;
         }
-        
-//
-//                &&  !(isData && (!(PassTrigger_40)) {
-//
-//             if ( isData && (!(PassTrigger_40 || PassTrigger_41))) continue;
-//
-//
-//            if (AK8JetPt->at(ijet) < 450  ) continue;
-//            plotFill("cutFlowTable",5 ,15,0,15);
-//            if (fabs(AK8JetEta->at(ijet)) > 2.5 ) continue;
-//            plotFill("cutFlowTable", 6,15,0,15);
-//            if ( AK8JetSoftDropMass->at(ijet) < 30 ) continue;
-//            plotFill("cutFlowTable",7 ,15,0,15);
-//
-//
-//
-//            if ( isData && (!(PassTrigger_40 || PassTrigger_41))) continue;
-//            // measure trigger efficiency for MC
-            
-            
+
             //=========================================================================================================
             // Event Selection
             //=========================================================================================================
