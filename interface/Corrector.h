@@ -1041,3 +1041,20 @@ float getTriggerWeight(int year, bool isData,  float AK8JetPt , float AK8JetSoft
     }
     return weight;
 }
+
+
+float getTriggerWeight(int year, bool isData,  float PFHT, float  PFMET, float MHT , TH2F * triggerEff){
+    
+    float weight = 1;
+    float SumMETMHT=PFMET+MHT;
+    if (isData)
+        return 1;
+    else
+    {
+    if (PFHT > 2000)  PFHT= 2000;
+    if (SumMETMHT > 1500)  SumMETMHT= 1500;
+        weight = triggerEff->GetBinContent(triggerEff->GetXaxis()->FindBin(PFHT), triggerEff->GetYaxis()->FindBin(SumMETMHT));
+        return weight;
+    }
+    return weight;
+}

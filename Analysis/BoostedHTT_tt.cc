@@ -80,6 +80,9 @@ int main(int argc, char* argv[]) {
     auto trgEff = TFile::Open("out2DTrg.root");
     TH2F * triggerEff = (TH2F *) trgEff->Get("TrgEfficiency2D");
     
+    auto trgEff_MHT = TFile::Open("out2DTrg_htmet.root");
+    TH2F * triggerEff_MHT = (TH2F *) trgEff_MHT->Get("TrgEfficiency2D");
+        
     //###############################################################################################
     // Parameters
     //###############################################################################################
@@ -170,6 +173,7 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",1 ,15,0,15);
         //=========================================================================================================
         // Trigger
+//        https://cmsoms.cern.ch/cms/triggers/hlt_trigger_rates?cms_run=325175
         PassTrigger_20 = ((HLTJet >> 20 & 1)==1); //HLT_AK8PFHT700_TrimR0p1PT0p3Mass50_v // only 2016?
         PassTrigger_21 = ((HLTJet >> 21 & 1)==1); //HLT_AK8PFJet360_TrimMass30_v // only 2016?
         PassTrigger_22 = ((HLTJet >> 22 & 1)==1); //HLT_PFHT300_PFMET110_v // only 2016?
@@ -177,13 +181,16 @@ int main(int argc, char* argv[]) {
         PassTrigger_38 = ((HLTJet >> 38 & 1)==1); //HLT_PFHT1050_v  NOT Effective at all
         PassTrigger_39 = ((HLTJet >> 39 & 1)==1); //HLT_PFHT500_PFMET100_PFMHT100_IDTight_v
         PassTrigger_40 = ((HLTJet >> 40 & 1)==1); //HLT_AK8PFJet400_TrimMass30_v //HLT_AK8PFJet400_TrimMass30_v
-        PassTrigger_41 = ((HLTJet >> 41 & 1)==1);// HLT_AK8PFJet420_TrimMass30_v
+        PassTrigger_41 = ((HLTJet >> 41 & 1)==1);// HLT_AK8PFJet420_TrimMass30_v  // not needed as HLT_AK8PFJet400_TrimMass30_v is available
         PassTrigger_42 = ((HLTJet >> 42 & 1)==1);//HLT_PFHT500_PFMET110_PFMHT110_IDTight_v
-        PassTrigger_43 = ((HLTJet >> 43 & 1)==1); // HLT_AK8PFHT850_TrimMass50_v
+        PassTrigger_43 = ((HLTJet >> 43 & 1)==1); // HLT_AK8PFHT850_TrimMass50_v  HLT_AK8PFHT800_TrimMass50_v is OK as well
         PassTrigger_44 = ((HLTJet >> 44 & 1)==1); //HLT_AK8PFHT900_TrimMass50_v
         //        //              else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
         //        // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19; // 2017
-        if ( isData && (!(PassTrigger_40 || PassTrigger_41))) continue;
+//        else if (name.find("HLT_PFMET110_PFMHT110_IDTight_v")                            != string::npos) bitJet = 26;
+//        else if (name.find("HLT_PFMET120_PFMHT120_IDTight_v")                            != string::npos) bitJet = 27;
+        
+        
         plotFill("cutFlowTable",2 ,15,0,15);
         //=========================================================================================================
         // MET Filters
@@ -229,19 +236,64 @@ int main(int argc, char* argv[]) {
         
         //=========================================================================================================
         // Cut on AK8 (for trigger purposes)
+        float AK8Pt=0;
+        float AK8Mass=0;
+        float AK8Eta=0;
+        
+        float PFHT= getST(JetPtCut);
+        float PFMET=pfMET;
+        float MHT=getMHT(JetPtCut);
+
+        float TriggerWeight = 1;
+        
         for (int ijet=0; ijet < nAK8Jet ; ijet ++){
             if (dR_(boostedTauEta->at(idx_leadtau),boostedTauPhi->at(idx_leadtau),AK8JetEta->at(ijet),AK8JetPhi->at(ijet)) < 0.5) continue;
             if (dR_(boostedTauEta->at(idx_subleadtau),boostedTauPhi->at(idx_subleadtau),AK8JetEta->at(ijet),AK8JetPhi->at(ijet)) < 0.5) continue;
             
-            if (AK8JetPt->at(ijet) < 450  ) continue;
-            plotFill("cutFlowTable",5 ,15,0,15);
-            if (fabs(AK8JetEta->at(ijet)) > 2.5 ) continue;
-            plotFill("cutFlowTable", 6,15,0,15);
-            if ( AK8JetSoftDropMass->at(ijet) < 30 ) continue;
-            plotFill("cutFlowTable",7 ,15,0,15);
+             AK8Pt=AK8JetPt->at(ijet);
+             AK8Mass=AK8JetSoftDropMass->at(ijet);
+             AK8Eta=fabs(AK8JetEta->at(ijet));
+             
+             if (AK8Pt > 450 && AK8Mass > 30 && AK8Eta < 2.5) break;
+             
+             }
+             
+        if (AK8Pt > 450 && AK8Mass > 30 && AK8Eta < 2.5){
+         if (!isData ||  (isData && PassTrigger_40)){
+            TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff);
+        }
+        else
+            continue;
+//        }
+//        else if (PFHT > 700 && PFMET+MHT > 280){
+//            if (!isData ||  (isData && PassTrigger_39)){
+//                TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MHT);
+//            }
+//            else
+//                continue;
+        }
+        else {
             
-            
-            
+            continue;
+        }
+        
+//
+//                &&  !(isData && (!(PassTrigger_40)) {
+//
+//             if ( isData && (!(PassTrigger_40 || PassTrigger_41))) continue;
+//
+//
+//            if (AK8JetPt->at(ijet) < 450  ) continue;
+//            plotFill("cutFlowTable",5 ,15,0,15);
+//            if (fabs(AK8JetEta->at(ijet)) > 2.5 ) continue;
+//            plotFill("cutFlowTable", 6,15,0,15);
+//            if ( AK8JetSoftDropMass->at(ijet) < 30 ) continue;
+//            plotFill("cutFlowTable",7 ,15,0,15);
+//
+//
+//
+//            if ( isData && (!(PassTrigger_40 || PassTrigger_41))) continue;
+//            // measure trigger efficiency for MC
             
             
             //=========================================================================================================
@@ -291,7 +343,7 @@ int main(int argc, char* argv[]) {
             
             float LumiWeight = 1;
             float PUWeight = 1;
-            float TriggerWeight = 1;
+            
             float LepCorrection=1;
             //        float nom_zpt_weight=1.0;
             //  GenInfo
@@ -315,8 +367,7 @@ int main(int argc, char* argv[]) {
                 
                 
                 
-                // measure trigger efficiency for MC
-                TriggerWeight = getTriggerWeight(year, isData,  AK8JetPt->at(ijet) , AK8JetSoftDropMass->at(ijet) ,triggerEff);
+                
                 //            cout<< " AK8JetPt->at(ijet) , AK8JetSoftDropMass->at(ijet) " <<AK8JetPt->at(ijet) <<"  "<< AK8JetSoftDropMass->at(ijet) << " --> " <<TriggerWeight<<"\n";
                 
             }
@@ -372,7 +423,7 @@ int main(int argc, char* argv[]) {
             plotFill("trg_43",PassTrigger_43 ,2,0,2);
             plotFill("trg_44",PassTrigger_44 ,2,0,2);
             
-        }// end of loop on AK8
+//        }// end of loop on AK8
         
     } //End of Tree
     

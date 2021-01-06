@@ -1603,6 +1603,20 @@ float getST( float SimpleJetPtCut){
     return ST;
 }
 
+//###########       MHT   ###########################################################
+float getMHT( float SimpleJetPtCut){
+    float MHT_x=0;
+    float MHT_y=0;
+    for (int ijet= 0 ; ijet < nJet ; ijet++){
+        if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 5.0 )
+            MHT_x += jetPt->at(ijet)*cos(jetPhi->at(ijet));
+            MHT_y += jetPt->at(ijet)*sin(jetPhi->at(ijet));
+    }
+        
+    return sqrt(MHT_x*MHT_x + MHT_y*MHT_y);
+}
+
+
 
 TLorentzVector getLeadJet(TLorentzVector lep4Mom, TLorentzVector tau4Mom){
     TLorentzVector leadJet, Jet;

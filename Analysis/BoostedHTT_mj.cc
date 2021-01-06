@@ -76,6 +76,7 @@ int main(int argc, char* argv[]) {
         bool HLT_Mu50 = ((HLTEleMuX >> 21 & 1)==1);
         bool HLT_AK8PFJet400_TrimMass30 = ((HLTJet >> 40 & 1)==1);
         bool HLT_PFHT500_PFMET100_PFMHT100_IDTight = ((HLTJet >> 39 & 1)==1);
+        bool HLT_PFHT500_PFMET110_PFMHT110_IDTight = ((HLTJet >> 42 & 1)==1);
         //              else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
         if (! HLT_Mu50) continue;
         
@@ -88,9 +89,9 @@ int main(int argc, char* argv[]) {
         for (int ijet=0; ijet < nAK8Jet ; ijet ++){
             
             if (AK8JetPt->at(ijet) < 200  || AK8JetSoftDropMass->at(ijet) < 0 || fabs(AK8JetEta->at(ijet)) > 2.5) continue;
-            plotFill("trgEff_Before",AK8JetPt->at(ijet),AK8JetSoftDropMass->at(ijet),40,0,2000,30,0,300);
+            plotFill("trgEff_Before",AK8JetPt->at(ijet),AK8JetSoftDropMass->at(ijet),50,0,2000,30,0,300);
             if (HLT_AK8PFJet400_TrimMass30){
-                plotFill("trgEff_After",AK8JetPt->at(ijet),AK8JetSoftDropMass->at(ijet) ,40,0,2000,30,0,300);
+                plotFill("trgEff_After",AK8JetPt->at(ijet),AK8JetSoftDropMass->at(ijet) ,50,0,2000,30,0,300);
             }
             
             if (AK8JetPt->at(ijet) < 450  || AK8JetSoftDropMass->at(ijet) < 0 || fabs(AK8JetEta->at(ijet)) > 2.5) continue;
@@ -103,17 +104,18 @@ int main(int argc, char* argv[]) {
         
         float PFHT= getST(JetPtCut);
         float PFMET=pfMET;
-        
-        
-        plotFill("ht_met_trgEff_Before",PFHT,PFMET,40,0,2000,50,0,500);
+        float MHT=getMHT(JetPtCut);
+                
+        plotFill("ht_met_trgEff_Before",PFHT,PFMET+MHT,60,0,3000,50,0,2000);
         if (HLT_PFHT500_PFMET100_PFMHT100_IDTight){
-            plotFill("ht_met_trgEff_After",PFHT,PFMET,40,0,2000,50,0,500);
+//        if (HLT_PFHT500_PFMET110_PFMHT110_IDTight){
+            plotFill("ht_met_trgEff_After",PFHT,PFMET+MHT,60,0,3000,50,0,2000);
         }
         
-        if (PFHT > 550)
-            plotFill("ht_met_1D_TrgEff_Before",PFMET,50,0,500);
-        if (PFHT > 550 && HLT_PFHT500_PFMET100_PFMHT100_IDTight)
-            plotFill("ht_met_1D_TrgEff_After",PFMET,50,0,500);
+        if (PFHT > 600 )
+            plotFill("ht_met_1D_TrgEff_Before",PFMET+MHT,50,0,2000);
+        if (PFHT > 600  && HLT_PFHT500_PFMET100_PFMHT100_IDTight)
+            plotFill("ht_met_1D_TrgEff_After",PFMET+MHT,50,0,2000);
         
     } //End of Tree
     
