@@ -62,13 +62,13 @@ void SkimerBoost::Loop(TString OutputFile)
         
         auto numMuAK8Jet(0);
         for (int imu = 0; imu < nMu; ++imu){
-            if (muPt->at(imu) < 53 || fabs(muEta->at(imu)) > 2.4) continue;
+            if (muPt->at(imu) < 52 || fabs(muEta->at(imu)) > 2.4) continue;
             
             LeadMu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
             
             for (int ijet=0; ijet < nAK8Jet ; ijet ++){
-                if (AK8JetPt->at(ijet) < 200  || AK8JetSoftDropMass < 0 || fabs(AK8JetEta->at(ijet)) > 2.5 ) continue;
+                if (AK8JetPt->at(ijet) < 200  || AK8JetSoftDropMass->at(ijet) < 0 || fabs(AK8JetEta->at(ijet)) > 2.5 ) continue;
                 numMuAK8Jet++;
             }
         }

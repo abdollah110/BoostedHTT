@@ -31,30 +31,6 @@ void SkimerBoost::Loop(TString OutputFile)
 
 
     fChain->SetBranchStatus("*",1);
-//    fChain->SetBranchStatus("*",0);
-//    fChain->SetBranchStatus("vt*",1);
-//    fChain->SetBranchStatus("EventTag",1);
-//    fChain->SetBranchStatus("run",1);
-//    fChain->SetBranchStatus("event",1);
-//    fChain->SetBranchStatus("lumis",1);
-//    fChain->SetBranchStatus("isData",1);
-//    fChain->SetBranchStatus("HLT*",1);
-//    fChain->SetBranchStatus("gen*",1);
-//    fChain->SetBranchStatus("pdf*",1);
-//    fChain->SetBranchStatus("pthat",1);
-//    fChain->SetBranchStatus("processID",1);
-//    fChain->SetBranchStatus("rho*",1);
-//    fChain->SetBranchStatus("pu*",1);
-//    fChain->SetBranchStatus("mc*",1);
-//    fChain->SetBranchStatus("pfMET*",1);
-//    fChain->SetBranchStatus("n*",1);
-//    fChain->SetBranchStatus("jet*",1);
-//    fChain->SetBranchStatus("AK8*",1);
-//    fChain->SetBranchStatus("ele*",1);
-//    fChain->SetBranchStatus("mu*",1);
-//    fChain->SetBranchStatus("tau*",1);
-//    fChain->SetBranchStatus("m*",1);
-//    fChain->SetBranchStatus("b*",1);
     
     TH1F* hcount = new TH1F("hcount", "", 10, 0, 10);
     
@@ -144,25 +120,23 @@ void SkimerBoost::Loop(TString OutputFile)
         hcount->Fill(1);
         if (!isData)
             hcount->Fill(2,genWeight);
-        
-        if (pfMET < 50) continue;
-        hcount->Fill(3);
-        
+                
         TLorentzVector Ele4Mom, Lep4Mom;
         auto numLepLep(0);
         bool foundApair= false;
         
         for (int imu = 0; imu < nMu; ++imu){
-            //            if (foundApair) break;
-//            if (muPt->at(imu) < 52 || fabs(muEta->at(imu)) > 2.4) continue;
-            if (muPt->at(imu) < 30 || fabs(muEta->at(imu)) > 2.4) continue;
+
+            if (muPt->at(imu) < 28 || fabs(muEta->at(imu)) > 2.4) continue;
+            hcount->Fill(3);
+            if (muPt->at(imu) < 52  && pfMET < 40  ) continue;
+            hcount->Fill(4);
+
             Lep4Mom.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
-            
-            
+                        
             for (int iele = 0; iele < nEle; ++iele){
-                //            if (foundApair) break;
-                if (elePt->at(iele) < 20 || fabs(eleEta->at(iele)) > 2.5) continue;
-                
+                if (elePt->at(iele) < 15 || fabs(eleEta->at(iele)) > 2.5) continue;
+                hcount->Fill(5);
                 
                 bool eleMVAId= false;
                 if (fabs (eleSCEta->at(iele)) <= 0.8 && eleIDMVANoIso->at(iele) >    0.837   ) eleMVAId= true;
@@ -171,24 +145,23 @@ void SkimerBoost::Loop(TString OutputFile)
                 else eleMVAId= false;
                 
                 if (!eleMVAId) continue;
+                hcount->Fill(6);
                 
                 Ele4Mom.SetPtEtaPhiM(elePt->at(iele),eleEta->at(iele),elePhi->at(iele),eleMass);
-                
-                
+                                
                 if(Ele4Mom.DeltaR(Lep4Mom) > 0.8 || Ele4Mom.DeltaR(Lep4Mom) < 0.1) continue;
-                //                decayMode2 = boostedTauDecayMode->at(ibtau);
+                hcount->Fill(7);
                 numLepLep++;
                 if (!foundApair){
                     lepIndex=imu;
                     tauIndex=iele;
                 }
                 foundApair=true;
-                //                break;
             }
         }
         
         if(numLepLep < 1) continue;
-        hcount->Fill(4);
+        hcount->Fill(8);
         
         met_px = pfMET*sin(pfMETPhi);
         met_py = pfMET*cos(pfMETPhi);

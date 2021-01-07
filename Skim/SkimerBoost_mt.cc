@@ -30,30 +30,6 @@ void SkimerBoost::Loop(TString OutputFile)
     else (std::cout << "Year is not specificed in the outFile name !\n");
     
     fChain->SetBranchStatus("*",1);
-//    fChain->SetBranchStatus("*",0);
-//    fChain->SetBranchStatus("vt*",1);
-//    fChain->SetBranchStatus("EventTag",1);
-//    fChain->SetBranchStatus("run",1);
-//    fChain->SetBranchStatus("event",1);
-//    fChain->SetBranchStatus("lumis",1);
-//    fChain->SetBranchStatus("isData",1);
-//    fChain->SetBranchStatus("HLT*",1);
-//    fChain->SetBranchStatus("gen*",1);
-//    fChain->SetBranchStatus("pdf*",1);
-//    fChain->SetBranchStatus("pthat",1);
-//    fChain->SetBranchStatus("processID",1);
-//    fChain->SetBranchStatus("rho*",1);
-//    fChain->SetBranchStatus("pu*",1);
-//    fChain->SetBranchStatus("mc*",1);
-//    fChain->SetBranchStatus("pfMET*",1);
-//    fChain->SetBranchStatus("n*",1);
-//    fChain->SetBranchStatus("jet*",1);
-//    fChain->SetBranchStatus("AK8*",1);
-//    fChain->SetBranchStatus("ele*",1);
-//    fChain->SetBranchStatus("mu*",1);
-//    fChain->SetBranchStatus("tau*",1);
-//    fChain->SetBranchStatus("m*",1);
-//    fChain->SetBranchStatus("b*",1);
     
     TH1F* hcount = new TH1F("hcount", "", 10, 0, 10);
     
@@ -143,36 +119,34 @@ void SkimerBoost::Loop(TString OutputFile)
         hcount->Fill(1);
         if (!isData)
             hcount->Fill(2,genWeight);
-        
-        if (pfMET < 50) continue;
-        hcount->Fill(3);
-        
+                
         TLorentzVector BoostTau4Mom, Lep4Mom;
         auto numLepTau(0);
         bool foundApair= false;
         
         for (int imu = 0; imu < nMu; ++imu){
-//            if (foundApair) break;
-            if (muPt->at(imu) < 52 || fabs(muEta->at(imu)) > 2.4) continue;
+        
+            if (muPt->at(imu) < 28 || fabs(muEta->at(imu)) > 2.4) continue;
+            hcount->Fill(3);
+            if (muPt->at(imu) < 52  && pfMET < 40  ) continue;
+            hcount->Fill(4);
+            
             Lep4Mom.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
             for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                 
-                if (boostedTauPt->at(ibtau) < 40 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
+                if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
 //                if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
-                
-//                if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
-                if (boostedTauagainstElectronVLooseMVA62018->at(ibtau) < 0.5) continue;
-                if (boostedTauByTightMuonRejection3->at(ibtau) < 0.5) continue;
-                //                if (boostedTauByVLooseIsolationMVArun2v1DBoldDMwLT->at(ibtau) < 0.5) continue;
-//                if (boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(ibtau) < 0) continue;
-//                if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(ibtau) < -0.2) continue;
+//                if (boostedTauagainstElectronVLooseMVA62018->at(ibtau) < 0.5) continue;
+//                if (boostedTauByTightMuonRejection3->at(ibtau) < 0.5) continue;
+                if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5) continue;
                 if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < 0) continue;
-                
+                hcount->Fill(5);
                 BoostTau4Mom.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                 
                 if(BoostTau4Mom.DeltaR(Lep4Mom) > 0.8 || BoostTau4Mom.DeltaR(Lep4Mom) < 0.1) continue;
+                hcount->Fill(6);
                 decayMode2 = boostedTauDecayMode->at(ibtau);
                 numLepTau++;
                 if (!foundApair){
@@ -180,12 +154,11 @@ void SkimerBoost::Loop(TString OutputFile)
                 tauIndex=ibtau;
                 }
                 foundApair=true;
-//                break;
             }
         }
         
         if(numLepTau < 1) continue;
-        hcount->Fill(4);
+        hcount->Fill(7);
         
         met_px = pfMET*sin(pfMETPhi);
         met_py = pfMET*cos(pfMETPhi);
