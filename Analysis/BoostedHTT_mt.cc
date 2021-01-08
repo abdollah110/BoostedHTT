@@ -115,12 +115,6 @@ int main(int argc, char* argv[]) {
     float LeptonIsoCut=0.30;
     bool debug= false;
     
-    float MuIdCorrection=1;
-    float MuIsoCorrection=1;
-    float MuTrgCorrection=1;
-    float LepCorrection=1;
-    float LumiWeight = 1;
-    float PUWeight = 1;
 
     
     float lepPt_=-10;
@@ -170,7 +164,13 @@ int main(int argc, char* argv[]) {
         // MET Filters
         // Here we apply MET Filters
         // Here we apply prefire weights
-        
+    float MuIdCorrection=1;
+    float MuIsoCorrection=1;
+    float MuTrgCorrection=1;
+    float LepCorrection=1;
+    float LumiWeight = 1;
+    float PUWeight = 1;
+
         //=========================================================================================================
         //MET Shape systematics
         Met=pfMET;
@@ -180,10 +180,12 @@ int main(int argc, char* argv[]) {
         if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
         if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
         
-        TLorentzVector Lep4Momentum,BoostedTau4Momentum, Z4Momentum, Met4Momentum;
+        TLorentzVector Mu4Momentum,Tau4Momentum, Z4Momentum, Met4Momentum;
         //=========================================================================================================
         // Muon selection
         int idx_lep= lepIndex;
+        Mu4Momentum.SetPtEtaPhiM(muPt->at(idx_lep),muEta->at(idx_lep),muPhi->at(idx_lep),MuMass);
+        
         bool selectMuon_1= false;
         bool selectMuon_2= false;
         
@@ -197,7 +199,7 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",2 ,15,0,15);
         
         bool MuId=( (muIDbit->at(idx_lep) >> 1 & 1)  && fabs(muD0->at(idx_lep)) < 0.045 && fabs(muDz->at(idx_lep)) < 0.2);
-        MuIdCorrection = getCorrFactorMuonId(year, isData,  Lep4Momentum.Pt(), Lep4Momentum.Eta() ,HistoMuId);
+        MuIdCorrection = getCorrFactorMuonId(year, isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuId);
         
         if (! MuId) continue;
         
@@ -206,19 +208,21 @@ int main(int argc, char* argv[]) {
 //        if (muPt->at(idx_lep) < 52  && HLT_Mu27 && IsoLep1Value < LeptonIsoCut && pfMET > 40 ){
         if (muPt->at(idx_lep) < 55  && HLT_Mu27 && pfMET > 40 ){
             selectMuon_1 = true;
-            MuTrgCorrection = getCorrFactorMuonTrg(isData,  Lep4Momentum.Pt(), Lep4Momentum.Eta() ,HistoMuTrg27);
-            MuIsoCorrection = getCorrFactorMuonIso(year, isData,  Lep4Momentum.Pt(), Lep4Momentum.Eta() ,HistoMuIso);
+            MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg27);
+            MuIsoCorrection = getCorrFactorMuonIso(year, isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuIso);
             
         }
         if (muPt->at(idx_lep) >= 55  && HLT_Mu50 ) {
             selectMuon_2 = true;
-            MuTrgCorrection = getCorrFactorMuonTrg(isData,  Lep4Momentum.Pt(), Lep4Momentum.Eta() ,HistoMuTrg50);
+            MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg50);
         }
         
+        cout<<"MuIdCorrection * MuIsoCorrection * MuTrgCorrection "<< HLT_Mu50 << HLT_Mu27<< " "<< MuIdCorrection <<" "<< MuIsoCorrection <<" "<< MuTrgCorrection <<"\n";
+
         if (!selectMuon_1 && !selectMuon_2) continue;
         LepCorrection= MuIdCorrection * MuIsoCorrection * MuTrgCorrection;
         
-        Lep4Momentum.SetPtEtaPhiM(muPt->at(idx_lep),muEta->at(idx_lep),muPhi->at(idx_lep),MuMass);
+        
         plotFill("cutFlowTable",4 ,15,0,15);
         //=========================================================================================================
         // Tau selection
@@ -228,16 +232,16 @@ int main(int argc, char* argv[]) {
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_tau) < 0.5 ) continue;
         //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_tau) < 0.5) continue;
         if (boostedTauByLooseMuonRejection3->at(idx_tau) < 0.5) continue;
-        BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
+        Tau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
         plotFill("cutFlowTable",5 ,15,0,15);
         //=========================================================================================================
         // Event Selection
         
-        dR_lep_lep= BoostedTau4Momentum.DeltaR(Lep4Momentum);
+        dR_lep_lep= Tau4Momentum.DeltaR(Mu4Momentum);
         if( dR_lep_lep > 0.8 || dR_lep_lep < 0.1) continue;
         plotFill("cutFlowTable",6 ,15,0,15);
         
-        tmass = TMass_F(Lep4Momentum.Pt(), Lep4Momentum.Px(), Lep4Momentum.Py(),  Met,  Metphi);
+        tmass = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  Met,  Metphi);
         if (tmass > 80) continue;
         plotFill("cutFlowTable",7 ,15,0,15);
         
@@ -250,7 +254,7 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",9 ,15,0,15);
         
         // HT cut
-        ht= getHT(JetPtCut, Lep4Momentum, BoostedTau4Momentum);
+        ht= getHT(JetPtCut, Mu4Momentum, Tau4Momentum);
         if (ht < 200) continue;
         plotFill("cutFlowTable",10 ,15,0,15);
         
@@ -263,11 +267,11 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",11 ,15,0,15);
         
         //Leading jet
-        TLorentzVector LeadJet= getLeadJet(Lep4Momentum, BoostedTau4Momentum);
+        TLorentzVector LeadJet= getLeadJet(Mu4Momentum, Tau4Momentum);
         
         //=========================================================================================================
         // Separate Drell-Yan processes
-        //        int Zcateg = ZCategory(BoostedTau4Momentum);
+        //        int Zcateg = ZCategory(Tau4Momentum);
         //        if (name == "ZLL" && Zcateg > 4) {
         //            continue;
         //        } else if ((name == "ZTT") &&Zcateg != 5) {
@@ -331,8 +335,8 @@ int main(int argc, char* argv[]) {
         //###############################################################################################
         
         Met4Momentum.SetPtEtaPhiM(pfMET, 0, pfMETPhi, 0);
-        Z4Momentum=BoostedTau4Momentum+Lep4Momentum;
-        TLorentzVector higgs = BoostedTau4Momentum+Lep4Momentum +Met4Momentum;
+        Z4Momentum=Tau4Momentum+Mu4Momentum;
+        TLorentzVector higgs = Tau4Momentum+Mu4Momentum +Met4Momentum;
         
         higgs_pT = higgs.Pt();
         higgs_m = higgs.M();

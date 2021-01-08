@@ -197,11 +197,11 @@ int main(int argc, char* argv[]) {
         if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
         //        if (Met < 50 ) continue ;
         
-        TLorentzVector Lep4Momentum,BoostedTau4Momentum, Z4Momentum, Met4Momentum;
+        TLorentzVector Ele4Momentum,Tau4Momentum, Z4Momentum, Met4Momentum;
         //=========================================================================================================
         // Lepton selection
         int idx_lep= lepIndex;
-        
+        Ele4Momentum.SetPtEtaPhiM(elePt->at(idx_lep),eleEta->at(idx_lep),elePhi->at(idx_lep),eleMass);
         
         bool selectElectron_1= false;
         bool selectElectron_2= false;
@@ -215,7 +215,7 @@ int main(int argc, char* argv[]) {
         if (!eleMVAId) continue;
         plotFill("cutFlowTable",2 ,15,0,15);
         
-        EleIdCorrection = getCorrFactorEleId(isData,  Lep4Momentum.Pt(), eleSCEta->at(idx_lep) ,HistoEleId);
+        EleIdCorrection = getCorrFactorEleId(isData,  Ele4Momentum.Pt(), eleSCEta->at(idx_lep) ,HistoEleId);
         float IsoLep1Value=elePFChIso->at(idx_lep)/elePt->at(idx_lep);
         if ( (elePFNeuIso->at(idx_lep) + elePFPhoIso->at(idx_lep) - 0.5* elePFPUIso->at(idx_lep) )  > 0.0)
             IsoLep1Value= ( elePFChIso->at(idx_lep) + elePFNeuIso->at(idx_lep) + elePFPhoIso->at(idx_lep) - 0.5* elePFPUIso->at(idx_lep))/elePt->at(idx_lep);
@@ -227,12 +227,12 @@ int main(int argc, char* argv[]) {
 //        if (elePt->at(idx_lep) < 120  && HLT_Ele35 && IsoLep1Value < LeptonIsoCut && pfMET > 40 ){
         if (elePt->at(idx_lep) < 120  && HLT_Ele35 && pfMET > 40 ){
             selectElectron_1 = true;
-            //            MuTrgCorrection = getCorrFactorMuonTrg(isData,  Lep4Momentum.Pt(), Lep4Momentum.Eta() ,HistoMuTrg27);
-            //            MuIsoCorrection = getCorrFactorMuonIso(year, isData,  Lep4Momentum.Pt(), Lep4Momentum.Eta() ,HistoMuIso);
+            //            MuTrgCorrection = getCorrFactorMuonTrg(isData,  Ele4Momentum.Pt(), Ele4Momentum.Eta() ,HistoMuTrg27);
+            //            MuIsoCorrection = getCorrFactorMuonIso(year, isData,  Ele4Momentum.Pt(), Ele4Momentum.Eta() ,HistoMuIso);
         }
         if (elePt->at(idx_lep) >= 120  && HLT_Ele115 ) {
             selectElectron_2 = true;
-            //            MuTrgCorrection = getCorrFactorMuonTrg(isData,  Lep4Momentum.Pt(), Lep4Momentum.Eta() ,HistoMuTrg50);
+            //            MuTrgCorrection = getCorrFactorMuonTrg(isData,  Ele4Momentum.Pt(), Ele4Momentum.Eta() ,HistoMuTrg50);
         }
         
         if (!selectElectron_1 && !selectElectron_2) continue;
@@ -241,7 +241,7 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",4 ,15,0,15);
         LepCorrection = EleIdCorrection * LeptonTrgCor;
         
-        Lep4Momentum.SetPtEtaPhiM(elePt->at(idx_lep),eleEta->at(idx_lep),elePhi->at(idx_lep),eleMass);
+        
         //=========================================================================================================
         // Tau selection
         int idx_tau= tauIndex;
@@ -252,16 +252,16 @@ int main(int argc, char* argv[]) {
         if (boostedTauagainstElectronLooseMVA62018->at(idx_tau) < 0.5) continue;
         //        if (boostedTauByLooseMuonRejection3->at(idx_tau) < 0.5) continue;
         
-        BoostedTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
+        Tau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
         plotFill("cutFlowTable",5 ,15,0,15);
         //=========================================================================================================
         // Event Selection
         
-        dR_lep_lep= BoostedTau4Momentum.DeltaR(Lep4Momentum);
+        dR_lep_lep= Tau4Momentum.DeltaR(Ele4Momentum);
         if( dR_lep_lep > 0.8 || dR_lep_lep < 0.1) continue;
         plotFill("cutFlowTable",6 ,15,0,15);
         
-        tmass = TMass_F(Lep4Momentum.Pt(), Lep4Momentum.Px(), Lep4Momentum.Py(),  Met,  Metphi);
+        tmass = TMass_F(Ele4Momentum.Pt(), Ele4Momentum.Px(), Ele4Momentum.Py(),  Met,  Metphi);
         if (tmass > 80) continue;
         plotFill("cutFlowTable",7 ,15,0,15);
         
@@ -274,7 +274,7 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",9 ,15,0,15);
         
         // HT cut
-        ht= getHT(JetPtCut, Lep4Momentum, BoostedTau4Momentum);
+        ht= getHT(JetPtCut, Ele4Momentum, Tau4Momentum);
         if (ht < 200) continue;
         plotFill("cutFlowTable",10 ,15,0,15);
         
@@ -287,11 +287,11 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",11 ,15,0,15);
         
         //Leading jet
-        TLorentzVector LeadJet= getLeadJet(Lep4Momentum, BoostedTau4Momentum);
+        TLorentzVector LeadJet= getLeadJet(Ele4Momentum, Tau4Momentum);
         
         //        //=========================================================================================================
         //        // Separate Drell-Yan processes
-        //        int Zcateg = ZCategory(BoostedTau4Momentum);
+        //        int Zcateg = ZCategory(Tau4Momentum);
         //        if (name == "ZLL" && Zcateg > 4) {
         //            continue;
         //        } else if ((name == "ZTT") &&Zcateg != 5) {
@@ -343,17 +343,17 @@ int main(int argc, char* argv[]) {
             //        htt_sf_v2->var("z_gen_mass")->setVal(ZBosonMass);
             //        htt_sf_v2->var("z_gen_pt")->setVal(ZBosonPt);
             
-            //            float EleTrgCorrection = getCorrFactorMuonTrg(isData,  Lep4Momentum.Pt(), Lep4Momentum.Eta() ,HistoEleTrg);
+            //            float EleTrgCorrection = getCorrFactorMuonTrg(isData,  Ele4Momentum.Pt(), Ele4Momentum.Eta() ,HistoEleTrg);
             
             //            LepCorrection= EleIdCorrection;
             
             //            // Lepton Correction
-            //            LeptonIdCor= getCorrFactorElectron94X(isData,  Lep4Momentum.Pt(), eleSCEta->at(idx_lep) , HistoEleReco, HistoEleMVAIdIso90);
+            //            LeptonIdCor= getCorrFactorElectron94X(isData,  Ele4Momentum.Pt(), eleSCEta->at(idx_lep) , HistoEleReco, HistoEleMVAIdIso90);
             
-            //            if (Lep4Momentum.Pt() < 120)
+            //            if (Ele4Momentum.Pt() < 120)
             //            LeptonTrgCor = htt_sf->function("e_trg_ic_ratio")->getVal();
             
-            //            cout << "  Lep4Momentum.Pt(), eleSCEta->at(idx_lep)"<< Lep4Momentum.Pt() <<" " <<eleSCEta->at(idx_lep) <<"   id="<< LeptonIdCor <<"  trg="<< LeptonTrgCor<<"\n";
+            //            cout << "  Ele4Momentum.Pt(), eleSCEta->at(idx_lep)"<< Ele4Momentum.Pt() <<" " <<eleSCEta->at(idx_lep) <<"   id="<< LeptonIdCor <<"  trg="<< LeptonTrgCor<<"\n";
             
             
             
@@ -382,8 +382,8 @@ int main(int argc, char* argv[]) {
         //###############################################################################################
         
         Met4Momentum.SetPtEtaPhiM(pfMET, 0, pfMETPhi, 0);
-        Z4Momentum=BoostedTau4Momentum+Lep4Momentum;
-        TLorentzVector higgs = BoostedTau4Momentum+Lep4Momentum +Met4Momentum;
+        Z4Momentum=Tau4Momentum+Ele4Momentum;
+        TLorentzVector higgs = Tau4Momentum+Ele4Momentum +Met4Momentum;
         
         higgs_pT = higgs.Pt();
         higgs_m = higgs.M();
