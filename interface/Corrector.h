@@ -794,111 +794,111 @@ float Cor94X_Ele_EffVeto(float pt, float eta,  TH2F * HistoEleSF){
 
 
 
-float Cor94X_Trg_Ele(float pt, float eta){
-    
-    
-    
-    if (pt >= 50 && pt < 55){
-        if (eta >= -2.5 && eta < -2 ) return   .729;
-        if (eta >= -2 && eta < -1.566 ) return   .752;
-        if (eta >= -1.566 && eta < -1.444) return   .684;
-        if (eta >= -1.444 && eta < -0.800) return   .81;
-        if (eta >= -0.800 && eta < 0 ) return  .833 ;
-        if (eta >= 0 && eta < 0.800 ) return   .827;
-        if (eta >= 0.800 && eta < 1.444 ) return   .825;
-        if (eta >= 1.444 && eta < 1.566 ) return   .627;
-        if (eta >= 1.566 && eta < 2 ) return   .755;
-        if (eta >= 2 && eta < 2.5 ) return   .746;
-    }
-    else if (pt >= 55 && pt < 70){
-        if (eta >= -2.5 && eta < -2 ) return  .812 ;
-        if (eta >= -2 && eta < -1.566 ) return   .814;
-        if (eta >= -1.566 && eta < -1.444) return  .781 ;
-        if (eta >= -1.444 && eta < -0.800) return   .802;
-        if (eta >= -0.800 && eta < 0 ) return   .869;
-        if (eta >= 0 && eta < 0.800 ) return   .862;
-        if (eta >= 0.800 && eta < 1.444 ) return   .879;
-        if (eta >= 1.444 && eta < 1.566 ) return   .642;
-        if (eta >= 1.566 && eta < 2 ) return   .843;
-        if (eta >= 2 && eta < 2.5 ) return   .845;
-    }
-    else if (pt >= 70 && pt < 100){
-        if (eta >= -2.5 && eta < -2 ) return   .788;
-        if (eta >= -2 && eta < -1.566 ) return   .809;
-        if (eta >= -1.566 && eta < -1.444) return   .833;
-        if (eta >= -1.444 && eta < -0.800) return   .888;
-        if (eta >= -0.800 && eta < 0 ) return   .883;
-        if (eta >= 0 && eta < 0.800 ) return  .882 ;
-        if (eta >= 0.800 && eta < 1.444 ) return   .884;
-        if (eta >= 1.444 && eta < 1.566 ) return  .808 ;
-        if (eta >= 1.566 && eta < 2 ) return   .833;
-        if (eta >= 2 && eta < 2.5 ) return   .853;
-    }
-    else if (pt >= 100 && pt < 120){
-        if (eta >= -2.5 && eta < -2 ) return  .919 ;
-        if (eta >= -2 && eta < -1.566 ) return  .871 ;
-        if (eta >= -1.566 && eta < -1.444) return   .894;
-        if (eta >= -1.444 && eta < -0.800) return   .908;
-        if (eta >= -0.800 && eta < 0 ) return  .902 ;
-        if (eta >= 0 && eta < 0.800 ) return  .924 ;
-        if (eta >= 0.800 && eta < 1.444 ) return  .927 ;
-        if (eta >= 1.444 && eta < 1.566 ) return  .728 ;
-        if (eta >= 1.566 && eta < 2 ) return  .87 ;
-        if (eta >= 2 && eta < 2.5 ) return  .867 ;
-    }
-    else if (pt >= 120 && pt < 180){
-        if (eta >= -2.5 && eta < -2 ) return  .955 ;
-        if (eta >= -2 && eta < -1.566 ) return   .986;
-        if (eta >= -1.566 && eta < -1.444) return  .887 ;
-        if (eta >= -1.444 && eta < -0.800) return  .924 ;
-        if (eta >= -0.800 && eta < 0 ) return  .941 ;
-        if (eta >= 0 && eta < 0.800 ) return   .934;
-        if (eta >= 0.800 && eta < 1.444 ) return  .956 ;
-        if (eta >= 1.444 && eta < 1.566 ) return  .81 ;
-        if (eta >= 1.566 && eta < 2 ) return  .977 ;
-        if (eta >= 2 && eta < 2.5 ) return  .948 ;
-    }
-    else if (pt >= 180 && pt < 250){
-        if (eta >= -2.5 && eta < -2 ) return  1 ;
-        if (eta >= -2 && eta < -1.566 ) return  .984 ;
-        if (eta >= -1.566 && eta < -1.444) return  .918 ;
-        if (eta >= -1.444 && eta < -0.800) return  .934 ;
-        if (eta >= -0.800 && eta < 0 ) return   .981;
-        if (eta >= 0 && eta < 0.800 ) return   .937;
-        if (eta >= 0.800 && eta < 1.444 ) return  .931 ;
-        if (eta >= 1.444 && eta < 1.566 ) return   .939;
-        if (eta >= 1.566 && eta < 2 ) return   .968;
-        if (eta >= 2 && eta < 2.5 ) return  .954 ;
-    }
-    else if (pt >= 250 ){
-        if (eta >= -2.5 && eta < -2 ) return  1 ;
-        if (eta >= -2 && eta < -1.566 ) return  1 ;
-        if (eta >= -1.566 && eta < -1.444) return 1  ;
-        if (eta >= -1.444 && eta < -0.800) return  .927 ;
-        if (eta >= -0.800 && eta < 0 ) return  .953 ;
-        if (eta >= 0 && eta < 0.800 ) return   .959;
-        if (eta >= 0.800 && eta < 1.444 ) return  .972 ;
-        if (eta >= 1.444 && eta < 1.566 ) return  1 ;
-        if (eta >= 1.566 && eta < 2 ) return  1 ;
-        if (eta >= 2 && eta < 2.5 ) return   1;
-    }
-    return 1;
-    
-}
+//float Cor94X_Trg_Ele(float pt, float eta){
+//
+//
+//
+//    if (pt >= 50 && pt < 55){
+//        if (eta >= -2.5 && eta < -2 ) return   .729;
+//        if (eta >= -2 && eta < -1.566 ) return   .752;
+//        if (eta >= -1.566 && eta < -1.444) return   .684;
+//        if (eta >= -1.444 && eta < -0.800) return   .81;
+//        if (eta >= -0.800 && eta < 0 ) return  .833 ;
+//        if (eta >= 0 && eta < 0.800 ) return   .827;
+//        if (eta >= 0.800 && eta < 1.444 ) return   .825;
+//        if (eta >= 1.444 && eta < 1.566 ) return   .627;
+//        if (eta >= 1.566 && eta < 2 ) return   .755;
+//        if (eta >= 2 && eta < 2.5 ) return   .746;
+//    }
+//    else if (pt >= 55 && pt < 70){
+//        if (eta >= -2.5 && eta < -2 ) return  .812 ;
+//        if (eta >= -2 && eta < -1.566 ) return   .814;
+//        if (eta >= -1.566 && eta < -1.444) return  .781 ;
+//        if (eta >= -1.444 && eta < -0.800) return   .802;
+//        if (eta >= -0.800 && eta < 0 ) return   .869;
+//        if (eta >= 0 && eta < 0.800 ) return   .862;
+//        if (eta >= 0.800 && eta < 1.444 ) return   .879;
+//        if (eta >= 1.444 && eta < 1.566 ) return   .642;
+//        if (eta >= 1.566 && eta < 2 ) return   .843;
+//        if (eta >= 2 && eta < 2.5 ) return   .845;
+//    }
+//    else if (pt >= 70 && pt < 100){
+//        if (eta >= -2.5 && eta < -2 ) return   .788;
+//        if (eta >= -2 && eta < -1.566 ) return   .809;
+//        if (eta >= -1.566 && eta < -1.444) return   .833;
+//        if (eta >= -1.444 && eta < -0.800) return   .888;
+//        if (eta >= -0.800 && eta < 0 ) return   .883;
+//        if (eta >= 0 && eta < 0.800 ) return  .882 ;
+//        if (eta >= 0.800 && eta < 1.444 ) return   .884;
+//        if (eta >= 1.444 && eta < 1.566 ) return  .808 ;
+//        if (eta >= 1.566 && eta < 2 ) return   .833;
+//        if (eta >= 2 && eta < 2.5 ) return   .853;
+//    }
+//    else if (pt >= 100 && pt < 120){
+//        if (eta >= -2.5 && eta < -2 ) return  .919 ;
+//        if (eta >= -2 && eta < -1.566 ) return  .871 ;
+//        if (eta >= -1.566 && eta < -1.444) return   .894;
+//        if (eta >= -1.444 && eta < -0.800) return   .908;
+//        if (eta >= -0.800 && eta < 0 ) return  .902 ;
+//        if (eta >= 0 && eta < 0.800 ) return  .924 ;
+//        if (eta >= 0.800 && eta < 1.444 ) return  .927 ;
+//        if (eta >= 1.444 && eta < 1.566 ) return  .728 ;
+//        if (eta >= 1.566 && eta < 2 ) return  .87 ;
+//        if (eta >= 2 && eta < 2.5 ) return  .867 ;
+//    }
+//    else if (pt >= 120 && pt < 180){
+//        if (eta >= -2.5 && eta < -2 ) return  .955 ;
+//        if (eta >= -2 && eta < -1.566 ) return   .986;
+//        if (eta >= -1.566 && eta < -1.444) return  .887 ;
+//        if (eta >= -1.444 && eta < -0.800) return  .924 ;
+//        if (eta >= -0.800 && eta < 0 ) return  .941 ;
+//        if (eta >= 0 && eta < 0.800 ) return   .934;
+//        if (eta >= 0.800 && eta < 1.444 ) return  .956 ;
+//        if (eta >= 1.444 && eta < 1.566 ) return  .81 ;
+//        if (eta >= 1.566 && eta < 2 ) return  .977 ;
+//        if (eta >= 2 && eta < 2.5 ) return  .948 ;
+//    }
+//    else if (pt >= 180 && pt < 250){
+//        if (eta >= -2.5 && eta < -2 ) return  1 ;
+//        if (eta >= -2 && eta < -1.566 ) return  .984 ;
+//        if (eta >= -1.566 && eta < -1.444) return  .918 ;
+//        if (eta >= -1.444 && eta < -0.800) return  .934 ;
+//        if (eta >= -0.800 && eta < 0 ) return   .981;
+//        if (eta >= 0 && eta < 0.800 ) return   .937;
+//        if (eta >= 0.800 && eta < 1.444 ) return  .931 ;
+//        if (eta >= 1.444 && eta < 1.566 ) return   .939;
+//        if (eta >= 1.566 && eta < 2 ) return   .968;
+//        if (eta >= 2 && eta < 2.5 ) return  .954 ;
+//    }
+//    else if (pt >= 250 ){
+//        if (eta >= -2.5 && eta < -2 ) return  1 ;
+//        if (eta >= -2 && eta < -1.566 ) return  1 ;
+//        if (eta >= -1.566 && eta < -1.444) return 1  ;
+//        if (eta >= -1.444 && eta < -0.800) return  .927 ;
+//        if (eta >= -0.800 && eta < 0 ) return  .953 ;
+//        if (eta >= 0 && eta < 0.800 ) return   .959;
+//        if (eta >= 0.800 && eta < 1.444 ) return  .972 ;
+//        if (eta >= 1.444 && eta < 1.566 ) return  1 ;
+//        if (eta >= 1.566 && eta < 2 ) return  1 ;
+//        if (eta >= 2 && eta < 2.5 ) return   1;
+//    }
+//    return 1;
+//
+//}
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
-float Cor94X_Trg_Ele25(float pt,float eta,TGraphAsymmErrors **  Ele25Trg){
-    
-    float weight=1;
-    if (fabs (eta)< 1.4 ) weight = Ele25Trg[3]->Eval(pt) /Ele25Trg[0]->Eval(pt);
-    else if (fabs (eta)>= 1.4 &&  fabs (eta) < 2.1) weight = Ele25Trg[4]->Eval(pt) /Ele25Trg[1]->Eval(pt);
-    else if (fabs (eta)>= 2.1 ) weight = Ele25Trg[5]->Eval(pt) /Ele25Trg[2]->Eval(pt);
-    else weight =1;
-    
-    return weight;
-    
-}
+//float Cor94X_Trg_Ele25(float pt,float eta,TGraphAsymmErrors **  Ele25Trg){
+//    
+//    float weight=1;
+//    if (fabs (eta)< 1.4 ) weight = Ele25Trg[3]->Eval(pt) /Ele25Trg[0]->Eval(pt);
+//    else if (fabs (eta)>= 1.4 &&  fabs (eta) < 2.1) weight = Ele25Trg[4]->Eval(pt) /Ele25Trg[1]->Eval(pt);
+//    else if (fabs (eta)>= 2.1 ) weight = Ele25Trg[5]->Eval(pt) /Ele25Trg[2]->Eval(pt);
+//    else weight =1;
+//    
+//    return weight;
+//    
+//}
 
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -923,6 +923,20 @@ float getCorrFactorMuonId(int year, bool isData, float pt, float eta, TH2F ** Hi
         
     }
 }
+float getCorrFactorMuonIso(int year, bool isData, float pt, float eta, TH2F ** HistoIso){
+    if (isData){
+        return 1;
+    }
+    else{
+        if (pt > 100 ) pt=100;
+        if (year == 2016)
+            return HistoIso[0]->GetBinContent(HistoIso[0]->GetXaxis()->FindBin(eta), HistoIso[0]->GetYaxis()->FindBin(pt));
+        else
+            return HistoIso[0]->GetBinContent(HistoIso[0]->GetXaxis()->FindBin(pt),HistoIso[0]->GetYaxis()->FindBin(fabs(eta)));
+        
+    }
+}
+
 
 float getCorrFactorMuonTrg(bool isData, float pt, float eta, TH2F ** HistoTrg){
     if (isData){
@@ -972,21 +986,21 @@ float getCorrFactorEleId( bool isData, float pt, float eta, TH2F ** HistoId){
 
 
 
-// Loose WP of MVA Ele
-float getCorrFactorMVA90WPElectron94X(bool isData, float pt, float eta,    TH2F * HistoEleSF ){
-    if (isData)
-        return 1;
-    else
-        return Cor94X_IDIso_Ele(pt,eta,HistoEleSF);
-}
-
-// Tight WP of MVA Ele
-float getCorrFactorMVA80WPElectron94X(bool isData, float pt, float eta,    TH2F * HistoEleSF , TGraphAsymmErrors ** Ele25Trg){
-    if (isData)
-        return 1;
-    else
-        return Cor94X_IDIso_Ele(pt,eta,HistoEleSF)*Cor94X_Trg_Ele25(pt,eta,Ele25Trg);
-}
+//// Loose WP of MVA Ele
+//float getCorrFactorMVA90WPElectron94X(bool isData, float pt, float eta,    TH2F * HistoEleSF ){
+//    if (isData)
+//        return 1;
+//    else
+//        return Cor94X_IDIso_Ele(pt,eta,HistoEleSF);
+//}
+//
+//// Tight WP of MVA Ele
+//float getCorrFactorMVA80WPElectron94X(bool isData, float pt, float eta,    TH2F * HistoEleSF , TGraphAsymmErrors ** Ele25Trg){
+//    if (isData)
+//        return 1;
+//    else
+//        return Cor94X_IDIso_Ele(pt,eta,HistoEleSF)*Cor94X_Trg_Ele25(pt,eta,Ele25Trg);
+//}
 
 
 float getEffVetoMVA90WPElectron94X(bool isData, float pt, float eta,    TH2F * HistoEleSF , TH2F*  HistoEleEffVetoMC, TH2F*  HistoEleEffVetoData){

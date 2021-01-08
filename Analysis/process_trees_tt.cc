@@ -107,28 +107,22 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         initVectors2d(name);
         fout->cd();
         
-        float leadPt_=-10;
-        float subPt_=-10;
+        float lep1Pt_=-10;
+        float lep2Pt_=-10;
         float vis_mass=-10;
         float LeadJetPt = -10;
-        float dR_Z_jet=-10;
-        bool PassLead, PassSub ,OS,SS, PassTrigger_40, PassTrigger_39;
-        float tmass,ht,st,Met,weight, dR_tau_tau, Metphi;
+        bool lep1IsoPass, lep2IsoPass ,OS,SS, PassTrigger_40, PassTrigger_39;
+        float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
         float NN_disc;
-        float BoostedTauRawIso, higgs_pT, higgs_m, m_sv;
+        float higgs_pT, higgs_m, m_sv;
         
         
-
-
-        tree->SetBranchAddress("leadPt",&leadPt_);
-        tree->SetBranchAddress("subPt",&subPt_);
-        tree->SetBranchAddress("PassLead",&PassLead);
-        tree->SetBranchAddress("PassSub",&PassSub);
-        
+        tree->SetBranchAddress("lep1Pt",&lep1Pt_);
+        tree->SetBranchAddress("lep2Pt",&lep2Pt_);
+        tree->SetBranchAddress("lep1IsoPass",&lep1IsoPass);
+        tree->SetBranchAddress("lep2IsoPass",&lep2IsoPass);
         tree->SetBranchAddress("PassTrigger_39",&PassTrigger_39);
         tree->SetBranchAddress("PassTrigger_40",&PassTrigger_40);
-
-
         tree->SetBranchAddress("OS",&OS);
         tree->SetBranchAddress("SS",&SS);
         tree->SetBranchAddress("vis_mass",&vis_mass);
@@ -137,11 +131,9 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         tree->SetBranchAddress("st",&st);
         tree->SetBranchAddress("Met",&Met);
         tree->SetBranchAddress("LeadJetPt",&LeadJetPt);
-        tree->SetBranchAddress("dR_tau_tau",&dR_tau_tau);
+        tree->SetBranchAddress("dR_lep_lep",&dR_lep_lep);
         tree->SetBranchAddress("evtwt",&weight);
         tree->SetBranchAddress("NN_disc",&NN_disc);
-//        tree->SetBranchAddress("eleIDMVA",&eleIDMVA);
-        tree->SetBranchAddress("BoostedTauRawIso",&BoostedTauRawIso);
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
         tree->SetBranchAddress("higgs_m",&higgs_m);
         tree->SetBranchAddress("m_sv",&m_sv);
@@ -154,32 +146,31 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
             
             if (!(PassTrigger_39 || PassTrigger_40)) continue;
             std::map<std::string, float>  ObsName {
-                {"leadPt",leadPt_},
-                {"subPt",subPt_},
-                {"PassLead",PassLead},
-                {"PassSub",PassSub},
+                {"lep1Pt",lep1Pt_},
+                {"lep2Pt",lep2Pt_},
+                {"lep1IsoPass",lep1IsoPass},
+                {"lep2IsoPass",lep2IsoPass},
                 {"vis_mass",vis_mass},
                 {"tmass",tmass},
                 {"ht",ht},
                 {"st",st},
                 {"Met",Met},
                 {"LeadJetPt",LeadJetPt},
-                {"dR_tau_tau",dR_tau_tau},
-                {"BoostedTauRawIso",BoostedTauRawIso},
+                {"dR_lep_lep",dR_lep_lep},
                 {"higgs_pT",higgs_pT},
                 {"higgs_m",higgs_m},
                 {"m_sv",m_sv},
-//                {"NN_disc",NN_disc}
+                {"NN_disc",NN_disc}
             };
             
             
             vbf_var1 =ObsName[var_name];
 
-            if (OS != 0  && PassLead && PassSub) {
+            if (OS != 0  && lep1IsoPass && lep2IsoPass) {
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
             }
 
-            if (SS != 0 && PassLead && PassSub ){
+            if (SS != 0 && lep1IsoPass && lep2IsoPass ){
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight,OSSS[0]);
             }
 
@@ -208,16 +199,16 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
         auto fin = new TFile((dir + "/" + ifile).c_str(), "read");
         auto tree = reinterpret_cast<TTree *>(fin->Get(tree_name.c_str()));
         
-        float leadPt_=-10;
+        float lep1Pt_=-10;
          bool Fail,Pass,PassM,FailM,PassT,FailT,OS,SS, PassTrigger_40, PassTrigger_39;
-         float weight,subPt_;
-         bool PassLead, PassSub ;
+         float weight,lep2Pt_;
+         bool lep1IsoPass, lep2IsoPass ;
          
         
-        tree->SetBranchAddress("leadPt",&leadPt_);
-        tree->SetBranchAddress("subPt",&subPt_);
-        tree->SetBranchAddress("PassLead",&PassLead);
-        tree->SetBranchAddress("PassSub",&PassSub);
+        tree->SetBranchAddress("lep1Pt",&lep1Pt_);
+        tree->SetBranchAddress("lep2Pt",&lep2Pt_);
+        tree->SetBranchAddress("lep1IsoPass",&lep1IsoPass);
+        tree->SetBranchAddress("lep2IsoPass",&lep2IsoPass);
         tree->SetBranchAddress("OS",&OS);
         tree->SetBranchAddress("SS",&SS);
         tree->SetBranchAddress("evtwt",&weight);
@@ -232,18 +223,18 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
             
 //            std::cout<<OS <<Pass << !lepIsoPass<<"\n";
 //            if (OS != 0 && !Pass && !lepIsoPass){
-                if (OS != 0 && (!PassLead || !PassSub )){
+                if (OS != 0 && (!lep1IsoPass || !lep2IsoPass )){
 //            if (OS != 0 &&  !lepIsoPass){
 //            if (OS != 0 ){
-//            std::cout<<name<< " "<<leadPt_<<"  " << weight<<"\n";
-                fillQCD_OS_CR(zeroJet, name, leadPt_,  weight);
+//            std::cout<<name<< " "<<lep1Pt_<<"  " << weight<<"\n";
+                fillQCD_OS_CR(zeroJet, name, lep1Pt_,  weight);
             }
 //            else if (SS != 0 && !Pass && !lepIsoPass){
-            else if (SS != 0 && (!PassLead || !PassSub )){
+            else if (SS != 0 && (!lep1IsoPass || !lep2IsoPass )){
 //            else if (SS != 0  && !lepIsoPass){
 //            else if (SS != 0 ){
-//            std::cout<<"\t "<<name<< " "<<leadPt_<<"  " << weight<<"\n";
-                fillQCD_SS_CR(zeroJet, name, leadPt_,  weight);
+//            std::cout<<"\t "<<name<< " "<<lep1Pt_<<"  " << weight<<"\n";
+                fillQCD_SS_CR(zeroJet, name, lep1Pt_,  weight);
             }
         }
         fin->Close();

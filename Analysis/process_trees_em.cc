@@ -19,8 +19,8 @@ int main(int argc, char *argv[]) {
     string dir = parser.Option("-d");
 //    string year = parser.Option("-y");
     string suffix = parser.Option("--suf");
-    string tree_name = parser.Option("-t");
-    string channel = parser.Option("-c");
+//    string tree_name = parser.Option("-t");
+//    string channel = parser.Option("-c");
 
     std::string var_name = parser.Option("-v");
     std::vector<std::string> sbins = parser.MultiOption("-b", 3);
@@ -33,11 +33,11 @@ int main(int argc, char *argv[]) {
     else (std::cout << "Year is not specificed in the outFile name !\n");
 
     string channel, tree_name;
-    if (dir.find("_em_") != string::npos) channel ="em"; tree_name="emu_tree";
-    else if (dir.find("_et_") != string::npos ) channel ="et";tree_name="etau_tree";
-    else if (dir.find("_mt_") != string::npos) channel ="mt";tree_name="mutau_tree";
-    else if (dir.find("_tt_") != string::npos) channel ="tt";tree_name="tautau_tree";
-    else if (dir.find("_mm_") != string::npos) channel ="mm";tree_name="mumu_tree";
+    if (dir.find("_em_") != string::npos) { channel ="em"; tree_name="emu_tree";}
+    else if (dir.find("_et_") != string::npos ) { channel ="et";tree_name="etau_tree";}
+    else if (dir.find("_mt_") != string::npos) { channel ="mt";tree_name="mutau_tree";}
+    else if (dir.find("_tt_") != string::npos) { channel ="tt";tree_name="tautau_tree";}
+    else if (dir.find("_mm_") != string::npos) { channel ="mm";tree_name="mumu_tree";}
     else (std::cout << "channel is not specificed in the outFile name !\n");
 
 
@@ -100,36 +100,31 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         initVectors2d(name);
         fout->cd();
         
-        float lepPt_=-10;
-        float taupt_=-10;
+        float lep1Pt_=-10;
         float vis_mass=-10;
         float LeadJetPt = -10;
         float dR_Z_jet=-10;
-        bool FailL,PassL,PassM,FailM,PassT,FailT,OS,SS,lep1IsoPass,eleIDMVA;
-        float tmass,ht,st,Met,weight, dR_mu_ele, Metphi;
+        bool OS,SS,lep1IsoPass,eleIDMVA, lep2IsoPass;
+        float tmass,ht,st,Met,weight, dR_lep_lep, Metphi, lep2Pt_;
         float NN_disc;
-        float IsoLepValue,BoostedTauRawIso, higgs_pT, higgs_m, m_sv;
+        float higgs_pT, higgs_m, m_sv;
         
         
-        tree->SetBranchAddress("lepPt",&lepPt_);
-//        tree->SetBranchAddress("taupt",&taupt_);
-        tree->SetBranchAddress("PassL",&PassL);
-        tree->SetBranchAddress("FailL",&FailL);
+        tree->SetBranchAddress("lep1Pt",&lep1Pt_);
+        tree->SetBranchAddress("lep2Pt",&lep2Pt_);
         tree->SetBranchAddress("OS",&OS);
         tree->SetBranchAddress("SS",&SS);
         tree->SetBranchAddress("lep1IsoPass",&lep1IsoPass);
+        tree->SetBranchAddress("lep2IsoPass",&lep2IsoPass);
         tree->SetBranchAddress("vis_mass",&vis_mass);
         tree->SetBranchAddress("tmass",&tmass);
         tree->SetBranchAddress("ht",&ht);
         tree->SetBranchAddress("st",&st);
         tree->SetBranchAddress("Met",&Met);
         tree->SetBranchAddress("LeadJetPt",&LeadJetPt);
-        tree->SetBranchAddress("dR_mu_ele",&dR_mu_ele);
+        tree->SetBranchAddress("dR_lep_lep",&dR_lep_lep);
         tree->SetBranchAddress("evtwt",&weight);
         tree->SetBranchAddress("NN_disc",&NN_disc);
-        tree->SetBranchAddress("IsoLepValue",&IsoLepValue);
-//        tree->SetBranchAddress("eleIDMVA",&eleIDMVA);
-        tree->SetBranchAddress("BoostedTauRawIso",&BoostedTauRawIso);
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
         tree->SetBranchAddress("higgs_m",&higgs_m);
         tree->SetBranchAddress("m_sv",&m_sv);
@@ -141,19 +136,17 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
             tree->GetEntry(i);
             
             std::map<std::string, float>  ObsName {
-                {"lepPt",lepPt_},
-                {"taupt",taupt_},
-                {"PassL",PassL},
+                {"lep1Pt",lep1Pt_},
+                {"lep2Pt",lep2Pt_},
                 {"lep1IsoPass",lep1IsoPass},
+                {"lep2IsoPass",lep2IsoPass},
                 {"vis_mass",vis_mass},
                 {"tmass",tmass},
                 {"ht",ht},
                 {"st",st},
                 {"Met",Met},
                 {"LeadJetPt",LeadJetPt},
-                {"dR_mu_ele",dR_mu_ele},
-                {"IsoLepValue",IsoLepValue},
-                {"BoostedTauRawIso",BoostedTauRawIso},
+                {"dR_lep_lep",dR_lep_lep},
                 {"higgs_pT",higgs_pT},
                 {"higgs_m",higgs_m},
                 {"m_sv",m_sv},
@@ -163,15 +156,14 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
             
             vbf_var1 =ObsName[var_name];
 
-            if (OS != 0  && PassL) {
+            if (OS != 0  && lep1IsoPass && lep2IsoPass) {
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
             }
 
-            if (SS != 0 && PassL ){
+            if (SS != 0 && lep1IsoPass && lep2IsoPass ){
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight,OSSS[0]);
             }
 
-//            if (SS != 0  && Pass ){
             if (SS != 0){
                 fillQCD_Shape(zeroJet, name, vbf_var1,  weight,OSSS[0]);
             }
@@ -196,17 +188,18 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
         auto fin = new TFile((dir + "/" + ifile).c_str(), "read");
         auto tree = reinterpret_cast<TTree *>(fin->Get(tree_name.c_str()));
         
-        float lepPt_=-10;
-         bool FailL,PassL,PassM,FailM,PassT,FailT,OS,SS,lep1IsoPass;
+        float lep1Pt_=-10;
+        float lepPt2_=-10;
+         bool OS,SS,lep1IsoPass,lep2IsoPass;
          float weight;
          
         
-        tree->SetBranchAddress("lepPt",&lepPt_);
-        tree->SetBranchAddress("PassL",&PassL);
-        tree->SetBranchAddress("FailL",&FailL);
+        tree->SetBranchAddress("lep1Pt",&lep1Pt_);
+        tree->SetBranchAddress("lep2Pt",&lepPt2_);
         tree->SetBranchAddress("OS",&OS);
         tree->SetBranchAddress("SS",&SS);
         tree->SetBranchAddress("lep1IsoPass",&lep1IsoPass);
+        tree->SetBranchAddress("lep2IsoPass",&lep2IsoPass);
         tree->SetBranchAddress("evtwt",&weight);
         
         for (auto i = 0; i < tree->GetEntries(); i++) {
@@ -214,18 +207,18 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
             
 //            std::cout<<OS <<Pass << !lep1IsoPass<<"\n";
 //            if (OS != 0 && !Pass && !lep1IsoPass){
-                if (OS != 0 && !PassL && !lep1IsoPass){
+                if (OS != 0 && !lep1IsoPass && !lep2IsoPass){
 //            if (OS != 0 &&  !lep1IsoPass){
 //            if (OS != 0 ){
-//            std::cout<<name<< " "<<lepPt_<<"  " << weight<<"\n";
-                fillQCD_OS_CR(zeroJet, name, lepPt_,  weight);
+//            std::cout<<name<< " "<<lep1Pt_<<"  " << weight<<"\n";
+                fillQCD_OS_CR(zeroJet, name, lep1Pt_,  weight);
             }
 //            else if (SS != 0 && !Pass && !lep1IsoPass){
-            else if (SS != 0 && !PassL && !lep1IsoPass){
+            else if (OS != 0 && !lep1IsoPass && !lep2IsoPass){
 //            else if (SS != 0  && !lep1IsoPass){
 //            else if (SS != 0 ){
-//            std::cout<<"\t "<<name<< " "<<lepPt_<<"  " << weight<<"\n";
-                fillQCD_SS_CR(zeroJet, name, lepPt_,  weight);
+//            std::cout<<"\t "<<name<< " "<<lep1Pt_<<"  " << weight<<"\n";
+                fillQCD_SS_CR(zeroJet, name, lep1Pt_,  weight);
             }
         }
         fin->Close();

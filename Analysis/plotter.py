@@ -20,7 +20,7 @@ style_map = {
 #        "embedded": style_map_tuple(GetColor("#f9cd66"), black, 1, 1, 1),
         "ZTT": style_map_tuple(GetColor(108, 226, 354), black, 1, 1, 1),
 #        "jetFakes": style_map_tuple(GetColor("#ffccff"), black, 1, 1, 1),
-#        "QCD": style_map_tuple(GetColor(408, 106, 154), black, 1, 1, 1),
+        "QCD": style_map_tuple(GetColor(408, 106, 154), black, 1, 1, 1),
         "TT": style_map_tuple(GetColor(208, 376, 124), black, 1, 1, 1),
 #        "ZLL": style_map_tuple(GetColor(150, 132, 232), black, 1, 1, 1),
         },
@@ -126,7 +126,7 @@ def fillLegend(data, backgrounds,backgrounds_EWK, signals, stat):
     # backgrounds
     leg.AddEntry(backgrounds['ZTT'], 'ZTT', 'f')
 #    leg.AddEntry(backgrounds['ZLL'], 'ZLL', 'f')
-#    leg.AddEntry(backgrounds['QCD'], 'QCD', 'f')
+    leg.AddEntry(backgrounds['QCD'], 'QCD', 'f')
     leg.AddEntry(backgrounds['TT'], 'TT', 'f')
     leg.AddEntry(backgrounds_EWK['VV'], 'EWK', 'f')
 #    leg.AddEntry(backgrounds['W'], 'W', 'f')
@@ -289,6 +289,9 @@ def BuildPlot(args):
         lepLabel = "#mu#tau_{h}"
     elif 'et_' in args.category:
         lepLabel = "e#tau_{h}"
+    elif 'tt_' in args.category:
+        lepLabel = "#tau_{h}#tau_{h}"
+
     if args.year == '2016':
         lumi = "35.9 fb^{-1}"
     elif args.year == '2017':

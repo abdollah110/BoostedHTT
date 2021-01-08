@@ -98,17 +98,14 @@ int main(int argc, char* argv[]) {
     
     float LeptonIsoCut=0.15;
     bool debug= false;
-    //    float luminosity=    35867;
-    //    float luminosity=    41530;
     
-    
-    float leadPt_=-10;
-    float subPt_=-10;
+    float lep1Pt_=-10;
+    float lep2Pt_=-10;
     float vis_mass=-10;
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
-    bool PassLead,PassSub,PassLeadCombined,PassSubCombined,PassLeadCharged,PassSubCharged,OS,SS;
-    float tmass,ht,st,Met,FullWeight, dR_tau_tau, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
+    bool lep1IsoPass,lep2IsoPass,OS,SS;
+    float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
     // Trigger
     bool PassTrigger_37;
     bool PassTrigger_38;
@@ -123,17 +120,12 @@ int main(int argc, char* argv[]) {
     bool PassTrigger_22;
     
     
-    
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
     //    outTr->Branch("evtwtZpt",&wtnom_zpt_weight,"evtwtZPt/F");
-    outTr->Branch("leadPt",&leadPt_,"leadPt/F");
-    outTr->Branch("subPt",&subPt_,"subPt/F");
-    outTr->Branch("PassLead",&PassLead,"PassLead/O");
-    outTr->Branch("PassSub",&PassSub,"PassSub/O");
-    outTr->Branch("PassLeadCombined",&PassLeadCombined,"PassLeadCombined/O");
-    outTr->Branch("PassSubCombined",&PassSubCombined,"PassSubCombined/O");
-    outTr->Branch("PassLeadCharged",&PassLeadCharged,"PassLeadCharged/O");
-    outTr->Branch("PassSubCharged",&PassSubCharged,"PassSubCharged/O");
+    outTr->Branch("lep1Pt",&lep1Pt_,"lep1Pt/F");
+    outTr->Branch("lep2Pt",&lep2Pt_,"lep2Pt/F");
+    outTr->Branch("lep1IsoPass",&lep1IsoPass,"lep1IsoPass/O");
+    outTr->Branch("lep2IsoPass",&lep2IsoPass,"lep2IsoPass/O");
     outTr->Branch("OS",&OS,"OS/O");
     outTr->Branch("SS",&SS,"SS/O");
     outTr->Branch("vis_mass",&vis_mass,"vis_mass/F");
@@ -142,7 +134,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("st",&st,"st/F");
     outTr->Branch("Met",&Met,"Met/F");
     outTr->Branch("LeadJetPt",&LeadJetPt,"LeadJetPt/F");
-    outTr->Branch("dR_tau_tau",&dR_tau_tau,"dR_tau_tau/F");
+    outTr->Branch("dR_lep_lep",&dR_lep_lep,"dR_lep_lep/F");
     //    outTr->Branch("IsoLepValue",&IsoLepValue,"IsoLepValue/F");
     outTr->Branch("BoostedTauRawIso",&BoostedTauRawIso,"BoostedTauRawIso/F");
     outTr->Branch("higgs_pT",&higgs_pT,"higgs_pT/F");
@@ -174,6 +166,7 @@ int main(int argc, char* argv[]) {
         //=========================================================================================================
         // Trigger
 //        https://cmsoms.cern.ch/cms/triggers/hlt_trigger_rates?cms_run=325175
+//https://twiki.cern.ch/twiki/bin/viewauth/CMS/HLTPathsRunIIList
         PassTrigger_20 = ((HLTJet >> 20 & 1)==1); //HLT_AK8PFHT700_TrimR0p1PT0p3Mass50_v // only 2016?
         PassTrigger_21 = ((HLTJet >> 21 & 1)==1); //HLT_AK8PFJet360_TrimMass30_v // only 2016?
         PassTrigger_22 = ((HLTJet >> 22 & 1)==1); //HLT_PFHT300_PFMET110_v // only 2016?
@@ -189,7 +182,8 @@ int main(int argc, char* argv[]) {
         //        // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19; // 2017
 //        else if (name.find("HLT_PFMET110_PFMHT110_IDTight_v")                            != string::npos) bitJet = 26;
 //        else if (name.find("HLT_PFMET120_PFMHT120_IDTight_v")                            != string::npos) bitJet = 27;
-        
+//              else if (name.find("HLT_PFHT300_PFMET110_v")                                     != string::npos) bitJet = 22; //2016 // HTMHT
+// HLT_PFHT500_PFMET100_PFMHT100_IDTight_v //2017 // HTMHT
         
         plotFill("cutFlowTable",2 ,15,0,15);
         //=========================================================================================================
@@ -214,7 +208,7 @@ int main(int argc, char* argv[]) {
         
         if (boostedTauPt->at(idx_leadtau) <= 30 || fabs(boostedTauEta->at(idx_leadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_leadtau) < 0.5 ) continue;
-        //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_leadtau) < 0.5) continue;
+        if (boostedTauagainstElectronVLooseMVA62018->at(idx_leadtau) < 0.5) continue;
         //        if (boostedTauByLooseMuonRejection3->at(idx_leadtau) < 0.5) continue;
         LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_leadtau),boostedTauEta->at(idx_leadtau),boostedTauPhi->at(idx_leadtau),boostedTauMass->at(idx_leadtau));
         plotFill("cutFlowTable",3 ,15,0,15);
@@ -225,13 +219,13 @@ int main(int argc, char* argv[]) {
         
         if (boostedTauPt->at(idx_subleadtau) <= 30 || fabs(boostedTauEta->at(idx_subleadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_subleadtau) < 0.5 ) continue;
-        //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_subleadtau) < 0.5) continue;
+        if (boostedTauagainstElectronVLooseMVA62018->at(idx_subleadtau) < 0.5) continue;
         //        if (boostedTauByLooseMuonRejection3->at(idx_subleadtau) < 0.5) continue;
         
         SubTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_subleadtau),boostedTauEta->at(idx_subleadtau),boostedTauPhi->at(idx_subleadtau),boostedTauMass->at(idx_subleadtau));
         plotFill("cutFlowTable",4 ,15,0,15);
         
-        dR_tau_tau= SubTau4Momentum.DeltaR(LeadTau4Momentum);
+        dR_lep_lep= SubTau4Momentum.DeltaR(LeadTau4Momentum);
         
         
         //=========================================================================================================
@@ -281,7 +275,7 @@ int main(int argc, char* argv[]) {
             // Event Selection
             //=========================================================================================================
             
-            if( dR_tau_tau > 0.8 || dR_tau_tau < 0.1) continue;
+            if( dR_lep_lep > 0.8 || dR_lep_lep < 0.1) continue;
             plotFill("cutFlowTable",8 ,15,0,15);
             
             tmass = TMass_F(LeadTau4Momentum.Pt(), LeadTau4Momentum.Px(), LeadTau4Momentum.Py(),  Met,  Metphi);
@@ -374,11 +368,11 @@ int main(int argc, char* argv[]) {
             higgs_m = higgs.M();
             OS = boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) < 0;
             SS =  boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) > 0;
-            PassLead = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
-            PassSub = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
+            lep1IsoPass = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
+            lep2IsoPass = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
             
-            leadPt_=boostedTauPt->at(idx_leadtau);
-            subPt_=boostedTauPt->at(idx_subleadtau);
+            lep1Pt_=boostedTauPt->at(idx_leadtau);
+            lep2Pt_=boostedTauPt->at(idx_subleadtau);
             vis_mass=Z4Momentum.M();
             LeadJetPt = LeadJet.Pt();
             dR_Z_jet=LeadJet.DeltaR(Z4Momentum);

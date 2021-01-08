@@ -905,15 +905,30 @@ TH2F**  FuncHistMuId(int year){
 }
 
 
-TH2F**  FuncHistMuIso(){
-    
-    TFile * MuCorrIso_BCDEF= TFile::Open(("../interface/pileup-hists/RunBCDEF_SF_ISO.root"));
-    TH2F * HistoMuIso_BCDEF= (TH2F *) MuCorrIso_BCDEF->Get("NUM_LooseRelIso_DEN_MediumID_pt_abseta");
-    
-    static  TH2F* HistoMuIso_arr[1]={HistoMuIso_BCDEF};
-    
-    return HistoMuIso_arr;
+TH2F**  FuncHistMuIso(int year){
+    if (year == 2016){
+        TFile * FileMuIso= TFile::Open(("data/SF_Muon_Iso_2016_BCDEF.root"));
+        TH2F * HistoMuIso= (TH2F *) FileMuIso->Get("NUM_LooseRelIso_DEN_MediumID_eta_pt");
+        static TH2F* HistoMuIso_arr[1]={HistoMuIso};
+        return  HistoMuIso_arr;
+    }
+    else if (year == 2017){
+        TFile * FileMuIso= TFile::Open(("data/SF_Muon_Iso_2017.root"));
+        TH2F * HistoMuIso= (TH2F *) FileMuIso->Get("NUM_LooseRelIso_DEN_MediumID_pt_abseta");
+        static TH2F* HistoMuIso_arr[1]={HistoMuIso};
+        return  HistoMuIso_arr;
+    }
+    else if (year == 2018){
+        TFile * FileMuIso= TFile::Open(("data/SF_Muon_Iso_2018.root"));
+        TH2F * HistoMuIso= (TH2F *) FileMuIso->Get("NUM_MediumID_DEN_TrackerMuons_pt_abseta");
+        static TH2F* HistoMuIso_arr[1]={HistoMuIso};
+        return  HistoMuIso_arr;
+    }
+    else
+        std::cout<< "which year\n";
+    return 0;
 }
+
 
 
 
@@ -1128,12 +1143,12 @@ int getNumElectron(){
     int numElectron=0;
     for  (int jele=0 ; jele < nEle; jele++){
         
-        if ( elePt->at(jele) < 15 || fabs(eleEta->at(jele)) > 2.5) continue;
+        if ( elePt->at(jele) < 20 || fabs(eleEta->at(jele)) > 2.5) continue;
         
         bool eleMVAIdExtra= false;
-        if (fabs (eleSCEta->at(jele)) <= 0.8 && eleIDMVAIso->at(jele) >   -0.83  ) eleMVAIdExtra= true;
-        else if (fabs (eleSCEta->at(jele)) >  0.8 &&fabs (eleSCEta->at(jele)) <=  1.5 && eleIDMVAIso->at(jele) >   -0.77  ) eleMVAIdExtra= true;
-        else if ( fabs (eleSCEta->at(jele)) >=  1.5 && eleIDMVAIso->at(jele) >  -0.69  ) eleMVAIdExtra= true;
+        if (fabs (eleSCEta->at(jele)) <= 0.8 && eleIDMVANoIso->at(jele) >    0.941   ) eleMVAIdExtra= true;
+        else if (fabs (eleSCEta->at(jele)) >  0.8 &&fabs (eleSCEta->at(jele)) <=  1.5 && eleIDMVANoIso->at(jele) >    0.899   ) eleMVAIdExtra= true;
+        else if ( fabs (eleSCEta->at(jele)) >=  1.5 && eleIDMVANoIso->at(jele) >   0.758   ) eleMVAIdExtra= true;
         else eleMVAIdExtra= false;
         
         float IsoLepValue=elePFChIso->at(jele)/elePt->at(jele);
@@ -1154,7 +1169,7 @@ int getNumMuon(){
     int numMuon=0;
     for  (int jmu=0 ; jmu < nMu; jmu++){
         
-        if ( muPt->at(jmu) < 15 || fabs(muEta->at(jmu)) > 2.4) continue;
+        if ( muPt->at(jmu) < 20 || fabs(muEta->at(jmu)) > 2.4) continue;
         
         float IsoMu=muPFChIso->at(jmu)/muPt->at(jmu);
         if ( (muPFNeuIso->at(jmu) + muPFPhoIso->at(jmu) - 0.5* muPFPUIso->at(jmu) )  > 0.0)
@@ -1172,27 +1187,27 @@ int getNumMuon(){
 
 //###########       electron  correction factor   ###########################################################
 
-float getElectronCor(TH2F * HistoEleMVAIdIso90){
-    
-    float ElectronCor=1;
-    for  (int jele=0 ; jele < nEle; jele++){
-        
-        if ( elePt->at(jele) < 15 || fabs(eleEta->at(jele)) > 2.5) continue;
-        
-        bool eleMVAIdExtra= false;
-        if (fabs (eleSCEta->at(jele)) <= 0.8 && eleIDMVAIso->at(jele) >   -0.83  ) eleMVAIdExtra= true;
-        else if (fabs (eleSCEta->at(jele)) >  0.8 &&fabs (eleSCEta->at(jele)) <=  1.5 && eleIDMVAIso->at(jele) >   -0.77  ) eleMVAIdExtra= true;
-        else if ( fabs (eleSCEta->at(jele)) >=  1.5 && eleIDMVAIso->at(jele) >  -0.69  ) eleMVAIdExtra= true;
-        else eleMVAIdExtra= false;
-        
-        
-        if (eleMVAIdExtra)
-            ElectronCor=getCorrFactorMVA90WPElectron94X(isData,  elePt->at(jele),eleSCEta->at(jele),    HistoEleMVAIdIso90 );
-        
-        break;
-    }
-    return ElectronCor;
-}
+//float getElectronCor(TH2F * HistoEleMVAIdIso90){
+//    
+//    float ElectronCor=1;
+//    for  (int jele=0 ; jele < nEle; jele++){
+//        
+//        if ( elePt->at(jele) < 15 || fabs(eleEta->at(jele)) > 2.5) continue;
+//        
+//        bool eleMVAIdExtra= false;
+//        if (fabs (eleSCEta->at(jele)) <= 0.8 && eleIDMVAIso->at(jele) >   -0.83  ) eleMVAIdExtra= true;
+//        else if (fabs (eleSCEta->at(jele)) >  0.8 &&fabs (eleSCEta->at(jele)) <=  1.5 && eleIDMVAIso->at(jele) >   -0.77  ) eleMVAIdExtra= true;
+//        else if ( fabs (eleSCEta->at(jele)) >=  1.5 && eleIDMVAIso->at(jele) >  -0.69  ) eleMVAIdExtra= true;
+//        else eleMVAIdExtra= false;
+//        
+//        
+//        if (eleMVAIdExtra)
+//            ElectronCor=getCorrFactorMVA90WPElectron94X(isData,  elePt->at(jele),eleSCEta->at(jele),    HistoEleMVAIdIso90 );
+//        
+//        break;
+//    }
+//    return ElectronCor;
+//}
 
 //###########       Z boson Veto   ###########################################################
 float MuMass= 0.10565837;
