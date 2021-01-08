@@ -6,7 +6,7 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 # Variables used for selection. These shouldn't be normalized
 selection_vars = [
-                  'PassL',
+                  'lep2IsoPass',
 ]
 
 # Variables that could be used as NN input. These should be normalized
@@ -42,7 +42,7 @@ def loadFile(ifile, category):
     # preselection
     slim_df = input_df[
 #                (input_df['Pass'] > 0)  & (input_df['OS'] > 0)
-                (input_df['PassL'] > 0) 
+                (input_df['lep2IsoPass'] > 0) 
     #            (input_df['njets'] > 1) & (input_df['mjj'] > 300)
         ]
     
