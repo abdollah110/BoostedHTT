@@ -920,7 +920,7 @@ TH2F**  FuncHistMuIso(int year){
     }
     else if (year == 2018){
         TFile * FileMuIso= TFile::Open(("data/SF_Muon_Iso_2018.root"));
-        TH2F * HistoMuIso= (TH2F *) FileMuIso->Get("NUM_MediumID_DEN_TrackerMuons_pt_abseta");
+        TH2F * HistoMuIso= (TH2F *) FileMuIso->Get("NUM_LooseRelIso_DEN_MediumID_pt_abseta");
         static TH2F* HistoMuIso_arr[1]={HistoMuIso};
         return  HistoMuIso_arr;
     }
