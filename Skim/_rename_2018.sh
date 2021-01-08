@@ -1,6 +1,6 @@
 dir=$1
 
-#hadd $dir/Data.root $dir/SingleMuon*root
+hadd $dir/Data.root $dir/*Run201*root
 hadd $dir/TTToHadronic.root          $dir/TTToHadronic_*.root
 hadd $dir/TTToSemiLeptonic.root          $dir/TTToSemiLeptonic_*.root
 hadd $dir/WZ1l1nu2q.root          $dir/WZ1l1nu2q_*root
