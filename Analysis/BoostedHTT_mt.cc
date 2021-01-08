@@ -234,6 +234,9 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",5 ,15,0,15);
         //=========================================================================================================
         // Event Selection
+        Met4Momentum.SetPtEtaPhiM(pfMET, 0, pfMETPhi, 0);
+        Z4Momentum=Tau4Momentum+Mu4Momentum;
+        TLorentzVector higgs = Tau4Momentum+Mu4Momentum +Met4Momentum;
         
         dR_lep_lep= Tau4Momentum.DeltaR(Mu4Momentum);
         if( dR_lep_lep > 0.8 || dR_lep_lep < 0.1) continue;
@@ -264,6 +267,10 @@ int main(int argc, char* argv[]) {
         if (numele > 0) continue;
         plotFill("cutFlowTable",11 ,15,0,15);
         
+        if (higgs.Pt() < 280) continue;
+        plotFill("cutFlowTable",14 ,15,0,15);
+
+
         //Leading jet
         TLorentzVector LeadJet= getLeadJet(Mu4Momentum, Tau4Momentum);
         
@@ -332,9 +339,7 @@ int main(int argc, char* argv[]) {
         //  tree branches
         //###############################################################################################
         
-        Met4Momentum.SetPtEtaPhiM(pfMET, 0, pfMETPhi, 0);
-        Z4Momentum=Tau4Momentum+Mu4Momentum;
-        TLorentzVector higgs = Tau4Momentum+Mu4Momentum +Met4Momentum;
+        
         
         higgs_pT = higgs.Pt();
         higgs_m = higgs.M();

@@ -135,9 +135,9 @@ int main(int argc, char* argv[]) {
     float vis_mass=-10;
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
-    bool OS,SS,lep1IsoPass,lep2IsoPass,IsoLep1Value, IsoLep2Value;
+    bool OS,SS,lep1IsoPass,lep2IsoPass;
     float tmass,tmass2, ht,st,Met,FullWeight, dR_lep_lep, Metphi, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
-    
+    float IsoLep1Value, IsoLep2Value;
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
 //    outTr->Branch("evtwtZpt",&wtnom_zpt_weight,"evtwtZPt/F");
     outTr->Branch("lep1Pt",&lepPt_,"lep1Pt/F");
@@ -195,7 +195,7 @@ int main(int argc, char* argv[]) {
         bool selectMuon_1= false;
         bool selectMuon_2= false;
         
-        float IsoLep1Value=muPFChIso->at(idx_lep)/muPt->at(idx_lep);
+        IsoLep1Value=muPFChIso->at(idx_lep)/muPt->at(idx_lep);
         if ( (muPFNeuIso->at(idx_lep) + muPFPhoIso->at(idx_lep) - 0.5* muPFPUIso->at(idx_lep) )  > 0.0)
             IsoLep1Value= ( muPFChIso->at(idx_lep) + muPFNeuIso->at(idx_lep) + muPFPhoIso->at(idx_lep) - 0.5* muPFPUIso->at(idx_lep))/muPt->at(idx_lep);
         
@@ -254,16 +254,14 @@ int main(int argc, char* argv[]) {
         
         //=========================================================================================================
         // Event Selection
-        
-        dR_lep_lep= Ele4Momentum.DeltaR(Mu4Momentum);
-        if( dR_lep_lep > 0.8 || dR_lep_lep < 0.1) continue;
-        plotFill("cutFlowTable",7 ,15,0,15);
-        
-        
         Met4Momentum.SetPtEtaPhiM(pfMET, 0, pfMETPhi, 0);
         Z4Momentum=Ele4Momentum+Mu4Momentum;
         TLorentzVector higgs = Ele4Momentum+Mu4Momentum +Met4Momentum;
 
+
+        dR_lep_lep= Ele4Momentum.DeltaR(Mu4Momentum);
+        if( dR_lep_lep > 0.8 || dR_lep_lep < 0.1) continue;
+        plotFill("cutFlowTable",7 ,15,0,15);
         
         tmass = TMass_F(Z4Momentum.Pt(), Z4Momentum.Px(), Z4Momentum.Py(),  Met,  Metphi);
         if (tmass > 80 ) continue;
