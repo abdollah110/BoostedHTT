@@ -25,6 +25,8 @@ def loadFile(ifile, category):
         channel = 'et'
     elif 'emu' in ifile or 'em' in ifile:
         channel = 'em'
+    elif 'tautau' in ifile or 'tt' in ifile:
+        channel = 'tt'
     else:
         raise Exception(
             'Input files must have MUTAU or ETAU or EMU in the provided path. You gave {}, ya goober.'.format(ifile))
@@ -42,7 +44,7 @@ def loadFile(ifile, category):
     # preselection
     slim_df = input_df[
 #                (input_df['Pass'] > 0)  & (input_df['OS'] > 0)
-                (input_df['lep2IsoPass'] > 0) 
+                (input_df['lep2IsoPass'] > 0)
     #            (input_df['njets'] > 1) & (input_df['mjj'] > 300)
         ]
     

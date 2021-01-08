@@ -112,6 +112,8 @@ def main(args):
         channel = 'et'
     elif args.treename == 'emu_tree':
         channel = 'em'
+    elif args.treename == 'tautau_tree':
+        channel = 'tt'
     else:
         raise Exception('Hey. Bad channel. No. Try again.')
 
