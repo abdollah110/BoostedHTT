@@ -217,8 +217,6 @@ int main(int argc, char* argv[]) {
             MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg50);
         }
         
-        cout<<"MuIdCorrection * MuIsoCorrection * MuTrgCorrection "<< HLT_Mu50 << HLT_Mu27<< " "<< MuIdCorrection <<" "<< MuIsoCorrection <<" "<< MuTrgCorrection <<"\n";
-
         if (!selectMuon_1 && !selectMuon_2) continue;
         LepCorrection= MuIdCorrection * MuIsoCorrection * MuTrgCorrection;
         
