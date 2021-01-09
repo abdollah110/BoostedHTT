@@ -156,11 +156,13 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
             
             vbf_var1 =ObsName[var_name];
 
-            if (OS != 0  && lep1IsoPass && lep2IsoPass) {
+//            if (OS != 0  && lep1IsoPass && lep2IsoPass) {
+            if (OS != 0  && lep1IsoPass ) {
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
             }
 
-            if (SS != 0 && lep1IsoPass && lep2IsoPass ){
+//            if (SS != 0 && lep1IsoPass && lep2IsoPass ){
+            if (SS != 0 && lep1IsoPass  ){
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight,OSSS[0]);
             }
 
@@ -205,16 +207,14 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
         for (auto i = 0; i < tree->GetEntries(); i++) {
             tree->GetEntry(i);
             
-//            std::cout<<OS <<Pass << !lep1IsoPass<<"\n";
 //            if (OS != 0 && !Pass && !lep1IsoPass){
-                if (OS != 0 && !lep1IsoPass && !lep2IsoPass){
+                if (OS != 0 && !lep1IsoPass || !lep2IsoPass){
 //            if (OS != 0 &&  !lep1IsoPass){
 //            if (OS != 0 ){
-//            std::cout<<name<< " "<<lep1Pt_<<"  " << weight<<"\n";
                 fillQCD_OS_CR(zeroJet, name, lep1Pt_,  weight);
             }
 //            else if (SS != 0 && !Pass && !lep1IsoPass){
-            else if (OS != 0 && !lep1IsoPass && !lep2IsoPass){
+            else if (SS != 0 && !lep1IsoPass || !lep2IsoPass){
 //            else if (SS != 0  && !lep1IsoPass){
 //            else if (SS != 0 ){
 //            std::cout<<"\t "<<name<< " "<<lep1Pt_<<"  " << weight<<"\n";

@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
     
     auto trgEff_MHT = TFile::Open("out2DTrg_htmet.root");
     TH2F * triggerEff_MHT = (TH2F *) trgEff_MHT->Get("TrgEfficiency2D");
-        
+    
     //###############################################################################################
     // Parameters
     //###############################################################################################
@@ -98,6 +98,9 @@ int main(int argc, char* argv[]) {
     
     float LeptonIsoCut=0.15;
     bool debug= false;
+    float LumiWeight = 1;
+    float PUWeight = 1;
+    float LepCorrection=1;
     
     float lep1Pt_=-10;
     float lep2Pt_=-10;
@@ -121,7 +124,6 @@ int main(int argc, char* argv[]) {
     
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
-    //    outTr->Branch("evtwtZpt",&wtnom_zpt_weight,"evtwtZPt/F");
     outTr->Branch("lep1Pt",&lep1Pt_,"lep1Pt/F");
     outTr->Branch("lep2Pt",&lep2Pt_,"lep2Pt/F");
     outTr->Branch("lep1IsoPass",&lep1IsoPass,"lep1IsoPass/O");
@@ -135,7 +137,6 @@ int main(int argc, char* argv[]) {
     outTr->Branch("Met",&Met,"Met/F");
     outTr->Branch("LeadJetPt",&LeadJetPt,"LeadJetPt/F");
     outTr->Branch("dR_lep_lep",&dR_lep_lep,"dR_lep_lep/F");
-    //    outTr->Branch("IsoLepValue",&IsoLepValue,"IsoLepValue/F");
     outTr->Branch("BoostedTauRawIso",&BoostedTauRawIso,"BoostedTauRawIso/F");
     outTr->Branch("higgs_pT",&higgs_pT,"higgs_pT/F");
     outTr->Branch("higgs_m",&higgs_m,"higgs_m/F");
@@ -165,8 +166,8 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",1 ,15,0,15);
         //=========================================================================================================
         // Trigger
-//        https://cmsoms.cern.ch/cms/triggers/hlt_trigger_rates?cms_run=325175
-//https://twiki.cern.ch/twiki/bin/viewauth/CMS/HLTPathsRunIIList
+        //        https://cmsoms.cern.ch/cms/triggers/hlt_trigger_rates?cms_run=325175
+        //https://twiki.cern.ch/twiki/bin/viewauth/CMS/HLTPathsRunIIList
         PassTrigger_20 = ((HLTJet >> 20 & 1)==1); //HLT_AK8PFHT700_TrimR0p1PT0p3Mass50_v // only 2016?
         PassTrigger_21 = ((HLTJet >> 21 & 1)==1); //HLT_AK8PFJet360_TrimMass30_v // only 2016?
         PassTrigger_22 = ((HLTJet >> 22 & 1)==1); //HLT_PFHT300_PFMET110_v // only 2016?
@@ -180,10 +181,10 @@ int main(int argc, char* argv[]) {
         PassTrigger_44 = ((HLTJet >> 44 & 1)==1); //HLT_AK8PFHT900_TrimMass50_v
         //        //              else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
         //        // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19; // 2017
-//        else if (name.find("HLT_PFMET110_PFMHT110_IDTight_v")                            != string::npos) bitJet = 26;
-//        else if (name.find("HLT_PFMET120_PFMHT120_IDTight_v")                            != string::npos) bitJet = 27;
-//              else if (name.find("HLT_PFHT300_PFMET110_v")                                     != string::npos) bitJet = 22; //2016 // HTMHT
-// HLT_PFHT500_PFMET100_PFMHT100_IDTight_v //2017 // HTMHT
+        //        else if (name.find("HLT_PFMET110_PFMHT110_IDTight_v")                            != string::npos) bitJet = 26;
+        //        else if (name.find("HLT_PFMET120_PFMHT120_IDTight_v")                            != string::npos) bitJet = 27;
+        //              else if (name.find("HLT_PFHT300_PFMET110_v")                                     != string::npos) bitJet = 22; //2016 // HTMHT
+        // HLT_PFHT500_PFMET100_PFMHT100_IDTight_v //2017 // HTMHT
         
         plotFill("cutFlowTable",2 ,15,0,15);
         //=========================================================================================================
@@ -199,7 +200,6 @@ int main(int argc, char* argv[]) {
         if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
         if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
         if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
-        //        if (Met < 50 ) continue ;
         
         TLorentzVector LeadTau4Momentum,SubTau4Momentum, Z4Momentum, Met4Momentum;
         //=========================================================================================================
@@ -226,7 +226,7 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",4 ,15,0,15);
         
         dR_lep_lep= SubTau4Momentum.DeltaR(LeadTau4Momentum);
-        
+        TLorentzVector LeadJet= getLeadJet(LeadTau4Momentum, SubTau4Momentum);
         
         //=========================================================================================================
         // Cut on AK8 (for trigger purposes)
@@ -237,29 +237,31 @@ int main(int argc, char* argv[]) {
         float PFHT= getST(JetPtCut);
         float PFMET=pfMET;
         float MHT=getMHT(JetPtCut);
-
+        st= getST(JetPtCut);
+        ht= getHT(JetPtCut, LeadTau4Momentum, SubTau4Momentum);
+        
         float TriggerWeight = 1;
         
         for (int ijet=0; ijet < nAK8Jet ; ijet ++){
             if (dR_(boostedTauEta->at(idx_leadtau),boostedTauPhi->at(idx_leadtau),AK8JetEta->at(ijet),AK8JetPhi->at(ijet)) < 0.5) continue;
             if (dR_(boostedTauEta->at(idx_subleadtau),boostedTauPhi->at(idx_subleadtau),AK8JetEta->at(ijet),AK8JetPhi->at(ijet)) < 0.5) continue;
             
-             AK8Pt=AK8JetPt->at(ijet);
-             AK8Mass=AK8JetSoftDropMass->at(ijet);
-             AK8Eta=fabs(AK8JetEta->at(ijet));
-             
-             if (AK8Pt > 450 && AK8Mass > 30 && AK8Eta < 2.5) break;
-             
-             }
-             
+            AK8Pt=AK8JetPt->at(ijet);
+            AK8Mass=AK8JetSoftDropMass->at(ijet);
+            AK8Eta=fabs(AK8JetEta->at(ijet));
+            
+            if (AK8Pt > 450 && AK8Mass > 30 && AK8Eta < 2.5) break;
+            
+        }
+        
         if (AK8Pt > 450 && AK8Mass > 30 && AK8Eta < 2.5){
-         if (!isData ||  (isData && PassTrigger_40)){
-            TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff);
+            if (!isData ||  (isData && PassTrigger_40)){
+                TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff);
+            }
+            else
+                continue;
         }
-        else
-            continue;
-        }
-        else if (PFHT > 700 && PFMET+MHT > 280){
+        else if (PFHT > 700 && PFMET > 120 && MHT> 120 && PFMET+MHT > 280){
             if (!isData ||  (isData && PassTrigger_39)){
                 TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MHT);
             }
@@ -270,135 +272,93 @@ int main(int argc, char* argv[]) {
             
             continue;
         }
-
-            //=========================================================================================================
-            // Event Selection
-            //=========================================================================================================
+        
+        //=========================================================================================================
+        // Event Selection
+        //=========================================================================================================
+        
+        if( dR_lep_lep > 0.8 || dR_lep_lep < 0.1) continue;
+        plotFill("cutFlowTable",8 ,15,0,15);
+        
+        tmass = TMass_F(LeadTau4Momentum.Pt(), LeadTau4Momentum.Px(), LeadTau4Momentum.Py(),  Met,  Metphi);
+        //        if (tmass > 80) continue;
+        plotFill("cutFlowTable",9 ,15,0,15);
+        
+        if (m_sv < 50) continue;
+        plotFill("cutFlowTable",10 ,15,0,15);
+        
+        // BJet veto
+        //        int numBJet=numBJets(BJetPtCut,DeepCSVCut);
+        //        if (numBJet > 0) continue;
+        //        plotFill("cutFlowTable",8 ,15,0,15);
+        
+        
+        //electron veto
+        //        int numele =getNumElectron();
+        //        if (numele > 0) continue;
+        //        plotFill("cutFlowTable",11 ,15,0,15);
+        
+        //muon veto
+        int numMu =getNumMuon();
+        if (numMu > 0) continue;
+        plotFill("cutFlowTable",12 ,15,0,15);
+        
+        //=========================================================================================================
+        
+        if (!isData){
             
-            if( dR_lep_lep > 0.8 || dR_lep_lep < 0.1) continue;
-            plotFill("cutFlowTable",8 ,15,0,15);
+            // Lumi weight
+            LumiWeight = getLuminsoity(year) * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
             
-            tmass = TMass_F(LeadTau4Momentum.Pt(), LeadTau4Momentum.Px(), LeadTau4Momentum.Py(),  Met,  Metphi);
-            //        if (tmass > 80) continue;
-            plotFill("cutFlowTable",9 ,15,0,15);
+            float PUMC_=HistoPUMC->GetBinContent(puTrue->at(0)+1);
+            float PUData_=HistoPUData->GetBinContent(puTrue->at(0)+1);
             
-            if (m_sv < 50) continue;
-            plotFill("cutFlowTable",10 ,15,0,15);
+            if (PUMC_ ==0)
+                cout<<"PUMC_ is zero!!! & num pileup= "<< puTrue->at(0)<<"\n";
+            else
+                PUWeight= PUData_/PUMC_;
             
-            // BJet veto
-            //        int numBJet=numBJets(BJetPtCut,DeepCSVCut);
-            //        if (numBJet > 0) continue;
-            //        plotFill("cutFlowTable",8 ,15,0,15);
-            
-            //        // HT cut
-            ht= getHT(JetPtCut, LeadTau4Momentum, SubTau4Momentum);
-            //        if (ht < 200) continue;
-            //        plotFill("cutFlowTable",9 ,15,0,15);
-            //
-            //        // ST definition
-            st= getST(JetPtCut);
-            //        if (st < 500) continue;
-            //        plotFill("cutFlowTable",10 ,15,0,15);
-            
-            
-            
-            //electron veto
-            //        int numele =getNumElectron();
-            //        if (numele > 0) continue;
-            //        plotFill("cutFlowTable",11 ,15,0,15);
-            
-            //muon veto
-            int numMu =getNumMuon();
-            if (numMu > 0) continue;
-            plotFill("cutFlowTable",12 ,15,0,15);
-            
-            
-            //Leading jet
-            TLorentzVector LeadJet= getLeadJet(LeadTau4Momentum, SubTau4Momentum);
-            
-            float LumiWeight = 1;
-            float PUWeight = 1;
-            
-            float LepCorrection=1;
-            //        float nom_zpt_weight=1.0;
-            //  GenInfo
-            vector<float>  genInfo=GeneratorInfo();
-            float ZBosonPt=genInfo[3];
-            float ZBosonMass=genInfo[4];
-            
-            
-            if (!isData){
-                
-                // Lumi weight
-                LumiWeight = getLuminsoity(year) * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
-                
-                float PUMC_=HistoPUMC->GetBinContent(puTrue->at(0)+1);
-                float PUData_=HistoPUData->GetBinContent(puTrue->at(0)+1);
-                
-                if (PUMC_ ==0)
-                    cout<<"PUMC_ is zero!!! & num pileup= "<< puTrue->at(0)<<"\n";
-                else
-                    PUWeight= PUData_/PUMC_;
-                
-                
-                
-                
-                //            cout<< " AK8JetPt->at(ijet) , AK8JetSoftDropMass->at(ijet) " <<AK8JetPt->at(ijet) <<"  "<< AK8JetSoftDropMass->at(ijet) << " --> " <<TriggerWeight<<"\n";
-                
-            }
-            
-            plotFill("LumiWeight",LumiWeight ,1000,0,10000);
-            plotFill("LepCorrection",LepCorrection ,100,0,2);
-            plotFill("TriggerWeight",TriggerWeight ,100,0,1);
-            //        plotFill("nom_zpt_weight",nom_zpt_weight ,100,0,2);
-            plotFill("PUWeight",PUWeight ,200,0,2);
-            
-            //###############################################################################################
-            //  tree branches
-            //###############################################################################################
-            
-            Met4Momentum.SetPtEtaPhiM(pfMET, 0, pfMETPhi, 0);
-            Z4Momentum=SubTau4Momentum+LeadTau4Momentum;
-            TLorentzVector higgs = SubTau4Momentum+LeadTau4Momentum +Met4Momentum;
-            
-            higgs_pT = higgs.Pt();
-            if (higgs_pT < 250 ) continue;
-            plotFill("cutFlowTable",13 ,15,0,15);
-
-            higgs_m = higgs.M();
-            OS = boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) < 0;
-            SS =  boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) > 0;
-            lep1IsoPass = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
-            lep2IsoPass = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
-            
-            lep1Pt_=boostedTauPt->at(idx_leadtau);
-            lep2Pt_=boostedTauPt->at(idx_subleadtau);
-            vis_mass=Z4Momentum.M();
-            LeadJetPt = LeadJet.Pt();
-            dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
-            BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_subleadtau);
-            m_sv_=m_sv;
-            //  Weights
-            FullWeight = LumiWeight*LepCorrection * TriggerWeight;
-            //        wtnom_zpt_weight=nom_zpt_weight;
-            
-            // Fill the tree
-            outTr->Fill();
-            
-            plotFill("trg_20",PassTrigger_20 ,2,0,2);
-            plotFill("trg_21",PassTrigger_21 ,2,0,2);
-            plotFill("trg_22",PassTrigger_22 ,2,0,2);
-            plotFill("trg_37",PassTrigger_37 ,2,0,2);
-            plotFill("trg_38",PassTrigger_38 ,2,0,2);
-            plotFill("trg_39",PassTrigger_39 ,2,0,2);
-            plotFill("trg_40",PassTrigger_40 ,2,0,2);
-            plotFill("Trg_39_40",PassTrigger_39*PassTrigger_40 ,2,0,2);
-            plotFill("trg_41",PassTrigger_41 ,2,0,2);
-            plotFill("trg_42",PassTrigger_42 ,2,0,2);
-            plotFill("trg_43",PassTrigger_43 ,2,0,2);
-            plotFill("trg_44",PassTrigger_44 ,2,0,2);
-            
-//        }// end of loop on AK8
+            //               //  GenInfo
+            //            vector<float>  genInfo=GeneratorInfo();
+            //            float ZBosonPt=genInfo[3];
+            //            float ZBosonMass=genInfo[4];
+        }
+        
+        plotFill("LumiWeight",LumiWeight ,1000,0,10000);
+        plotFill("LepCorrection",LepCorrection ,100,0,2);
+        plotFill("TriggerWeight",TriggerWeight ,100,0,1);
+        plotFill("PUWeight",PUWeight ,200,0,2);
+        
+        //###############################################################################################
+        //  tree branches
+        //###############################################################################################
+        
+        Met4Momentum.SetPtEtaPhiM(pfMET, 0, pfMETPhi, 0);
+        Z4Momentum=SubTau4Momentum+LeadTau4Momentum;
+        TLorentzVector higgs = SubTau4Momentum+LeadTau4Momentum +Met4Momentum;
+        
+        higgs_pT = higgs.Pt();
+        if (higgs_pT < 250 ) continue;
+        plotFill("cutFlowTable",13 ,15,0,15);
+        
+        higgs_m = higgs.M();
+        OS = boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) < 0;
+        SS =  boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) > 0;
+        lep1IsoPass = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
+        lep2IsoPass = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
+        
+        lep1Pt_=boostedTauPt->at(idx_leadtau);
+        lep2Pt_=boostedTauPt->at(idx_subleadtau);
+        vis_mass=Z4Momentum.M();
+        LeadJetPt = LeadJet.Pt();
+        dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
+        BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_subleadtau);
+        m_sv_=m_sv;
+        //  Weights
+        FullWeight = LumiWeight*LepCorrection * TriggerWeight;
+        
+        // Fill the tree
+        outTr->Fill();
         
     } //End of Tree
     

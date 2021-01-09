@@ -18,7 +18,6 @@ int main(int argc, char* argv[]) {
     std::string output_dir = parser.Option("-d");
     std::string syst = parser.Option("-u");
     std::string fname = path + sample + ".root";
-//    std::string year_str = parser.Option("-y");
     
     std::string year_str;
     if (path.find("2016") != string::npos) year_str = "2016";
@@ -50,36 +49,34 @@ int main(int argc, char* argv[]) {
     
     // open input file
     std::cout << "Opening file... " << sample << std::endl;
-    auto fin = TFile::Open(fname.c_str());
+    auto InputFile = TFile::Open(fname.c_str());
     std::cout << "Loading Ntuple..." << std::endl;
     TTree *  Run_Tree;
-    Run_Tree= Xttree(fin,"EventTree");
+    Run_Tree= Xttree(InputFile,"EventTree");
     
-    //    auto HistoTot = reinterpret_cast<TH1D*>(fin->Get("ggNtuplizer/hEvents"));
-    TH1F * HistoTot = (TH1F*) fin->Get("hcount");
+    //    auto HistoTot = reinterpret_cast<TH1D*>(InputFile->Get("ggNtuplizer/hEvents"));
+    TH1F * HistoTot = (TH1F*) InputFile->Get("hcount");
     auto fout = new TFile(filename.c_str(), "RECREATE");
     
     myMap1 = new std::map<std::string, TH1F*>();
     myMap2 = new map<string, TH2F*>();
-        
+    
     //########################################
     // Muon Id, Iso, Trigger and Tracker Eff files
     //########################################
     TH2F** HistoMuId=FuncHistMuId(year);
-    //    TH2F** HistoMuIso=FuncHistMuIso();
     TH2F** HistoMuTrg=FuncHistMuTrigger_50(year);
-    //    TGraphAsymmErrors * HistoMuTrack=FuncHistMuTrack();
-
+    
     //########################################
     // Pileup files
     //########################################
-
+    
     TH1F *  HistoPUData =HistPUData(year_str);
     TH1F * HistoPUMC = new TH1F();
-//    if (! (fname.find("Data") != string::npos || fname.find("Run") != string::npos ))
-//        HistoPUMC=HistPUMC(fin);
-
-
+    if (! (fname.find("Data") != string::npos || fname.find("Run") != string::npos ))
+        HistoPUMC=HistPUMC(InputFile);
+    
+    
     //###############################################################################################
     //  Fix Parameters
     //###############################################################################################
@@ -103,7 +100,6 @@ int main(int argc, char* argv[]) {
     Int_t nentries_wtn = (Int_t) Run_Tree->GetEntries();
     cout<<"nentries_wtn===="<<nentries_wtn<<"\n";
     for (Int_t i = 0; i < nentries_wtn; i++) {
-        //                    for (Int_t i = 0; i < 10000; i++) {
         
         Run_Tree->GetEntry(i);
         if (i % 10000 == 0) fprintf(stdout, "\r  Processed events: %8d of %8d ", i, nentries_wtn);
@@ -112,24 +108,11 @@ int main(int argc, char* argv[]) {
         
         //=========================================================================================================
         // Trigger
-        bool PassTrigger = ((HLTEleMuX >> 21 & 1)==1);
-        //              else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
-        // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19; // 2017
+        bool PassTrigger = ((HLTEleMuX >> 21 & 1)==1);//if (name.find("HLT_Mu50_v")   != string::npos) bitEleMuX = 21;
+        
         if (! PassTrigger) continue;
         plotFill("cutFlowTable",2 ,15,0,15);
         
-        
-        //  This part is to avoid of the duplicate of mu-tau pair from one events
-        std::vector<string> HistNamesFilled;
-        HistNamesFilled.clear();
-        
-        
-        //###############################################################################################
-        //  GenInfo
-        //###############################################################################################
-        vector<float>  genInfo=GeneratorInfo();
-        float ZBosonPt=genInfo[2];
-        float ZBosonMass=genInfo[4];
         
         // BJet veto
         int numBJet=numBJets(BJetPtCut,DeepCSVCut);
@@ -149,13 +132,13 @@ int main(int argc, char* argv[]) {
         for (int imu = 0; imu < nMu; ++imu){
             
             if (muPt->at(imu) <= 52 || fabs(muEta->at(imu)) >= 2.4) continue;
-            bool MuId=( (muIDbit->at(imu) >> 2 & 1)  && fabs(muD0->at(imu)) < 0.045 && fabs(muDz->at(imu)) < 0.2);
+            bool MuId=( (muIDbit->at(imu) >> 1 & 1)  && fabs(muD0->at(imu)) < 0.045 && fabs(muDz->at(imu)) < 0.2);
             if (!MuId ) continue;
             LeadMu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
             for (int jmu = imu+1; jmu < nMu; ++jmu){
                 if (muPt->at(jmu) <= 10 || fabs(muEta->at(jmu)) >= 2.4) continue;
-                bool MuId_sub=( (muIDbit->at(jmu) >> 2 & 1)  && fabs(muD0->at(jmu)) < 0.045 && fabs(muDz->at(jmu)) < 0.2);
+                bool MuId_sub=( (muIDbit->at(jmu) >> 1 & 1)  && fabs(muD0->at(jmu)) < 0.045 && fabs(muDz->at(jmu)) < 0.2);
                 if (!MuId_sub ) continue;
                 SubMu4Momentum.SetPtEtaPhiM(muPt->at(jmu),muEta->at(jmu),muPhi->at(jmu),MuMass);
                 
@@ -171,27 +154,30 @@ int main(int argc, char* argv[]) {
                 //###############################################################################################
                 float LumiWeight = 1;
                 float PUWeight = 1;
-                float LepCorrection=1;
+                float LeadMuIdCorrection = getCorrFactorMuonId(year, isData,  LeadMu4Momentum.Pt(), LeadMu4Momentum.Eta() ,HistoMuId);
+                float SubMuIdCorrection = getCorrFactorMuonId(year, isData,  SubMu4Momentum.Pt(), SubMu4Momentum.Eta() ,HistoMuId);
+                float MuTrgCorrection = getCorrFactorMuonTrg(isData,  LeadMu4Momentum.Pt(), LeadMu4Momentum.Eta() ,HistoMuTrg);
+                float LepCorrection= LeadMuIdCorrection *SubMuIdCorrection * MuTrgCorrection;
+                float ZBosonPt=-1;
+                float ZBosonMass=-1;
 
                 if (!isData){
                     
                     // Lumi weight
                     LumiWeight = getLuminsoity(year) * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
                     
-//                    float PUMC_=HistoPUMC->GetBinContent(puTrue->at(0)+1);
-//                    float PUData_=HistoPUData->GetBinContent(puTrue->at(0)+1);
-//
-//                    if (PUMC_ ==0)
-//                        cout<<"PUMC_ is zero!!! & num pileup= "<< puTrue->at(0)<<"\n";
-//                    else
-//                        PUWeight= PUData_/PUMC_;
+                    float PUMC_=HistoPUMC->GetBinContent(puTrue->at(0)+1);
+                    float PUData_=HistoPUData->GetBinContent(puTrue->at(0)+1);
                     
-                    // Muon Correction
-                    float LeadMuIdCorrection = getCorrFactorMuonId(year, isData,  LeadMu4Momentum.Pt(), LeadMu4Momentum.Eta() ,HistoMuId);
-                    float SubMuIdCorrection = getCorrFactorMuonId(year, isData,  SubMu4Momentum.Pt(), SubMu4Momentum.Eta() ,HistoMuId);
-                    float MuTrgCorrection = getCorrFactorMuonTrg(isData,  LeadMu4Momentum.Pt(), LeadMu4Momentum.Eta() ,HistoMuTrg);
-                    LepCorrection= LeadMuIdCorrection *SubMuIdCorrection * MuTrgCorrection;
-                    
+                    if (PUMC_ ==0)
+                        cout<<"PUMC_ is zero!!! & num pileup= "<< puTrue->at(0)<<"\n";
+                    else
+                        PUWeight= PUData_/PUMC_;
+                         
+                 vector<float>  genInfo=GeneratorInfo();
+                 ZBosonPt=genInfo[3];
+                 ZBosonMass=genInfo[4];
+
                 }
                 
                 plotFill("LumiWeight",LumiWeight ,1000,0,10000);
@@ -199,8 +185,13 @@ int main(int argc, char* argv[]) {
                 plotFill("PUWeight",PUWeight ,200,0,2);
                 
                 //###############################################################################################
+                //  Gen Info
+                //###############################################################################################
+
+                //###############################################################################################
                 //  Charge Categorization
                 //###############################################################################################
+
                 float chargeMuMu= muCharge->at(imu) * muCharge->at(jmu);
                 
                 const int size_q = 2;
@@ -217,24 +208,20 @@ int main(int argc, char* argv[]) {
                     if (Q_category[iq]) {
                         
                         
-                        float FullWeight = LumiWeight*LepCorrection;
+                        float FullWeight = LumiWeight*LepCorrection * PUWeight;
                         std::string FullStringName = Q_Cat[iq] ;
                         
-                        //                                This check is used to make sure that each event is just filled once for any of the categories ==> No doube-counting of events  (this is specially important for ttbar events where we have many jets and leptons)
-                        if (!( std::find(HistNamesFilled.begin(), HistNamesFilled.end(), FullStringName) != HistNamesFilled.end())){
-                            HistNamesFilled.push_back(FullStringName);
-                            
-                            
-                            
-                            plotFill("dR"+FullStringName,SubMu4Momentum.DeltaR(LeadMu4Momentum) ,100,0,1,FullWeight);
-                            plotFill("ZMass"+FullStringName,ZCandida.M() ,60,60,120,FullWeight);
-                            plotFill("ht"+FullStringName,ht ,120,0,1200,FullWeight);
-                            plotFill("ZPt"+FullStringName,ZCandida.Pt() ,100,0,1000,FullWeight);
-                            plotFill("2DZMassPt"+FullStringName,ZCandida.M(),ZCandida.Pt(),60,60,120,100,0,1000,FullWeight);
-                            
-                            
-                        }
-                        
+                        plotFill("dR"+FullStringName,SubMu4Momentum.DeltaR(LeadMu4Momentum) ,100,0,1,FullWeight);
+                        plotFill("ht"+FullStringName,ht ,120,0,1200,FullWeight);
+                        plotFill("ZMass"+FullStringName,ZCandida.M() ,60,60,120,FullWeight);
+                        plotFill("ZPt"+FullStringName,ZCandida.Pt() ,100,0,1000,FullWeight);
+                        plotFill("2DZMassPt"+FullStringName,ZCandida.M(),ZCandida.Pt(),60,60,120,100,0,1000,FullWeight);
+                        plotFill("genZMass"+FullStringName,ZBosonMass ,40,0,200,FullWeight);
+                        plotFill("genZPt"+FullStringName,ZBosonPt ,100,0,1000,FullWeight);
+                        plotFill("genZMass-recoZMass"+FullStringName,ZBosonMass-ZCandida.M(),100,-200,200,FullWeight);
+                        plotFill("genZPt-recoZPt"+FullStringName,ZBosonPt-ZCandida.Pt() ,100,-500,500,FullWeight);
+
+
                     }
                 }
                 
@@ -256,13 +243,13 @@ int main(int argc, char* argv[]) {
     map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
     
     for (; iMap1 != jMap1; ++iMap1)
-        nplot1(iMap1->first)->Write();
+    nplot1(iMap1->first)->Write();
     
     map<string, TH2F*>::const_iterator iMap2 = myMap2->begin();
     map<string, TH2F*>::const_iterator jMap2 = myMap2->end();
     
     for (; iMap2 != jMap2; ++iMap2)
-        nplot2(iMap2->first)->Write();
+    nplot2(iMap2->first)->Write();
     
     fout->Close();
     

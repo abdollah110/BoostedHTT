@@ -85,13 +85,10 @@ int main(int argc, char* argv[]) {
     if (! (fname.find("Data") != string::npos || fname.find("Run") != string::npos ))
         HistoPUMC=HistPUMC(InputFile);
     
-    
-    
-    
-    // H->tau tau scale factors
-    TFile htt_sf_file("data/htt_scalefactors_2017_v2.root");
-    RooWorkspace *htt_sf = reinterpret_cast<RooWorkspace*>(htt_sf_file.Get("w"));
-    htt_sf_file.Close();
+//    // H->tau tau scale factors
+//    TFile htt_sf_file("data/htt_scalefactors_2017_v2.root");
+//    RooWorkspace *htt_sf = reinterpret_cast<RooWorkspace*>(htt_sf_file.Get("w"));
+//    htt_sf_file.Close();
     
     //    // Z-pT reweighting
     //    TFile *zpt_file = new TFile("data/zpt_weights_2016_BtoH.root");
@@ -114,9 +111,13 @@ int main(int argc, char* argv[]) {
     
     float LeptonIsoCut=0.30;
     bool debug= false;
-    
+    float MuIdCorrection=1;
+    float MuIsoCorrection=1;
+    float MuTrgCorrection=1;
+    float LepCorrection=1;
+    float LumiWeight = 1;
+    float PUWeight = 1;
 
-    
     float lepPt_=-10;
     float taupt_=-10;
     float vis_mass=-10;
@@ -126,7 +127,6 @@ int main(int argc, char* argv[]) {
     float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
-    //    outTr->Branch("evtwtZpt",&wtnom_zpt_weight,"evtwtZPt/F");
     outTr->Branch("lep1Pt",&lepPt_,"lep1Pt/F");
     outTr->Branch("lep2Pt",&taupt_,"lep2Pt/F");
     outTr->Branch("OS",&OS,"OS/O");
@@ -144,6 +144,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("higgs_pT",&higgs_pT,"higgs_pT/F");
     outTr->Branch("higgs_m",&higgs_m,"higgs_m/F");
     outTr->Branch("m_sv",&m_sv_,"m_sv/F");
+    outTr->Branch("dR_Z_jet",&dR_Z_jet,"dR_Z_jet/F");
     
     
     Int_t nentries_wtn = (Int_t) Run_Tree->GetEntries();
@@ -164,12 +165,6 @@ int main(int argc, char* argv[]) {
         // MET Filters
         // Here we apply MET Filters
         // Here we apply prefire weights
-    float MuIdCorrection=1;
-    float MuIsoCorrection=1;
-    float MuTrgCorrection=1;
-    float LepCorrection=1;
-    float LumiWeight = 1;
-    float PUWeight = 1;
 
         //=========================================================================================================
         //MET Shape systematics
@@ -205,7 +200,6 @@ int main(int argc, char* argv[]) {
         
         plotFill("cutFlowTable",3 ,15,0,15);
         
-//        if (muPt->at(idx_lep) < 52  && HLT_Mu27 && IsoLep1Value < LeptonIsoCut && pfMET > 40 ){
         if (muPt->at(idx_lep) < 55  && HLT_Mu27 && pfMET > 40 ){
             selectMuon_1 = true;
             MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg27);
@@ -237,6 +231,7 @@ int main(int argc, char* argv[]) {
         Met4Momentum.SetPtEtaPhiM(pfMET, 0, pfMETPhi, 0);
         Z4Momentum=Tau4Momentum+Mu4Momentum;
         TLorentzVector higgs = Tau4Momentum+Mu4Momentum +Met4Momentum;
+        TLorentzVector LeadJet= getLeadJet(Mu4Momentum, Tau4Momentum);
         
         dR_lep_lep= Tau4Momentum.DeltaR(Mu4Momentum);
         if( dR_lep_lep > 0.8 || dR_lep_lep < 0.1) continue;
@@ -268,11 +263,7 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",11 ,15,0,15);
         
         if (higgs.Pt() < 280) continue;
-        plotFill("cutFlowTable",14 ,15,0,15);
-
-
-        //Leading jet
-        TLorentzVector LeadJet= getLeadJet(Mu4Momentum, Tau4Momentum);
+        plotFill("cutFlowTable",12 ,15,0,15);
         
         //=========================================================================================================
         // Separate Drell-Yan processes
@@ -286,8 +277,6 @@ int main(int argc, char* argv[]) {
         //        }
         
         //=========================================================================================================
-        // Weights & Correction
-
         if (!isData){
             
             // Lumi weight
@@ -301,45 +290,20 @@ int main(int argc, char* argv[]) {
             else
                 PUWeight= PUData_/PUMC_;
             
-            
-            
-            // give inputs to workspace
-//            htt_sf->var("m_pt")->setVal(muPt->at(idx_lep));
-//            htt_sf->var("m_eta")->setVal(muEta->at(idx_lep));
-//            htt_sf->var("z_gen_mass")->setVal(ZBosonMass);
-//            htt_sf->var("z_gen_pt")->setVal(ZBosonPt);
-            
-                    //        float nom_zpt_weight=1.0;
         //  GenInfo
 //        vector<float>  genInfo=GeneratorInfo();
 //        float ZBosonPt=genInfo[3];
 //        float ZBosonMass=genInfo[4];
 
-            
-            //            if (name == "EWKZ" || name == "ZL" || name == "ZTT" || name == "ZLL") {
-            //
-            //                // Z-pT Reweighting
-            //                nom_zpt_weight = htt_sf->function("zptmass_weight_nom")->getVal();
-            //                if (syst == "dyShape_Up") {
-            //                    nom_zpt_weight = 1.1 * nom_zpt_weight - 0.1;
-            //                } else if (syst == "dyShape_Down") {
-            //                    nom_zpt_weight = 0.9 * nom_zpt_weight + 0.1;
-            //                }
-            ////                cout<<"ZBosonMass= "<<ZBosonMass << "  ZBosonPt= "<<ZBosonPt <<"  nom_zpt_weight= "<<nom_zpt_weight<<"\n";
-            //
-            //            }
         }
         
         plotFill("LumiWeight",LumiWeight ,1000,0,10000);
         plotFill("LepCorrection",LepCorrection ,100,0,2);
-        //        plotFill("nom_zpt_weight",nom_zpt_weight ,100,0,2);
         plotFill("PUWeight",PUWeight ,200,0,2);
         
         //###############################################################################################
         //  tree branches
         //###############################################################################################
-        
-        
         
         higgs_pT = higgs.Pt();
         higgs_m = higgs.M();
@@ -355,15 +319,10 @@ int main(int argc, char* argv[]) {
         BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_tau);
         m_sv_=m_sv;
         //  Weights
-        FullWeight = LumiWeight*LepCorrection;
-        //        FullWeight = LumiWeight*LepCorrection*nom_zpt_weight;
-        //        wtnom_zpt_weight=nom_zpt_weight;
-        
+        FullWeight = LumiWeight*LepCorrection*PUWeight;
+
         // Fill the tree
         outTr->Fill();
-        
-        
-        //    plotFill("PUWeight",PUWeight ,200,0,2);
         
     } //End of Tree
     
