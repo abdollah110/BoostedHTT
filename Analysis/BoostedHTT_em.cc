@@ -85,9 +85,10 @@ int main(int argc, char* argv[]) {
         HistoPUMC=HistPUMC(InputFile);
 
     
-//    // Z-pT reweighting
-//    TFile *zpt_file = new TFile("data/zpt_weights_2016_BtoH.root");
-//    auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("zptmass_histo"));
+    // Z-pT reweighting
+    //        TFile *zpt_file = new TFile("data/zpt_weights_2016_BtoH.root");
+    TFile *zpt_file = new TFile("zmm_2d.root");
+    auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("Ratio2D"));
         
     //###############################################################################################
     // Parameters
@@ -112,6 +113,7 @@ int main(int argc, char* argv[]) {
     float EleIdCorrection =1;
     float LumiWeight = 1;
     float PUWeight = 1;
+    float zmasspt_weight=1;
     
     float lepPt_=-10;
     float elept_=-10;
@@ -123,6 +125,7 @@ int main(int argc, char* argv[]) {
     float IsoLep1Value, IsoLep2Value;
 
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
+    outTr->Branch("zmasspt_weight",&zmasspt_weight,"zmasspt_weight/F");
     outTr->Branch("lep1Pt",&lepPt_,"lep1Pt/F");
     outTr->Branch("lep2Pt",&elept_,"lep2Pt/F");
     outTr->Branch("OS",&OS,"OS/O");
@@ -300,17 +303,25 @@ int main(int argc, char* argv[]) {
             else
                 PUWeight= PUData_/PUMC_;
 
-
-//                    //  GenInfo
-//        vector<float>  genInfo=GeneratorInfo();
-//        float ZBosonPt=genInfo[3];
-//        float ZBosonMass=genInfo[4];
+            //  GenInfo
+            vector<float>  genInfo=GeneratorInfo();
+            float ZBosonPt=genInfo[3];
+            float ZBosonMass=genInfo[4];
+            
+            if  (name == "ZL" || name == "ZTT" || name == "ZLL") {
+                
+                if (ZBosonPt > 999) ZBosonPt=999;
+                if (ZBosonMass < 61) ZBosonMass = 61;
+                if (ZBosonMass > 119) ZBosonMass = 119;
+                zmasspt_weight=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+            }
 
         }
         
         plotFill("LumiWeight",LumiWeight ,1000,0,10000);
         plotFill("LepCorrection",LepCorrection ,100,0,2);
         plotFill("PUWeight",PUWeight ,200,0,2);
+        plotFill("zmasspt_weight",zmasspt_weight ,200,0,2);
         
         //###############################################################################################
         //  tree branches
@@ -328,7 +339,7 @@ int main(int argc, char* argv[]) {
         LeadJetPt = LeadJet.Pt();
         dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
         m_sv_=m_sv;
-        FullWeight = LumiWeight*LepCorrection*PUWeight;
+        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight;
         
         // Fill the tree
         outTr->Fill();
