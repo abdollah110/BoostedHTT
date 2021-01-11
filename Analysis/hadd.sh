@@ -1,5 +1,7 @@
 #This step is done running analyze
 # first
+dir=$1
+cd ${dir}
 mv _ ~/.
 mkdir _nominal
 mv *root _nominal
@@ -37,9 +39,4 @@ done
 
 mkdir DEL
 find . -name "*.root" -size -2k | xargs -n 1 -I {} mv {} DEL/
-
-
-#hadd   -f NN${SYS}/WH125${SYS}.root    ${SYS}/*WMinusH125_* ${SYS}/*WPlusH125_*
-#hadd   -f NN${SYS}/ZH125${SYS}.root    ${SYS}/*ZH125_*
-#hadd   -f NN${SYS}/ggH125${SYS}.root    ${SYS}/*ggH125*
-#hadd   -f NN${SYS}/qqH125${SYS}.root    ${SYS}/*qqH125*
+cd -
