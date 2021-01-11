@@ -119,12 +119,21 @@ float XSection(std::string OutName) {
 //    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.047 ; $$$$ Wrong XS
 //    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.3921 ; $$$$ Wrong XS
 //    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.03636 ; $$$$ Wrong XS
-    else if (OutName.find("DYJetsToLL_Pt-0To50") != string::npos) return  106300.0 / 12.8  ;// 12.8 is what I found by looking at the lower tail of the ht distribution between data and MC
-    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  407.9   ;
-    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   96.8 ;
-    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.774 ;
-    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.5164 ;
-    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.04796 ;
+//    else if (OutName.find("DYJetsToLL_Pt-0To50") != string::npos) return  106300.0 / 12.8  ;// 12.8 is what I found by looking at the lower tail of the ht distribution between data and MC
+//%%%%%%%%%%%% Wrong XSections %%%%%%%%%%%%
+//    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  407.9   ;
+//    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   96.8 ;
+//    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.774 ;
+//    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.5164 ;
+//    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.04796 ;
+//%%%%%%%%%%%% Updated XSections %%%%%%%%%%%%
+//https://cms.cern.ch/iCMS/jsp/db_notes/noteInfo.jsp?cmsnoteid=CMS%20AN-2018/263  from EXO-19-003 DarkMatter in ZLL
+
+    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  354.6 * (1921.8 * 3/5938)    ;
+    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   83.05 * (1921.8 * 3/5938) ;
+    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.043 * (1921.8 * 3/5938) ;
+    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.3921 * (1921.8 * 3/5938) ;
+    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.03823 * (1921.8 * 3/5938) ;
 
 
 

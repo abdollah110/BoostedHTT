@@ -132,13 +132,13 @@ int main(int argc, char* argv[]) {
         for (int imu = 0; imu < nMu; ++imu){
             
             if (muPt->at(imu) <= 53 || fabs(muEta->at(imu)) >= 2.4) continue;
-            bool MuId=( (muIDbit->at(imu) >> 1 & 1)  && fabs(muD0->at(imu)) < 0.045 && fabs(muDz->at(imu)) < 0.2);
+            bool MuId=( (muIDbit->at(imu) >> 2 & 1)  && fabs(muD0->at(imu)) < 0.045 && fabs(muDz->at(imu)) < 0.2);
             if (!MuId ) continue;
             LeadMu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
             for (int jmu = imu+1; jmu < nMu; ++jmu){
                 if (muPt->at(jmu) <= 10 || fabs(muEta->at(jmu)) >= 2.4) continue;
-                bool MuId_sub=( (muIDbit->at(jmu) >> 1 & 1)  && fabs(muD0->at(jmu)) < 0.045 && fabs(muDz->at(jmu)) < 0.2);
+                bool MuId_sub=( (muIDbit->at(jmu) >> 2 & 1)  && fabs(muD0->at(jmu)) < 0.045 && fabs(muDz->at(jmu)) < 0.2);
                 if (!MuId_sub ) continue;
                 SubMu4Momentum.SetPtEtaPhiM(muPt->at(jmu),muEta->at(jmu),muPhi->at(jmu),MuMass);
                 
