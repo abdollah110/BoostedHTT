@@ -123,7 +123,7 @@ int main(int argc, char* argv[]) {
     bool OS,SS,lep1IsoPass,lep2IsoPass;
     float tmass,tmass2, ht,st,Met,FullWeight, dR_lep_lep, Metphi, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
     float IsoLep1Value, IsoLep2Value;
-
+    int nbjet;
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
     outTr->Branch("zmasspt_weight",&zmasspt_weight,"zmasspt_weight/F");
     outTr->Branch("lep1Pt",&lepPt_,"lep1Pt/F");
@@ -145,6 +145,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("higgs_m",&higgs_m,"higgs_m/F");
     outTr->Branch("m_sv",&m_sv_,"m_sv/F");
     outTr->Branch("dR_Z_jet",&dR_Z_jet,"dR_Z_jet/F");
+    outTr->Branch("nbjet",&nbjet,"nbjet/I");
     
     Int_t nentries_wtn = (Int_t) Run_Tree->GetEntries();
     cout<<"nentries_wtn===="<<nentries_wtn<<"\n";
@@ -308,13 +309,13 @@ int main(int argc, char* argv[]) {
             float ZBosonPt=genInfo[3];
             float ZBosonMass=genInfo[4];
             
-            if  (name == "ZL" || name == "ZTT" || name == "ZLL") {
-                
-                if (ZBosonPt > 999) ZBosonPt=999;
-                if (ZBosonMass < 61) ZBosonMass = 61;
-                if (ZBosonMass > 119) ZBosonMass = 119;
-                zmasspt_weight=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
-            }
+//            if  (name == "ZL" || name == "ZTT" || name == "ZLL") {
+//                
+//                if (ZBosonPt > 999) ZBosonPt=999;
+//                if (ZBosonMass < 61) ZBosonMass = 61;
+//                if (ZBosonMass > 119) ZBosonMass = 119;
+//                zmasspt_weight=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+//            }
 
         }
         
@@ -340,6 +341,7 @@ int main(int argc, char* argv[]) {
         dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
         m_sv_=m_sv;
         FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight;
+        nbjet= numBJet;
         
         // Fill the tree
         outTr->Fill();
