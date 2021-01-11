@@ -10,6 +10,7 @@
 #include <TMath.h>
 #include <string>
 #include <sstream>
+#include "../interface/makeHisto.h"
 using namespace std;
 
 
@@ -70,6 +71,7 @@ void SkimerBoost::Loop(TString OutputFile)
         
         if(numMu50 < 1) continue;
         hcount->Fill(3);
+        plotFill("ht_met_1D_TrgEff_After",numMu50,10,0,10);
         
         MyNewTree->Fill();
     }
