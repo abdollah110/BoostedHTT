@@ -60,20 +60,15 @@ void SkimerBoost::Loop(TString OutputFile)
         
         TLorentzVector LeadMu4Momentum, SubMu4Momentum;
         
-        auto numMuAK8Jet(0);
+        auto numMu50(0);
         for (int imu = 0; imu < nMu; ++imu){
             if (muPt->at(imu) < 52 || fabs(muEta->at(imu)) > 2.4) continue;
             
             LeadMu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
-            
-            for (int ijet=0; ijet < nAK8Jet ; ijet ++){
-                if (AK8JetPt->at(ijet) < 200  || AK8JetSoftDropMass->at(ijet) < 0 || fabs(AK8JetEta->at(ijet)) > 2.5 ) continue;
-                numMuAK8Jet++;
-            }
         }
         
-        if(numMuAK8Jet < 1) continue;
+        if(numMu50 < 1) continue;
         hcount->Fill(3);
         
         MyNewTree->Fill();
