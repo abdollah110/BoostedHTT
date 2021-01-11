@@ -65,7 +65,7 @@ void SkimerBoost::Loop(TString OutputFile)
             if (muPt->at(imu) < 52 || fabs(muEta->at(imu)) > 2.4) continue;
             
             LeadMu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
-            
+           numMu50++;
         }
         
         if(numMu50 < 1) continue;
