@@ -10,6 +10,7 @@
 #include <TMath.h>
 #include <string>
 #include <sstream>
+#include "../interface/Functions.h"
 using namespace std;
 
 
