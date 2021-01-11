@@ -28,8 +28,8 @@ void SkimerBoost::Loop(TString OutputFile)
     else if (string(file->GetName()).find("2017") != string::npos ) year =2017;
     else if (string(file->GetName()).find("2018") != string::npos) year =2018;
     else (std::cout << "Year is not specificed in the outFile name !\n");
-
-
+    
+    
     fChain->SetBranchStatus("*",1);
     
     TH1F* hcount = new TH1F("hcount", "", 10, 0, 10);
@@ -127,48 +127,51 @@ void SkimerBoost::Loop(TString OutputFile)
         auto numTauTau(0);
         bool foundApair= false;
         
+        bool PassTrigger_40 = ((HLTJet >> 40 & 1)==1); //HLT_AK8PFJet400_TrimMass30_v //HLT_AK8PFJet400_TrimMass30_v
+        bool PassTrigger_21 = ((HLTJet >> 21 & 1)==1); //HLT_AK8PFJet360_TrimMass30_v //HLT_AK8PFJet360_TrimMass30_v
+        if (PassTrigger_40 || PassTrigger_21) continue;
+        
+        for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
             
-            for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
+            if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
+            //                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
+            if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
+            
+            //                if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
+            //                if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5) continue;
+            //                if (boostedTauagainstElectronVLooseMVA62018->at(ibtau) < 0.5) continue;
+            if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < 0) continue;
+            //                if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(ibtau) < 0) continue;
+            
+            BoostLeadTau4Momtmp.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
+            
+            
+            
+            for (int jbtau = ibtau+1; jbtau < nBoostedTau; ++jbtau){
                 
-                if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
-//                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
-                if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
+                if (boostedTauPt->at(jbtau) < 30 || fabs(boostedTauEta->at(jbtau)) > 2.3 ) continue;
+                //                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(jbtau) < 0.5 ) continue;
+                if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(jbtau) < 0.5 ) continue;
                 
-//                if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
-//                if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5) continue;
-//                if (boostedTauagainstElectronVLooseMVA62018->at(ibtau) < 0.5) continue;
-                if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < 0) continue;
-//                if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(ibtau) < 0) continue;
+                //                    if (boostedTauByMVA6VLooseElectronRejection->at(jbtau) < 0.5) continue;
+                //                    if (boostedTauByLooseMuonRejection3->at(jbtau) < 0.5) continue;
+                //                    if (boostedTauagainstElectronVLooseMVA62018->at(jbtau) < 0.5) continue;
+                if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(jbtau) < 0) continue;
+                //                    if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(jbtau) < 0) continue;
                 
-                BoostLeadTau4Momtmp.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
+                BoostSubTau4Momtmp.SetPtEtaPhiM(boostedTauPt->at(jbtau),boostedTauEta->at(jbtau),boostedTauPhi->at(jbtau),boostedTauMass->at(jbtau));
                 
                 
-                
-                for (int jbtau = ibtau+1; jbtau < nBoostedTau; ++jbtau){
-                    
-                    if (boostedTauPt->at(jbtau) < 30 || fabs(boostedTauEta->at(jbtau)) > 2.3 ) continue;
-    //                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(jbtau) < 0.5 ) continue;
-                    if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(jbtau) < 0.5 ) continue;
-                    
-//                    if (boostedTauByMVA6VLooseElectronRejection->at(jbtau) < 0.5) continue;
-//                    if (boostedTauByLooseMuonRejection3->at(jbtau) < 0.5) continue;
-//                    if (boostedTauagainstElectronVLooseMVA62018->at(jbtau) < 0.5) continue;
-                    if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(jbtau) < 0) continue;
-//                    if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(jbtau) < 0) continue;
-                    
-                    BoostSubTau4Momtmp.SetPtEtaPhiM(boostedTauPt->at(jbtau),boostedTauEta->at(jbtau),boostedTauPhi->at(jbtau),boostedTauMass->at(jbtau));
-                                
-
                 if(BoostSubTau4Momtmp.DeltaR(BoostLeadTau4Momtmp) > 0.8 || BoostSubTau4Momtmp.DeltaR(BoostLeadTau4Momtmp) < 0.1) continue;
                 decayMode1 = boostedTauDecayMode->at(ibtau);
                 decayMode2 = boostedTauDecayMode->at(jbtau);
                 numTauTau++;
                 if (!foundApair){
-                leadtauIndex=ibtau;
-                subtauIndex=jbtau;
+                    leadtauIndex=ibtau;
+                    subtauIndex=jbtau;
                 }
                 foundApair=true;
-//                break;
+                //                break;
             }
         }
         
@@ -176,9 +179,9 @@ void SkimerBoost::Loop(TString OutputFile)
         if(numTauTau < 1) continue;
         hcount->Fill(4);
         
-    BoostLeadTau4Mom.SetPtEtaPhiM(boostedTauPt->at(leadtauIndex),boostedTauEta->at(leadtauIndex),boostedTauPhi->at(leadtauIndex),boostedTauMass->at(leadtauIndex));
-    BoostSubTau4Mom.SetPtEtaPhiM(boostedTauPt->at(subtauIndex),boostedTauEta->at(subtauIndex),boostedTauPhi->at(subtauIndex),boostedTauMass->at(subtauIndex));
-    
+        BoostLeadTau4Mom.SetPtEtaPhiM(boostedTauPt->at(leadtauIndex),boostedTauEta->at(leadtauIndex),boostedTauPhi->at(leadtauIndex),boostedTauMass->at(leadtauIndex));
+        BoostSubTau4Mom.SetPtEtaPhiM(boostedTauPt->at(subtauIndex),boostedTauEta->at(subtauIndex),boostedTauPhi->at(subtauIndex),boostedTauMass->at(subtauIndex));
+        
         met_px = pfMET*sin(pfMETPhi);
         met_py = pfMET*cos(pfMETPhi);
         met = pfMET;
@@ -231,7 +234,7 @@ int main(int argc, char* argv[]){
     cout<< "\n===\n input is "<<InputFile  <<"  and output is "<<OutputFile<<"\n===\n";
     
     SkimerBoost t(InputFile);
-    t.Loop(OutputFile);    
+    t.Loop(OutputFile);
     return 0;
 }
 
