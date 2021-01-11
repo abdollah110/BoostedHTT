@@ -131,7 +131,7 @@ int main(int argc, char* argv[]) {
         
         for (int imu = 0; imu < nMu; ++imu){
             
-            if (muPt->at(imu) <= 52 || fabs(muEta->at(imu)) >= 2.4) continue;
+            if (muPt->at(imu) <= 53 || fabs(muEta->at(imu)) >= 2.4) continue;
             bool MuId=( (muIDbit->at(imu) >> 1 & 1)  && fabs(muD0->at(imu)) < 0.045 && fabs(muDz->at(imu)) < 0.2);
             if (!MuId ) continue;
             LeadMu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
