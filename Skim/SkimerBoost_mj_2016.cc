@@ -11,6 +11,7 @@
 #include <string>
 #include <sstream>
 //#include "../interface/Functions.h"
+#include "../interface/makeHisto.h"
 using namespace std;
 
 
