@@ -10,7 +10,7 @@
 #include <TMath.h>
 #include <string>
 #include <sstream>
-#include "../interface/Functions.h"
+//#include "../interface/Functions.h"
 using namespace std;
 
 
@@ -58,9 +58,15 @@ void SkimerBoost::Loop(TString OutputFile)
         
         
         auto numMuonJet(0);
-        float PFHT= getST(30);
         float PFMET=pfMET;
+        float PFHT=0;
         //        float MHT=getMHT(30);
+        
+        for (int jjet= 0 ; jjet < nJet ; jjet++){
+            if (jetPFLooseId->at(jjet) > 0.5 && jetPt->at(jjet) > 30 && fabs(jetEta->at(jjet)) < 3.0 )
+                PFHT += jetPt->at(jjet);
+        }
+        
         
         
         for (int ijet=0; ijet < nAK8Jet ; ijet ++){
@@ -76,10 +82,10 @@ void SkimerBoost::Loop(TString OutputFile)
             
             //Filling 1D eff plot
             if (AK8JetPt->at(ijet) > 450  && AK8JetSoftDropMass->at(ijet) > 0 && fabs(AK8JetEta->at(ijet)) < 2.5)
-            plotFill("ht_trgEff_1D_Before",AK8JetSoftDropMass->at(ijet),30,0,300);
+                plotFill("ht_trgEff_1D_Before",AK8JetSoftDropMass->at(ijet),30,0,300);
             if (AK8JetPt->at(ijet) > 450  && AK8JetSoftDropMass->at(ijet) > 0 && fabs(AK8JetEta->at(ijet)) < 2.5 && HLT_AK8PFJet360_TrimMass30)
                 plotFill("ht_trgEff_1D_After",AK8JetSoftDropMass->at(ijet),30,0,300);
-
+            
         }
         
         
