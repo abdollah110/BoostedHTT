@@ -75,18 +75,18 @@ int main(int argc, char* argv[]) {
 
     // Z-pT reweighting
     //        TFile *zpt_file = new TFile("data/zpt_weights_2016_BtoH.root");
-    TFile *zpt_file = new TFile("zmm_2d.root");
+    TFile *zpt_file = new TFile(("data/zmm_2d"+year_str+".root").c_str());
     auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("Ratio2D"));
-
     
     //###############################################################################################
     // 2D TRigger Efficiency
     //###############################################################################################
-    auto trgEff = TFile::Open("out2DTrg.root");
-    TH2F * triggerEff = (TH2F *) trgEff->Get("TrgEfficiency2D");
+    auto trgEff_HT = TFile::Open(("data/ht_trgEff_2D_"+year_str+".root").c_str());
+    TH2F * triggerEff_HT = (TH2F *) trgEff_HT->Get("TrgEfficiency2D");
     
-    auto trgEff_MHT = TFile::Open("out2DTrg_htmet.root");
-    TH2F * triggerEff_MHT = (TH2F *) trgEff_MHT->Get("TrgEfficiency2D");
+    auto trgEff_MET = TFile::Open(("data/met_trgEff_2D_"+year_str+".root").c_str());
+    TH2F * triggerEff_MET = (TH2F *) trgEff_MET->Get("TrgEfficiency2D");
+    
     
     //###############################################################################################
     // Parameters
@@ -172,16 +172,30 @@ int main(int argc, char* argv[]) {
         
         plotFill("cutFlowTable",1 ,15,0,15);
         //=========================================================================================================
+// Lowest unprescaled trigger           2016                         2017                                     2018
+
+//           HLT_AK8PFJet360_TrimMass30_v                      HLT_AK8PFJet400_TrimMass30(36.75/ 41.54)   HLT_AK8PFJet400_TrimMass30_v
+//           HLT_AK8PFJet500 (not in yet 33.64/36.47 )         HLT_AK8PFJet500 (not in yet)               HLT_AK8PFJet500 (not in yet)
+//           HLT_PFHT300_PFMET110_v                            HLT_PFHT500_PFMET100_PFMHT100_IDT          HLT_PFHT500_PFMET100_PFMHT100_IDT
+//           HLT_PFHT900_v                                     HLT_PFHT1050_v                             HLT_PFHT1050_v
+
+
+
+//2016
+PassTrigger_21 = ((HLTJet >> 21 & 1)==1); //HLT_AK8PFJet360_TrimMass30_v // only 2016?
+PassTrigger_22 = ((HLTJet >> 22 & 1)==1); //HLT_PFHT300_PFMET110_v // only 2016?
+
+
+//2017 and 2018
+PassTrigger_40 = ((HLTJet >> 40 & 1)==1); //HLT_AK8PFJet400_TrimMass30_v //HLT_AK8PFJet400_TrimMass30_v
+PassTrigger_39 = ((HLTJet >> 39 & 1)==1); //HLT_PFHT500_PFMET100_PFMHT100_IDTight_v
+        
         // Trigger
         //        https://cmsoms.cern.ch/cms/triggers/hlt_trigger_rates?cms_run=325175
         //https://twiki.cern.ch/twiki/bin/viewauth/CMS/HLTPathsRunIIList
         PassTrigger_20 = ((HLTJet >> 20 & 1)==1); //HLT_AK8PFHT700_TrimR0p1PT0p3Mass50_v // only 2016?
-        PassTrigger_21 = ((HLTJet >> 21 & 1)==1); //HLT_AK8PFJet360_TrimMass30_v // only 2016?
-        PassTrigger_22 = ((HLTJet >> 22 & 1)==1); //HLT_PFHT300_PFMET110_v // only 2016?
         PassTrigger_37 = ((HLTJet >> 37 & 1)==1); //HLT_AK8PFHT800_TrimMass50_v // not effective
         PassTrigger_38 = ((HLTJet >> 38 & 1)==1); //HLT_PFHT1050_v  NOT Effective at all
-        PassTrigger_39 = ((HLTJet >> 39 & 1)==1); //HLT_PFHT500_PFMET100_PFMHT100_IDTight_v
-        PassTrigger_40 = ((HLTJet >> 40 & 1)==1); //HLT_AK8PFJet400_TrimMass30_v //HLT_AK8PFJet400_TrimMass30_v
         PassTrigger_41 = ((HLTJet >> 41 & 1)==1);// HLT_AK8PFJet420_TrimMass30_v  // not needed as HLT_AK8PFJet400_TrimMass30_v is available
         PassTrigger_42 = ((HLTJet >> 42 & 1)==1);//HLT_PFHT500_PFMET110_PFMHT110_IDTight_v
         PassTrigger_43 = ((HLTJet >> 43 & 1)==1); // HLT_AK8PFHT850_TrimMass50_v  HLT_AK8PFHT800_TrimMass50_v is OK as well
@@ -248,6 +262,50 @@ int main(int argc, char* argv[]) {
         ht= getHT(JetPtCut, LeadTau4Momentum, SubTau4Momentum);
         
         float TriggerWeight = 1;
+        float _cut_AK8Pt_,_cut_AK8Mass_,_cut_PFHT_,_cut_PFMET_,_cut_PFMHT_, _cut_PFMETMHT_;
+        bool _Pass_AK8_Trigger_, _Pass_METHT_Trigger_;
+        
+        if (year== 2016){
+        
+        _cut_AK8Pt_ = 450;
+        _cut_AK8Mass_ = 30;
+        _cut_PFHT_ = 400;
+        _cut_PFMET_ = 180;
+        _cut_PFMHT_= 0;
+        _cut_PFMETMHT_ = 180;
+        _Pass_AK8_Trigger_=PassTrigger_21;
+        _Pass_METHT_Trigger_=PassTrigger_22;
+        
+        
+        } else if (year== 2017){
+        
+        _cut_AK8Pt_ = 500;
+        _cut_AK8Mass_ = 30;
+        _cut_PFHT_ = 700;
+        _cut_PFMET_ = 130;
+        _cut_PFMHT_= 130;
+        _cut_PFMETMHT_ = 320;
+        
+        _Pass_AK8_Trigger_=PassTrigger_40;
+        _Pass_METHT_Trigger_=PassTrigger_39;
+
+        
+        } else if (year== 2018){
+        
+        _cut_AK8Pt_ = 500;
+        _cut_AK8Mass_ = 30;
+        _cut_PFHT_ = 700;
+        _cut_PFMET_ = 130;
+        _cut_PFMHT_= 130;
+        _cut_PFMETMHT_ = 320;
+        
+        _Pass_AK8_Trigger_=PassTrigger_40;
+        _Pass_METHT_Trigger_=PassTrigger_39;
+
+
+        }
+        
+        
         
         for (int ijet=0; ijet < nAK8Jet ; ijet ++){
             if (dR_(boostedTauEta->at(idx_leadtau),boostedTauPhi->at(idx_leadtau),AK8JetEta->at(ijet),AK8JetPhi->at(ijet)) < 0.5) continue;
@@ -261,16 +319,16 @@ int main(int argc, char* argv[]) {
             
         }
         
-        if (AK8Pt > 450 && AK8Mass > 30 && AK8Eta < 2.5){
-            if (!isData ||  (isData && PassTrigger_40)){
-                TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff);
+        if (AK8Pt > _cut_AK8Pt_ && AK8Mass > _cut_AK8Mass_ && AK8Eta < 2.5){
+            if (!isData ||  (isData && _Pass_AK8_Trigger_)){
+                TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT);
             }
             else
                 continue;
         }
-        else if (PFHT > 700 && PFMET > 120 && MHT> 120 && PFMET+MHT > 280){
-            if (!isData ||  (isData && PassTrigger_39)){
-                TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MHT);
+        else if (PFHT > _cut_PFHT_ && PFMET > _cut_PFMET_ && MHT> _cut_PFMHT_ && PFMET+MHT > _cut_PFMETMHT_){
+            if (!isData ||  (isData && _Pass_METHT_Trigger_)){
+                TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MET);
             }
             else
                 continue;

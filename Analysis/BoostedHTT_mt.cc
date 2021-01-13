@@ -92,9 +92,8 @@ int main(int argc, char* argv[]) {
     
     // Z-pT reweighting
     //        TFile *zpt_file = new TFile("data/zpt_weights_2016_BtoH.root");
-    TFile *zpt_file = new TFile("zmm_2d.root");
-    auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("Ratio2D"));
-    
+    TFile *zpt_file = new TFile(("data/zmm_2d"+year_str+".root").c_str());
+    auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("Ratio2D"));    
     
     //###############################################################################################
     // Parameters
@@ -301,13 +300,13 @@ int main(int argc, char* argv[]) {
             float ZBosonPt=genInfo[3];
             float ZBosonMass=genInfo[4];
             
-//            if  (name == "ZL" || name == "ZTT" || name == "ZLL") {
-//                
-//                if (ZBosonPt > 999) ZBosonPt=999;
-//                if (ZBosonMass < 61) ZBosonMass = 61;
-//                if (ZBosonMass > 119) ZBosonMass = 119;
-//                zmasspt_weight=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
-//            }
+            if  (name == "ZL" || name == "ZTT" || name == "ZLL") {
+                
+                if (ZBosonPt > 999) ZBosonPt=999;
+                if (ZBosonMass < 61) ZBosonMass = 61;
+                if (ZBosonMass > 119) ZBosonMass = 119;
+                zmasspt_weight=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+            }
         }
         
         plotFill("LumiWeight",LumiWeight ,1000,0,10000);

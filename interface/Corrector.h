@@ -1061,10 +1061,12 @@ float getTriggerWeight(int year, bool isData,  float PFHT, float  PFMET, float M
     
     float weight = 1;
     float SumMETMHT=PFMET+MHT;
+    if (year == 2016) SumMETMHT=PFMET+0;
     if (isData)
         return 1;
     else
     {
+    
     if (PFHT > 2000)  PFHT= 2000;
     if (SumMETMHT > 1500)  SumMETMHT= 1500;
         weight = triggerEff->GetBinContent(triggerEff->GetXaxis()->FindBin(PFHT), triggerEff->GetYaxis()->FindBin(SumMETMHT));
