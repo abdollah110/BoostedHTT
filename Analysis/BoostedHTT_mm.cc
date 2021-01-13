@@ -92,8 +92,8 @@ int main(int argc, char* argv[]) {
     if (year== 2016) DeepCSVCut =     0.8953  ;
     if (year== 2017) DeepCSVCut =     0.8001  ;
     if (year== 2018) DeepCSVCut =    0.7527   ;
-    std::vector<Float_t> PT_binning{0,300,400,500,650,1000};
-    std::vector<Float_t> Mass_binning{60,80,100,120};
+    std::vector<Float_t> PT_binning{0,250,300,350,400,500,600,1500};
+    std::vector<Float_t> Mass_binning{60,85,95,120};
     
     float LeptonIsoCut=0.20;
     bool debug= false;
