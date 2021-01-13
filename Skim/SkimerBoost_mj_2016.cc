@@ -103,9 +103,8 @@ void SkimerBoost::Loop(TString OutputFile)
             plotFill("met_trgEff_1D_After",PFMET,50,0,1000);
         
         
-        if(numMuonJet < 1) continue;
-        
-        MyNewTree->Fill();
+//        if(numMuonJet < 1) continue;        
+//        MyNewTree->Fill();
     }
     
     
