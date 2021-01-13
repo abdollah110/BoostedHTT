@@ -76,31 +76,47 @@ void SkimerBoost::Loop(TString OutputFile)
             numMuonJet++;
             
             //Filling 2D eff plot
-            plotFill("ht_trgEff_2D_Before",AK8JetPt->at(ijet),AK8JetSoftDropMass->at(ijet),50,0,2000,30,0,300);
+            plotFill("ht_trgEff_2D_Before",AK8JetPt->at(ijet),AK8JetSoftDropMass->at(ijet),40,0,2000,60,0,300);
             if (HLT_AK8PFJet360_TrimMass30){
-                plotFill("ht_trgEff_2D_After",AK8JetPt->at(ijet),AK8JetSoftDropMass->at(ijet) ,50,0,2000,30,0,300);
+                plotFill("ht_trgEff_2D_After",AK8JetPt->at(ijet),AK8JetSoftDropMass->at(ijet) ,40,0,2000,60,0,300);
             }
             
-            //Filling 1D eff plot
+            //Filling 1D eff plot SDMass
             if (AK8JetPt->at(ijet) > 450  && AK8JetSoftDropMass->at(ijet) > 0 && fabs(AK8JetEta->at(ijet)) < 2.5)
-                plotFill("ht_trgEff_1D_Before",AK8JetSoftDropMass->at(ijet),30,0,300);
+                plotFill("SDMass_trgEff_1D_Before",AK8JetSoftDropMass->at(ijet),60,0,300);
             if (AK8JetPt->at(ijet) > 450  && AK8JetSoftDropMass->at(ijet) > 0 && fabs(AK8JetEta->at(ijet)) < 2.5 && HLT_AK8PFJet360_TrimMass30)
-                plotFill("ht_trgEff_1D_After",AK8JetSoftDropMass->at(ijet),30,0,300);
-            
+                plotFill("SDMass_trgEff_1D_After",AK8JetSoftDropMass->at(ijet),60,0,300);
+
+            //Filling 1D eff plot AK8Pt
+            if (AK8JetPt->at(ijet) > 200  && AK8JetSoftDropMass->at(ijet) > 30 && fabs(AK8JetEta->at(ijet)) < 2.5)
+                plotFill("AK8Pt_trgEff_1D_Before",AK8JetPt->at(ijet),40,0,2000);
+            if (AK8JetPt->at(ijet) > 200  && AK8JetSoftDropMass->at(ijet) > 30 && fabs(AK8JetEta->at(ijet)) < 2.5 && HLT_AK8PFJet360_TrimMass30)
+                plotFill("AK8Pt_trgEff_1D_After",AK8JetPt->at(ijet),40,0,2000);
+
+
         }
         
         
         //Filling 2D eff plot
-        plotFill("met_trgEff_2D_Before",PFHT,PFMET,60,0,3000,50,0,1000);
+        plotFill("met_trgEff_2D_Before",PFHT,PFMET,60,0,3000,100,0,1000);
         if (HLT_PFHT300_PFMET110){
-            plotFill("met_trgEff_2D_After",PFHT,PFMET,60,0,3000,50,0,1000);
+            plotFill("met_trgEff_2D_After",PFHT,PFMET,60,0,3000,100,0,1000);
         }
         
-        //Filling 1D eff plot
+        //Filling 1D eff plot PFMET
         if (PFHT > 400 )
-            plotFill("met_trgEff_1D_Before",PFMET,50,0,1000);
+            plotFill("PFMET_trgEff_1D_Before",PFMET,100,0,1000);
         if (PFHT > 400  && HLT_PFHT300_PFMET110)
-            plotFill("met_trgEff_1D_After",PFMET,50,0,1000);
+            plotFill("PFMET_trgEff_1D_After",PFMET,100,0,1000);
+
+        //Filling 1D eff plot PFHT
+        if (PFMET > 150 )
+            plotFill("PFHT_trgEff_1D_Before",PFHT,100,0,1000);
+        if (PFMET > 150  && HLT_PFHT300_PFMET110)
+            plotFill("PFHT_trgEff_1D_After",PFHT,100,0,1000);
+
+            
+            
         
         
 //        if(numMuonJet < 1) continue;        
