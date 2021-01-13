@@ -81,7 +81,7 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     c=ROOT.TCanvas("canvas","",0,0,600,600)
     c.cd()
 
-    file=ROOT.TFile(InputFilesLocation+FileName,"r")
+    file=ROOT.TFile(InputFilesLocation+"/"+FileName,"r")
 
     adapt=ROOT.gROOT.GetColor(12)
     new_idx=ROOT.gROOT.GetListOfColors().GetSize() + 1
@@ -407,8 +407,8 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     ROOT.gPad.RedrawAxis()
 
     c.Modified()
-    outName=((FileName.replace('TotalRootForLimit_PreSelection_MuJet','').replace('.root','')).replace('_HighDPhi_Iso','')).replace('_HighMT','_MT100')
-    c.SaveAs(InputFilesLocation+'_mm'+outName+".pdf")
+    outName=((FileName.replace('TotalRootForLimit_PreSelection_MuJet','').replace('.root','')))
+    c.SaveAs(InputFilesLocation+'/_mm'+outName+".pdf")
 
 
 FileNamesInfo=[

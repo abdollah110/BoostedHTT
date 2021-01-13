@@ -92,6 +92,8 @@ int main(int argc, char* argv[]) {
     if (year== 2016) DeepCSVCut =     0.8953  ;
     if (year== 2017) DeepCSVCut =     0.8001  ;
     if (year== 2018) DeepCSVCut =    0.7527   ;
+    std::vector<Float_t> PT_binning{0,300,400,500,650,1000};
+    std::vector<Float_t> Mass_binning{60,80,100,120};
     
     float LeptonIsoCut=0.20;
     bool debug= false;
@@ -215,7 +217,7 @@ int main(int argc, char* argv[]) {
                         plotFill("ht"+FullStringName,ht ,120,0,1200,FullWeight);
                         plotFill("ZMass"+FullStringName,ZCandida.M() ,60,60,120,FullWeight);
                         plotFill("ZPt"+FullStringName,ZCandida.Pt() ,100,0,1000,FullWeight);
-                        plotFill("2DZMassPt"+FullStringName,ZCandida.M(),ZCandida.Pt(),60,60,120,100,0,1000,FullWeight);
+                        plotFill("2DZMassPt"+FullStringName,ZCandida.M(),ZCandida.Pt(),Mass_binning.size()-1,&Mass_binning[0],PT_binning.size()-1,&PT_binning[0], FullWeight);
                         plotFill("genZMass"+FullStringName,ZBosonMass ,40,0,200,FullWeight);
                         plotFill("genZPt"+FullStringName,ZBosonPt ,100,0,1000,FullWeight);
                         plotFill("genZMass-recoZMass"+FullStringName,ZBosonMass-ZCandida.M(),100,-200,200,FullWeight);

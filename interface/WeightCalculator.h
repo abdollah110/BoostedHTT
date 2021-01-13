@@ -127,13 +127,21 @@ float XSection(std::string OutName) {
 //    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.5164 ;
 //    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.04796 ;
 //%%%%%%%%%%%% Updated XSections %%%%%%%%%%%%
-//https://cms.cern.ch/iCMS/jsp/db_notes/noteInfo.jsp?cmsnoteid=CMS%20AN-2018/263  from EXO-19-003 DarkMatter in ZLL
+////https://cms.cern.ch/iCMS/jsp/db_notes/noteInfo.jsp?cmsnoteid=CMS%20AN-2018/263  from EXO-19-003 DarkMatter in ZLL
+//
+//    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  354.6 * (1921.8 * 3/5938)    ;
+//    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   83.05 * (1921.8 * 3/5938) ;
+//    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.043 * (1921.8 * 3/5938) ;
+//    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.3921 * (1921.8 * 3/5938) ;
+//    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.03823 * (1921.8 * 3/5938) ;
 
-    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  354.6 * (1921.8 * 3/5938)    ;
-    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   83.05 * (1921.8 * 3/5938) ;
-    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.043 * (1921.8 * 3/5938) ;
-    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.3921 * (1921.8 * 3/5938) ;
-    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.03823 * (1921.8 * 3/5938) ;
+//from Guillelmo
+//    else if (OutName.find("DYJetsToLL_Zpt-0To50_") != string::npos) return  5695.620764    ;
+    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  387.130778   ;
+    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   89.395097 ;
+    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.435181 ;
+    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.464024 ;
+    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.043602 ;
 
 
 
