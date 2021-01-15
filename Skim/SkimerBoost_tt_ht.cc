@@ -129,7 +129,7 @@ void SkimerBoost::Loop(TString OutputFile)
         
         bool HLT_PFHT300_PFMET110 = ((HLTJet >> 22 & 1)==1); //HLT_PFHT300_PFMET110_v     2016
         bool HLT_PFHT500_PFMET100_PFMHT100_IDTight = ((HLTJet >> 39 & 1)==1); //HLT_PFHT500_PFMET100_PFMHT100_IDTight_v   2017
-        if (HLT_PFHT300_PFMET110 || HLT_PFHT500_PFMET100_PFMHT100_IDTight) continue;
+        if ((year==2016 && HLT_PFHT300_PFMET110) || (year==2017 && HLT_PFHT500_PFMET100_PFMHT100_IDTight)) continue;
         
         for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
             

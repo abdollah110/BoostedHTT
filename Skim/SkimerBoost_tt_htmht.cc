@@ -129,7 +129,7 @@ void SkimerBoost::Loop(TString OutputFile)
         
         bool PassTrigger_40 = ((HLTJet >> 40 & 1)==1); //HLT_AK8PFJet400_TrimMass30_v //HLT_AK8PFJet400_TrimMass30_v
         bool PassTrigger_21 = ((HLTJet >> 21 & 1)==1); //HLT_AK8PFJet360_TrimMass30_v //HLT_AK8PFJet360_TrimMass30_v
-        if (PassTrigger_40 || PassTrigger_21) continue;
+        if ((year ==2017 && PassTrigger_40) || (year==2016 && PassTrigger_21)) continue;
         
         for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
             
