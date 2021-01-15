@@ -270,7 +270,7 @@ int main(int argc, char* argv[]) {
                     //###############################################################################################
                     
                     
-                    float FullWeight = LumiWeight*LepCorrection;
+                    float FullWeight = LumiWeight*LepCorrection*zmasspt_weight * PUWeight;
                     std::string FullStringName = "";
                     
                     plotFill("denum"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
