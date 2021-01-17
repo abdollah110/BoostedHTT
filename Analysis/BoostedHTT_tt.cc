@@ -229,7 +229,7 @@ int main(int argc, char* argv[]) {
         
         if (boostedTauPt->at(idx_leadtau) <= 30 || fabs(boostedTauEta->at(idx_leadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_leadtau) < 0.5 ) continue;
-        if (boostedTauagainstElectronVLooseMVA62018->at(idx_leadtau) < 0.5) continue;
+        //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_leadtau) < 0.5) continue;
         //        if (boostedTauByLooseMuonRejection3->at(idx_leadtau) < 0.5) continue;
         LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_leadtau),boostedTauEta->at(idx_leadtau),boostedTauPhi->at(idx_leadtau),boostedTauMass->at(idx_leadtau));
         plotFill("cutFlowTable",3 ,15,0,15);
@@ -240,7 +240,7 @@ int main(int argc, char* argv[]) {
         
         if (boostedTauPt->at(idx_subleadtau) <= 30 || fabs(boostedTauEta->at(idx_subleadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_subleadtau) < 0.5 ) continue;
-        if (boostedTauagainstElectronVLooseMVA62018->at(idx_subleadtau) < 0.5) continue;
+        //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_subleadtau) < 0.5) continue;
         //        if (boostedTauByLooseMuonRejection3->at(idx_subleadtau) < 0.5) continue;
         
         SubTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_subleadtau),boostedTauEta->at(idx_subleadtau),boostedTauPhi->at(idx_subleadtau),boostedTauMass->at(idx_subleadtau));
@@ -262,7 +262,7 @@ int main(int argc, char* argv[]) {
         ht= getHT(JetPtCut, LeadTau4Momentum, SubTau4Momentum);
         
         float TriggerWeight = 1;
-        float _cut_AK8Pt_,_cut_AK8Mass_,_cut_PFHT_,_cut_PFMET_,_cut_PFMHT_, _cut_PFMETMHT_;
+        float _cut_AK8Pt_,_cut_AK8Mass_,_cut_PFHT_,_cut_PFMET_,_cut_PFMHT_, _cut_PFMETMHT_, _cut_st_;
         bool _Pass_AK8_Trigger_, _Pass_METHT_Trigger_;
         
         if (year== 2016){
@@ -270,12 +270,12 @@ int main(int argc, char* argv[]) {
             _cut_AK8Pt_ = 450;
             _cut_AK8Mass_ = 30;
             _cut_PFHT_ = 400;
-            _cut_PFMET_ = 160;
+            _cut_PFMET_ = 180;
             _cut_PFMHT_= 0;
-            _cut_PFMETMHT_ = 160;
+            _cut_PFMETMHT_ = 180;
             _Pass_AK8_Trigger_=PassTrigger_21;
             _Pass_METHT_Trigger_=PassTrigger_22;
-            
+            _cut_st_ = 400;
             
         } else if (year== 2017){
             
@@ -285,9 +285,9 @@ int main(int argc, char* argv[]) {
             _cut_PFMET_ = 120;
             _cut_PFMHT_= 120;
             _cut_PFMETMHT_ = 280;
-            
             _Pass_AK8_Trigger_=PassTrigger_40;
             _Pass_METHT_Trigger_=PassTrigger_39;
+            _cut_st_ = 600;
             
             
         } else if (year== 2018){
@@ -298,9 +298,9 @@ int main(int argc, char* argv[]) {
             _cut_PFMET_ = 120;
             _cut_PFMHT_= 120;
             _cut_PFMETMHT_ = 280;
-            
             _Pass_AK8_Trigger_=PassTrigger_40;
             _Pass_METHT_Trigger_=PassTrigger_39;
+            _cut_st_ = 600;
             
         }
         
@@ -339,7 +339,7 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",8 ,15,0,15);
         
         tmass = TMass_F(LeadTau4Momentum.Pt(), LeadTau4Momentum.Px(), LeadTau4Momentum.Py(),  Met,  Metphi);
-        //        if (tmass > 80) continue;
+        if (tmass > 200) continue;
         plotFill("cutFlowTable",9 ,15,0,15);
         
         if (m_sv < 50) continue;
@@ -351,16 +351,20 @@ int main(int argc, char* argv[]) {
         //        plotFill("cutFlowTable",8 ,15,0,15);
         
         
-        //electron veto
-        //        int numele =getNumElectron();
-        //        if (numele > 0) continue;
-        //        plotFill("cutFlowTable",11 ,15,0,15);
+//        electron veto
+        int numele =getNumElectron();
+        if (numele > 0) continue;
+        plotFill("cutFlowTable",11 ,15,0,15);
         
         //muon veto
         int numMu =getNumMuon();
         if (numMu > 0) continue;
         plotFill("cutFlowTable",12 ,15,0,15);
-        
+
+        //st cut
+        if (st < _cut_st_) continue;
+        plotFill("cutFlowTable",13 ,15,0,15);
+
         //=========================================================================================================
         
         if (!isData){
@@ -406,7 +410,7 @@ int main(int argc, char* argv[]) {
         
         higgs_pT = higgs.Pt();
         if (higgs_pT < 250 ) continue;
-        plotFill("cutFlowTable",13 ,15,0,15);
+        plotFill("cutFlowTable",14 ,15,0,15);
         
         higgs_m = higgs.M();
         OS = boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) < 0;

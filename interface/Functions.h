@@ -605,57 +605,57 @@ TTree *  Xttree( TFile * f_Double, string channel){
     
     
     //########################################   AK8 Info
-
-   Run_Tree->SetBranchAddress("nAK8Jet", &nAK8Jet, &b_nAK8Jet);
-   Run_Tree->SetBranchAddress("AK8JetPt", &AK8JetPt, &b_AK8JetPt);
-   Run_Tree->SetBranchAddress("AK8JetEn", &AK8JetEn, &b_AK8JetEn);
-   Run_Tree->SetBranchAddress("AK8JetRawPt", &AK8JetRawPt, &b_AK8JetRawPt);
-   Run_Tree->SetBranchAddress("AK8JetRawEn", &AK8JetRawEn, &b_AK8JetRawEn);
-   Run_Tree->SetBranchAddress("AK8JetEta", &AK8JetEta, &b_AK8JetEta);
-   Run_Tree->SetBranchAddress("AK8JetPhi", &AK8JetPhi, &b_AK8JetPhi);
-   Run_Tree->SetBranchAddress("AK8JetMass", &AK8JetMass, &b_AK8JetMass);
-   Run_Tree->SetBranchAddress("AK8Jet_tau1", &AK8Jet_tau1, &b_AK8Jet_tau1);
-   Run_Tree->SetBranchAddress("AK8Jet_tau2", &AK8Jet_tau2, &b_AK8Jet_tau2);
-   Run_Tree->SetBranchAddress("AK8Jet_tau3", &AK8Jet_tau3, &b_AK8Jet_tau3);
-   Run_Tree->SetBranchAddress("AK8Jetnconstituents", &AK8Jetnconstituents, &b_AK8Jetnconstituents);
-   Run_Tree->SetBranchAddress("AK8JetPFLooseId", &AK8JetPFLooseId, &b_AK8JetPFLooseId);
-   Run_Tree->SetBranchAddress("AK8JetPFTightLepVetoId", &AK8JetPFTightLepVetoId, &b_AK8JetPFTightLepVetoId);
-   Run_Tree->SetBranchAddress("AK8JetSoftDropMass", &AK8JetSoftDropMass, &b_AK8JetSoftDropMass);
-   Run_Tree->SetBranchAddress("AK8JetSoftDropMassCorr", &AK8JetSoftDropMassCorr, &b_AK8JetSoftDropMassCorr);
-   Run_Tree->SetBranchAddress("AK8JetPrunedMass", &AK8JetPrunedMass, &b_AK8JetPrunedMass);
-   Run_Tree->SetBranchAddress("AK8JetPrunedMassCorr", &AK8JetPrunedMassCorr, &b_AK8JetPrunedMassCorr);
-   Run_Tree->SetBranchAddress("AK8JetpfBoostedDSVBTag", &AK8JetpfBoostedDSVBTag, &b_AK8JetpfBoostedDSVBTag);
-   Run_Tree->SetBranchAddress("AK8JetCSV", &AK8JetCSV, &b_AK8JetCSV);
-   Run_Tree->SetBranchAddress("AK8JetJECUnc", &AK8JetJECUnc, &b_AK8JetJECUnc);
-   Run_Tree->SetBranchAddress("AK8JetL2L3corr", &AK8JetL2L3corr, &b_AK8JetL2L3corr);
-   Run_Tree->SetBranchAddress("AK8puppiPt", &AK8puppiPt, &b_AK8puppiPt);
-   Run_Tree->SetBranchAddress("AK8puppiMass", &AK8puppiMass, &b_AK8puppiMass);
-   Run_Tree->SetBranchAddress("AK8puppiEta", &AK8puppiEta, &b_AK8puppiEta);
-   Run_Tree->SetBranchAddress("AK8puppiPhi", &AK8puppiPhi, &b_AK8puppiPhi);
-   Run_Tree->SetBranchAddress("AK8puppiSDL2L3corr", &AK8puppiSDL2L3corr, &b_AK8puppiSDL2L3corr);
-   Run_Tree->SetBranchAddress("AK8puppiSDMass", &AK8puppiSDMass, &b_AK8puppiSDMass);
-   Run_Tree->SetBranchAddress("AK8puppiSDMassL2L3Corr", &AK8puppiSDMassL2L3Corr, &b_AK8puppiSDMassL2L3Corr);
-   Run_Tree->SetBranchAddress("AK8JetPartonID", &AK8JetPartonID, &b_AK8JetPartonID);
-   Run_Tree->SetBranchAddress("AK8JetHadFlvr", &AK8JetHadFlvr, &b_AK8JetHadFlvr);
-   Run_Tree->SetBranchAddress("nAK8SDSJ", &nAK8SDSJ, &b_nAK8SDSJ);
-   Run_Tree->SetBranchAddress("AK8SDSJPt", &AK8SDSJPt, &b_AK8SDSJPt);
-   Run_Tree->SetBranchAddress("AK8SDSJEta", &AK8SDSJEta, &b_AK8SDSJEta);
-   Run_Tree->SetBranchAddress("AK8SDSJPhi", &AK8SDSJPhi, &b_AK8SDSJPhi);
-   Run_Tree->SetBranchAddress("AK8SDSJMass", &AK8SDSJMass, &b_AK8SDSJMass);
-   Run_Tree->SetBranchAddress("AK8SDSJE", &AK8SDSJE, &b_AK8SDSJE);
-   Run_Tree->SetBranchAddress("AK8SDSJCharge", &AK8SDSJCharge, &b_AK8SDSJCharge);
-   Run_Tree->SetBranchAddress("AK8SDSJFlavour", &AK8SDSJFlavour, &b_AK8SDSJFlavour);
-   Run_Tree->SetBranchAddress("AK8SDSJCSV", &AK8SDSJCSV, &b_AK8SDSJCSV);
-   Run_Tree->SetBranchAddress("nAK8puppiSDSJ", &nAK8puppiSDSJ, &b_nAK8puppiSDSJ);
-   Run_Tree->SetBranchAddress("AK8puppiSDSJPt", &AK8puppiSDSJPt, &b_AK8puppiSDSJPt);
-   Run_Tree->SetBranchAddress("AK8puppiSDSJEta", &AK8puppiSDSJEta, &b_AK8puppiSDSJEta);
-   Run_Tree->SetBranchAddress("AK8puppiSDSJPhi", &AK8puppiSDSJPhi, &b_AK8puppiSDSJPhi);
-   Run_Tree->SetBranchAddress("AK8puppiSDSJMass", &AK8puppiSDSJMass, &b_AK8puppiSDSJMass);
-   Run_Tree->SetBranchAddress("AK8puppiSDSJE", &AK8puppiSDSJE, &b_AK8puppiSDSJE);
-   Run_Tree->SetBranchAddress("AK8puppiSDSJCharge", &AK8puppiSDSJCharge, &b_AK8puppiSDSJCharge);
-   Run_Tree->SetBranchAddress("AK8puppiSDSJFlavour", &AK8puppiSDSJFlavour, &b_AK8puppiSDSJFlavour);
-   Run_Tree->SetBranchAddress("AK8puppiSDSJCSV", &AK8puppiSDSJCSV, &b_AK8puppiSDSJCSV);
-   
+    
+    Run_Tree->SetBranchAddress("nAK8Jet", &nAK8Jet, &b_nAK8Jet);
+    Run_Tree->SetBranchAddress("AK8JetPt", &AK8JetPt, &b_AK8JetPt);
+    Run_Tree->SetBranchAddress("AK8JetEn", &AK8JetEn, &b_AK8JetEn);
+    Run_Tree->SetBranchAddress("AK8JetRawPt", &AK8JetRawPt, &b_AK8JetRawPt);
+    Run_Tree->SetBranchAddress("AK8JetRawEn", &AK8JetRawEn, &b_AK8JetRawEn);
+    Run_Tree->SetBranchAddress("AK8JetEta", &AK8JetEta, &b_AK8JetEta);
+    Run_Tree->SetBranchAddress("AK8JetPhi", &AK8JetPhi, &b_AK8JetPhi);
+    Run_Tree->SetBranchAddress("AK8JetMass", &AK8JetMass, &b_AK8JetMass);
+    Run_Tree->SetBranchAddress("AK8Jet_tau1", &AK8Jet_tau1, &b_AK8Jet_tau1);
+    Run_Tree->SetBranchAddress("AK8Jet_tau2", &AK8Jet_tau2, &b_AK8Jet_tau2);
+    Run_Tree->SetBranchAddress("AK8Jet_tau3", &AK8Jet_tau3, &b_AK8Jet_tau3);
+    Run_Tree->SetBranchAddress("AK8Jetnconstituents", &AK8Jetnconstituents, &b_AK8Jetnconstituents);
+    Run_Tree->SetBranchAddress("AK8JetPFLooseId", &AK8JetPFLooseId, &b_AK8JetPFLooseId);
+    Run_Tree->SetBranchAddress("AK8JetPFTightLepVetoId", &AK8JetPFTightLepVetoId, &b_AK8JetPFTightLepVetoId);
+    Run_Tree->SetBranchAddress("AK8JetSoftDropMass", &AK8JetSoftDropMass, &b_AK8JetSoftDropMass);
+    Run_Tree->SetBranchAddress("AK8JetSoftDropMassCorr", &AK8JetSoftDropMassCorr, &b_AK8JetSoftDropMassCorr);
+    Run_Tree->SetBranchAddress("AK8JetPrunedMass", &AK8JetPrunedMass, &b_AK8JetPrunedMass);
+    Run_Tree->SetBranchAddress("AK8JetPrunedMassCorr", &AK8JetPrunedMassCorr, &b_AK8JetPrunedMassCorr);
+    Run_Tree->SetBranchAddress("AK8JetpfBoostedDSVBTag", &AK8JetpfBoostedDSVBTag, &b_AK8JetpfBoostedDSVBTag);
+    Run_Tree->SetBranchAddress("AK8JetCSV", &AK8JetCSV, &b_AK8JetCSV);
+    Run_Tree->SetBranchAddress("AK8JetJECUnc", &AK8JetJECUnc, &b_AK8JetJECUnc);
+    Run_Tree->SetBranchAddress("AK8JetL2L3corr", &AK8JetL2L3corr, &b_AK8JetL2L3corr);
+    Run_Tree->SetBranchAddress("AK8puppiPt", &AK8puppiPt, &b_AK8puppiPt);
+    Run_Tree->SetBranchAddress("AK8puppiMass", &AK8puppiMass, &b_AK8puppiMass);
+    Run_Tree->SetBranchAddress("AK8puppiEta", &AK8puppiEta, &b_AK8puppiEta);
+    Run_Tree->SetBranchAddress("AK8puppiPhi", &AK8puppiPhi, &b_AK8puppiPhi);
+    Run_Tree->SetBranchAddress("AK8puppiSDL2L3corr", &AK8puppiSDL2L3corr, &b_AK8puppiSDL2L3corr);
+    Run_Tree->SetBranchAddress("AK8puppiSDMass", &AK8puppiSDMass, &b_AK8puppiSDMass);
+    Run_Tree->SetBranchAddress("AK8puppiSDMassL2L3Corr", &AK8puppiSDMassL2L3Corr, &b_AK8puppiSDMassL2L3Corr);
+    Run_Tree->SetBranchAddress("AK8JetPartonID", &AK8JetPartonID, &b_AK8JetPartonID);
+    Run_Tree->SetBranchAddress("AK8JetHadFlvr", &AK8JetHadFlvr, &b_AK8JetHadFlvr);
+    Run_Tree->SetBranchAddress("nAK8SDSJ", &nAK8SDSJ, &b_nAK8SDSJ);
+    Run_Tree->SetBranchAddress("AK8SDSJPt", &AK8SDSJPt, &b_AK8SDSJPt);
+    Run_Tree->SetBranchAddress("AK8SDSJEta", &AK8SDSJEta, &b_AK8SDSJEta);
+    Run_Tree->SetBranchAddress("AK8SDSJPhi", &AK8SDSJPhi, &b_AK8SDSJPhi);
+    Run_Tree->SetBranchAddress("AK8SDSJMass", &AK8SDSJMass, &b_AK8SDSJMass);
+    Run_Tree->SetBranchAddress("AK8SDSJE", &AK8SDSJE, &b_AK8SDSJE);
+    Run_Tree->SetBranchAddress("AK8SDSJCharge", &AK8SDSJCharge, &b_AK8SDSJCharge);
+    Run_Tree->SetBranchAddress("AK8SDSJFlavour", &AK8SDSJFlavour, &b_AK8SDSJFlavour);
+    Run_Tree->SetBranchAddress("AK8SDSJCSV", &AK8SDSJCSV, &b_AK8SDSJCSV);
+    Run_Tree->SetBranchAddress("nAK8puppiSDSJ", &nAK8puppiSDSJ, &b_nAK8puppiSDSJ);
+    Run_Tree->SetBranchAddress("AK8puppiSDSJPt", &AK8puppiSDSJPt, &b_AK8puppiSDSJPt);
+    Run_Tree->SetBranchAddress("AK8puppiSDSJEta", &AK8puppiSDSJEta, &b_AK8puppiSDSJEta);
+    Run_Tree->SetBranchAddress("AK8puppiSDSJPhi", &AK8puppiSDSJPhi, &b_AK8puppiSDSJPhi);
+    Run_Tree->SetBranchAddress("AK8puppiSDSJMass", &AK8puppiSDSJMass, &b_AK8puppiSDSJMass);
+    Run_Tree->SetBranchAddress("AK8puppiSDSJE", &AK8puppiSDSJE, &b_AK8puppiSDSJE);
+    Run_Tree->SetBranchAddress("AK8puppiSDSJCharge", &AK8puppiSDSJCharge, &b_AK8puppiSDSJCharge);
+    Run_Tree->SetBranchAddress("AK8puppiSDSJFlavour", &AK8puppiSDSJFlavour, &b_AK8puppiSDSJFlavour);
+    Run_Tree->SetBranchAddress("AK8puppiSDSJCSV", &AK8puppiSDSJCSV, &b_AK8puppiSDSJCSV);
+    
     
     //########################################   MET Info
     Run_Tree->SetBranchAddress("pfMET",&pfMET);
@@ -1139,6 +1139,8 @@ float FuncBosonKFactor(std::string X){
 
 //###########       Lepton  Veto   ###########################################################
 
+
+
 int getNumElectron(){
     
     
@@ -1146,44 +1148,51 @@ int getNumElectron(){
     int numElectron=0;
     for  (int jele=0 ; jele < nEle; jele++){
         
-        if ( elePt->at(jele) < 20 || fabs(eleEta->at(jele)) > 2.5) continue;
+        if ( elePt->at(jele) < 40 || fabs(eleEta->at(jele)) > 2.5) continue;
         
         bool eleMVAIdExtra= false;
-        if (fabs (eleSCEta->at(jele)) <= 0.8 && eleIDMVANoIso->at(jele) >    0.941   ) eleMVAIdExtra= true;
-        else if (fabs (eleSCEta->at(jele)) >  0.8 &&fabs (eleSCEta->at(jele)) <=  1.5 && eleIDMVANoIso->at(jele) >    0.899   ) eleMVAIdExtra= true;
-        else if ( fabs (eleSCEta->at(jele)) >=  1.5 && eleIDMVANoIso->at(jele) >   0.758   ) eleMVAIdExtra= true;
+        if (fabs (eleSCEta->at(jele)) <= 0.8 && eleIDMVANoIso->at(jele) >    0.837   ) eleMVAIdExtra= true;
+        else if (fabs (eleSCEta->at(jele)) >  0.8 &&fabs (eleSCEta->at(jele)) <=  1.5 && eleIDMVANoIso->at(jele) >    0.715   ) eleMVAIdExtra= true;
+        else if ( fabs (eleSCEta->at(jele)) >=  1.5 && eleIDMVANoIso->at(jele) >   0.357   ) eleMVAIdExtra= true;
         else eleMVAIdExtra= false;
         
-        float IsoLepValue=elePFChIso->at(jele)/elePt->at(jele);
+        
+        if (!eleMVAIdExtra) continue;
+        
+        float IsoEle=elePFChIso->at(jele)/elePt->at(jele);
         if ( (elePFNeuIso->at(jele) + elePFPhoIso->at(jele) - 0.5* elePFPUIso->at(jele) )  > 0.0)
-            IsoLepValue= ( elePFChIso->at(jele) + elePFNeuIso->at(jele) + elePFPhoIso->at(jele) - 0.5* elePFPUIso->at(jele))/elePt->at(jele);
+            IsoEle= ( elePFChIso->at(jele) + elePFNeuIso->at(jele) + elePFPhoIso->at(jele) - 0.5* elePFPUIso->at(jele))/elePt->at(jele);
         
-        
-        
-        if (eleMVAIdExtra && IsoLepValue < 0.15)
+        if (elePt->at(jele) >= 120 ){
             numElectron++;
+        }
+        else if (elePt->at(jele) >= 40  && IsoEle < 0.30 ){
+            numElectron++;
+        }
     }
     return numElectron;
-    
 }
+
 
 int getNumMuon(){
     
     int numMuon=0;
     for  (int jmu=0 ; jmu < nMu; jmu++){
         
-        if ( muPt->at(jmu) < 20 || fabs(muEta->at(jmu)) > 2.4) continue;
+        if ( muPt->at(jmu) < 30 || fabs(muEta->at(jmu)) > 2.4) continue;
+        bool MuId=( (muIDbit->at(jmu) >> 1 & 1)  && fabs(muD0->at(jmu)) < 0.045 && fabs(muDz->at(jmu)) < 0.2);
+        if (!MuId) continue;
         
         float IsoMu=muPFChIso->at(jmu)/muPt->at(jmu);
         if ( (muPFNeuIso->at(jmu) + muPFPhoIso->at(jmu) - 0.5* muPFPUIso->at(jmu) )  > 0.0)
             IsoMu= ( muPFChIso->at(jmu) + muPFNeuIso->at(jmu) + muPFPhoIso->at(jmu) - 0.5* muPFPUIso->at(jmu))/muPt->at(jmu);
         
-        bool MuId=( (muIDbit->at(jmu) >> 2 & 1)  && fabs(muD0->at(jmu)) < 0.045 && fabs(muDz->at(jmu)) < 0.2);
-        bool MuIso = IsoMu < 0.15;
-        
-        
-        if (MuId && MuIso)
+        if (muPt->at(jmu) >= 55){
             numMuon++;
+        }
+        else if (muPt->at(jmu) >= 30 && IsoMu < 0.3){
+            numMuon++;
+        }
     }
     return numMuon;
 }
@@ -1628,9 +1637,9 @@ float getMHT( float SimpleJetPtCut){
     for (int ijet= 0 ; ijet < nJet ; ijet++){
         if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 5.0 )
             MHT_x += jetPt->at(ijet)*cos(jetPhi->at(ijet));
-            MHT_y += jetPt->at(ijet)*sin(jetPhi->at(ijet));
+        MHT_y += jetPt->at(ijet)*sin(jetPhi->at(ijet));
     }
-        
+    
     return sqrt(MHT_x*MHT_x + MHT_y*MHT_y);
 }
 
