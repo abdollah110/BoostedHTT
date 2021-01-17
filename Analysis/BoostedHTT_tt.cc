@@ -362,7 +362,7 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",12 ,15,0,15);
 
         //st cut
-        if (st < _cut_st_) continue;
+//        if (st < _cut_st_) continue;
         plotFill("cutFlowTable",13 ,15,0,15);
 
         //=========================================================================================================
