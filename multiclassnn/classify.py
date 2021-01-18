@@ -123,8 +123,7 @@ def main(args):
     file_names = [ifile for ifile in glob('{}/*.root'.format(args.input_dir))]
 
     keep_vbf = [
-#                'taupt','Met','vis_mass', 'LeadJetPt','higgs_pT','higgs_m'
-                'lep1Pt','lep2Pt','Met','m_sv', 'LeadJetPt','higgs_m','higgs_pT','st'
+                'lep1Pt','lep2Pt','Met','m_sv', 'LeadJetPt','higgs_m','higgs_pT','st','tmass'
                 ]
 
     vbf_pred = Predictor(args.input_vbf, args.model_vbf, keep_vbf)
