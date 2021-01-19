@@ -34,7 +34,8 @@
 #include "../interface/Corrector.h"
 #include "../interface/makeHisto.h"
 
-
+float MuMass= 0.10565837;
+float eleMass= 0.000511;
 
 
 float deltaPhi(float a, float b) {
@@ -1174,6 +1175,47 @@ int getNumElectron(){
 }
 
 
+int getNumElectron(TLorentzVector Object4Momentum){
+    
+    
+    //            https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#Recommended_MVA_recipes_for_2016
+    int numElectron=0;
+    for  (int jele=0 ; jele < nEle; jele++){
+        
+        TLorentzVector Lep4Momentum;
+        Lep4Momentum.SetPtEtaPhiM(elePt->at(jele),eleEta->at(jele),elePhi->at(jele),eleMass);
+        if (Object4Momentum.DeltaR(Lep4Momentum) > 0.8) continue;
+         
+        if ( elePt->at(jele) < 40 || fabs(eleEta->at(jele)) > 2.5) continue;
+        
+        bool eleMVAIdExtra= false;
+        if (fabs (eleSCEta->at(jele)) <= 0.8 && eleIDMVANoIso->at(jele) >    0.837   ) eleMVAIdExtra= true;
+        else if (fabs (eleSCEta->at(jele)) >  0.8 &&fabs (eleSCEta->at(jele)) <=  1.5 && eleIDMVANoIso->at(jele) >    0.715   ) eleMVAIdExtra= true;
+        else if ( fabs (eleSCEta->at(jele)) >=  1.5 && eleIDMVANoIso->at(jele) >   0.357   ) eleMVAIdExtra= true;
+        else eleMVAIdExtra= false;
+        
+        
+        if (!eleMVAIdExtra) continue;
+        
+        float IsoEle=elePFChIso->at(jele)/elePt->at(jele);
+        if ( (elePFNeuIso->at(jele) + elePFPhoIso->at(jele) - 0.5* elePFPUIso->at(jele) )  > 0.0)
+            IsoEle= ( elePFChIso->at(jele) + elePFNeuIso->at(jele) + elePFPhoIso->at(jele) - 0.5* elePFPUIso->at(jele))/elePt->at(jele);
+        
+        if (elePt->at(jele) >= 120 ){
+            numElectron++;
+        }
+        else if (elePt->at(jele) >= 40  && IsoEle < 0.30 ){
+            numElectron++;
+        }
+    }
+    return numElectron;
+}
+
+
+
+
+
+
 int getNumMuon(){
     
     int numMuon=0;
@@ -1196,6 +1238,34 @@ int getNumMuon(){
     }
     return numMuon;
 }
+
+int getNumMuon(TLorentzVector Object4Momentum){
+    
+    int numMuon=0;
+    for  (int jmu=0 ; jmu < nMu; jmu++){
+        
+        TLorentzVector Lep4Momentum;
+        Lep4Momentum.SetPtEtaPhiM(muPt->at(jmu),muEta->at(jmu),muPhi->at(jmu),MuMass);
+        if (Object4Momentum.DeltaR(Lep4Momentum) > 0.8) continue;
+
+        if ( muPt->at(jmu) < 30 || fabs(muEta->at(jmu)) > 2.4) continue;
+        bool MuId=( (muIDbit->at(jmu) >> 1 & 1)  && fabs(muD0->at(jmu)) < 0.045 && fabs(muDz->at(jmu)) < 0.2);
+        if (!MuId) continue;
+        
+        float IsoMu=muPFChIso->at(jmu)/muPt->at(jmu);
+        if ( (muPFNeuIso->at(jmu) + muPFPhoIso->at(jmu) - 0.5* muPFPUIso->at(jmu) )  > 0.0)
+            IsoMu= ( muPFChIso->at(jmu) + muPFNeuIso->at(jmu) + muPFPhoIso->at(jmu) - 0.5* muPFPUIso->at(jmu))/muPt->at(jmu);
+        
+        if (muPt->at(jmu) >= 55){
+            numMuon++;
+        }
+        else if (muPt->at(jmu) >= 30 && IsoMu < 0.3){
+            numMuon++;
+        }
+    }
+    return numMuon;
+}
+
 
 //###########       electron  correction factor   ###########################################################
 
@@ -1222,8 +1292,7 @@ int getNumMuon(){
 //}
 
 //###########       Z boson Veto   ###########################################################
-float MuMass= 0.10565837;
-float eleMass= 0.000511;
+
 
 int getNumZBoson(){
     

@@ -352,12 +352,14 @@ int main(int argc, char* argv[]) {
         
         
 //        electron veto
-        int numele =getNumElectron();
+//        int numele =getNumElectron();
+        int numele =getNumElectron(SubTau4Momentum+LeadTau4Momentum);
         if (numele > 0) continue;
         plotFill("cutFlowTable",11 ,15,0,15);
         
         //muon veto
-        int numMu =getNumMuon();
+//        int numMu =getNumMuon();
+        int numMu =getNumMuon(SubTau4Momentum+LeadTau4Momentum);
         if (numMu > 0) continue;
         plotFill("cutFlowTable",12 ,15,0,15);
 
@@ -415,9 +417,12 @@ int main(int argc, char* argv[]) {
         higgs_m = higgs.M();
         OS = boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) < 0;
         SS =  boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) > 0;
-        lep1IsoPass = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
-        lep2IsoPass = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
-        
+//        lep1IsoPass = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
+//        lep2IsoPass = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
+        lep1IsoPass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
+        lep2IsoPass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
+
+
         lep1Pt_=boostedTauPt->at(idx_leadtau);
         lep2Pt_=boostedTauPt->at(idx_subleadtau);
         vis_mass=Z4Momentum.M();
