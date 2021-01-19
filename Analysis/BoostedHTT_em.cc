@@ -98,10 +98,10 @@ int main(int argc, char* argv[]) {
     float JetPtCut=30;
     float BJetPtCut=20;
     
-    float DeepCSVCut=   1000   ;                  //  Tight  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
-    if (year== 2016) DeepCSVCut =     0.8953  ;
-    if (year== 2017) DeepCSVCut =    0.8001  ;
-    if (year== 2018) DeepCSVCut =    0.7527   ;
+    float DeepCSVCut=   1000   ;                  //  Loose  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
+    if (year== 2016) DeepCSVCut =      0.2217   ;
+    if (year== 2017) DeepCSVCut =     0.1522   ;
+    if (year== 2018) DeepCSVCut =     0.1241    ;
 
     
     float LeptonIsoCut=0.30;
