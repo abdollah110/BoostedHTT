@@ -144,6 +144,15 @@ float XSection(std::string OutName) {
     else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.043602 ;
 
 
+    else if (OutName.find("WJetsToLNu_HT-100To200") != string::npos) return 1345* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-200To400") != string::npos) return 359.7* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-400To600") != string::npos) return 48.91* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-600To800") != string::npos) return 12.05* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-800To1200") != string::npos) return 5.501* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-1200To2500") != string::npos) return 1.329* WScaleFactor;
+    else if (OutName.find("WJetsToLNu_HT-2500ToInf") != string::npos) return 0.03216* WScaleFactor;
+
+
 
     // SM Higgs
     else if (OutName.find("ggH125") != string::npos) return 48.58* 0.0627;
@@ -565,13 +574,6 @@ float weightCalc(TH1F *Histo,std::string outputName, float genHT,vector<float> W
 
 //    if (OutName.find("WJetsToLNu_Inc") != string::npos) return 50690;   // As we have large cut at Skim, this one is not needed
 //    //    else if (OutName.find("WJetsToLNu_HT-70To100") != string::npos) return 1372 * WScaleFactor;
-//    else if (OutName.find("WJetsToLNu_HT-100To200") != string::npos) return 1345* WScaleFactor;
-//    else if (OutName.find("WJetsToLNu_HT-200To400") != string::npos) return 359.7* WScaleFactor;
-//    else if (OutName.find("WJetsToLNu_HT-400To600") != string::npos) return 48.91* WScaleFactor;
-//    else if (OutName.find("WJetsToLNu_HT-600To800") != string::npos) return 12.05* WScaleFactor;
-//    else if (OutName.find("WJetsToLNu_HT-800To1200") != string::npos) return 5.501* WScaleFactor;
-//    else if (OutName.find("WJetsToLNu_HT-1200To2500") != string::npos) return 1.329* WScaleFactor;
-//    else if (OutName.find("WJetsToLNu_HT-2500ToInf") != string::npos) return 0.03216* WScaleFactor;
 
 //    else if (OutName.find("W1JetsToLNu") != string::npos) return 9644.5;
 //    else if (OutName.find("W2JetsToLNu") != string::npos) return 3144.5;
