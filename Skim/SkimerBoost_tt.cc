@@ -28,8 +28,8 @@ void SkimerBoost::Loop(TString OutputFile)
     else if (string(file->GetName()).find("2017") != string::npos ) year =2017;
     else if (string(file->GetName()).find("2018") != string::npos) year =2018;
     else (std::cout << "Year is not specificed in the outFile name !\n");
-
-
+    
+    
     fChain->SetBranchStatus("*",1);
     
     TH1F* hcount = new TH1F("hcount", "", 10, 0, 10);
@@ -49,6 +49,25 @@ void SkimerBoost::Loop(TString OutputFile)
     float pfCovMatrix01 = 0;
     float pfCovMatrix10 = 0;
     float pfCovMatrix11 = 0;
+    
+    float  _met_JESUp = 0 ;
+    float  _met_JESDown = 0 ;
+    float  _met_UESUp = 0 ;
+    float  _met_UESDown = 0 ;
+    float  _metphi_JESUp = 0 ;
+    float  _metphi_JESDown = 0 ;
+    float  _metphi_UESUp = 0 ;
+    float  _metphi_UESDown = 0 ;
+    
+    float  _met_reso_Up = 0;
+    float  _met_reso_Down = 0;
+    float  _met_resp_Up = 0;
+    float  _met_resp_Down = 0;
+    float  _metphi_reso_Up = 0;
+    float  _metphi_reso_Down = 0;
+    float  _metphi_resp_Up = 0;
+    float  _metphi_resp_Down = 0;
+    
     
     float  m_1 = 0;
     float  px_1 = 0;
@@ -87,6 +106,25 @@ void SkimerBoost::Loop(TString OutputFile)
     BoostTree->Branch("metcov01", &pfCovMatrix01);
     BoostTree->Branch("metcov10", &pfCovMatrix10);
     BoostTree->Branch("metcov11", &pfCovMatrix11);
+    
+    // Systematics
+    BoostTree->Branch("met_JESUp", &_met_JESUp);
+    BoostTree->Branch("met_JESDown", &_met_JESDown);
+    BoostTree->Branch("met_UESUp", &_met_UESUp);
+    BoostTree->Branch("met_UESDown", &_met_UESDown);
+    BoostTree->Branch("metphi_JESUp", &_metphi_JESUp);
+    BoostTree->Branch("metphi_JESDown", &_metphi_JESDown);
+    BoostTree->Branch("metphi_UESUp", &_metphi_UESUp);
+    BoostTree->Branch("metphi_UESDown", &_metphi_UESDown);
+    
+    BoostTree->Branch("met_reso_Up", &_met_reso_Up);
+    BoostTree->Branch("met_reso_Down", &_met_reso_Down);
+    BoostTree->Branch("met_resp_Up", &_met_resp_Up);
+    BoostTree->Branch("met_resp_Down", &_met_resp_Down);
+    BoostTree->Branch("metphi_reso_Up", &_metphi_reso_Up);
+    BoostTree->Branch("metphi_reso_Down", &_metphi_reso_Down);
+    BoostTree->Branch("metphi_resp_Up", &_metphi_resp_Up);
+    BoostTree->Branch("metphi_resp_Down", &_metphi_resp_Down);
     
     BoostTree->Branch("m_1", &m_1);
     BoostTree->Branch("px_1", &px_1);
@@ -127,48 +165,38 @@ void SkimerBoost::Loop(TString OutputFile)
         auto numTauTau(0);
         bool foundApair= false;
         
+        
+        for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
             
-            for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
+            if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
+            if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
+            //                if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
+            if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < -0.5) continue;
+            
+            BoostLeadTau4Momtmp.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
+            
+            
+            
+            for (int jbtau = ibtau+1; jbtau < nBoostedTau; ++jbtau){
                 
-                if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
-//                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
-                if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
+                if (boostedTauPt->at(jbtau) < 30 || fabs(boostedTauEta->at(jbtau)) > 2.3 ) continue;
+                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(jbtau) < 0.5 ) continue;
+                //                    if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(jbtau) < 0.5 ) continue;
+                if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(jbtau) < -0.5) continue;
                 
-//                if (boostedTauByMVA6VLooseElectronRejection->at(ibtau) < 0.5) continue;
-//                if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5) continue;
-//                if (boostedTauagainstElectronVLooseMVA62018->at(ibtau) < 0.5) continue;
-                if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < 0) continue;
-//                if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(ibtau) < 0) continue;
-                
-                BoostLeadTau4Momtmp.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
+                BoostSubTau4Momtmp.SetPtEtaPhiM(boostedTauPt->at(jbtau),boostedTauEta->at(jbtau),boostedTauPhi->at(jbtau),boostedTauMass->at(jbtau));
                 
                 
-                
-                for (int jbtau = ibtau+1; jbtau < nBoostedTau; ++jbtau){
-                    
-                    if (boostedTauPt->at(jbtau) < 30 || fabs(boostedTauEta->at(jbtau)) > 2.3 ) continue;
-    //                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(jbtau) < 0.5 ) continue;
-                    if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(jbtau) < 0.5 ) continue;
-                    
-//                    if (boostedTauByMVA6VLooseElectronRejection->at(jbtau) < 0.5) continue;
-//                    if (boostedTauByLooseMuonRejection3->at(jbtau) < 0.5) continue;
-//                    if (boostedTauagainstElectronVLooseMVA62018->at(jbtau) < 0.5) continue;
-                    if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(jbtau) < 0) continue;
-//                    if (boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(jbtau) < 0) continue;
-                    
-                    BoostSubTau4Momtmp.SetPtEtaPhiM(boostedTauPt->at(jbtau),boostedTauEta->at(jbtau),boostedTauPhi->at(jbtau),boostedTauMass->at(jbtau));
-                                
-
                 if(BoostSubTau4Momtmp.DeltaR(BoostLeadTau4Momtmp) > 0.8 || BoostSubTau4Momtmp.DeltaR(BoostLeadTau4Momtmp) < 0.1) continue;
                 decayMode1 = boostedTauDecayMode->at(ibtau);
                 decayMode2 = boostedTauDecayMode->at(jbtau);
                 numTauTau++;
                 if (!foundApair){
-                leadtauIndex=ibtau;
-                subtauIndex=jbtau;
+                    leadtauIndex=ibtau;
+                    subtauIndex=jbtau;
                 }
                 foundApair=true;
-//                break;
+                //                break;
             }
         }
         
@@ -176,9 +204,9 @@ void SkimerBoost::Loop(TString OutputFile)
         if(numTauTau < 1) continue;
         hcount->Fill(4);
         
-    BoostLeadTau4Mom.SetPtEtaPhiM(boostedTauPt->at(leadtauIndex),boostedTauEta->at(leadtauIndex),boostedTauPhi->at(leadtauIndex),boostedTauMass->at(leadtauIndex));
-    BoostSubTau4Mom.SetPtEtaPhiM(boostedTauPt->at(subtauIndex),boostedTauEta->at(subtauIndex),boostedTauPhi->at(subtauIndex),boostedTauMass->at(subtauIndex));
-    
+        BoostLeadTau4Mom.SetPtEtaPhiM(boostedTauPt->at(leadtauIndex),boostedTauEta->at(leadtauIndex),boostedTauPhi->at(leadtauIndex),boostedTauMass->at(leadtauIndex));
+        BoostSubTau4Mom.SetPtEtaPhiM(boostedTauPt->at(subtauIndex),boostedTauEta->at(subtauIndex),boostedTauPhi->at(subtauIndex),boostedTauMass->at(subtauIndex));
+        
         met_px = pfMET*sin(pfMETPhi);
         met_py = pfMET*cos(pfMETPhi);
         met = pfMET;
@@ -209,6 +237,23 @@ void SkimerBoost::Loop(TString OutputFile)
         era = year;
         NumPair=numTauTau;
         
+        _met_JESUp = met_JESUp ;
+        _met_JESDown = met_JESDown ;
+        _met_UESUp = met_UESUp ;
+        _met_UESDown = met_UESDown ;
+        _metphi_JESUp = metphi_JESUp ;
+        _metphi_JESDown = metphi_JESDown ;
+        _metphi_UESUp = metphi_UESUp ;
+        _metphi_UESDown = metphi_UESDown ;
+        
+        _met_reso_Up = met_reso_Up;
+        _met_reso_Down = met_reso_Down;
+        _met_resp_Up = met_resp_Up;
+        _met_resp_Down = met_resp_Down;
+        _metphi_reso_Up = metphi_reso_Up;
+        _metphi_reso_Down = metphi_reso_Down;
+        _metphi_resp_Up = metphi_resp_Up;
+        _metphi_resp_Down = metphi_resp_Down;
         
         BoostTree->Fill();
     }

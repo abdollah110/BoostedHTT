@@ -78,7 +78,7 @@ void SkimerBoost::Loop(TString OutputFile)
                 
                 for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                     if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
-                    if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
+                    if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
                     if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < 0) continue;
                     LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                     
@@ -86,7 +86,7 @@ void SkimerBoost::Loop(TString OutputFile)
                     
                     for (int jbtau = ibtau+1; jbtau < nBoostedTau; ++jbtau){
                         if (boostedTauPt->at(jbtau) < 30 || fabs(boostedTauEta->at(jbtau)) > 2.3 ) continue;
-                        if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(jbtau) < 0.5 ) continue;
+                        if (boostedTaupfTausDiscriminationByDecayModeFinding->at(jbtau) < 0.5 ) continue;
                         if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(jbtau) < 0) continue;
                         SubTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(jbtau),boostedTauEta->at(jbtau),boostedTauPhi->at(jbtau),boostedTauMass->at(jbtau));
                         
