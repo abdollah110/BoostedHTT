@@ -1,6 +1,6 @@
 dir=$1
 
-hadd $dir/Data.root $dir/*Run*root
+#hadd $dir/Data.root $dir/*Run*root
 hadd $dir/Tbar-tchan.root          $dir/Tbar-tchan_*.root
 hadd $dir/WZ1l1nu2q.root          $dir/WZ1l1nu2q_*.root
 hadd $dir/T-tW.root          $dir/T-tW_*root
