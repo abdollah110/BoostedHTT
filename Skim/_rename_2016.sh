@@ -22,7 +22,7 @@ mv $dir/VBFHToTauTau_M125.root   $dir/qqH125.root
 mv $dir/WminusHToTauTau_M125.root   $dir/WMinusH125.root
 mv $dir/WplusHToTauTau_M125.root   $dir/WPlusH125.root
 mv $dir/ZHToTauTau_M125.root   $dir/ZH125.root
-echo 'Removing the following files' $dir/*_v*
-rm $dir/*_v* $dir/*Run*.root 
+echo 'Removing the following files' $dir/*_v1* $dir/*_v2*
+rm $dir/*_v1* $dir/*_v2*
 
 
