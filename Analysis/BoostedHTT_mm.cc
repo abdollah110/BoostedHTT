@@ -233,6 +233,12 @@ int main(int argc, char* argv[]) {
                         plotFill("genZPt"+FullStringName,ZBosonPt ,100,0,1000,FullWeight);
                         plotFill("genZMass-recoZMass"+FullStringName,ZBosonMass-ZCandida.M(),100,-200,200,FullWeight);
                         plotFill("genZPt-recoZPt"+FullStringName,ZBosonPt-ZCandida.Pt() ,100,-500,500,FullWeight);
+                        if (ZCandida.M() < 85)
+                            plotFill("ZPt_Below"+FullStringName,ZCandida.Pt() ,100,0,1000,FullWeight);
+                        if (ZCandida.M() > 85 && ZCandida.M() < 95)
+                            plotFill("ZPt_OnMass"+FullStringName,ZCandida.Pt() ,100,0,1000,FullWeight);
+                        if (ZCandida.M() > 95)
+                            plotFill("ZPt_Above"+FullStringName,ZCandida.Pt() ,100,0,1000,FullWeight);
                         
                         
                     }
