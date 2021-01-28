@@ -148,6 +148,7 @@ int main(int argc, char* argv[]) {
                 if (ZCandida.M() < 60 ||  ZCandida.M() > 120 ) continue;
                 
                 float ht= getHT(JetPtCut, LeadMu4Momentum, SubMu4Momentum);
+                float st= getST(JetPtCut);
                 if (ht < 200) continue;
                 
                 if (SubMu4Momentum.DeltaR(LeadMu4Momentum) > 0.8 || SubMu4Momentum.DeltaR(LeadMu4Momentum) < 0.1) continue;
@@ -162,7 +163,9 @@ int main(int argc, char* argv[]) {
                 float LepCorrection= LeadMuIdCorrection *SubMuIdCorrection * MuTrgCorrection;
                 float ZBosonPt=-1;
                 float ZBosonMass=-1;
-
+                float WBosonKFactor=1;
+                float WBosonPt=0;
+                
                 if (!isData){
                     
                     // Lumi weight
@@ -175,25 +178,32 @@ int main(int argc, char* argv[]) {
                         cout<<"PUMC_ is zero!!! & num pileup= "<< puTrue->at(0)<<"\n";
                     else
                         PUWeight= PUData_/PUMC_;
-                         
-                 vector<float>  genInfo=GeneratorInfo();
-                 ZBosonPt=genInfo[3];
-                 ZBosonMass=genInfo[4];
-
+                    
+                    vector<float>  genInfo=GeneratorInfo();
+                    WBosonPt=genInfo[1];
+                    ZBosonPt=genInfo[3];
+                    ZBosonMass=genInfo[4];
+                    
+                    if (name == "W" && (sample.find("_HT_") != string::npos) ){
+                        WBosonKFactor= FuncBosonKFactor("W1Cen") + FuncBosonKFactor("W2Cen") * WBosonPt; //HT binned & inclusive K-factor
+                    }
+                    
+                    
                 }
                 
-                plotFill("LumiWeight",LumiWeight ,1000,0,10000);
+                plotFill("LumiWeight",LumiWeight ,1000,0,100);
                 plotFill("LepCorrection",LepCorrection ,100,0,2);
                 plotFill("PUWeight",PUWeight ,200,0,2);
+                plotFill("WBosonKFactor",WBosonKFactor ,200,0,2);
                 
                 //###############################################################################################
                 //  Gen Info
                 //###############################################################################################
-
+                
                 //###############################################################################################
                 //  Charge Categorization
                 //###############################################################################################
-
+                
                 float chargeMuMu= muCharge->at(imu) * muCharge->at(jmu);
                 
                 const int size_q = 2;
@@ -210,11 +220,12 @@ int main(int argc, char* argv[]) {
                     if (Q_category[iq]) {
                         
                         
-                        float FullWeight = LumiWeight*LepCorrection * PUWeight;
+                        float FullWeight = LumiWeight*LepCorrection * PUWeight * WBosonKFactor;
                         std::string FullStringName = Q_Cat[iq] ;
                         
                         plotFill("dR"+FullStringName,SubMu4Momentum.DeltaR(LeadMu4Momentum) ,100,0,1,FullWeight);
-                        plotFill("ht"+FullStringName,ht ,120,0,1200,FullWeight);
+                        plotFill("ht"+FullStringName,ht ,150,0,1500,FullWeight);
+                        plotFill("st"+FullStringName,st ,150,0,1500,FullWeight);
                         plotFill("ZMass"+FullStringName,ZCandida.M() ,60,60,120,FullWeight);
                         plotFill("ZPt"+FullStringName,ZCandida.Pt() ,100,0,1000,FullWeight);
                         plotFill("2DZMassPt"+FullStringName,ZCandida.M(),ZCandida.Pt(),Mass_binning.size()-1,&Mass_binning[0],PT_binning.size()-1,&PT_binning[0], FullWeight);
@@ -222,8 +233,8 @@ int main(int argc, char* argv[]) {
                         plotFill("genZPt"+FullStringName,ZBosonPt ,100,0,1000,FullWeight);
                         plotFill("genZMass-recoZMass"+FullStringName,ZBosonMass-ZCandida.M(),100,-200,200,FullWeight);
                         plotFill("genZPt-recoZPt"+FullStringName,ZBosonPt-ZCandida.Pt() ,100,-500,500,FullWeight);
-
-
+                        
+                        
                     }
                 }
                 
