@@ -143,14 +143,17 @@ int main(int argc, char* argv[]) {
         int numBJet=numBJets(BJetPtCut,DeepCSVCut);
         if (numBJet > 0) continue;
         
+        plotFill("cutFlowTable",3 ,15,0,15);
+        
         //electron veto
         int numele =getNumElectron();
         if (numele > 0) continue;
+        plotFill("cutFlowTable",4 ,15,0,15);
         
         //electron veto
         int nummu =getNumMuon();
         if (nummu > 1) continue;
-        
+        plotFill("cutFlowTable",5 ,15,0,15);
         float st= getST(JetPtCut);
         //############################################################################################
         //###########       Loop over MuJet events   #################################################
@@ -170,6 +173,8 @@ int main(int argc, char* argv[]) {
             
             if (IsoLep1Value > 0.15) continue;
             
+            plotFill("cutFlowTable",6 ,15,0,15);
+            
             LeadMu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
             leadMuIdCorrection = getCorrFactorMuonId(year, isData,  LeadMu4Momentum.Pt(), LeadMu4Momentum.Eta() ,HistoMuId);
@@ -187,11 +192,13 @@ int main(int argc, char* argv[]) {
                 if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5) continue;
                 if (boostedTauagainstElectronVLooseMVA62018->at(ibtau) < 0.5) continue;
                 
-                
+                plotFill("cutFlowTable",7 ,15,0,15);
                 LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                 
                 //                if (LeadTau4Momentum.DeltaR(LeadMu4Momentum) < 1.5) continue;
                 if (LeadTau4Momentum.DeltaR(LeadMu4Momentum) < 0.8) continue;
+                
+                plotFill("cutFlowTable",8 ,15,0,15);
                 
                 float Met=pfMET;
                 float Metphi=pfMETPhi;
