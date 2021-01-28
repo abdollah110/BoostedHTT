@@ -108,17 +108,12 @@ int main(int argc, char* argv[]) {
     float zmasspt_weight=1;
     float LumiWeight = 1;
     float PUWeight = 1;
-
     
     
     float DeepCSVCut=   1000   ;                  //  Loose  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
     if (year== 2016) DeepCSVCut =      0.2217   ;
     if (year== 2017) DeepCSVCut =     0.1522   ;
     if (year== 2018) DeepCSVCut =     0.1241    ;
-    
-    float LeptonIsoCut=0.20;
-    bool debug= false;
-    
     
     Int_t nentries_wtn = (Int_t) Run_Tree->GetEntries();
     cout<<"nentries_wtn===="<<nentries_wtn<<"\n";
@@ -131,24 +126,11 @@ int main(int argc, char* argv[]) {
         
         
         //=========================================================================================================
-        
         // Trigger
-//        bool HLT_Mu50 = ((HLTEleMuX >> 21 & 1)==1); // else if (name.find("HLT_Mu50_v")  != string::npos) bitEleMuX = 21;
         bool HLT_Mu27 = ((HLTEleMuX >> 19 & 1)==1); // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19;
         
-        //
-        //        // Trigger
-        //        bool PassTrigger = ((HLTEleMuX >> 19 & 1)==1);
-        //        //              else if (name.find("HLT_Mu50_v")                                          != string::npos) bitEleMuX = 21;
-        //        // else if (name.find("HLT_IsoMu27_v") != string::npos) bitEleMuX = 19; // 2017
-                if (! HLT_Mu27) continue;
-                plotFill("cutFlowTable",2 ,15,0,15);
-        //
-        //
-        //        //  This part is to avoid of the duplicate of mu-tau pair from one events
-        //        std::vector<string> HistNamesFilled;
-        //        HistNamesFilled.clear();
-        
+        if (! HLT_Mu27) continue;
+        plotFill("cutFlowTable",2 ,15,0,15);
         
         //###############################################################################################
         //  GenInfo
@@ -164,12 +146,12 @@ int main(int argc, char* argv[]) {
         //electron veto
         int numele =getNumElectron();
         if (numele > 0) continue;
-
+        
         //electron veto
         int nummu =getNumMuon();
         if (nummu > 1) continue;
-
         
+        float st= getST(JetPtCut);
         //############################################################################################
         //###########       Loop over MuJet events   #################################################
         //############################################################################################
@@ -184,8 +166,8 @@ int main(int argc, char* argv[]) {
             
             float IsoLep1Value=muPFChIso->at(imu)/muPt->at(imu);
             if ( (muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu) )  > 0.0)
-            IsoLep1Value= ( muPFChIso->at(imu) + muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu))/muPt->at(imu);
-
+                IsoLep1Value= ( muPFChIso->at(imu) + muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu))/muPt->at(imu);
+            
             if (IsoLep1Value > 0.15) continue;
             
             LeadMu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
@@ -193,123 +175,119 @@ int main(int argc, char* argv[]) {
             leadMuIdCorrection = getCorrFactorMuonId(year, isData,  LeadMu4Momentum.Pt(), LeadMu4Momentum.Eta() ,HistoMuId);
             MuTrgCorrection = getCorrFactorMuonTrg(isData,  LeadMu4Momentum.Pt(), LeadMu4Momentum.Eta() ,HistoMuTrg27);
             MuIsoCorrection = getCorrFactorMuonIso(year, isData,  LeadMu4Momentum.Pt(), LeadMu4Momentum.Eta() ,HistoMuIso);
-
-
-                
-                
+            
             LepCorrection= leadMuIdCorrection * MuIsoCorrection * MuTrgCorrection;
-                        
+            
+            for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                 
-                for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
-                    
-                    if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
-                    if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
-                    if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < 0) continue;
-                    if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5) continue;
-                    if (boostedTauagainstElectronVLooseMVA62018->at(ibtau) < 0.5) continue;
-
-                    
-                    LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
-                    
-                if (LeadTau4Momentum.DeltaR(LeadMu4Momentum) < 0.5) continue;
+                if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
+                //                    if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
+                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
+                if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < -0.5) continue;
+                if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5) continue;
+                if (boostedTauagainstElectronVLooseMVA62018->at(ibtau) < 0.5) continue;
+                
+                
+                LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
+                
+                //                if (LeadTau4Momentum.DeltaR(LeadMu4Momentum) < 1.5) continue;
+                if (LeadTau4Momentum.DeltaR(LeadMu4Momentum) < 0.8) continue;
+                
                 float Met=pfMET;
                 float Metphi=pfMETPhi;
                 float tmass = TMass_F(LeadMu4Momentum.Pt(), LeadMu4Momentum.Px(), LeadMu4Momentum.Py(),  Met,  Metphi);
-                    //###############################################################################################
-                    //  Weight
-                    //###############################################################################################
-            float WBosonPt=0;
-//            float WBosonMass=0;
-            float WBosonKFactor=1;
-            float WBosonKFactor_ewkUp=1;
-            float WBosonKFactor_ewkDown=1;
-
-
-        if (!isData){
-            
-            // Lumi weight
-            LumiWeight = getLuminsoity(year) * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
-            
-            float PUMC_=HistoPUMC->GetBinContent(puTrue->at(0)+1);
-            float PUData_=HistoPUData->GetBinContent(puTrue->at(0)+1);
-            
-            if (PUMC_ ==0)
-                cout<<"PUMC_ is zero!!! & num pileup= "<< puTrue->at(0)<<"\n";
-            else
-                PUWeight= PUData_/PUMC_;
-            
-            //  GenInfo
-            vector<float>  genInfo=GeneratorInfo();
-            float ZBosonPt=genInfo[3];
-            float ZBosonMass=genInfo[4];
-            
-            if  (name == "ZL" || name == "ZTT" || name == "ZLL") {
+                float ZMass = (LeadTau4Momentum+LeadMu4Momentum).M();
+                //###############################################################################################
+                //  Weight
+                //###############################################################################################
+                float WBosonPt=0;
+                //            float WBosonMass=0;
+                float WBosonKFactor=1;
+                float WBosonKFactor_ewkUp=1;
+                float WBosonKFactor_ewkDown=1;
                 
-                if (ZBosonPt > 999) ZBosonPt=999;
-                if (ZBosonMass < 61) ZBosonMass = 61;
-                if (ZBosonMass > 119) ZBosonMass = 119;
-                zmasspt_weight=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
-            }
-            
-            if (name == "W"){
-            
-                WBosonKFactor= FuncBosonKFactor("W1Cen") + FuncBosonKFactor("W2Cen") * WBosonPt; //HT binned & inclusive K-factor
-                WBosonKFactor_ewkUp= FuncBosonKFactor("W1Up") + FuncBosonKFactor("W2Up") * WBosonPt; //HT binned & inclusive K-factor
-                WBosonKFactor_ewkDown= FuncBosonKFactor("W1Down") + FuncBosonKFactor("W2Down") * WBosonPt; //HT binned & inclusive K-factor
-            }
-
-            
-        }
-        
-        plotFill("LumiWeight",LumiWeight ,1000,0,10000);
-        plotFill("LepCorrection",LepCorrection ,100,0,2);
-        plotFill("PUWeight",PUWeight ,200,0,2);
-        plotFill("zmasspt_weight",zmasspt_weight ,200,0,2);
-        
-        
-        
-                    
-        
-                    
-                    //###############################################################################################
-                    
-                    
-                    float FullWeight = LumiWeight*LepCorrection*zmasspt_weight * PUWeight * WBosonKFactor;
-                    std::string FullStringName = "";
-                    
-                    plotFill("denum"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
-                    
-                    if (tmass > 50 && tmass < 100)
-                        plotFill("denum_MT"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
-                    
                 
+                if (!isData){
                     
-                    if (boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
-                        plotFill("numVLoose"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
-                        if (tmass > 50 && tmass < 100)
-                        plotFill("numVLoose_MT"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
+                    // Lumi weight
+                    LumiWeight = getLuminsoity(year) * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
+                    
+                    float PUMC_=HistoPUMC->GetBinContent(puTrue->at(0)+1);
+                    float PUData_=HistoPUData->GetBinContent(puTrue->at(0)+1);
+                    
+                    if (PUMC_ ==0)
+                        cout<<"PUMC_ is zero!!! & num pileup= "<< puTrue->at(0)<<"\n";
+                    else
+                        PUWeight= PUData_/PUMC_;
+                    
+                    //  GenInfo
+                    vector<float>  genInfo=GeneratorInfo();
+                    float ZBosonPt=genInfo[3];
+                    float ZBosonMass=genInfo[4];
+                    
+                    if  (name == "ZL" || name == "ZTT" || name == "ZLL") {
+                        
+                        if (ZBosonPt > 999) ZBosonPt=999;
+                        if (ZBosonMass < 61) ZBosonMass = 61;
+                        if (ZBosonMass > 119) ZBosonMass = 119;
+                        zmasspt_weight=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
                     }
                     
-                    if (boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
-                        plotFill("numLoose"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
-                        if (tmass > 50 && tmass < 100)
-                        plotFill("numLoose_MT"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
+                    if (name == "W" && (sample.find("_HT_") != string::npos) ){
+                        WBosonKFactor= FuncBosonKFactor("W1Cen") + FuncBosonKFactor("W2Cen") * WBosonPt; //HT binned & inclusive K-factor
+                        WBosonKFactor_ewkUp= FuncBosonKFactor("W1Up") + FuncBosonKFactor("W2Up") * WBosonPt; //HT binned & inclusive K-factor
+                        WBosonKFactor_ewkDown= FuncBosonKFactor("W1Down") + FuncBosonKFactor("W2Down") * WBosonPt; //HT binned & inclusive K-factor
                     }
                     
-                    if (boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
-                        plotFill("numTight"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
-                        if (tmass > 50 && tmass < 100)
-                        plotFill("numTight_MT"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
-                    }
-                    plotFill("MT"+FullStringName,tmass ,100,0,500,FullWeight);
                     
-                    //                            plotFill("dR"+FullStringName,SubMu4Momentum.DeltaR(LeadMu4Momentum) ,100,0,1,FullWeight);
-                    //                            plotFill("ZMass"+FullStringName,ZCandida.M() ,60,60,120,FullWeight);
-                    //                            plotFill("ht"+FullStringName,ht ,120,0,1200,FullWeight);
-                    
-                    
-                }//boostedTau loop
+                }
                 
+                float FullWeight = LumiWeight*LepCorrection*zmasspt_weight * PUWeight * WBosonKFactor;
+                
+                plotFill("LumiWeight",LumiWeight ,1000,0,100);
+                plotFill("LepCorrection",LepCorrection ,100,0,2);
+                plotFill("PUWeight",PUWeight ,200,0,2);
+                plotFill("zmasspt_weight",zmasspt_weight ,200,0,2);
+                plotFill("WBosonKFactor_weight",WBosonKFactor ,300,0,3);
+                plotFill("FullWeight",FullWeight ,300,0,3);
+                //###############################################################################################
+                
+                std::string FullStringName = "";
+                
+                plotFill("denum"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
+                plotFill("denum_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
+                plotFill("denum_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
+                
+                if (boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
+                    plotFill("numVLoose"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
+                    plotFill("numVLoose_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
+                    plotFill("numVLoose_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
+                    
+                }
+                
+                if (boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
+                    plotFill("numLoose"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
+                    plotFill("numLoose_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
+                    plotFill("numLoose_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
+                    
+                }
+                
+                if (boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
+                    plotFill("numTight"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
+                    plotFill("numTight_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
+                    plotFill("numTight_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
+                    
+                }
+                
+                plotFill("MT"+FullStringName,tmass ,100,0,500,FullWeight);
+                plotFill("Met"+FullStringName,Met ,100,0,500,FullWeight);
+                plotFill("ZMass"+FullStringName,ZMass ,100,0,500,FullWeight);
+                plotFill("st"+FullStringName,st ,100,0,2000,FullWeight);
+                plotFill("LepPt"+FullStringName,LeadMu4Momentum.Pt() ,100,0,1000,FullWeight);
+                
+                
+            }//boostedTau loop
+            
         } // leading muon
         //###############################################################################################
         //  Doing EleTau Analysis
