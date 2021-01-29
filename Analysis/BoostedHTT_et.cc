@@ -108,6 +108,7 @@ int main(int argc, char* argv[]) {
     float LeptonTrgCor=1;
     float LepCorrection=1;
     float zmasspt_weight=1.0;
+    float WBosonKFactor=1;
     
     
     float lepPt_=-10;
@@ -192,7 +193,7 @@ int main(int argc, char* argv[]) {
             IsoLep1Value= ( elePFChIso->at(idx_lep) + elePFNeuIso->at(idx_lep) + elePFPhoIso->at(idx_lep) - 0.5* elePFPUIso->at(idx_lep))/elePt->at(idx_lep);
         
         
-        if (elePt->at(idx_lep) < 40 || fabs(eleEta->at(idx_lep)) > 2.5) continue;
+        if (elePt->at(idx_lep) < 38 || fabs(eleEta->at(idx_lep)) > 2.5) continue;
         plotFill("cutFlowTable",3 ,15,0,15);
         
         if (elePt->at(idx_lep) < 120  && HLT_Ele35 && pfMET > 40 ){
@@ -217,6 +218,7 @@ int main(int argc, char* argv[]) {
         //        if (boostedTauagainstElectronTightMVA62018->at(idx_tau) < 0.5) continue;
         if (boostedTauagainstElectronLooseMVA62018->at(idx_tau) < 0.5) continue;
         //        if (boostedTauByLooseMuonRejection3->at(idx_tau) < 0.5) continue;
+//        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < 0) continue;
         
         Tau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
         plotFill("cutFlowTable",5 ,15,0,15);
@@ -287,6 +289,7 @@ int main(int argc, char* argv[]) {
             
             //  GenInfo
             vector<float>  genInfo=GeneratorInfo();
+            float WBosonPt=genInfo[1];
             float ZBosonPt=genInfo[3];
             float ZBosonMass=genInfo[4];
             
@@ -297,6 +300,12 @@ int main(int argc, char* argv[]) {
                 if (ZBosonMass > 119) ZBosonMass = 119;
                 zmasspt_weight=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
             }
+            
+            if (name == "W" && (sample.find("_HT_") != string::npos) ){
+                WBosonKFactor= FuncBosonKFactor("W1Cen") + FuncBosonKFactor("W2Cen") * WBosonPt; //HT binned & inclusive K-factor
+                WBosonKFactor_ewkUp= FuncBosonKFactor("W1Up") + FuncBosonKFactor("W2Up") * WBosonPt; //HT binned & inclusive K-factor
+                WBosonKFactor_ewkDown= FuncBosonKFactor("W1Down") + FuncBosonKFactor("W2Down") * WBosonPt; //HT binned & inclusive K-factor
+            }            
             
         }
         

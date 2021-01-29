@@ -15,7 +15,8 @@ scaled_vars = [
                ]
 
 
-def loadFile(ifile, category):
+#def loadFile(ifile, category):
+def loadFile(ifile):
     from root_pandas import read_root
 
     if 'mutau' in ifile or 'mt' in ifile:
@@ -89,9 +90,6 @@ def loadFile(ifile, category):
 def main(args):
 
     input_files = [ifile for ifile in glob('{}/*.root'.format(args.input_dir))]
-#    input_files = [ifile for ifile in glob('{}/*.root'.format(args.mu_input_dir)) if args.mu_input_dir != None ]
-#    input_files += [ifile for ifile in glob('{}/*.root'.format(args.el_input_dir)) if args.el_input_dir != None ]
-#    input_files = [ifile for ifile in glob('{}/*.root'.format(args.lep_input_dir)) if args.lep_input_dir != None ]
     for ifile in input_files:
         print 'file is ', ifile
         
@@ -102,9 +100,7 @@ def main(args):
 
     for ifile in input_files:
         print 'file is ', ifile
-        input_data, selection_data, new_name, lepton, sig,ztt, weight, idx = loadFile(
-            ifile, args.category
-        )
+        input_data, selection_data, new_name, lepton, sig,ztt, weight, idx = loadFile(ifile)
         # add data to the full set
         unscaled_data = pd.concat([unscaled_data, input_data])
         # add selection variables to full set
@@ -144,17 +140,9 @@ def main(args):
 if __name__ == "__main__":
     from argparse import ArgumentParser
     parser = ArgumentParser()
-    parser.add_argument('--el-input', '-e',  action='store',
-                        dest='el_input_dir', default=None, help='path to etau input files')
-    parser.add_argument('--mu-input', '-m',  action='store',
-                        dest='mu_input_dir', default=None, help='path to mutau input files')
     parser.add_argument('-input', '-i',  action='store',
                         dest='input_dir', default=None, help='path to mutau input files')
-    parser.add_argument('--l-input', '-l',  action='store',
-                        dest='lep_input_dir', default=None, help='path to ltau input files')
     parser.add_argument('--output', '-o', action='store', dest='output',
                         default='store.h5', help='name of output file')
-    parser.add_argument('--category', '-c', action='store', dest='category',
-                        default='vbf', help='name of category for selection')
 
     main(parser.parse_args())

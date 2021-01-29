@@ -54,7 +54,8 @@ public:
     std::vector<float>  Get_OS_SS_ratio();
     
     //  void convertDataToFake(Categories, std::string, double, double, double, double, double, double);  // 2d
-    void histoLoop(std::string year  ,std::vector<std::string>, std::string,std::string, std::string,std::vector<float>, std::string, std::string);
+    void histoLoop(std::string year  ,std::vector<std::string>, std::string, TH1F *, std::string, std::string,std::vector<float>, std::string, std::string);
+    void histoLoop(std::string year  ,std::vector<std::string>, std::string, std::string, std::string,std::vector<float>, std::string, std::string);    
     void histoQCD(std::vector<std::string>, std::string, std::string, std::string);
     //  void getJetFakes(std::vector<std::string>, std::string, std::string, bool);
 //    Categories getCategory(std::vector<Float_t>, double, double );
@@ -222,6 +223,8 @@ systematics{
             os_ss_values.clear();
             
             float OS_SS_0jet = fakes_1d_OS_CR.at(0)->Integral() /  fakes_1d_SS_CR.at(0)->Integral();
+            
+            cout<<"OS/SS num = "<<fakes_1d_OS_CR.at(0)->Integral() << "  OS/SS denum = "<<fakes_1d_SS_CR.at(0)->Integral() << "\n";
 //            float OS_SS_boosted = fakes_1d_OS_CR.at(1)->Integral() /  fakes_1d_SS_CR.at(1)->Integral();
 //            float OS_SS_vbf = fakes_1d_OS_CR.at(2)->Integral() /  fakes_1d_SS_CR.at(2)->Integral();
             

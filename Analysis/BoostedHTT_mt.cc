@@ -8,6 +8,7 @@
 #include "RooMsgService.h"
 #include "../interface/CLParser.h"
 #include "../interface/LumiReweightingStandAlone.h"
+#include "../interface/bjet_weighter.h"
 
 
 int main(int argc, char* argv[]) {
@@ -118,6 +119,9 @@ int main(int argc, char* argv[]) {
     float LumiWeight = 1;
     float PUWeight = 1;
     float zmasspt_weight=1;
+    float WBosonKFactor=1;
+    float preFireWeight=1;
+    float bjetsWeightOnMC=1;
     
     float lepPt_=-10;
     float taupt_=-10;
@@ -194,7 +198,7 @@ int main(int argc, char* argv[]) {
             IsoLep1Value= ( muPFChIso->at(idx_lep) + muPFNeuIso->at(idx_lep) + muPFPhoIso->at(idx_lep) - 0.5* muPFPUIso->at(idx_lep))/muPt->at(idx_lep);
         
         
-        if (muPt->at(idx_lep) < 30 || fabs(muEta->at(idx_lep)) > 2.4) continue;
+        if (muPt->at(idx_lep) < 28 || fabs(muEta->at(idx_lep)) > 2.4) continue;
         
         plotFill("cutFlowTable",2 ,15,0,15);
         
@@ -295,8 +299,15 @@ int main(int argc, char* argv[]) {
             else
                 PUWeight= PUData_/PUMC_;
             
+            // prefire
+            preFireWeight = L1ECALPrefire;
+            if (syst == "prefireUp") {preFireWeight = L1ECALPrefireUp;}
+            if (syst == "prefireDown") {preFireWeight = L1ECALPrefireDown;}
+
+
             //  GenInfo
             vector<float>  genInfo=GeneratorInfo();
+            float WBosonPt=genInfo[1];
             float ZBosonPt=genInfo[3];
             float ZBosonMass=genInfo[4];
             
@@ -307,6 +318,43 @@ int main(int argc, char* argv[]) {
                 if (ZBosonMass > 119) ZBosonMass = 119;
                 zmasspt_weight=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
             }
+            
+            if (name == "W" && (sample.find("_HT_") != string::npos) ){
+                WBosonKFactor= FuncBosonKFactor("W1Cen") + FuncBosonKFactor("W2Cen") * WBosonPt; //HT binned & inclusive K-factor
+                if (syst == "WBosonKFactorUp") WBosonKFactor= FuncBosonKFactor("W1Up") + FuncBosonKFactor("W2Up") * WBosonPt; //HT binned & inclusive K-factor
+                if (syst == "WBosonKFactorDown") WBosonKFactor= FuncBosonKFactor("W1Down") + FuncBosonKFactor("W2Down") * WBosonPt; //HT binned & inclusive K-factor
+            }
+            
+            int leadCSV= leadingCSV();
+            int subLeadCSV= subLeadingCSV(leadCSV);
+            cout<< "leading csv = "<< leadCSV <<" cvs= "<< jetDeepCSVTags_b->at(leadCSV) << "  pt= " << jetPt->at(leadCSV);
+            cout<< "subLeading csv = "<< subLeadCSV <<" cvs= "<< jetDeepCSVTags_b->at(subLeadCSV) << "  pt= " << jetPt->at(subLeadCSV);
+            
+//            if (year==2016){
+//
+//                bjet_weighter  bj_(2016, loose);
+//                bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV());
+//                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV(), "up");
+//                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV(), "down");
+//
+//            }else if (year==2017){
+//
+//                bjet_weighter  bj_(2017, loose);
+//                bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV());
+//                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV(), "up");
+//                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV(), "down");
+//
+//            }else if (year==2018){
+//
+//                bjet_weighter  bj_(2018, loose);
+//                bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV());
+//                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV(), "up");
+//                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV(), "down");
+//            } else{
+//                throw "wrong year name";
+//            }
+            
+            
         }
         
         plotFill("LumiWeight",LumiWeight ,1000,0,10000);

@@ -44,16 +44,16 @@ def main(args):
         (data['sample_names'] == args.signal) | (data['sample_names'] == args.background)
     ]
 
-    ## apply VBF category selection
-    vbf_processes = training_processes
+    ## apply boost category selection
+    boost_processes = training_processes
 
-    print 'No. Signal Events:     {}'.format(len(vbf_processes[vbf_processes['sample_names'] == args.signal]))
-    print 'No. Background Events: {}'.format(len(vbf_processes[vbf_processes['sample_names'] == args.background]))
+    print 'No. Signal Events:     {}'.format(len(boost_processes[boost_processes['sample_names'] == args.signal]))
+    print 'No. Background Events: {}'.format(len(boost_processes[boost_processes['sample_names'] == args.background]))
 
-    etau   = vbf_processes[(vbf_processes['lepton'] == 'et')]
-    mutau  = vbf_processes[(vbf_processes['lepton'] == 'mt')]
-    emu  = vbf_processes[(vbf_processes['lepton'] == 'em')]
-    tautau  = vbf_processes[(vbf_processes['lepton'] == 'tt')]
+    etau   = boost_processes[(boost_processes['lepton'] == 'et')]
+    mutau  = boost_processes[(boost_processes['lepton'] == 'mt')]
+    emu  = boost_processes[(boost_processes['lepton'] == 'em')]
+    tautau  = boost_processes[(boost_processes['lepton'] == 'tt')]
 
 
     ## do event selection
@@ -63,13 +63,13 @@ def main(args):
     selected_tt = pd.DataFrame()
     combine= pd.DataFrame()
 
-    ## electron-tau channel selection (all in vbf_process for now)
+    ## electron-tau channel selection (all in boost_process for now)
     if len(etau) > 0:
         selected_et = etau
         print '\n\nchannel is etau'
         combine = pd.concat([selected_et])
         
-    ## muon-tau channel selection (all in vbf_process for now)
+    ## muon-tau channel selection (all in boost_process for now)
     if len(mutau) > 0:
         selected_mt = mutau
         print '\n\nchannel is mutau'
@@ -160,10 +160,10 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--model', '-m', action='store', dest='model', default='testModel', help='name of the model to train')
     parser.add_argument('--input', '-i', action='store', dest='input', default='test', help='full name of input file')
-    parser.add_argument('--signal', '-s', action='store', dest='signal', default='VBF125.root', help='name of signal file')
+    parser.add_argument('--signal', '-s', action='store', dest='signal', default='boost125.root', help='name of signal file')
     parser.add_argument('--background', '-b', action='store', dest='background', default='TT.root', help='name of background file')
 #    parser.add_argument('--background2', '-b2', action='store', dest='background2', default='ZTT.root', help='name of background file')
     parser.add_argument('--dont-plot', action='store_true', dest='dont_plot', help='don\'t make training plots')
-    parser.add_argument('--category', '-c', action='store', dest='category', default='vbf', help='category to train')
+    parser.add_argument('--category', '-c', action='store', dest='category', default='boost', help='category to train')
     parser.add_argument('--year', '-y', action='store', dest='year', default='2018', help='which year')
     main(parser.parse_args())

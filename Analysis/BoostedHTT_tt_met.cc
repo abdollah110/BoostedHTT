@@ -72,7 +72,7 @@ int main(int argc, char* argv[]) {
     TH1F * HistoPUMC = new TH1F();
     if (! (fname.find("Data") != string::npos || fname.find("Run") != string::npos ))
         HistoPUMC=HistPUMC(InputFile);
-    
+
     // Z-pT reweighting
     //        TFile *zpt_file = new TFile("data/zpt_weights_2016_BtoH.root");
     TFile *zpt_file = new TFile(("data/zmm_2d"+year_str+".root").c_str());
@@ -107,7 +107,6 @@ int main(int argc, char* argv[]) {
     float PUWeight = 1;
     float LepCorrection=1;
     float zmasspt_weight=1;
-    float WBosonKFactor=1;
     
     float lep1Pt_=-10;
     float lep2Pt_=-10;
@@ -173,23 +172,23 @@ int main(int argc, char* argv[]) {
         
         plotFill("cutFlowTable",1 ,15,0,15);
         //=========================================================================================================
-        // Lowest unprescaled trigger           2016                         2017                                     2018
-        
-        //           HLT_AK8PFJet360_TrimMass30_v                      HLT_AK8PFJet400_TrimMass30(36.75/ 41.54)   HLT_AK8PFJet400_TrimMass30_v
-        //           HLT_AK8PFJet500 (not in yet 33.64/36.47 )         HLT_AK8PFJet500 (not in yet)               HLT_AK8PFJet500 (not in yet)
-        //           HLT_PFHT300_PFMET110_v                            HLT_PFHT500_PFMET100_PFMHT100_IDT          HLT_PFHT500_PFMET100_PFMHT100_IDT
-        //           HLT_PFHT900_v                                     HLT_PFHT1050_v                             HLT_PFHT1050_v
-        
-        
-        
-        //2016
-        PassTrigger_21 = ((HLTJet >> 21 & 1)==1); //HLT_AK8PFJet360_TrimMass30_v // only 2016?
-        PassTrigger_22 = ((HLTJet >> 22 & 1)==1); //HLT_PFHT300_PFMET110_v // only 2016?
-        
-        
-        //2017 and 2018
-        PassTrigger_40 = ((HLTJet >> 40 & 1)==1); //HLT_AK8PFJet400_TrimMass30_v //HLT_AK8PFJet400_TrimMass30_v
-        PassTrigger_39 = ((HLTJet >> 39 & 1)==1); //HLT_PFHT500_PFMET100_PFMHT100_IDTight_v
+// Lowest unprescaled trigger           2016                         2017                                     2018
+
+//           HLT_AK8PFJet360_TrimMass30_v                      HLT_AK8PFJet400_TrimMass30(36.75/ 41.54)   HLT_AK8PFJet400_TrimMass30_v
+//           HLT_AK8PFJet500 (not in yet 33.64/36.47 )         HLT_AK8PFJet500 (not in yet)               HLT_AK8PFJet500 (not in yet)
+//           HLT_PFHT300_PFMET110_v                            HLT_PFHT500_PFMET100_PFMHT100_IDT          HLT_PFHT500_PFMET100_PFMHT100_IDT
+//           HLT_PFHT900_v                                     HLT_PFHT1050_v                             HLT_PFHT1050_v
+
+
+
+//2016
+PassTrigger_21 = ((HLTJet >> 21 & 1)==1); //HLT_AK8PFJet360_TrimMass30_v // only 2016?
+PassTrigger_22 = ((HLTJet >> 22 & 1)==1); //HLT_PFHT300_PFMET110_v // only 2016?
+
+
+//2017 and 2018
+PassTrigger_40 = ((HLTJet >> 40 & 1)==1); //HLT_AK8PFJet400_TrimMass30_v //HLT_AK8PFJet400_TrimMass30_v
+PassTrigger_39 = ((HLTJet >> 39 & 1)==1); //HLT_PFHT500_PFMET100_PFMHT100_IDTight_v
         
         // Trigger
         //        https://cmsoms.cern.ch/cms/triggers/hlt_trigger_rates?cms_run=325175
@@ -230,7 +229,7 @@ int main(int argc, char* argv[]) {
         
         if (boostedTauPt->at(idx_leadtau) <= 30 || fabs(boostedTauEta->at(idx_leadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_leadtau) < 0.5 ) continue;
-        //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_leadtau) < 0.5) continue;
+        if (boostedTauagainstElectronVLooseMVA62018->at(idx_leadtau) < 0.5) continue;
         //        if (boostedTauByLooseMuonRejection3->at(idx_leadtau) < 0.5) continue;
         LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_leadtau),boostedTauEta->at(idx_leadtau),boostedTauPhi->at(idx_leadtau),boostedTauMass->at(idx_leadtau));
         plotFill("cutFlowTable",3 ,15,0,15);
@@ -241,7 +240,7 @@ int main(int argc, char* argv[]) {
         
         if (boostedTauPt->at(idx_subleadtau) <= 30 || fabs(boostedTauEta->at(idx_subleadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_subleadtau) < 0.5 ) continue;
-        //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_subleadtau) < 0.5) continue;
+        if (boostedTauagainstElectronVLooseMVA62018->at(idx_subleadtau) < 0.5) continue;
         //        if (boostedTauByLooseMuonRejection3->at(idx_subleadtau) < 0.5) continue;
         
         SubTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_subleadtau),boostedTauEta->at(idx_subleadtau),boostedTauPhi->at(idx_subleadtau),boostedTauMass->at(idx_subleadtau));
@@ -263,49 +262,54 @@ int main(int argc, char* argv[]) {
         ht= getHT(JetPtCut, LeadTau4Momentum, SubTau4Momentum);
         
         float TriggerWeight = 1;
-        float _cut_AK8Pt_,_cut_AK8Mass_,_cut_PFHT_,_cut_PFMET_,_cut_PFMHT_, _cut_PFMETMHT_, _cut_st_;
+        float _cut_AK8Pt_,_cut_AK8Mass_,_cut_PFHT_,_cut_PFMET_,_cut_PFMHT_, _cut_PFMETMHT_;
         bool _Pass_AK8_Trigger_, _Pass_METHT_Trigger_;
         
         if (year== 2016){
-            
-            _cut_AK8Pt_ = 450;
-            _cut_AK8Mass_ = 30;
-            _cut_PFHT_ = 400;
-            _cut_PFMET_ = 180;
-            _cut_PFMHT_= 0;
-            _cut_PFMETMHT_ = 180;
-            _Pass_AK8_Trigger_=PassTrigger_21;
-            _Pass_METHT_Trigger_=PassTrigger_22;
-            _cut_st_ = 400;
-            
+        
+        _cut_AK8Pt_ = 450;
+        _cut_AK8Mass_ = 30;
+        _cut_PFHT_ = 400;
+        _cut_PFMET_ = 180;
+        _cut_PFMHT_= 0;
+        _cut_PFMETMHT_ = 180;
+        _Pass_AK8_Trigger_=PassTrigger_21;
+        _Pass_METHT_Trigger_=PassTrigger_22;
+        
+        
         } else if (year== 2017){
-            
-            _cut_AK8Pt_ = 450;
-            _cut_AK8Mass_ = 30;
-            _cut_PFHT_ = 700;
-            _cut_PFMET_ = 120;
-            _cut_PFMHT_= 120;
-            _cut_PFMETMHT_ = 280;
-            _Pass_AK8_Trigger_=PassTrigger_40;
-            _Pass_METHT_Trigger_=PassTrigger_39;
-            _cut_st_ = 600;
-            
-            
+        
+        _cut_AK8Pt_ = 500;
+        _cut_AK8Mass_ = 30;
+        _cut_PFHT_ = 700;
+        _cut_PFMET_ = 130;
+        _cut_PFMHT_= 130;
+        _cut_PFMETMHT_ = 320;
+        
+        _Pass_AK8_Trigger_=PassTrigger_40;
+        _Pass_METHT_Trigger_=PassTrigger_39;
+
+        
         } else if (year== 2018){
-            
-            _cut_AK8Pt_ = 450;
-            _cut_AK8Mass_ = 30;
-            _cut_PFHT_ = 700;
-            _cut_PFMET_ = 120;
-            _cut_PFMHT_= 120;
-            _cut_PFMETMHT_ = 280;
-            _Pass_AK8_Trigger_=PassTrigger_40;
-            _Pass_METHT_Trigger_=PassTrigger_39;
-            _cut_st_ = 600;
-            
+        
+        _cut_AK8Pt_ = 500;
+        _cut_AK8Mass_ = 30;
+        _cut_PFHT_ = 700;
+        _cut_PFMET_ = 130;
+        _cut_PFMHT_= 130;
+        _cut_PFMETMHT_ = 320;
+        
+        _Pass_AK8_Trigger_=PassTrigger_40;
+        _Pass_METHT_Trigger_=PassTrigger_39;
+
+
         }
         
+        
+        
         for (int ijet=0; ijet < nAK8Jet ; ijet ++){
+            if (dR_(boostedTauEta->at(idx_leadtau),boostedTauPhi->at(idx_leadtau),AK8JetEta->at(ijet),AK8JetPhi->at(ijet)) < 0.5) continue;
+            if (dR_(boostedTauEta->at(idx_subleadtau),boostedTauPhi->at(idx_subleadtau),AK8JetEta->at(ijet),AK8JetPhi->at(ijet)) < 0.5) continue;
             
             AK8Pt=AK8JetPt->at(ijet);
             AK8Mass=AK8JetSoftDropMass->at(ijet);
@@ -314,23 +318,36 @@ int main(int argc, char* argv[]) {
             if (AK8Pt > 450 && AK8Mass > 30 && AK8Eta < 2.5) break;
             
         }
-        
-        
         bool passing= true;
-        
-         if ( (!isData ||  (isData && _Pass_AK8_Trigger_)) &&  AK8Pt > _cut_AK8Pt_ && AK8Mass > _cut_AK8Mass_ && AK8Eta < 2.5){
-            TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT);
-            passing= true;
+
+         if (PFHT > _cut_PFHT_ && PFMET > _cut_PFMET_ && MHT> _cut_PFMHT_ && PFMET+MHT > _cut_PFMETMHT_){
+            if (!isData ||  (isData && _Pass_METHT_Trigger_)){
+                TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MET);
+                passing= true;
+            }
+            else
+            passing = false;
+//                continue;
         }
-        else if ( (!isData ||  (isData && _Pass_METHT_Trigger_)) &&  PFHT > _cut_PFHT_ && PFMET > _cut_PFMET_ && MHT> _cut_PFMHT_ && PFMET+MHT > _cut_PFMETMHT_){
-            TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MET);
-            passing= true;
-        }
+//
+//        else if (AK8Pt > _cut_AK8Pt_ && AK8Mass > _cut_AK8Mass_ && AK8Eta < 2.5){
+//            if (!isData ||  (isData && _Pass_AK8_Trigger_)){
+//                TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT);
+//                passing= true;
+//            }
+//            else
+//            passing = false;
+////                continue;
+//        }
+//
         else {
+            
+//            continue;
             passing = false;
         }
         
         if (! passing) continue;
+        
         
         //=========================================================================================================
         // Event Selection
@@ -340,7 +357,7 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",8 ,15,0,15);
         
         tmass = TMass_F(LeadTau4Momentum.Pt(), LeadTau4Momentum.Px(), LeadTau4Momentum.Py(),  Met,  Metphi);
-        if (tmass > 200) continue;
+        //        if (tmass > 80) continue;
         plotFill("cutFlowTable",9 ,15,0,15);
         
         if (m_sv < 50) continue;
@@ -352,22 +369,16 @@ int main(int argc, char* argv[]) {
         //        plotFill("cutFlowTable",8 ,15,0,15);
         
         
-//        electron veto
-//        int numele =getNumElectron();
-        int numele =getNumElectron(SubTau4Momentum+LeadTau4Momentum);
-        if (numele > 0) continue;
-        plotFill("cutFlowTable",11 ,15,0,15);
+        //electron veto
+        //        int numele =getNumElectron();
+        //        if (numele > 0) continue;
+        //        plotFill("cutFlowTable",11 ,15,0,15);
         
         //muon veto
-//        int numMu =getNumMuon();
-        int numMu =getNumMuon(SubTau4Momentum+LeadTau4Momentum);
+        int numMu =getNumMuon();
         if (numMu > 0) continue;
         plotFill("cutFlowTable",12 ,15,0,15);
-
-        //st cut
-//        if (st < _cut_st_) continue;
-        plotFill("cutFlowTable",13 ,15,0,15);
-
+        
         //=========================================================================================================
         
         if (!isData){
@@ -385,7 +396,6 @@ int main(int argc, char* argv[]) {
             
             //  GenInfo
             vector<float>  genInfo=GeneratorInfo();
-            float WBosonPt=genInfo[1];
             float ZBosonPt=genInfo[3];
             float ZBosonMass=genInfo[4];
             
@@ -395,12 +405,6 @@ int main(int argc, char* argv[]) {
                 if (ZBosonMass < 61) ZBosonMass = 61;
                 if (ZBosonMass > 119) ZBosonMass = 119;
                 zmasspt_weight=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
-            }
-            
-            if (name == "W" && (sample.find("_HT_") != string::npos) ){
-                WBosonKFactor= FuncBosonKFactor("W1Cen") + FuncBosonKFactor("W2Cen") * WBosonPt; //HT binned & inclusive K-factor
-                WBosonKFactor_ewkUp= FuncBosonKFactor("W1Up") + FuncBosonKFactor("W2Up") * WBosonPt; //HT binned & inclusive K-factor
-                WBosonKFactor_ewkDown= FuncBosonKFactor("W1Down") + FuncBosonKFactor("W2Down") * WBosonPt; //HT binned & inclusive K-factor
             }
         }
         
@@ -420,17 +424,14 @@ int main(int argc, char* argv[]) {
         
         higgs_pT = higgs.Pt();
         if (higgs_pT < 250 ) continue;
-        plotFill("cutFlowTable",14 ,15,0,15);
+        plotFill("cutFlowTable",13 ,15,0,15);
         
         higgs_m = higgs.M();
         OS = boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) < 0;
         SS =  boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) > 0;
-//        lep1IsoPass = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
-//        lep2IsoPass = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
-        lep1IsoPass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
-        lep2IsoPass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
-
-
+        lep1IsoPass = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
+        lep2IsoPass = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
+        
         lep1Pt_=boostedTauPt->at(idx_leadtau);
         lep2Pt_=boostedTauPt->at(idx_subleadtau);
         vis_mass=Z4Momentum.M();

@@ -87,9 +87,9 @@ TTree *  Xttree( TFile * f_Double, string channel){
     //       Run_Tree->SetBranchAddress("vtz", &vtz, &b_vtz);
     //       Run_Tree->SetBranchAddress("rho", &rho, &b_rho);
     //       Run_Tree->SetBranchAddress("rhoCentral", &rhoCentral, &b_rhoCentral);
-    //       Run_Tree->SetBranchAddress("L1ECALPrefire", &L1ECALPrefire, &b_L1ECALPrefire);
-    //       Run_Tree->SetBranchAddress("L1ECALPrefireUp", &L1ECALPrefireUp, &b_L1ECALPrefireUp);
-    //       Run_Tree->SetBranchAddress("L1ECALPrefireDown", &L1ECALPrefireDown, &b_L1ECALPrefireDown);
+           Run_Tree->SetBranchAddress("L1ECALPrefire", &L1ECALPrefire, &b_L1ECALPrefire);
+           Run_Tree->SetBranchAddress("L1ECALPrefireUp", &L1ECALPrefireUp, &b_L1ECALPrefireUp);
+           Run_Tree->SetBranchAddress("L1ECALPrefireDown", &L1ECALPrefireDown, &b_L1ECALPrefireDown);
     //       Run_Tree->SetBranchAddress("HLTEleMuX", &HLTEleMuX, &b_HLTEleMuX);
     //       Run_Tree->SetBranchAddress("HLTPho", &HLTPho, &b_HLTPho);
     //       Run_Tree->SetBranchAddress("HLTPhoRejectedByPS", &HLTPhoRejectedByPS, &b_HLTPhoRejectedByPS);
@@ -1652,6 +1652,51 @@ int numBJets( float BJetPtCut, float CSVCut){
             numBJet++;
     }
     return numBJet;
+}
+
+
+int leadingCSV (){
+    float highestCSV=-10;
+    float highestCSV_Id=-10;
+    for (int ijet= 0 ; ijet < nJet ; ijet++){
+        if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > 20 && fabs(jetEta->at(ijet)) < 2.4){
+            if ( jetDeepCSVTags_b->at(ijet) > highestCSV ){
+                highestCSV = jetDeepCSVTags_b->at(ijet);
+                highestCSV_Id=ijet;
+            }
+        }
+    }
+    return highestCSV_Id;
+}
+
+int subLeadingCSV (){
+    int leadCSV=leadingCSV();
+    float highestCSV=-10;
+    float highestCSV_Id=-10;
+    for (int ijet= 0 ; ijet < nJet ; ijet++){
+        if (ijet == leadCSV) continue;
+        if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > 20 && fabs(jetEta->at(ijet)) < 2.4){
+            if ( jetDeepCSVTags_b->at(ijet) > highestCSV ){
+                highestCSV = jetDeepCSVTags_b->at(ijet);
+                highestCSV_Id=ijet;
+            }
+        }
+    }
+    return highestCSV_Id;
+}
+int subLeadingCSV (int leadCSV){
+    float highestCSV=-10;
+    float highestCSV_Id=-10;
+    for (int ijet= 0 ; ijet < nJet ; ijet++){
+        if (ijet == leadCSV) continue;
+        if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > 20 && fabs(jetEta->at(ijet)) < 2.4){
+            if ( jetDeepCSVTags_b->at(ijet) > highestCSV ){
+                highestCSV = jetDeepCSVTags_b->at(ijet);
+                highestCSV_Id=ijet;
+            }
+        }
+    }
+    return highestCSV_Id;
 }
 
 //###########       Jet multiplicity   ###########################################################

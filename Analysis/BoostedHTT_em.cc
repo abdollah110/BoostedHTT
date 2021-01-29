@@ -120,6 +120,7 @@ int main(int argc, char* argv[]) {
     float LumiWeight = 1;
     float PUWeight = 1;
     float zmasspt_weight=1;
+    float WBosonKFactor=1;
     
     float lepPt_=-10;
     float elept_=-10;
@@ -220,7 +221,7 @@ int main(int argc, char* argv[]) {
         int idx_ele= tauIndex;
         Ele4Momentum.SetPtEtaPhiM(elePt->at(idx_ele),eleEta->at(idx_ele),elePhi->at(idx_ele),eleMass);
         
-        if (elePt->at(idx_ele) <= 15 || fabs(eleEta->at(idx_ele)) >= 2.5) continue;
+        if (elePt->at(idx_ele) <= 10 || fabs(eleEta->at(idx_ele)) >= 2.5) continue;
         plotFill("cutFlowTable",5 ,15,0,15);
         
         bool eleMVAId= false;
@@ -312,6 +313,7 @@ int main(int argc, char* argv[]) {
 
             //  GenInfo
             vector<float>  genInfo=GeneratorInfo();
+            float WBosonPt=genInfo[1];
             float ZBosonPt=genInfo[3];
             float ZBosonMass=genInfo[4];
             
@@ -321,6 +323,12 @@ int main(int argc, char* argv[]) {
                 if (ZBosonMass < 61) ZBosonMass = 61;
                 if (ZBosonMass > 119) ZBosonMass = 119;
                 zmasspt_weight=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+            }
+            
+            if (name == "W" && (sample.find("_HT_") != string::npos) ){
+                WBosonKFactor= FuncBosonKFactor("W1Cen") + FuncBosonKFactor("W2Cen") * WBosonPt; //HT binned & inclusive K-factor
+                WBosonKFactor_ewkUp= FuncBosonKFactor("W1Up") + FuncBosonKFactor("W2Up") * WBosonPt; //HT binned & inclusive K-factor
+                WBosonKFactor_ewkDown= FuncBosonKFactor("W1Down") + FuncBosonKFactor("W2Down") * WBosonPt; //HT binned & inclusive K-factor
             }
 
         }

@@ -207,8 +207,6 @@ int main(int argc, char* argv[]) {
                 //###############################################################################################
                 //  Weight
                 //###############################################################################################
-                float WBosonPt=0;
-                //            float WBosonMass=0;
                 float WBosonKFactor=1;
                 float WBosonKFactor_ewkUp=1;
                 float WBosonKFactor_ewkDown=1;
@@ -229,6 +227,7 @@ int main(int argc, char* argv[]) {
                     
                     //  GenInfo
                     vector<float>  genInfo=GeneratorInfo();
+                    float WBosonPt=genInfo[1];
                     float ZBosonPt=genInfo[3];
                     float ZBosonMass=genInfo[4];
                     

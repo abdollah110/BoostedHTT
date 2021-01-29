@@ -65,6 +65,7 @@ def make_legend():
 
 InputFilesLocation=sys.argv[1]
 year=0
+if '2016' in InputFilesLocation: year =2016
 if '2017' in InputFilesLocation: year =2017
 if '2018' in InputFilesLocation: year =2018
 

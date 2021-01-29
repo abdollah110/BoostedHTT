@@ -91,13 +91,13 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     Data.Rebin(RB_)
     
     
-    QCD=file.Get(categoriy).Get("QCD")
-#    if not QCD:
-#        QCD=file.Get(categoriy).Get("VV")
-#        QCD.Scale(.0001)
-#        print "\n\n\n\nn\######################### whatch out VV  instead of QCD\n\n\n\n"
-    QCD.Rebin(RB_)
-    QCD.Scale(bcde_to_bcdef)
+#    QCD=file.Get(categoriy).Get("QCD")
+##    if not QCD:
+##        QCD=file.Get(categoriy).Get("VV")
+##        QCD.Scale(.0001)
+##        print "\n\n\n\nn\######################### whatch out VV  instead of QCD\n\n\n\n"
+#    QCD.Rebin(RB_)
+#    QCD.Scale(bcde_to_bcdef)
     
 
 
@@ -185,7 +185,7 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
 #    Signal.SetMarkerColor(4)
 
 
-    QCD.SetFillColor(ROOT.TColor.GetColor(408, 106, 154))
+#    QCD.SetFillColor(ROOT.TColor.GetColor(408, 106, 154))
     W.SetFillColor(ROOT.TColor.GetColor(200, 2, 285))
     TT.SetFillColor(ROOT.TColor.GetColor(208, 376, 124))
 #    SingleT.SetFillColor(ROOT.TColor.GetColor(150, 132, 232))
@@ -212,7 +212,7 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
 
     Data.SetMarkerStyle(20)
     Data.SetMarkerSize(1)
-    QCD.SetLineColor(ROOT.kBlack)
+#    QCD.SetLineColor(ROOT.kBlack)
     W.SetLineColor(ROOT.kBlack)
     TT.SetLineColor(ROOT.kBlack)
     DYS.SetLineColor(ROOT.kBlack)
@@ -245,7 +245,7 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
 
 
     stack=ROOT.THStack("stack","stack")
-    stack.Add(QCD)
+#    stack.Add(QCD)
     stack.Add(VV)
     stack.Add(DYS)
 #    stack.Add(SingleT)
@@ -254,7 +254,7 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     
 
     errorBand = W.Clone()
-    errorBand.Add(QCD)
+#    errorBand.Add(QCD)
     errorBand.Add(TT)
     errorBand.Add(VV)
 #    errorBand.Add(SingleT)
@@ -284,7 +284,7 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     pad1.SetFrameBorderSize(10)
 
     Data.GetXaxis().SetLabelSize(0)
-    if isLOG: Data.SetMaximum(Data.GetMaximum()*10000)
+    if isLOG: Data.SetMaximum(Data.GetMaximum()*100000)
     else:  Data.SetMaximum(Data.GetMaximum()*2)
     Data.SetMinimum(yMin)
     Data.Draw("e")
@@ -301,7 +301,7 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     legende.AddEntry(DYS,"DY#rightarrowll+iets ","f")
     legende.AddEntry(VV,"Diboson","f")
     legende.AddEntry(W,"W+iets","f")
-    legende.AddEntry(QCD,"QCD multijet","f")
+#    legende.AddEntry(QCD,"QCD multijet","f")
     legende.AddEntry(errorBand,"Uncertainty","f")
 
     legende.Draw()
@@ -315,13 +315,13 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
 
     pad1.RedrawAxis()
 
-#    categ  = ROOT.TPaveText(0.20, 0.45+0.013, 0.43, 0.60+0.155, "NDC")
-#    categ.SetBorderSize(   0 )
-#    categ.SetFillStyle(    0 )
-#    categ.SetTextAlign(   12 )
-#    categ.SetTextSize ( 0.04 )
-#    categ.SetTextColor(    1 )
-#    categ.SetTextFont (   41 )
+    categ  = ROOT.TPaveText(0.20, 0.45+0.013, 0.43, 0.60+0.155, "NDC")
+    categ.SetBorderSize(   0 )
+    categ.SetFillStyle(    0 )
+    categ.SetTextAlign(   12 )
+    categ.SetTextSize ( 0.04 )
+    categ.SetTextColor(    1 )
+    categ.SetTextFont (   41 )
     #       if i==1 or i==3:
 #    if ForAN:
 #        if MTLegend=='_NoMT': categ.AddText("M_{T}(#mu,MET) > 0 GeV")
@@ -330,7 +330,7 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
 #        if MTLegend=='_MT500': categ.AddText("M_{T}(#mu,MET) > 500 GeV")
 #        if MTLegend=='_MT50To150': categ.AddText("50 GeV <M_{T}(#mu,MET) < 150 GeV")
 #
-#    categ.AddText("1100<M_{LQ}<1400 GeV")
+    categ.AddText(HistName)
 #    categ.AddText("Jet Pt < 200 GeV")
 #    categ.AddText(ttbarCR)
 #    categ.AddText('50 <Jet p_{T} < 200 GeV')
@@ -340,7 +340,7 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
 #    categ.AddText(MTLegend)
     #       else :
     #        categ.AddText("SS")
-#        categ.Draw()
+    categ.Draw()
 
     c.cd()
     pad2 = ROOT.TPad("pad2","pad2",0,0,1,0.35);
@@ -408,16 +408,22 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
 
     c.Modified()
     outName=((FileName.replace('TotalRootForLimit_PreSelection_MuJet','').replace('.root','')))
-    c.SaveAs(InputFilesLocation+'/_mm'+outName+".pdf")
+    c.SaveAs(InputFilesLocation+'/_mm'+outName+'_'+str(year)+".pdf")
 
 
 FileNamesInfo=[
 #               ["_tmass_JetMet","M_{T}(jet,MET) (GeV)","",5,1],
-               ["ZMass","visible M_{#mu#mu} (GeV)","",2,.1],
+               ["ZMass"," m_{#mu#mu} (GeV)","",2,.1],
                ["dR","deltaR_{#mu#mu}","",5,.1],
 #               ["tmass","tmass{#mu,MET}","",1,.1],
                ["ht","jet HT (GeV)","",5,.1],
-               
+
+               ["ZPt","ZPt p_{T} (GeV)","",5,.1],
+               ["ZPt_Below","ZPt p_{T} (GeV)","M < 85 GeV",5,.1],
+               ["ZPt_OnMass","ZPt p_{T} (GeV)","85 <M < 95 GeV",5,.1],
+               ["ZPt_Above","ZPt p_{T} (GeV)","M > 95 GeV",5,.1],
+
+
                
 #               ["_LepPt","lepton p_{T} (GeV)","",100,.1],
 #               ["_LepEta","lepton #eta ","",5,10],
@@ -440,8 +446,8 @@ FileNamesInfo=[
 Isolation=[""]
 
 
-logStat=[0]
-#logStat=[1]
+#logStat=[0]
+logStat=[1]
 
 #PlotName=["ZMass"]
 
@@ -473,10 +479,10 @@ for i in range(0,len(FileNamesInfo)):
                 for reg in region:
                     for isLOG in logStat:
                 
-                        FileName="TotalRootForLimit_PreSelection_"+NormMC+reg[0]+iso+q+".root"
+                        FileName="_"+NormMC+reg[0]+iso+q+".root"
                         Info=NormMC+reg[0]+iso+q
                         print "---->", FileName
-                        MakePlot(FileName,reg[1],"",axisName,Info,Bin,"",yMin,isLOG,reg[0],q)
+                        MakePlot(FileName,reg[1],nothing,axisName,Info,Bin,"",yMin,isLOG,reg[0],q)
 
 
 

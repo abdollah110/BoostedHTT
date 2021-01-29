@@ -6,7 +6,6 @@ import sys
 
 #InputFilesLocation = 'NewOutFiles_BoostedHTT2017_mm_/'
 InputFilesLocation=sys.argv[1]
-#bcde_to_bcdef= (4.767+ 9.583+4.224+9.261)/(4.767+ 9.583+4.224+9.261+13.463)
 bcde_to_bcdef=1
 year=0
 if '2016' in InputFilesLocation: year =2016
@@ -90,59 +89,16 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
     Data=file.Get(categoriy).Get("data_obs")
     Data.Rebin(RB_)
     
-    
-#    QCD=file.Get(categoriy).Get("QCD")
-##    if not QCD:
-##        QCD=file.Get(categoriy).Get("VV")
-##        QCD.Scale(.0001)
-##        print "\n\n\n\nn\######################### whatch out VV  instead of QCD\n\n\n\n"
-#    QCD.Rebin(RB_)
-#    QCD.Scale(bcde_to_bcdef)
-    
-
-
 
 
 
     W=file.Get(categoriy).Get("WJets")
     W.Rebin(RB_)
-#    W.Scale(1)
-#    if ttbarCR=="" :  W.Scale(SF_W_SingleLep())
-#    if ttbarCR=="_ttbarCRSingleLep" :  W.Scale(SF_W_SingleLep())
-#    if ttbarCR=="_ttbarCRDiLep" :  W.Scale(SF_W_DiLep())
     W.Scale(bcde_to_bcdef)
 
-
-
-
-
-
     TT=file.Get(categoriy).Get("ttbar")
-#    if not TT:
-#        TT=file.Get(categoriy).Get("VV")
-#        TT.Scale(.0001)
-#        print "\n\n\n\nn\######################### whatch out VV  instead of TT\n\n\n\n"
     TT.Rebin(RB_)
     TT.Scale(bcde_to_bcdef)
-#    TT.Scale(1)
-#    if ttbarCR=="" :  TT.Scale(SF_TT_SingleLep())
-#    if ttbarCR=="_ttbarCRSingleLep" :  TT.Scale(SF_TT_SingleLep())
-#    if ttbarCR=="_ttbarCRDiLep" :  TT.Scale(SF_TT_DiLep())
-
-
-
-
-
-#    SingleT=file.Get(categoriy).Get("SingleTop")
-##    print "SingleT, ", SingleT.Integral()
-#    if not SingleT:
-#        SingleT=file.Get(categoriy).Get("Diboson")
-#        SingleT.Scale(.0001)
-#        print "\n\n\n\nn\######################### whatch out VV  instead of SingleT\n\n\n\n"
-#    SingleT.Rebin(RB_)
-#
-#
-
 
 
     VV=file.Get(categoriy).Get("Diboson")
@@ -191,21 +147,6 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
 #    SingleT.SetFillColor(ROOT.TColor.GetColor(150, 132, 232))
     VV.SetFillColor(ROOT.TColor.GetColor(200, 282, 232))
     DYS.SetFillColor(ROOT.TColor.GetColor(108, 226, 354))
-    
-    
-    
-    ######  Add OverFlow Bin
-#    if not FileName.find("_tmass_MuMet") > 0:
-#    QCD.SetBinContent(QCD.GetNbinsX(),QCD.GetBinContent(QCD.GetNbinsX()+1)+QCD.GetBinContent(QCD.GetNbinsX()))
-#    W.SetBinContent(W.GetNbinsX(),W.GetBinContent(W.GetNbinsX()+1)+W.GetBinContent(W.GetNbinsX()))
-#    TT.SetBinContent(TT.GetNbinsX(),TT.GetBinContent(TT.GetNbinsX()+1)+TT.GetBinContent(TT.GetNbinsX()))
-#    SingleT.SetBinContent(SingleT.GetNbinsX(),SingleT.GetBinContent(SingleT.GetNbinsX()+1)+SingleT.GetBinContent(SingleT.GetNbinsX()))
-#    VV.SetBinContent(VV.GetNbinsX(),VV.GetBinContent(VV.GetNbinsX()+1)+VV.GetBinContent(VV.GetNbinsX()))
-#    DYS.SetBinContent(DYS.GetNbinsX(),DYS.GetBinContent(DYS.GetNbinsX()+1)+DYS.GetBinContent(DYS.GetNbinsX()))
-#    Data.SetBinContent(Data.GetNbinsX(),Data.GetBinContent(Data.GetNbinsX()+1)+Data.GetBinContent(Data.GetNbinsX()))
-
-
-
 
 
 
@@ -220,29 +161,6 @@ def MakePlot(FileName,categoriy,HistName,Xaxis,Info,RB_,channel,yMin,isLOG,ttbar
 #    SingleT.SetLineColor(ROOT.kBlack)
     Data.SetLineColor(ROOT.kBlack)
     Data.SetLineWidth(2)
-
-
-#    #Making the plot blind
-#    if FileName.find("LQMass") > 0 :
-#        print "##################################\n", FileName
-#        for i in range(Data.GetNbinsX()):
-##            if i > 15 : Data.SetBinContent(i+1,0)
-#            if i > 9 :
-#                Data.SetBinContent(i+1,0)
-#                Data.SetBinError(i+1,0)
-#
-#    if FileName.find("MET") > 0 :
-#        print "##################################\n", FileName
-#        for i in range(Data.GetNbinsX()):
-#            if i > 9 : Data.SetBinContent(i+1,0)
-#
-#    if FileName.find("tmass_MuMet") > 0 :
-#        print "##################################\n", FileName
-#        for i in range(Data.GetNbinsX()):
-#                if i > 9 : Data.SetBinContent(i+1,0)
-
-
-
 
     stack=ROOT.THStack("stack","stack")
 #    stack.Add(QCD)
@@ -417,7 +335,12 @@ FileNamesInfo=[
                ["numVLoose","numVLoose","",2,.1],
                ["numLoose","numLoose","",2,.1],
                ["numTight","numTight","",2,.1],
-]
+               ["MT","MT","",2,.1],
+               ["LepPt","LepPt","",2,.1],
+               ["Met","Met","",2,.1],
+               ["ZMass","ZMass","",2,.1],
+               ["st","st","",2,.1],
+               ]
 
 
 for i in range(0,len(FileNamesInfo)):
@@ -427,7 +350,7 @@ for i in range(0,len(FileNamesInfo)):
     nothing=FileNamesInfo[i][2]
     Bin=FileNamesInfo[i][3]
     yMin=FileNamesInfo[i][4]
-    logStat=[1]
+    logStat=[0]
     region= [
         ['','pass'],
         ]

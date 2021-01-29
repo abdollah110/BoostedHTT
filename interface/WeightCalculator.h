@@ -106,12 +106,13 @@ float XSection(std::string OutName) {
 //    else if (OutName.find("WJetsToLNu_Pt-250To400") != string::npos) return  23.94   ;
 //    else if (OutName.find("WJetsToLNu_Pt-400To600") != string::npos) return  3.031   ;
 //    else if (OutName.find("WJetsToLNu_Pt-600ToInf") != string::npos) return  0.4524   ;
-    else if (OutName.find("WJetsToLNu_Pt-0To50") != string::npos) return  61850.0   ;
-    else if (OutName.find("WJetsToLNu_Pt-50To100") != string::npos) return  3570.0   ;
-    else if (OutName.find("WJetsToLNu_Pt-100To250") != string::npos) return  779.1   ;
-    else if (OutName.find("WJetsToLNu_Pt-250To400") != string::npos) return  27.98   ;
-    else if (OutName.find("WJetsToLNu_Pt-400To600") != string::npos) return  3.604   ;
-    else if (OutName.find("WJetsToLNu_Pt-600ToInf") != string::npos) return  0.5545   ;
+    //NNLO
+    else if (OutName.find("WJetsToLNu_Pt-0To50") != string::npos) return  57297.39   ;
+    else if (OutName.find("WJetsToLNu_Pt-50To100") != string::npos) return  3298.37   ;
+    else if (OutName.find("WJetsToLNu_Pt-100To250") != string::npos) return  689.75   ;
+    else if (OutName.find("WJetsToLNu_Pt-250To400") != string::npos) return  24.507   ;
+    else if (OutName.find("WJetsToLNu_Pt-400To600") != string::npos) return  3.1101   ;
+    else if (OutName.find("WJetsToLNu_Pt-600ToInf") != string::npos) return  0.46832   ;
 
     //    else if (OutName.find("DYJetsToLL_M-50") != string::npos) return          5765.4 ;
 //    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  354.3   ; $$$$ Wrong XS
@@ -135,14 +136,23 @@ float XSection(std::string OutName) {
 //    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.3921 * (1921.8 * 3/5938) ;
 //    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.03823 * (1921.8 * 3/5938) ;
 
-//from Guillelmo
-//    else if (OutName.find("DYJetsToLL_Zpt-0To50_") != string::npos) return  5695.620764    ;
-    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  387.130778   ;
-    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   89.395097 ;
-    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.435181 ;
-    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.464024 ;
-    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.043602 ;
-
+////from Guillelmo
+////    else if (OutName.find("DYJetsToLL_Zpt-0To50_") != string::npos) return  5695.620764    ;
+//    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  387.130778   ;
+//    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   89.395097 ;
+//    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.435181 ;
+//    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.464024 ;
+//    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.043602 ;
+    
+    
+//    https://indico.cern.ch/event/673253/ NNLO
+//    else if (OutName.find("DYJetsToLL_Zpt-0To50_") != string::npos) return  5352.58    ;
+    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  363.81   ;
+    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   84.015 ;
+    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.2283 ;
+    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.43604 ;
+    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.04098 ;
+    
 
     else if (OutName.find("WJetsToLNu_HT-100To200") != string::npos) return 1345* WScaleFactor;
     else if (OutName.find("WJetsToLNu_HT-200To400") != string::npos) return 359.7* WScaleFactor;
