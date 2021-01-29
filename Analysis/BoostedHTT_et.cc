@@ -109,6 +109,7 @@ int main(int argc, char* argv[]) {
     float LepCorrection=1;
     float zmasspt_weight=1.0;
     float WBosonKFactor=1;
+    float preFireWeight=1;
     
     
     float lepPt_=-10;
@@ -116,7 +117,7 @@ int main(int argc, char* argv[]) {
     float vis_mass=-10;
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
-    bool OS,SS,lep1IsoPass,lep2IsoPass;
+    bool OS,SS,lep1IsoPass,lep2IsoPass,lep2IsoPassV;
     float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, nom_zpt_weight, eleIDMVA;
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
@@ -127,6 +128,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("SS",&SS,"SS/O");
     outTr->Branch("lep1IsoPass",&lep1IsoPass,"lep1IsoPass/O");
     outTr->Branch("lep2IsoPass",&lep2IsoPass,"lep2IsoPass/O");
+    outTr->Branch("lep2IsoPassV",&lep2IsoPassV,"lep2IsoPassV/O");
     outTr->Branch("vis_mass",&vis_mass,"vis_mass/F");
     outTr->Branch("tmass",&tmass,"tmass/F");
     outTr->Branch("ht",&ht,"ht/F");
@@ -218,7 +220,7 @@ int main(int argc, char* argv[]) {
         //        if (boostedTauagainstElectronTightMVA62018->at(idx_tau) < 0.5) continue;
         if (boostedTauagainstElectronLooseMVA62018->at(idx_tau) < 0.5) continue;
         //        if (boostedTauByLooseMuonRejection3->at(idx_tau) < 0.5) continue;
-//        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < 0) continue;
+        //        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < 0) continue;
         
         Tau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
         plotFill("cutFlowTable",5 ,15,0,15);
@@ -287,6 +289,12 @@ int main(int argc, char* argv[]) {
             else
                 PUWeight= PUData_/PUMC_;
             
+            //prefire
+            preFireWeight = L1ECALPrefire;
+            if (syst == "prefireUp") {preFireWeight = L1ECALPrefireUp;}
+            if (syst == "prefireDown") {preFireWeight = L1ECALPrefireDown;}
+            
+            
             //  GenInfo
             vector<float>  genInfo=GeneratorInfo();
             float WBosonPt=genInfo[1];
@@ -303,16 +311,18 @@ int main(int argc, char* argv[]) {
             
             if (name == "W" && (sample.find("_HT_") != string::npos) ){
                 WBosonKFactor= FuncBosonKFactor("W1Cen") + FuncBosonKFactor("W2Cen") * WBosonPt; //HT binned & inclusive K-factor
-                WBosonKFactor_ewkUp= FuncBosonKFactor("W1Up") + FuncBosonKFactor("W2Up") * WBosonPt; //HT binned & inclusive K-factor
-                WBosonKFactor_ewkDown= FuncBosonKFactor("W1Down") + FuncBosonKFactor("W2Down") * WBosonPt; //HT binned & inclusive K-factor
-            }            
+                if (syst == "WBosonKFactorUp") WBosonKFactor= FuncBosonKFactor("W1Up") + FuncBosonKFactor("W2Up") * WBosonPt; //HT binned & inclusive K-factor
+                if (syst == "WBosonKFactorDown") WBosonKFactor= FuncBosonKFactor("W1Down") + FuncBosonKFactor("W2Down") * WBosonPt; //HT binned & inclusive K-factor
+            }
             
         }
         
-        plotFill("LumiWeight",LumiWeight ,1000,0,10000);
         plotFill("LepCorrection",LepCorrection ,100,0,2);
+        plotFill("LumiWeight",LumiWeight ,1000,0,10000);
         plotFill("PUWeight",PUWeight ,200,0,2);
         plotFill("zmasspt_weight",zmasspt_weight ,200,0,2);
+        plotFill("preFireWeight",preFireWeight ,200,0,2);
+        plotFill("WBosonKFactor",WBosonKFactor ,200,0,2);
         
         //###############################################################################################
         //  tree branches
@@ -324,6 +334,7 @@ int main(int argc, char* argv[]) {
         SS =  eleCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) > 0;
         lep1IsoPass= selectElectron_1? IsoLep1Value < LeptonIsoCut : 1;
         lep2IsoPass= boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassV= boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
         eleIDMVA=eleIDMVANoIso->at(idx_lep);
         lepPt_=elePt->at(idx_lep);
         taupt_=boostedTauPt->at(idx_tau);
@@ -332,7 +343,7 @@ int main(int argc, char* argv[]) {
         dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
         BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_tau);
         m_sv_=m_sv;
-        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight;
+        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * preFireWeight * WBosonKFactor;
         
         // Fill the tree
         outTr->Fill();

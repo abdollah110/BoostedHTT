@@ -128,7 +128,7 @@ int main(int argc, char* argv[]) {
     float vis_mass=-10;
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
-    bool OS,SS,lep1IsoPass,lep2IsoPass;
+    bool OS,SS,lep1IsoPass,lep2IsoPass,lep2IsoPassV;
     float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
     int nbjet;
     
@@ -140,6 +140,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("SS",&SS,"SS/O");
     outTr->Branch("lep1IsoPass",&lep1IsoPass,"lep1IsoPass/O");
     outTr->Branch("lep2IsoPass",&lep2IsoPass,"lep2IsoPass/O");
+    outTr->Branch("lep2IsoPassV",&lep2IsoPassV,"lep2IsoPassV/O");
     outTr->Branch("vis_mass",&vis_mass,"vis_mass/F");
     outTr->Branch("tmass",&tmass,"tmass/F");
     outTr->Branch("ht",&ht,"ht/F");
@@ -354,11 +355,13 @@ int main(int argc, char* argv[]) {
             
         }
         
-        plotFill("LumiWeight",LumiWeight ,1000,0,10000);
+        plotFill("bjetsWeightOnMC",bjetsWeightOnMC ,200,0,2);
         plotFill("LepCorrection",LepCorrection ,100,0,2);
+        plotFill("LumiWeight",LumiWeight ,1000,0,10000);
         plotFill("PUWeight",PUWeight ,200,0,2);
         plotFill("zmasspt_weight",zmasspt_weight ,200,0,2);
-        plotFill("bjetsWeightOnMC",bjetsWeightOnMC ,200,0,2);
+        plotFill("preFireWeight",preFireWeight ,200,0,2);
+        plotFill("WBosonKFactor",WBosonKFactor ,200,0,2);
         
         
         //###############################################################################################
@@ -371,6 +374,7 @@ int main(int argc, char* argv[]) {
         SS =  muCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) > 0;
         lep1IsoPass= selectMuon_1? IsoLep1Value < LeptonIsoCut : 1;
         lep2IsoPass= boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassV= boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
         lepPt_=muPt->at(idx_lep);
         taupt_=boostedTauPt->at(idx_tau);
         vis_mass=Z4Momentum.M();
@@ -379,7 +383,7 @@ int main(int argc, char* argv[]) {
         BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_tau);
         m_sv_=m_sv;
         //  Weights
-        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight;
+        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight;
         nbjet=numBJet;
         
         // Fill the tree

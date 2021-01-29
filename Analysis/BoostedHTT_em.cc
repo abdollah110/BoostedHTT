@@ -121,6 +121,7 @@ int main(int argc, char* argv[]) {
     float PUWeight = 1;
     float zmasspt_weight=1;
     float WBosonKFactor=1;
+    float preFireWeight = 1;
     
     float lepPt_=-10;
     float elept_=-10;
@@ -310,7 +311,13 @@ int main(int argc, char* argv[]) {
                 cout<<"PUMC_ is zero!!! & num pileup= "<< puTrue->at(0)<<"\n";
             else
                 PUWeight= PUData_/PUMC_;
-
+            
+            // prefire
+            preFireWeight = L1ECALPrefire;
+            if (syst == "prefireUp") {preFireWeight = L1ECALPrefireUp;}
+            if (syst == "prefireDown") {preFireWeight = L1ECALPrefireDown;}
+            
+            
             //  GenInfo
             vector<float>  genInfo=GeneratorInfo();
             float WBosonPt=genInfo[1];
@@ -327,16 +334,17 @@ int main(int argc, char* argv[]) {
             
             if (name == "W" && (sample.find("_HT_") != string::npos) ){
                 WBosonKFactor= FuncBosonKFactor("W1Cen") + FuncBosonKFactor("W2Cen") * WBosonPt; //HT binned & inclusive K-factor
-                WBosonKFactor_ewkUp= FuncBosonKFactor("W1Up") + FuncBosonKFactor("W2Up") * WBosonPt; //HT binned & inclusive K-factor
-                WBosonKFactor_ewkDown= FuncBosonKFactor("W1Down") + FuncBosonKFactor("W2Down") * WBosonPt; //HT binned & inclusive K-factor
+                if (syst == "WBosonKFactorUp") WBosonKFactor= FuncBosonKFactor("W1Up") + FuncBosonKFactor("W2Up") * WBosonPt; //HT binned & inclusive K-factor
+                if (syst == "WBosonKFactorDown") WBosonKFactor= FuncBosonKFactor("W1Down") + FuncBosonKFactor("W2Down") * WBosonPt; //HT binned & inclusive K-factor
             }
-
         }
         
-        plotFill("LumiWeight",LumiWeight ,1000,0,10000);
         plotFill("LepCorrection",LepCorrection ,100,0,2);
+        plotFill("LumiWeight",LumiWeight ,1000,0,10000);
         plotFill("PUWeight",PUWeight ,200,0,2);
         plotFill("zmasspt_weight",zmasspt_weight ,200,0,2);
+        plotFill("preFireWeight",preFireWeight ,200,0,2);
+        plotFill("WBosonKFactor",WBosonKFactor ,200,0,2);
         
         //###############################################################################################
         //  tree branches
@@ -354,7 +362,7 @@ int main(int argc, char* argv[]) {
         LeadJetPt = LeadJet.Pt();
         dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
         m_sv_=m_sv;
-        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight;
+        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight;
         nbjet= numBJet;
         
         // Fill the tree

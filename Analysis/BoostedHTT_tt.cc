@@ -108,13 +108,14 @@ int main(int argc, char* argv[]) {
     float LepCorrection=1;
     float zmasspt_weight=1;
     float WBosonKFactor=1;
+    float preFireWeight=1;
     
     float lep1Pt_=-10;
     float lep2Pt_=-10;
     float vis_mass=-10;
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
-    bool lep1IsoPass,lep2IsoPass,OS,SS;
+    bool lep1IsoPass,lep2IsoPass,lep1IsoPassV,lep2IsoPassV,OS,SS;
     float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
     // Trigger
     bool PassTrigger_37;
@@ -136,6 +137,8 @@ int main(int argc, char* argv[]) {
     outTr->Branch("lep2Pt",&lep2Pt_,"lep2Pt/F");
     outTr->Branch("lep1IsoPass",&lep1IsoPass,"lep1IsoPass/O");
     outTr->Branch("lep2IsoPass",&lep2IsoPass,"lep2IsoPass/O");
+    outTr->Branch("lep1IsoPassV",&lep1IsoPassV,"lep1IsoPassV/O");
+    outTr->Branch("lep2IsoPassV",&lep2IsoPassV,"lep2IsoPassV/O");
     outTr->Branch("OS",&OS,"OS/O");
     outTr->Branch("SS",&SS,"SS/O");
     outTr->Branch("vis_mass",&vis_mass,"vis_mass/F");
@@ -318,7 +321,7 @@ int main(int argc, char* argv[]) {
         
         bool passing= true;
         
-         if ( (!isData ||  (isData && _Pass_AK8_Trigger_)) &&  AK8Pt > _cut_AK8Pt_ && AK8Mass > _cut_AK8Mass_ && AK8Eta < 2.5){
+        if ( (!isData ||  (isData && _Pass_AK8_Trigger_)) &&  AK8Pt > _cut_AK8Pt_ && AK8Mass > _cut_AK8Mass_ && AK8Eta < 2.5){
             TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT);
             passing= true;
         }
@@ -352,22 +355,22 @@ int main(int argc, char* argv[]) {
         //        plotFill("cutFlowTable",8 ,15,0,15);
         
         
-//        electron veto
-//        int numele =getNumElectron();
+        //        electron veto
+        //        int numele =getNumElectron();
         int numele =getNumElectron(SubTau4Momentum+LeadTau4Momentum);
         if (numele > 0) continue;
         plotFill("cutFlowTable",11 ,15,0,15);
         
         //muon veto
-//        int numMu =getNumMuon();
+        //        int numMu =getNumMuon();
         int numMu =getNumMuon(SubTau4Momentum+LeadTau4Momentum);
         if (numMu > 0) continue;
         plotFill("cutFlowTable",12 ,15,0,15);
-
+        
         //st cut
-//        if (st < _cut_st_) continue;
+        //        if (st < _cut_st_) continue;
         plotFill("cutFlowTable",13 ,15,0,15);
-
+        
         //=========================================================================================================
         
         if (!isData){
@@ -382,6 +385,12 @@ int main(int argc, char* argv[]) {
                 cout<<"PUMC_ is zero!!! & num pileup= "<< puTrue->at(0)<<"\n";
             else
                 PUWeight= PUData_/PUMC_;
+            
+            //prefire
+            preFireWeight = L1ECALPrefire;
+            if (syst == "prefireUp") {preFireWeight = L1ECALPrefireUp;}
+            if (syst == "prefireDown") {preFireWeight = L1ECALPrefireDown;}
+            
             
             //  GenInfo
             vector<float>  genInfo=GeneratorInfo();
@@ -399,16 +408,18 @@ int main(int argc, char* argv[]) {
             
             if (name == "W" && (sample.find("_HT_") != string::npos) ){
                 WBosonKFactor= FuncBosonKFactor("W1Cen") + FuncBosonKFactor("W2Cen") * WBosonPt; //HT binned & inclusive K-factor
-                WBosonKFactor_ewkUp= FuncBosonKFactor("W1Up") + FuncBosonKFactor("W2Up") * WBosonPt; //HT binned & inclusive K-factor
-                WBosonKFactor_ewkDown= FuncBosonKFactor("W1Down") + FuncBosonKFactor("W2Down") * WBosonPt; //HT binned & inclusive K-factor
+                if (syst == "WBosonKFactorUp") WBosonKFactor= FuncBosonKFactor("W1Up") + FuncBosonKFactor("W2Up") * WBosonPt; //HT binned & inclusive K-factor
+                if (syst == "WBosonKFactorDown") WBosonKFactor= FuncBosonKFactor("W1Down") + FuncBosonKFactor("W2Down") * WBosonPt; //HT binned & inclusive K-factor
             }
         }
         
-        plotFill("LumiWeight",LumiWeight ,1000,0,10000);
-        plotFill("LepCorrection",LepCorrection ,100,0,2);
         plotFill("TriggerWeight",TriggerWeight ,100,0,1);
+        plotFill("LepCorrection",LepCorrection ,100,0,2);
+        plotFill("LumiWeight",LumiWeight ,1000,0,10000);
         plotFill("PUWeight",PUWeight ,200,0,2);
         plotFill("zmasspt_weight",zmasspt_weight ,200,0,2);
+        plotFill("preFireWeight",preFireWeight ,200,0,2);
+        plotFill("WBosonKFactor",WBosonKFactor ,200,0,2);
         
         //###############################################################################################
         //  tree branches
@@ -425,12 +436,11 @@ int main(int argc, char* argv[]) {
         higgs_m = higgs.M();
         OS = boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) < 0;
         SS =  boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) > 0;
-//        lep1IsoPass = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
-//        lep2IsoPass = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
         lep1IsoPass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
         lep2IsoPass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
-
-
+        lep1IsoPassV = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
+        lep2IsoPassV = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
+        
         lep1Pt_=boostedTauPt->at(idx_leadtau);
         lep2Pt_=boostedTauPt->at(idx_subleadtau);
         vis_mass=Z4Momentum.M();
@@ -439,7 +449,7 @@ int main(int argc, char* argv[]) {
         BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_subleadtau);
         m_sv_=m_sv;
         //  Weights
-        FullWeight = LumiWeight*LepCorrection * TriggerWeight*zmasspt_weight;
+        FullWeight = LumiWeight*LepCorrection * PUWeight * TriggerWeight*zmasspt_weight * preFireWeight * WBosonKFactor;
         
         // Fill the tree
         outTr->Fill();
