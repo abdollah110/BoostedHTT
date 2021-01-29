@@ -327,8 +327,8 @@ int main(int argc, char* argv[]) {
             
             int leadCSV= leadingCSV();
             int subLeadCSV= subLeadingCSV(leadCSV);
-            cout<< "leading csv = "<< leadCSV <<" cvs= "<< jetDeepCSVTags_b->at(leadCSV) << "  pt= " << jetPt->at(leadCSV);
-            cout<< "subLeading csv = "<< subLeadCSV <<" cvs= "<< jetDeepCSVTags_b->at(subLeadCSV) << "  pt= " << jetPt->at(subLeadCSV);
+            cout<< "leading csv = "<< leadCSV <<" cvs= "<< jetDeepCSVTags_b->at(leadCSV) << "  pt= " << jetPt->at(leadCSV)<<"\n";
+            cout<< "subLeading csv = "<< subLeadCSV <<" cvs= "<< jetDeepCSVTags_b->at(subLeadCSV) << "  pt= " << jetPt->at(subLeadCSV)<<"\n";
             
 //            if (year==2016){
 //
