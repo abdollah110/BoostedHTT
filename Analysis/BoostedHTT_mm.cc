@@ -165,6 +165,7 @@ int main(int argc, char* argv[]) {
                 float ZBosonMass=-1;
                 float WBosonKFactor=1;
                 float WBosonPt=0;
+                float preFireWeight =1;
                 
                 if (!isData){
                     
@@ -179,6 +180,10 @@ int main(int argc, char* argv[]) {
                     else
                         PUWeight= PUData_/PUMC_;
                     
+                    // prefire
+                    preFireWeight = L1ECALPrefire;
+
+
                     vector<float>  genInfo=GeneratorInfo();
                     WBosonPt=genInfo[1];
                     ZBosonPt=genInfo[3];
@@ -195,6 +200,7 @@ int main(int argc, char* argv[]) {
                 plotFill("LepCorrection",LepCorrection ,100,0,2);
                 plotFill("PUWeight",PUWeight ,200,0,2);
                 plotFill("WBosonKFactor",WBosonKFactor ,200,0,2);
+                plotFill("preFireWeight",preFireWeight ,200,0,2);
                 
                 //###############################################################################################
                 //  Gen Info
@@ -220,7 +226,7 @@ int main(int argc, char* argv[]) {
                     if (Q_category[iq]) {
                         
                         
-                        float FullWeight = LumiWeight*LepCorrection * PUWeight * WBosonKFactor;
+                        float FullWeight = LumiWeight*LepCorrection * PUWeight * WBosonKFactor * preFireWeight;
                         std::string FullStringName = Q_Cat[iq] ;
                         
                         plotFill("dR"+FullStringName,SubMu4Momentum.DeltaR(LeadMu4Momentum) ,100,0,1,FullWeight);
