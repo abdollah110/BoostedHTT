@@ -330,30 +330,29 @@ int main(int argc, char* argv[]) {
             cout<< "leading csv = "<< leadCSV <<" cvs= "<< jetDeepCSVTags_b->at(leadCSV) << "  pt= " << jetPt->at(leadCSV)<<"\n";
             cout<< "subLeading csv = "<< subLeadCSV <<" cvs= "<< jetDeepCSVTags_b->at(subLeadCSV) << "  pt= " << jetPt->at(subLeadCSV)<<"\n\n";
             
-//            if (year==2016){
-//
-//                bjet_weighter  bj_(2016, loose);
-//                bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV());
-//                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV(), "up");
-//                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV(), "down");
-//
-//            }else if (year==2017){
-//
-//                bjet_weighter  bj_(2017, loose);
-//                bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV());
-//                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV(), "up");
-//                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV(), "down");
-//
-//            }else if (year==2018){
-//
-//                bjet_weighter  bj_(2018, loose);
-//                bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV());
-//                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV(), "up");
-//                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV(), "down");
-//            } else{
-//                throw "wrong year name";
-//            }
-            
+            if (year==2016){
+
+                bjet_weighter  bj_(2016, medium);
+                bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV));
+                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "up");
+                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "down");
+
+            }else if (year==2017){
+
+                bjet_weighter  bj_(2017, medium);
+                bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV));
+                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "up");
+                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "down");
+
+            }else if (year==2018){
+
+                bjet_weighter  bj_(2018, medium);
+                bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV));
+                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "up");
+                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "down");
+            } else{
+                throw "wrong year name";
+            }            
             
         }
         
@@ -361,6 +360,8 @@ int main(int argc, char* argv[]) {
         plotFill("LepCorrection",LepCorrection ,100,0,2);
         plotFill("PUWeight",PUWeight ,200,0,2);
         plotFill("zmasspt_weight",zmasspt_weight ,200,0,2);
+        plotFill("bjetsWeightOnMC",bjetsWeightOnMC ,200,0,2);
+        
         
         //###############################################################################################
         //  tree branches
