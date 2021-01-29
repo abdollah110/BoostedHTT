@@ -138,20 +138,20 @@ float XSection(std::string OutName) {
 
 ////from Guillelmo
 ////    else if (OutName.find("DYJetsToLL_Zpt-0To50_") != string::npos) return  5695.620764    ;
-//    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  387.130778   ;
-//    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   89.395097 ;
-//    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.435181 ;
-//    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.464024 ;
-//    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.043602 ;
+    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  387.130778   ;
+    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   89.395097 ;
+    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.435181 ;
+    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.464024 ;
+    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.043602 ;
     
     
 //    https://indico.cern.ch/event/673253/ NNLO
 //    else if (OutName.find("DYJetsToLL_Zpt-0To50_") != string::npos) return  5352.58    ;
-    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  363.81   ;
-    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   84.015 ;
-    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.2283 ;
-    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.43604 ;
-    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.04098 ;
+//    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  363.81   ;
+//    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   84.015 ;
+//    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.2283 ;
+//    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.43604 ;
+//    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.04098 ;
     
 
     else if (OutName.find("WJetsToLNu_HT-100To200") != string::npos) return 1345* WScaleFactor;
