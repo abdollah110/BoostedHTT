@@ -199,7 +199,7 @@ int main(int argc, char* argv[]) {
             IsoLep1Value= ( muPFChIso->at(idx_lep) + muPFNeuIso->at(idx_lep) + muPFPhoIso->at(idx_lep) - 0.5* muPFPUIso->at(idx_lep))/muPt->at(idx_lep);
         
         
-        if (muPt->at(idx_lep) < 28 || fabs(muEta->at(idx_lep)) > 2.4) continue;
+        if (muPt->at(idx_lep) < 30 || fabs(muEta->at(idx_lep)) > 2.4) continue;
         
         plotFill("cutFlowTable",2 ,15,0,15);
         
