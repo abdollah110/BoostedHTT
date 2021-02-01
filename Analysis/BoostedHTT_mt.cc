@@ -128,7 +128,7 @@ int main(int argc, char* argv[]) {
     float vis_mass=-10;
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
-    bool OS,SS,lep1IsoPass,lep2IsoPass,lep2IsoPassV;
+    bool OS,SS,lep1IsoPass,lep2IsoPass,lep2IsoPassV,lep2IsoPassM,lep2IsoPassT,lep2IsoDeepL,lep2IsoDeepM,lep2IsoDeepT;
     float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
     int nbjet;
     
@@ -141,6 +141,11 @@ int main(int argc, char* argv[]) {
     outTr->Branch("lep1IsoPass",&lep1IsoPass,"lep1IsoPass/O");
     outTr->Branch("lep2IsoPass",&lep2IsoPass,"lep2IsoPass/O");
     outTr->Branch("lep2IsoPassV",&lep2IsoPassV,"lep2IsoPassV/O");
+    outTr->Branch("lep2IsoPassM",&lep2IsoPassM,"lep2IsoPassM/O");
+    outTr->Branch("lep2IsoPassT",&lep2IsoPassT,"lep2IsoPassT/O");
+    outTr->Branch("lep2IsoDeepL",&lep2IsoDeepL,"lep2IsoDeepL/O");
+    outTr->Branch("lep2IsoDeepM",&lep2IsoDeepM,"lep2IsoDeepM/O");
+    outTr->Branch("lep2IsoDeepT",&lep2IsoDeepT,"lep2IsoDeepT/O");
     outTr->Branch("vis_mass",&vis_mass,"vis_mass/F");
     outTr->Branch("tmass",&tmass,"tmass/F");
     outTr->Branch("ht",&ht,"ht/F");
@@ -375,6 +380,11 @@ int main(int argc, char* argv[]) {
         lep1IsoPass= selectMuon_1? IsoLep1Value < LeptonIsoCut : 1;
         lep2IsoPass= boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
         lep2IsoPassV= boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassM= boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassT= boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoDeepL= boostedTaubyLooseDeepTau2017v1VSjet->at(idx_tau) > 0.5 ;
+        lep2IsoDeepM= boostedTaubyMediumDeepTau2017v1VSjet->at(idx_tau) > 0.5 ;
+        lep2IsoDeepT= boostedTaubyTightDeepTau2017v1VSjet->at(idx_tau) > 0.5 ;
         lepPt_=muPt->at(idx_lep);
         taupt_=boostedTauPt->at(idx_tau);
         vis_mass=Z4Momentum.M();
