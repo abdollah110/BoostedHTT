@@ -119,6 +119,8 @@ int main(int argc, char* argv[]) {
     float LumiWeight = 1;
     float PUWeight = 1;
     float zmasspt_weight=1;
+    float zmasspt_weight_err=0;
+    float zmasspt_weight_nom=1;
     float WBosonKFactor=1;
     float preFireWeight=1;
     float bjetsWeightOnMC=1;
@@ -322,7 +324,12 @@ int main(int argc, char* argv[]) {
                 if (ZBosonPt > 999) ZBosonPt=999;
                 if (ZBosonMass < 61) ZBosonMass = 61;
                 if (ZBosonMass > 119) ZBosonMass = 119;
-                zmasspt_weight=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+                zmasspt_weight_nom=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+                zmasspt_weight_err=zpt_hist->GetBinError(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+                
+                zmasspt_weight = zmasspt_weight_nom + 0 * zmasspt_weight_err;
+                if (syst == "Z_masspt_Up")  zmasspt_weight = zmasspt_weight_nom + 1 * zmasspt_weight_err;
+                if (syst == "Z_masspt_Down") zmasspt_weight = zmasspt_weight_nom + -1 * zmasspt_weight_err;
             }
             
             if (name == "W" && (sample.find("_HT_") != string::npos) ){
