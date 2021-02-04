@@ -261,7 +261,7 @@ int main(int argc, char* argv[]) {
         
         // BJet veto
         int numBJet=numBJets(BJetPtCut,DeepCSVCut);
-        if (numBJet > 0) continue;
+//        if (numBJet > 0) continue;
         plotFill("cutFlowTable",9 ,15,0,15);
         
         // HT cut
