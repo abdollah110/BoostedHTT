@@ -261,7 +261,7 @@ int main(int argc, char* argv[]) {
         
         // BJet veto
         int numBJet=numBJets(BJetPtCut,DeepCSVCut);
-        if (numBJet > 0) continue;
+//        if (numBJet > 0) continue;
         plotFill("cutFlowTable",9 ,15,0,15);
         
         // HT cut
@@ -382,9 +382,9 @@ int main(int argc, char* argv[]) {
         lep2IsoPassV= boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
         lep2IsoPassM= boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
         lep2IsoPassT= boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
-        lep2IsoDeepL= boostedTaubyLooseDeepTau2017v1VSjet->at(idx_tau) > 0.5 ;
-        lep2IsoDeepM= boostedTaubyMediumDeepTau2017v1VSjet->at(idx_tau) > 0.5 ;
-        lep2IsoDeepT= boostedTaubyTightDeepTau2017v1VSjet->at(idx_tau) > 0.5 ;
+//        lep2IsoDeepL= boostedTaubyLooseDeepTau2017v1VSjet->at(idx_tau) > 0.5 ;
+//        lep2IsoDeepM= boostedTaubyMediumDeepTau2017v1VSjet->at(idx_tau) > 0.5 ;
+//        lep2IsoDeepT= boostedTaubyTightDeepTau2017v1VSjet->at(idx_tau) > 0.5 ;
         lepPt_=muPt->at(idx_lep);
         taupt_=boostedTauPt->at(idx_tau);
         vis_mass=Z4Momentum.M();
