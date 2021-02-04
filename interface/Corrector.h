@@ -928,7 +928,7 @@ float getCorrFactorMuonIso(int year, bool isData, float pt, float eta, TH2F ** H
         return 1;
     }
     else{
-        if (pt > 100 ) pt=100;
+        if (pt > 90 ) pt=90;
         if (year == 2016)
             return HistoIso[0]->GetBinContent(HistoIso[0]->GetXaxis()->FindBin(eta), HistoIso[0]->GetYaxis()->FindBin(pt));
         else
@@ -943,7 +943,7 @@ float getCorrFactorMuonTrg(bool isData, float pt, float eta, TH2F ** HistoTrg){
         return 1;
     }
     else{
-        if (pt > 800) pt=800;
+        if (pt > 790) pt=790;
         return HistoTrg[0]->GetBinContent(HistoTrg[0]->GetXaxis()->FindBin(pt),HistoTrg[0]->GetYaxis()->FindBin(fabs(eta)));
     }
 }
