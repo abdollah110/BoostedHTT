@@ -351,12 +351,15 @@ int main(int argc, char* argv[]) {
             
             
             if (name == "TT") {
+                
                 ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"nominal" );
                 if (syst == "ttbarShape_Up") {
                     ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"ttbarShape_Up" );
                 } else if (syst == "ttbarShape_Down") {
                     ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"ttbarShape_Down" );
                 }
+                
+                std::cout<<genInfo[5] <<" " <<genInfo[6] << " "<<ttbar_rwt<<"\n";
             }
             
             
