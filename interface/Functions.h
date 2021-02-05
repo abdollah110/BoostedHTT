@@ -1362,9 +1362,9 @@ wt= newTopPtReweight(genInfo[5],genInfo[6],year,"ttbarShape_Up" );
                 //you need to multiply the weight by (1.0/fct_tt->Eval(pttop1))*(1.0/fct_tt->Eval(pttop2))
                 if (year==2016) ttbar_scale*=(1.0/TF_Top2016corr->Eval(pttop1))*(1.0/TF_Top2016corr->Eval(pttop2));
                 
-                if (syst.find("ttbarShape_Up") != string:npos) {
+                if (syst.find("ttbarShape_Up") != string::npos) {
                     return (2 * ttbar_scale - 1);  // 2*√[e^(..)*e^(..)] - 1
-                } else if (syst.find("ttbarShape_Down") != string:npos) {
+                } else if (syst.find("ttbarShape_Down") != string::npos) {
                     return 1; // no weight for shift down
                 } else {
                     return ttbar_scale;  // √[e^(..)*e^(..)]
