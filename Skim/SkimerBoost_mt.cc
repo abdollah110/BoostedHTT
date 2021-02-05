@@ -24,12 +24,13 @@ void SkimerBoost::Loop(TString OutputFile)
     TTree* BoostTree = fChain->CloneTree(0);
     
     int year=0;
-    float muPt_cut= 30;
+    float muPt_cut= 25;
+    float tauPt_cut= 20;
     
-    if (string(file->GetName()).find("2016") != string::npos) {year =2016; muPt_cut= 25;}
-    else if (string(file->GetName()).find("2017") != string::npos ) {year =2017; muPt_cut= 28;}
-    else if (string(file->GetName()).find("2018") != string::npos) {year =2018; muPt_cut= 28;}
-    else (std::cout << "Year is not specificed in the outFile name !\n");
+//    if (string(file->GetName()).find("2016") != string::npos) {year =2016; muPt_cut= 25;}
+//    else if (string(file->GetName()).find("2017") != string::npos ) {year =2017; muPt_cut= 28;}
+//    else if (string(file->GetName()).find("2018") != string::npos) {year =2018; muPt_cut= 28;}
+//    else (std::cout << "Year is not specificed in the outFile name !\n");
     
     fChain->SetBranchStatus("*",1);
     
@@ -175,7 +176,7 @@ void SkimerBoost::Loop(TString OutputFile)
             
             for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                 
-                if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
+                if (boostedTauPt->at(ibtau) < tauPt_cut || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
                 if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5) continue;
                 if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < -0.5) continue;

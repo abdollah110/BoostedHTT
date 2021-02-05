@@ -23,13 +23,14 @@ void SkimerBoost::Loop(TString OutputFile)
     TFile* file = TFile::Open(OutputFile, "RECREATE");
     TTree* BoostTree = fChain->CloneTree(0);
     
-    int year=0;
-    float elePt_cut= 30;
+//    int year=0;
+    float elePt_cut= 35;
+    float tauPt_cut= 20;
     
-    if (string(file->GetName()).find("2016") != string::npos) {year =2016; elePt_cut= 35;}
-    else if (string(file->GetName()).find("2017") != string::npos ) {year =2017; elePt_cut= 38;}
-    else if (string(file->GetName()).find("2018") != string::npos) {year =2018; elePt_cut= 38;}
-    else (std::cout << "Year is not specificed in the outFile name !\n");
+//    if (string(file->GetName()).find("2016") != string::npos) {year =2016; elePt_cut= 35;}
+//    else if (string(file->GetName()).find("2017") != string::npos ) {year =2017; elePt_cut= 38;}
+//    else if (string(file->GetName()).find("2018") != string::npos) {year =2018; elePt_cut= 38;}
+//    else (std::cout << "Year is not specificed in the outFile name !\n");
     
     fChain->SetBranchStatus("*",1);
     
@@ -88,13 +89,13 @@ void SkimerBoost::Loop(TString OutputFile)
     float  phi_2 = 0;
     float  eta_2 = 0;
     
-    int era = 0;
+//    int era = 0;
     int decayMode2 = 1;
     int lepIndex = -1;
     int tauIndex= -1;
     int NumPair=0;
     
-    BoostTree->Branch("era", &era);
+//    BoostTree->Branch("era", &era);
     BoostTree->Branch("NumPair", &NumPair);
     
     BoostTree->Branch("met_px", &met_px);
@@ -238,7 +239,7 @@ void SkimerBoost::Loop(TString OutputFile)
         pfCovMatrix01 = metcov01;
         pfCovMatrix10 = metcov10;
         pfCovMatrix11 = metcov11;
-        era = year;
+//        era = year;
         NumPair=numLepTau;
         
 //        _met_JESUp = met_JESUp ;

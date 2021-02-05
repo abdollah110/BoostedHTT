@@ -41,7 +41,7 @@ void SkimerBoost::Loop(TString OutputFile)
     Long64_t nbytes = 0, nb = 0;
     float MuMass= 0.10565837;
     float eleMass= 0.000511;
-    
+    float tauPt_cut= 20;
     
     
     for (int jentry=0; jentry<nentries;jentry++) {
@@ -68,13 +68,14 @@ void SkimerBoost::Loop(TString OutputFile)
             LeadMu4Momentum.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
             for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
-                if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
+                if (boostedTauPt->at(ibtau) < tauPt_cut || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
 //                if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
                 if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < -0.5) continue;
                 LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                 
-                if (LeadTau4Momentum.DeltaR(LeadMu4Momentum) < 1.5 ) continue;
+//                if (LeadTau4Momentum.DeltaR(LeadMu4Momentum) < 1.5 ) continue;
+                if (LeadTau4Momentum.DeltaR(LeadMu4Momentum) < 0.8 ) continue; // for next round
                 
                 numMuFake++;
             }
