@@ -198,7 +198,7 @@ int main(int argc, char* argv[]) {
         if (elePt->at(idx_lep) < 38 || fabs(eleEta->at(idx_lep)) > 2.5) continue;
         plotFill("cutFlowTable",3 ,15,0,15);
         
-        if (elePt->at(idx_lep) < 120  && HLT_Ele35 && pfMET > 40 ){
+        if (elePt->at(idx_lep) < 120  && HLT_Ele35 && Met > 40 ){
             selectElectron_1 = true;
         }
         if (elePt->at(idx_lep) >= 120  && HLT_Ele115 ) {
@@ -226,7 +226,7 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",5 ,15,0,15);
         //=========================================================================================================
         // Event Selection
-        Met4Momentum.SetPtEtaPhiM(pfMET, 0, pfMETPhi, 0);
+        Met4Momentum.SetPtEtaPhiM(Met, 0, Metphi, 0);
         Z4Momentum=Tau4Momentum+Ele4Momentum;
         TLorentzVector higgs = Tau4Momentum+Ele4Momentum +Met4Momentum;
         TLorentzVector LeadJet= getLeadJet(Ele4Momentum, Tau4Momentum);

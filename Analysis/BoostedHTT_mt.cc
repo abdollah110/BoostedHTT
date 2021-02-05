@@ -124,6 +124,7 @@ int main(int argc, char* argv[]) {
     float WBosonKFactor=1;
     float preFireWeight=1;
     float bjetsWeightOnMC=1;
+    float ttbar_rwt=1;
     
     float lepPt_=-10;
     float taupt_=-10;
@@ -191,6 +192,11 @@ int main(int argc, char* argv[]) {
         if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
         if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
         if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
+
+        if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
+        if (syst == "met_resp_Up") {Met = met_resp_Up; Metphi=metphi_resp_Up;}
+        if (syst == "met_reso_Down") {Met = met_reso_Down; Metphi=metphi_reso_Down;}
+        if (syst == "met_resp_Down") {Met = met_resp_Down; Metphi=metphi_resp_Down;}
         
         TLorentzVector Mu4Momentum,Tau4Momentum, Z4Momentum, Met4Momentum;
         //=========================================================================================================
@@ -258,7 +264,7 @@ int main(int argc, char* argv[]) {
         if (tmass > 80) continue;
         plotFill("cutFlowTable",7 ,15,0,15);
         
-        if (m_sv < 50) continue;
+//        if (m_sv < 50) continue;
         plotFill("cutFlowTable",8 ,15,0,15);
         
         // BJet veto
@@ -279,7 +285,8 @@ int main(int argc, char* argv[]) {
         if (numele > 0) continue;
         plotFill("cutFlowTable",11 ,15,0,15);
         
-        if (higgs.Pt() < 280) continue;
+//        if (higgs.Pt() < 280) continue;
+        if (higgs.Pt() < 100) continue;
         plotFill("cutFlowTable",12 ,15,0,15);
         
         //=========================================================================================================
@@ -338,6 +345,21 @@ int main(int argc, char* argv[]) {
                 if (syst == "WBosonKFactorDown") WBosonKFactor= FuncBosonKFactor("W1Down") + FuncBosonKFactor("W2Down") * WBosonPt; //HT binned & inclusive K-factor
             }
             
+            //================================================================================================
+            // top-pT Reweighting
+            //================================================================================================
+            
+            
+            if (name == "TT") {
+                ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"nominal" );
+                if (syst == "ttbarShape_Up") {
+                    ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"ttbarShape_Up" );
+                } else if (syst == "ttbarShape_Down") {
+                    ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"ttbarShape_Down" );
+                }
+            }
+            
+            
 //            int leadCSV= leadingCSV();
 //            int subLeadCSV= subLeadingCSV(leadCSV);
 //            
@@ -374,6 +396,7 @@ int main(int argc, char* argv[]) {
         plotFill("zmasspt_weight",zmasspt_weight ,200,0,2);
         plotFill("preFireWeight",preFireWeight ,200,0,2);
         plotFill("WBosonKFactor",WBosonKFactor ,200,0,2);
+        plotFill("ttbar_rwt",ttbar_rwt ,200,0,2);
         
         
         //###############################################################################################
@@ -400,7 +423,7 @@ int main(int argc, char* argv[]) {
         BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_tau);
         m_sv_=m_sv;
         //  Weights
-        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight;
+        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt;
         nbjet=numBJet;
         
         // Fill the tree

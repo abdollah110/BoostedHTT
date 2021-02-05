@@ -8,6 +8,7 @@
 #include "TH1.h"
 #include "TH2.h"
 #include "TH1F.h"
+#include "TF1.h"
 #include "TRandom.h"
 #include "TCanvas.h"
 #include "math.h"
@@ -681,6 +682,16 @@ TTree *  Xttree( TFile * f_Double, string channel){
     Run_Tree->SetBranchAddress("metphi_UESDown",&metphi_UESDown);
     
     
+   Run_Tree->SetBranchAddress("met_reso_Up", &met_reso_Up);
+   Run_Tree->SetBranchAddress("met_reso_Down", &met_reso_Down);
+   Run_Tree->SetBranchAddress("met_resp_Up", &met_resp_Up);
+   Run_Tree->SetBranchAddress("met_resp_Down", &met_resp_Down);
+   Run_Tree->SetBranchAddress("metphi_reso_Up", &metphi_reso_Up);
+   Run_Tree->SetBranchAddress("metphi_reso_Down", &metphi_reso_Down);
+   Run_Tree->SetBranchAddress("metphi_resp_Up", &metphi_resp_Up);
+   Run_Tree->SetBranchAddress("metphi_resp_Down", &metphi_resp_Down);
+   
+    
     Run_Tree->SetBranchAddress("metFilters",&metFilters);
     Run_Tree->SetBranchAddress("genHT",&genHT);
     
@@ -1083,6 +1094,12 @@ float kf_Z_1Down=HistkfactorZDown->GetBinContent(1);
 float kf_Z_2Down=HistkfactorZDown->GetBinContent(2);
 
 
+    // Load Cecile's 2016 Top pT root file
+//std::string fTop2016corrName = "data/toppt_correction_to_2016.root";
+TFile * fTop2016corr = TFile::Open("data/toppt_correction_to_2016.root");
+TF1 * TF_Top2016corr = (TF1*) fTop2016corr->Get("toppt_ratio_to_2016");
+//fTop2016corr->Close();
+    
 
 float FuncBosonKFactor(std::string X){
     
@@ -1329,7 +1346,30 @@ int getNumZBoson(){
 
 
 
-
+            //================================================================================================
+            // top-pT Reweighting
+            //================================================================================================
+            
+            float newTopPtReweight(float top1Pt, float top2Pt, int year, std::string syst){
+                
+                // Christian's way
+                float pttop1 = std::min(static_cast<float>(472.0), top1Pt);
+                float pttop2 = std::min(static_cast<float>(472.0), top2Pt);
+                float a = 0.088, b = -0.00087, c = 0.00000092;
+                float ttbar_scale = sqrt(exp(a+b*pttop1+c*pttop1*pttop1)*exp(a+b*pttop2+c*pttop2*pttop2));
+                //you need to multiply the weight by (1.0/fct_tt->Eval(pttop1))*(1.0/fct_tt->Eval(pttop2))
+                if (year==2016) ttbar_scale*=(1.0/TF_Top2016corr->Eval(pttop1))*(1.0/TF_Top2016corr->Eval(pttop2));
+                
+                if (syst == "ttbarShape_Up") {
+                    return (2 * ttbar_scale - 1);  // 2*√[e^(..)*e^(..)] - 1
+                } else if (syst == "ttbarShape_Down") {
+                    return 1; // no weight for shift down
+                } else {
+                    return ttbar_scale;  // √[e^(..)*e^(..)]
+                }
+                return -1000;
+            }
+            
 //-----------------------------------------------------------------------------
 // AM: recipe for top quark Pt reweighting taken from https://twiki.cern.ch/twiki/bin/viewauth/CMS/TopPtReweighting
 
@@ -1517,6 +1557,8 @@ vector<float>  GeneratorInfo(){
     infoGen.push_back(WBosonMass);
     infoGen.push_back(ZBosonPt);
     infoGen.push_back(ZBosonMass);
+    infoGen.push_back(GenTopPt);
+    infoGen.push_back(GenAntiTopPt);
     
     //    //######################## Z Pt
     //    infoGen.push_back(ZBosonPt);

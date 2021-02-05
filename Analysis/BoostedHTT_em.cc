@@ -204,7 +204,7 @@ int main(int argc, char* argv[]) {
         if (! MuId) continue;
         plotFill("cutFlowTable",3 ,15,0,15);
         
-        if (muPt->at(idx_lep) < 55  && HLT_Mu27 && pfMET > 40 ){
+        if (muPt->at(idx_lep) < 55  && HLT_Mu27 && Met > 40 ){
             selectMuon_1 = true;
             MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg27);
             MuIsoCorrection = getCorrFactorMuonIso(year, isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuIso);
@@ -245,7 +245,7 @@ int main(int argc, char* argv[]) {
         
         //=========================================================================================================
         // Event Selection
-        Met4Momentum.SetPtEtaPhiM(pfMET, 0, pfMETPhi, 0);
+        Met4Momentum.SetPtEtaPhiM(Met, 0, Metphi, 0);
         Z4Momentum=Ele4Momentum+Mu4Momentum;
         TLorentzVector higgs = Ele4Momentum+Mu4Momentum +Met4Momentum;
         TLorentzVector LeadJet= getLeadJet(Mu4Momentum, Ele4Momentum);

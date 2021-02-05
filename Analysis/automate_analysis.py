@@ -64,11 +64,12 @@ def getSystematics(name):
    
   if name != 'data_obs':
      systs += [
-             'met_JESUp', 'met_JESDown', 'met_UESUp', 'met_UESDown', 'prefireUp', 'prefireDown'
+             'met_JESUp', 'met_JESDown', 'met_UESUp', 'met_UESDown', 'prefireUp', 'prefireDown',
+             'met_reso_Up', 'met_resp_Up','met_reso_Down', 'met_resp_Down'
               ]
-
-#  if name == 'TT':
-#    systs += ['ttbarShape_Up', 'ttbarShape_Down']
+              
+  if name == 'TT':
+    systs += ['ttbarShape_Up', 'ttbarShape_Down']
 
   if name == 'ZLL' or name == 'ZTT' or name == 'ZJ':
     systs += ['Z_masspt_Up', 'Z_masspt_Down']

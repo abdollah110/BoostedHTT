@@ -421,6 +421,14 @@ vector<bool>    *boostedTauagainstElectronTightMVA62018;
    vector<vector<int> > *AK8puppiSDSJCharge;
    vector<vector<int> > *AK8puppiSDSJFlavour;
    vector<vector<float> > *AK8puppiSDSJCSV;
+   Float_t         met_reso_Up;
+   Float_t         met_reso_Down;
+   Float_t         met_resp_Up;
+   Float_t         met_resp_Down;
+   Float_t         metphi_reso_Up;
+   Float_t         metphi_reso_Down;
+   Float_t         metphi_resp_Up;
+   Float_t         metphi_resp_Down;
 
 
 

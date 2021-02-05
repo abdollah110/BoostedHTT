@@ -260,7 +260,7 @@ int main(int argc, char* argv[]) {
         float AK8Eta=100;
         
         float PFHT= getST(JetPtCut);
-        float PFMET=pfMET;
+        float PFMET=Met;
         float MHT=getMHT(JetPtCut);
         st= getST(JetPtCut);
         ht= getHT(JetPtCut, LeadTau4Momentum, SubTau4Momentum);
@@ -425,7 +425,7 @@ int main(int argc, char* argv[]) {
         //  tree branches
         //###############################################################################################
         
-        Met4Momentum.SetPtEtaPhiM(pfMET, 0, pfMETPhi, 0);
+        Met4Momentum.SetPtEtaPhiM(Met, 0, Metphi, 0);
         Z4Momentum=SubTau4Momentum+LeadTau4Momentum;
         TLorentzVector higgs = SubTau4Momentum+LeadTau4Momentum +Met4Momentum;
         
