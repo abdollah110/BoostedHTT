@@ -325,6 +325,7 @@ int main(int argc, char* argv[]) {
             float WBosonPt=genInfo[1];
             float ZBosonPt=genInfo[3];
             float ZBosonMass=genInfo[4];
+            std::cout<<genInfo[1] <<" " <<genInfo[2] << " "<< genInfo[5] <<" " <<genInfo[6] <<"\n";
             
             if  (name == "ZL" || name == "ZTT" || name == "ZLL") {
                 
