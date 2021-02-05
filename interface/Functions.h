@@ -1484,11 +1484,9 @@ vector<float>  GeneratorInfo(){
         // Status 62 means: isLastCopy=1 and fromHardProcess=1
         
         //Top Pt
-        if (mcPID->at(igen) == 6 && mcStatus->at(igen) ==62) GenTopPt=mcPt->at(igen) ;
-        if (mcPID->at(igen) == -6 && mcStatus->at(igen) ==62) GenAntiTopPt=mcPt->at(igen);
-        
-        if (mcPID->at(igen) == 6 || mcPID->at(igen) == -6  ) std::cout<<"\t genpt "<< mcPt->at(igen) << "  status "<< mcStatus->at(igen)<<"\n";
-        
+        if (mcPID->at(igen) == 6 && mcStatus->at(igen) ==22) GenTopPt=mcPt->at(igen) ;
+        if (mcPID->at(igen) == -6 && mcStatus->at(igen) ==22) GenAntiTopPt=mcPt->at(igen);
+            
         
         //W Pt
         if (fabs(mcPID->at(igen)) ==24   && mcStatus->at(igen) ==22)  {WBosonPt= mcPt->at(igen); WBosonMass=mcMass->at(igen);}
