@@ -88,9 +88,9 @@ TTree *  Xttree( TFile * f_Double, string channel){
     //       Run_Tree->SetBranchAddress("vtz", &vtz, &b_vtz);
     //       Run_Tree->SetBranchAddress("rho", &rho, &b_rho);
     //       Run_Tree->SetBranchAddress("rhoCentral", &rhoCentral, &b_rhoCentral);
-           Run_Tree->SetBranchAddress("L1ECALPrefire", &L1ECALPrefire, &b_L1ECALPrefire);
-           Run_Tree->SetBranchAddress("L1ECALPrefireUp", &L1ECALPrefireUp, &b_L1ECALPrefireUp);
-           Run_Tree->SetBranchAddress("L1ECALPrefireDown", &L1ECALPrefireDown, &b_L1ECALPrefireDown);
+    Run_Tree->SetBranchAddress("L1ECALPrefire", &L1ECALPrefire, &b_L1ECALPrefire);
+    Run_Tree->SetBranchAddress("L1ECALPrefireUp", &L1ECALPrefireUp, &b_L1ECALPrefireUp);
+    Run_Tree->SetBranchAddress("L1ECALPrefireDown", &L1ECALPrefireDown, &b_L1ECALPrefireDown);
     //       Run_Tree->SetBranchAddress("HLTEleMuX", &HLTEleMuX, &b_HLTEleMuX);
     //       Run_Tree->SetBranchAddress("HLTPho", &HLTPho, &b_HLTPho);
     //       Run_Tree->SetBranchAddress("HLTPhoRejectedByPS", &HLTPhoRejectedByPS, &b_HLTPhoRejectedByPS);
@@ -682,15 +682,15 @@ TTree *  Xttree( TFile * f_Double, string channel){
     Run_Tree->SetBranchAddress("metphi_UESDown",&metphi_UESDown);
     
     
-   Run_Tree->SetBranchAddress("met_reso_Up", &met_reso_Up);
-   Run_Tree->SetBranchAddress("met_reso_Down", &met_reso_Down);
-   Run_Tree->SetBranchAddress("met_resp_Up", &met_resp_Up);
-   Run_Tree->SetBranchAddress("met_resp_Down", &met_resp_Down);
-   Run_Tree->SetBranchAddress("metphi_reso_Up", &metphi_reso_Up);
-   Run_Tree->SetBranchAddress("metphi_reso_Down", &metphi_reso_Down);
-   Run_Tree->SetBranchAddress("metphi_resp_Up", &metphi_resp_Up);
-   Run_Tree->SetBranchAddress("metphi_resp_Down", &metphi_resp_Down);
-   
+    Run_Tree->SetBranchAddress("met_reso_Up", &met_reso_Up);
+    Run_Tree->SetBranchAddress("met_reso_Down", &met_reso_Down);
+    Run_Tree->SetBranchAddress("met_resp_Up", &met_resp_Up);
+    Run_Tree->SetBranchAddress("met_resp_Down", &met_resp_Down);
+    Run_Tree->SetBranchAddress("metphi_reso_Up", &metphi_reso_Up);
+    Run_Tree->SetBranchAddress("metphi_reso_Down", &metphi_reso_Down);
+    Run_Tree->SetBranchAddress("metphi_resp_Up", &metphi_resp_Up);
+    Run_Tree->SetBranchAddress("metphi_resp_Down", &metphi_resp_Down);
+    
     
     Run_Tree->SetBranchAddress("metFilters",&metFilters);
     Run_Tree->SetBranchAddress("genHT",&genHT);
@@ -1094,12 +1094,12 @@ float kf_Z_1Down=HistkfactorZDown->GetBinContent(1);
 float kf_Z_2Down=HistkfactorZDown->GetBinContent(2);
 
 
-    // Load Cecile's 2016 Top pT root file
+// Load Cecile's 2016 Top pT root file
 //std::string fTop2016corrName = "data/toppt_correction_to_2016.root";
 TFile * fTop2016corr = TFile::Open("data/toppt_correction_to_2016.root");
 TF1 * TF_Top2016corr = (TF1*) fTop2016corr->Get("toppt_ratio_to_2016");
 //fTop2016corr->Close();
-    
+
 
 float FuncBosonKFactor(std::string X){
     
@@ -1202,7 +1202,7 @@ int getNumElectron(TLorentzVector Object4Momentum){
         TLorentzVector Lep4Momentum;
         Lep4Momentum.SetPtEtaPhiM(elePt->at(jele),eleEta->at(jele),elePhi->at(jele),eleMass);
         if (Object4Momentum.DeltaR(Lep4Momentum) > 0.8) continue;
-         
+        
         if ( elePt->at(jele) < 40 || fabs(eleEta->at(jele)) > 2.5) continue;
         
         bool eleMVAIdExtra= false;
@@ -1264,7 +1264,7 @@ int getNumMuon(TLorentzVector Object4Momentum){
         TLorentzVector Lep4Momentum;
         Lep4Momentum.SetPtEtaPhiM(muPt->at(jmu),muEta->at(jmu),muPhi->at(jmu),MuMass);
         if (Object4Momentum.DeltaR(Lep4Momentum) > 0.8) continue;
-
+        
         if ( muPt->at(jmu) < 30 || fabs(muEta->at(jmu)) > 2.4) continue;
         bool MuId=( (muIDbit->at(jmu) >> 1 & 1)  && fabs(muD0->at(jmu)) < 0.045 && fabs(muDz->at(jmu)) < 0.2);
         if (!MuId) continue;
@@ -1342,36 +1342,30 @@ int getNumZBoson(){
     
 }
 
+//================================================================================================
+// top-pT Reweighting
+//================================================================================================
 
+float newTopPtReweight(float top1Pt, float top2Pt, int year, std::string syst){
+    
+    // Christian's way
+    float pttop1 = std::min(static_cast<float>(472.0), top1Pt);
+    float pttop2 = std::min(static_cast<float>(472.0), top2Pt);
+    float a = 0.088, b = -0.00087, c = 0.00000092;
+    float ttbar_scale = sqrt(exp(a+b*pttop1+c*pttop1*pttop1)*exp(a+b*pttop2+c*pttop2*pttop2));
+    //you need to multiply the weight by (1.0/fct_tt->Eval(pttop1))*(1.0/fct_tt->Eval(pttop2))
+    if (year==2016) ttbar_scale*=(1.0/TF_Top2016corr->Eval(pttop1))*(1.0/TF_Top2016corr->Eval(pttop2));
+    
+    if (syst.find("ttbarShape_Up") != string::npos) {
+        return (2 * ttbar_scale - 1);  // 2*√[e^(..)*e^(..)] - 1
+    } else if (syst.find("ttbarShape_Down") != string::npos) {
+        return 1; // no weight for shift down
+    } else {
+        return ttbar_scale;  // √[e^(..)*e^(..)]
+    }
+    return -1000;
+}
 
-wt= newTopPtReweight(genInfo[5],genInfo[6],year,"ttbarShape_Up" );
-                } else if (syst == "ttbarShape_Down") {
-                    ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"ttbarShape_Down" );
-
-            //================================================================================================
-            // top-pT Reweighting
-            //================================================================================================
-            
-            float newTopPtReweight(float top1Pt, float top2Pt, int year, std::string syst){
-                
-                // Christian's way
-                float pttop1 = std::min(static_cast<float>(472.0), top1Pt);
-                float pttop2 = std::min(static_cast<float>(472.0), top2Pt);
-                float a = 0.088, b = -0.00087, c = 0.00000092;
-                float ttbar_scale = sqrt(exp(a+b*pttop1+c*pttop1*pttop1)*exp(a+b*pttop2+c*pttop2*pttop2));
-                //you need to multiply the weight by (1.0/fct_tt->Eval(pttop1))*(1.0/fct_tt->Eval(pttop2))
-                if (year==2016) ttbar_scale*=(1.0/TF_Top2016corr->Eval(pttop1))*(1.0/TF_Top2016corr->Eval(pttop2));
-                
-                if (syst.find("ttbarShape_Up") != string::npos) {
-                    return (2 * ttbar_scale - 1);  // 2*√[e^(..)*e^(..)] - 1
-                } else if (syst.find("ttbarShape_Down") != string::npos) {
-                    return 1; // no weight for shift down
-                } else {
-                    return ttbar_scale;  // √[e^(..)*e^(..)]
-                }
-                return -1000;
-            }
-            
 //-----------------------------------------------------------------------------
 // AM: recipe for top quark Pt reweighting taken from https://twiki.cern.ch/twiki/bin/viewauth/CMS/TopPtReweighting
 
@@ -1488,7 +1482,7 @@ vector<float>  GeneratorInfo(){
         //Top Pt
         if (mcPID->at(igen) == 6 && mcStatus->at(igen) ==22) GenTopPt=mcPt->at(igen) ;
         if (mcPID->at(igen) == -6 && mcStatus->at(igen) ==22) GenAntiTopPt=mcPt->at(igen);
-            
+        
         
         //W Pt
         if (fabs(mcPID->at(igen)) ==24   && mcStatus->at(igen) ==22)  {WBosonPt= mcPt->at(igen); WBosonMass=mcMass->at(igen);}
