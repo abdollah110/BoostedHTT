@@ -360,8 +360,6 @@ int main(int argc, char* argv[]) {
                 } else if (syst == "ttbarShape_Down") {
                     ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"ttbarShape_Down" );
                 }
-                
-                std::cout<<genInfo[5] <<" " <<genInfo[6] << " "<<ttbar_rwt<<"\n";
             }
             
             
