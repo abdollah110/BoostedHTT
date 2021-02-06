@@ -1,6 +1,6 @@
 CPPFLAGS=`root-config --cflags` -I/usr/local/root/include
 LDFLAGS=`root-config --libs` -lMinuit
-all: SkimerBoost_mt  SkimerBoost_et SkimerBoost_mm SkimerBoost_EffMeasurement SkimerBoost_tt SkimerBoost_em SkimerBoost_mmt SkimerBoost_tt_htmht SkimerBoost_mj_2016 SkimerBoost_mj_2017 SkimerBoost_mj_2018  SkimerBoost_mt_deep SkimerBoost_tt_ht SkimerBoost_mFake
+all: SkimerBoost_mt  SkimerBoost_et SkimerBoost_mm SkimerBoost_EffMeasurement SkimerBoost_tt SkimerBoost_em SkimerBoost_mmt SkimerBoost_tt_htmht SkimerBoost_mj_2016 SkimerBoost_mj_2017 SkimerBoost_mj_2018  SkimerBoost_mt_deep SkimerBoost_tt_ht SkimerBoost_mFake SkimerBoost_mFake_deep
 SkimerBoost_mt: SkimerBoost_mt.cc
 	g++ $(CPPFLAGS) $(LDFLAGS) -o $@ $^
 SkimerBoost_et: SkimerBoost_et.cc
@@ -28,5 +28,7 @@ SkimerBoost_mj_2018: SkimerBoost_mj_2018.cc
 SkimerBoost_mFake: SkimerBoost_mFake.cc
 	g++ $(CPPFLAGS) $(LDFLAGS) -o $@ $^
 SkimerBoost_mt_deep: SkimerBoost_mt_deep.cc
+	g++ $(CPPFLAGS) $(LDFLAGS) -o $@ $^
+SkimerBoost_mFake_deep: SkimerBoost_mFake_deep.cc
 	g++ $(CPPFLAGS) $(LDFLAGS) -o $@ $^
 
