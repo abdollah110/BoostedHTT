@@ -108,6 +108,7 @@ int main(int argc, char* argv[]) {
     float zmasspt_weight=1;
     float LumiWeight = 1;
     float PUWeight = 1;
+    float ttbar_rwt = 1;
     
     
     float DeepCSVCut=   1000   ;                  //  Loose  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
@@ -241,14 +242,13 @@ int main(int argc, char* argv[]) {
                     
                     if (name == "W" && (sample.find("_HT_") != string::npos) ){
                         WBosonKFactor= FuncBosonKFactor("W1Cen") + FuncBosonKFactor("W2Cen") * WBosonPt; //HT binned & inclusive K-factor
-                        WBosonKFactor_ewkUp= FuncBosonKFactor("W1Up") + FuncBosonKFactor("W2Up") * WBosonPt; //HT binned & inclusive K-factor
-                        WBosonKFactor_ewkDown= FuncBosonKFactor("W1Down") + FuncBosonKFactor("W2Down") * WBosonPt; //HT binned & inclusive K-factor
                     }
-                    
-                    
+                    if (name == "TT") {
+                        ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"nominal" );
+                    }
                 }
                 
-                float FullWeight = LumiWeight*LepCorrection*zmasspt_weight * PUWeight * WBosonKFactor;
+                float FullWeight = LumiWeight*LepCorrection*zmasspt_weight * PUWeight * WBosonKFactor * ttbar_rwt;
                 
                 plotFill("LumiWeight",LumiWeight ,1000,0,100);
                 plotFill("LepCorrection",LepCorrection ,100,0,2);
@@ -275,6 +275,12 @@ int main(int argc, char* argv[]) {
                     plotFill("numLoose"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                     plotFill("numLoose_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                     plotFill("numLoose_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
+                    
+                }
+                if (boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
+                    plotFill("numMedium"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
+                    plotFill("numMedium_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
+                    plotFill("numMedium_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
                     
                 }
                 
