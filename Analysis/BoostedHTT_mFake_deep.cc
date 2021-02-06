@@ -189,10 +189,12 @@ int main(int argc, char* argv[]) {
                 if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
                 //                    if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
+                cout<<"Hi 1 \n";
                 if (boostedTauByDeepTau2017v1VSjetraw->at(ibtau) < 0.05) continue;
+                cout<<"Hi 2 \n";
                 if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5) continue;
                 if (boostedTauagainstElectronVLooseMVA62018->at(ibtau) < 0.5) continue;
-                
+                cout<<"Hi 3 \n";
                 plotFill("cutFlowTable",7 ,15,0,15);
                 LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                 
@@ -257,7 +259,7 @@ int main(int argc, char* argv[]) {
                 plotFill("WBosonKFactor_weight",WBosonKFactor ,300,0,3);
                 plotFill("FullWeight",FullWeight ,300,0,3);
                 //###############################################################################################
-                
+                cout<<"Hi 4 \n";
                 std::string FullStringName = "";
                 
                 plotFill("denum"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
@@ -268,29 +270,31 @@ int main(int argc, char* argv[]) {
                     plotFill("numVLoose"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                     plotFill("numVLoose_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                     plotFill("numVLoose_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
-                    
+                 cout<<"Hi 5 \n";
                 }
-                
+                cout<<"Hi 6 \n";
                 if (boostedTaubyLooseDeepTau2017v1VSjet->at(ibtau) > 0.5){
                     plotFill("numLoose"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                     plotFill("numLoose_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                     plotFill("numLoose_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
-                    
+                    cout<<"Hi 7 \n";
                 }
+                cout<<"Hi 8 \n";
                 if (boostedTaubyMediumDeepTau2017v1VSjet->at(ibtau) > 0.5){
                     plotFill("numMedium"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                     plotFill("numMedium_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                     plotFill("numMedium_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
-                    
+                    cout<<"Hi 9 \n";
                 }
+                cout<<"Hi 10 \n";
                 
                 if (boostedTaubyTightDeepTau2017v1VSjet->at(ibtau) > 0.5){
                     plotFill("numTight"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                     plotFill("numTight_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                     plotFill("numTight_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
-                    
+                    cout<<"Hi 11 \n";
                 }
-                
+                cout<<"Hi 12 \n";
                 plotFill("MT"+FullStringName,tmass ,100,0,500,FullWeight);
                 plotFill("Met"+FullStringName,Met ,100,0,500,FullWeight);
                 plotFill("ZMass"+FullStringName,ZMass ,100,0,500,FullWeight);
