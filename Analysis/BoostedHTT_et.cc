@@ -110,6 +110,9 @@ int main(int argc, char* argv[]) {
     float zmasspt_weight=1.0;
     float WBosonKFactor=1;
     float preFireWeight=1;
+    float ttbar_rwt=1;
+    float zmasspt_weight_err=0;
+    float zmasspt_weight_nom=1;
     
     
     float lepPt_=-10;
@@ -117,7 +120,7 @@ int main(int argc, char* argv[]) {
     float vis_mass=-10;
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
-    bool OS,SS,lep1IsoPass,lep2IsoPass,lep2IsoPassV;
+    bool OS,SS,lep1IsoPass,lep2IsoPassL,lep2IsoPassV;
     float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, nom_zpt_weight, eleIDMVA;
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
@@ -127,7 +130,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("OS",&OS,"OS/O");
     outTr->Branch("SS",&SS,"SS/O");
     outTr->Branch("lep1IsoPass",&lep1IsoPass,"lep1IsoPass/O");
-    outTr->Branch("lep2IsoPass",&lep2IsoPass,"lep2IsoPass/O");
+    outTr->Branch("lep2IsoPassL",&lep2IsoPassL,"lep2IsoPassL/O");
     outTr->Branch("lep2IsoPassV",&lep2IsoPassV,"lep2IsoPassV/O");
     outTr->Branch("vis_mass",&vis_mass,"vis_mass/F");
     outTr->Branch("tmass",&tmass,"tmass/F");
@@ -160,8 +163,7 @@ int main(int argc, char* argv[]) {
         //=========================================================================================================
         // MET Filters
         // Here we apply MET Filters
-        // Here we apply prefire weights
-        
+        if (isData && (metFilters!=0)) continue;
         //=========================================================================================================
         //MET Shape systematics
         Met=pfMET;
@@ -170,6 +172,12 @@ int main(int argc, char* argv[]) {
         if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
         if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
         if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
+        
+        if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
+        if (syst == "met_resp_Up") {Met = met_resp_Up; Metphi=metphi_resp_Up;}
+        if (syst == "met_reso_Down") {Met = met_reso_Down; Metphi=metphi_reso_Down;}
+        if (syst == "met_resp_Down") {Met = met_resp_Down; Metphi=metphi_resp_Down;}
+
         
         TLorentzVector Ele4Momentum,Tau4Momentum, Z4Momentum, Met4Momentum;
         //=========================================================================================================
@@ -219,6 +227,7 @@ int main(int argc, char* argv[]) {
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_tau) < 0.5 ) continue;
         //        if (boostedTauagainstElectronTightMVA62018->at(idx_tau) < 0.5) continue;
         if (boostedTauagainstElectronLooseMVA62018->at(idx_tau) < 0.5) continue;
+        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_tau) < -0.5) continue;
         //        if (boostedTauByLooseMuonRejection3->at(idx_tau) < 0.5) continue;
         //        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < 0) continue;
         
@@ -306,13 +315,28 @@ int main(int argc, char* argv[]) {
                 if (ZBosonPt > 999) ZBosonPt=999;
                 if (ZBosonMass < 61) ZBosonMass = 61;
                 if (ZBosonMass > 119) ZBosonMass = 119;
-                zmasspt_weight=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+                zmasspt_weight_nom=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+                zmasspt_weight_err=zpt_hist->GetBinError(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+                
+                zmasspt_weight = zmasspt_weight_nom + 0 * zmasspt_weight_err;
+                if (syst == "Z_masspt_Up")  zmasspt_weight = zmasspt_weight_nom + 1 * zmasspt_weight_err;
+                if (syst == "Z_masspt_Down") zmasspt_weight = zmasspt_weight_nom + -1 * zmasspt_weight_err;
             }
             
             if (name == "W" && (sample.find("_HT_") != string::npos) ){
                 WBosonKFactor= FuncBosonKFactor("W1Cen") + FuncBosonKFactor("W2Cen") * WBosonPt; //HT binned & inclusive K-factor
                 if (syst == "WBosonKFactorUp") WBosonKFactor= FuncBosonKFactor("W1Up") + FuncBosonKFactor("W2Up") * WBosonPt; //HT binned & inclusive K-factor
                 if (syst == "WBosonKFactorDown") WBosonKFactor= FuncBosonKFactor("W1Down") + FuncBosonKFactor("W2Down") * WBosonPt; //HT binned & inclusive K-factor
+            }
+            
+            // top-pT Reweighting
+            if (name == "TT") {
+                ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"nominal" );
+                if (syst == "ttbarShape_Up") {
+                    ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"ttbarShape_Up" );
+                } else if (syst == "ttbarShape_Down") {
+                    ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"ttbarShape_Down" );
+                }
             }
             
         }
@@ -323,6 +347,7 @@ int main(int argc, char* argv[]) {
         plotFill("zmasspt_weight",zmasspt_weight ,200,0,2);
         plotFill("preFireWeight",preFireWeight ,200,0,2);
         plotFill("WBosonKFactor",WBosonKFactor ,200,0,2);
+        plotFill("ttbar_rwt",ttbar_rwt ,200,0,2);        
         
         //###############################################################################################
         //  tree branches
@@ -333,7 +358,7 @@ int main(int argc, char* argv[]) {
         OS = eleCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) < 0;
         SS =  eleCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) > 0;
         lep1IsoPass= selectElectron_1? IsoLep1Value < LeptonIsoCut : 1;
-        lep2IsoPass= boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassL= boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
         lep2IsoPassV= boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
         eleIDMVA=eleIDMVANoIso->at(idx_lep);
         lepPt_=elePt->at(idx_lep);
@@ -343,7 +368,7 @@ int main(int argc, char* argv[]) {
         dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
         BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_tau);
         m_sv_=m_sv;
-        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * preFireWeight * WBosonKFactor;
+        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * preFireWeight * WBosonKFactor * ttbar_rwt;
         
         // Fill the tree
         outTr->Fill();

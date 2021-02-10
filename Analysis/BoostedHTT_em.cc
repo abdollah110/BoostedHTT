@@ -122,6 +122,9 @@ int main(int argc, char* argv[]) {
     float zmasspt_weight=1;
     float WBosonKFactor=1;
     float preFireWeight = 1;
+    float ttbar_rwt=1;
+    float zmasspt_weight_err=0;
+    float zmasspt_weight_nom=1;
     
     float lepPt_=-10;
     float elept_=-10;
@@ -171,7 +174,7 @@ int main(int argc, char* argv[]) {
         //=========================================================================================================
         // MET Filters
         // Here we apply MET Filters
-        // Here we apply prefire weights
+        if (isData && (metFilters!=0)) continue;
         //=========================================================================================================
         //MET Shape systematics
         Met=pfMET;
@@ -180,6 +183,11 @@ int main(int argc, char* argv[]) {
         if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
         if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
         if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
+        
+        if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
+        if (syst == "met_resp_Up") {Met = met_resp_Up; Metphi=metphi_resp_Up;}
+        if (syst == "met_reso_Down") {Met = met_reso_Down; Metphi=metphi_reso_Down;}
+        if (syst == "met_resp_Down") {Met = met_resp_Down; Metphi=metphi_resp_Down;}
         
         TLorentzVector Mu4Momentum,Ele4Momentum, Z4Momentum, Met4Momentum;
         //=========================================================================================================
@@ -329,14 +337,28 @@ int main(int argc, char* argv[]) {
                 if (ZBosonPt > 999) ZBosonPt=999;
                 if (ZBosonMass < 61) ZBosonMass = 61;
                 if (ZBosonMass > 119) ZBosonMass = 119;
-                zmasspt_weight=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
-            }
+                zmasspt_weight_nom=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+                zmasspt_weight_err=zpt_hist->GetBinError(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+                
+                zmasspt_weight = zmasspt_weight_nom + 0 * zmasspt_weight_err;
+                if (syst == "Z_masspt_Up")  zmasspt_weight = zmasspt_weight_nom + 1 * zmasspt_weight_err;
+                if (syst == "Z_masspt_Down") zmasspt_weight = zmasspt_weight_nom + -1 * zmasspt_weight_err;
+            }            
             
             if (name == "W" && (sample.find("_HT_") != string::npos) ){
                 WBosonKFactor= FuncBosonKFactor("W1Cen") + FuncBosonKFactor("W2Cen") * WBosonPt; //HT binned & inclusive K-factor
                 if (syst == "WBosonKFactorUp") WBosonKFactor= FuncBosonKFactor("W1Up") + FuncBosonKFactor("W2Up") * WBosonPt; //HT binned & inclusive K-factor
                 if (syst == "WBosonKFactorDown") WBosonKFactor= FuncBosonKFactor("W1Down") + FuncBosonKFactor("W2Down") * WBosonPt; //HT binned & inclusive K-factor
             }
+            // top-pT Reweighting
+            if (name == "TT") {
+                ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"nominal" );
+                if (syst == "ttbarShape_Up") {
+                    ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"ttbarShape_Up" );
+                } else if (syst == "ttbarShape_Down") {
+                    ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"ttbarShape_Down" );
+                }
+            }            
         }
         
         plotFill("LepCorrection",LepCorrection ,100,0,2);
@@ -345,6 +367,7 @@ int main(int argc, char* argv[]) {
         plotFill("zmasspt_weight",zmasspt_weight ,200,0,2);
         plotFill("preFireWeight",preFireWeight ,200,0,2);
         plotFill("WBosonKFactor",WBosonKFactor ,200,0,2);
+        plotFill("ttbar_rwt",ttbar_rwt ,200,0,2);        
         
         //###############################################################################################
         //  tree branches
@@ -362,7 +385,7 @@ int main(int argc, char* argv[]) {
         LeadJetPt = LeadJet.Pt();
         dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
         m_sv_=m_sv;
-        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight;
+        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt;
         nbjet= numBJet;
         
         // Fill the tree

@@ -131,7 +131,7 @@ int main(int argc, char* argv[]) {
     float vis_mass=-10;
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
-    bool OS,SS,lep1IsoPass,lep2IsoPass,lep2IsoPassV,lep2IsoPassM,lep2IsoPassT,lep2IsoDeepL,lep2IsoDeepM,lep2IsoDeepT;
+    bool OS,SS,lep1IsoPass,lep2IsoPassL,lep2IsoPassV,lep2IsoPassM,lep2IsoPassT,lep2IsoDeepL,lep2IsoDeepM,lep2IsoDeepT;
     float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
     int nbjet;
     
@@ -142,7 +142,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("OS",&OS,"OS/O");
     outTr->Branch("SS",&SS,"SS/O");
     outTr->Branch("lep1IsoPass",&lep1IsoPass,"lep1IsoPass/O");
-    outTr->Branch("lep2IsoPass",&lep2IsoPass,"lep2IsoPass/O");
+    outTr->Branch("lep2IsoPassL",&lep2IsoPassL,"lep2IsoPassL/O");
     outTr->Branch("lep2IsoPassV",&lep2IsoPassV,"lep2IsoPassV/O");
     outTr->Branch("lep2IsoPassM",&lep2IsoPassM,"lep2IsoPassM/O");
     outTr->Branch("lep2IsoPassT",&lep2IsoPassT,"lep2IsoPassT/O");
@@ -182,8 +182,7 @@ int main(int argc, char* argv[]) {
         //=========================================================================================================
         // MET Filters
         // Here we apply MET Filters
-        // Here we apply prefire weights
-        
+        if (isData && (metFilters!=0)) continue;
         //=========================================================================================================
         //MET Shape systematics
         Met=pfMET;
@@ -247,6 +246,8 @@ int main(int argc, char* argv[]) {
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_tau) < 0.5 ) continue;
         //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_tau) < 0.5) continue;
         if (boostedTauByLooseMuonRejection3->at(idx_tau) < 0.5) continue;
+        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_tau) < -0.5) continue;
+
         Tau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
         plotFill("cutFlowTable",5 ,15,0,15);
         //=========================================================================================================
@@ -264,7 +265,7 @@ int main(int argc, char* argv[]) {
         if (tmass > 80) continue;
         plotFill("cutFlowTable",7 ,15,0,15);
         
-//        if (m_sv < 50) continue;
+        if (m_sv < 50) continue;
         plotFill("cutFlowTable",8 ,15,0,15);
         
         // BJet veto
@@ -285,8 +286,7 @@ int main(int argc, char* argv[]) {
         if (numele > 0) continue;
         plotFill("cutFlowTable",11 ,15,0,15);
         
-//        if (higgs.Pt() < 280) continue;
-        if (higgs.Pt() < 100) continue;
+        if (higgs.Pt() < 280) continue;
         plotFill("cutFlowTable",12 ,15,0,15);
         
         //=========================================================================================================
@@ -346,14 +346,8 @@ int main(int argc, char* argv[]) {
                 if (syst == "WBosonKFactorDown") WBosonKFactor= FuncBosonKFactor("W1Down") + FuncBosonKFactor("W2Down") * WBosonPt; //HT binned & inclusive K-factor
             }
             
-            
-            //================================================================================================
             // top-pT Reweighting
-            //================================================================================================
-            
-            
             if (name == "TT") {
-                
                 ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"nominal" );
                 if (syst == "ttbarShape_Up") {
                     ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"ttbarShape_Up" );
@@ -411,13 +405,10 @@ int main(int argc, char* argv[]) {
         OS = muCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) < 0;
         SS =  muCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) > 0;
         lep1IsoPass= selectMuon_1? IsoLep1Value < LeptonIsoCut : 1;
-        lep2IsoPass= boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassL= boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
         lep2IsoPassV= boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
         lep2IsoPassM= boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
         lep2IsoPassT= boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
-//        lep2IsoDeepL= boostedTaubyLooseDeepTau2017v1VSjet->at(idx_tau) > 0.5 ;
-//        lep2IsoDeepM= boostedTaubyMediumDeepTau2017v1VSjet->at(idx_tau) > 0.5 ;
-//        lep2IsoDeepT= boostedTaubyTightDeepTau2017v1VSjet->at(idx_tau) > 0.5 ;
         lepPt_=muPt->at(idx_lep);
         taupt_=boostedTauPt->at(idx_tau);
         vis_mass=Z4Momentum.M();

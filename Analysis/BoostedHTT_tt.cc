@@ -109,13 +109,16 @@ int main(int argc, char* argv[]) {
     float zmasspt_weight=1;
     float WBosonKFactor=1;
     float preFireWeight=1;
+    float ttbar_rwt=1;
+    float zmasspt_weight_err=0;
+    float zmasspt_weight_nom=1;
     
     float lep1Pt_=-10;
     float lep2Pt_=-10;
     float vis_mass=-10;
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
-    bool lep1IsoPass,lep2IsoPass,lep1IsoPassV,lep2IsoPassV,OS,SS;
+    bool lep1IsoPassL,lep2IsoPassL,lep1IsoPassV,lep2IsoPassV,OS,SS;
     float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
     // Trigger
     bool PassTrigger_37;
@@ -135,8 +138,8 @@ int main(int argc, char* argv[]) {
     outTr->Branch("zmasspt_weight",&zmasspt_weight,"zmasspt_weight/F");
     outTr->Branch("lep1Pt",&lep1Pt_,"lep1Pt/F");
     outTr->Branch("lep2Pt",&lep2Pt_,"lep2Pt/F");
-    outTr->Branch("lep1IsoPass",&lep1IsoPass,"lep1IsoPass/O");
-    outTr->Branch("lep2IsoPass",&lep2IsoPass,"lep2IsoPass/O");
+    outTr->Branch("lep1IsoPassL",&lep1IsoPassL,"lep1IsoPassL/O");
+    outTr->Branch("lep2IsoPassL",&lep2IsoPassL,"lep2IsoPassL/O");
     outTr->Branch("lep1IsoPassV",&lep1IsoPassV,"lep1IsoPassV/O");
     outTr->Branch("lep2IsoPassV",&lep2IsoPassV,"lep2IsoPassV/O");
     outTr->Branch("OS",&OS,"OS/O");
@@ -215,8 +218,7 @@ int main(int argc, char* argv[]) {
         //=========================================================================================================
         // MET Filters
         // Here we apply MET Filters
-        // Here we apply prefire weights
-        
+        if (isData && (metFilters!=0)) continue;
         //=========================================================================================================
         //MET Shape systematics
         Met=pfMET;
@@ -226,6 +228,12 @@ int main(int argc, char* argv[]) {
         if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
         if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
         
+        if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
+        if (syst == "met_resp_Up") {Met = met_resp_Up; Metphi=metphi_resp_Up;}
+        if (syst == "met_reso_Down") {Met = met_reso_Down; Metphi=metphi_reso_Down;}
+        if (syst == "met_resp_Down") {Met = met_resp_Down; Metphi=metphi_resp_Down;}
+
+        
         TLorentzVector LeadTau4Momentum,SubTau4Momentum, Z4Momentum, Met4Momentum;
         //=========================================================================================================
         // Lead tau selection
@@ -233,6 +241,7 @@ int main(int argc, char* argv[]) {
         
         if (boostedTauPt->at(idx_leadtau) <= 30 || fabs(boostedTauEta->at(idx_leadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_leadtau) < 0.5 ) continue;
+        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_leadtau) < -0.5) continue;
         //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_leadtau) < 0.5) continue;
         //        if (boostedTauByLooseMuonRejection3->at(idx_leadtau) < 0.5) continue;
         LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_leadtau),boostedTauEta->at(idx_leadtau),boostedTauPhi->at(idx_leadtau),boostedTauMass->at(idx_leadtau));
@@ -244,6 +253,7 @@ int main(int argc, char* argv[]) {
         
         if (boostedTauPt->at(idx_subleadtau) <= 30 || fabs(boostedTauEta->at(idx_subleadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_subleadtau) < 0.5 ) continue;
+        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_subleadtau) < -0.5) continue;
         //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_subleadtau) < 0.5) continue;
         //        if (boostedTauByLooseMuonRejection3->at(idx_subleadtau) < 0.5) continue;
         
@@ -403,7 +413,12 @@ int main(int argc, char* argv[]) {
                 if (ZBosonPt > 999) ZBosonPt=999;
                 if (ZBosonMass < 61) ZBosonMass = 61;
                 if (ZBosonMass > 119) ZBosonMass = 119;
-                zmasspt_weight=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+                zmasspt_weight_nom=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+                zmasspt_weight_err=zpt_hist->GetBinError(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+                
+                zmasspt_weight = zmasspt_weight_nom + 0 * zmasspt_weight_err;
+                if (syst == "Z_masspt_Up")  zmasspt_weight = zmasspt_weight_nom + 1 * zmasspt_weight_err;
+                if (syst == "Z_masspt_Down") zmasspt_weight = zmasspt_weight_nom + -1 * zmasspt_weight_err;
             }
             
             if (name == "W" && (sample.find("_HT_") != string::npos) ){
@@ -411,6 +426,16 @@ int main(int argc, char* argv[]) {
                 if (syst == "WBosonKFactorUp") WBosonKFactor= FuncBosonKFactor("W1Up") + FuncBosonKFactor("W2Up") * WBosonPt; //HT binned & inclusive K-factor
                 if (syst == "WBosonKFactorDown") WBosonKFactor= FuncBosonKFactor("W1Down") + FuncBosonKFactor("W2Down") * WBosonPt; //HT binned & inclusive K-factor
             }
+            // top-pT Reweighting
+            if (name == "TT") {
+                ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"nominal" );
+                if (syst == "ttbarShape_Up") {
+                    ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"ttbarShape_Up" );
+                } else if (syst == "ttbarShape_Down") {
+                    ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"ttbarShape_Down" );
+                }
+            }
+            
         }
         
         plotFill("TriggerWeight",TriggerWeight ,100,0,1);
@@ -420,6 +445,7 @@ int main(int argc, char* argv[]) {
         plotFill("zmasspt_weight",zmasspt_weight ,200,0,2);
         plotFill("preFireWeight",preFireWeight ,200,0,2);
         plotFill("WBosonKFactor",WBosonKFactor ,200,0,2);
+        plotFill("ttbar_rwt",ttbar_rwt ,200,0,2);
         
         //###############################################################################################
         //  tree branches
@@ -436,8 +462,8 @@ int main(int argc, char* argv[]) {
         higgs_m = higgs.M();
         OS = boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) < 0;
         SS =  boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) > 0;
-        lep1IsoPass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
-        lep2IsoPass = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
+        lep1IsoPassL = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
+        lep2IsoPassL = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
         lep1IsoPassV = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
         lep2IsoPassV = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
         
@@ -449,7 +475,7 @@ int main(int argc, char* argv[]) {
         BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_subleadtau);
         m_sv_=m_sv;
         //  Weights
-        FullWeight = LumiWeight*LepCorrection * PUWeight * TriggerWeight*zmasspt_weight * preFireWeight * WBosonKFactor;
+        FullWeight = LumiWeight*LepCorrection * PUWeight * TriggerWeight*zmasspt_weight * preFireWeight * WBosonKFactor * ttbar_rwt;
         
         // Fill the tree
         outTr->Fill();
