@@ -70,18 +70,6 @@ int main(int argc, char *argv[]) {
     std::cout<<"\n\n\n\n OSSS  "<<OSSS[0]<<"\n";
     
     hists->histoLoop(year, files, dir, tree_name,var_name,OSSS, "None","");    // fill histograms
-    
-    std::vector<std::string> ListSys{ "",
-        //        "_JetRelBal_Up","_JetRelSam_Up",
-        //        "_JetRelBal_Down","_JetRelSam_Down",
-        //        "_EEScale_Up","_EEScale_Down","_EESigma_Up","_EESigma_Down","_MES_Up","_MES_Down",
-        //        "_JER_Down","_JER_Up","_JetAbsolute_Down","_JetAbsolute_Up","_JetAbsoluteyear_Down","_JetAbsoluteyear_Up",
-        //        "_JetEC2_Down","_JetEC2_Up","_JetEC2year_Down","_JetEC2year_Up", "_JetFlavorQCD_Down","_JetFlavorQCD_Up",
-        //        "_JetHFyear_Down","_JetHFyear_Up",
-        //        "_RecoilReso_Up","_RecoilReso_Down","_RecoilResp_Up","_RecoilResp_Down"
-    };
-    
-    
     hists->writeTemplates();  // write histograms to file
     hists->fout->Close();
     
@@ -111,7 +99,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         float lep2Pt_=-10;
         float vis_mass=-10;
         float LeadJetPt = -10;
-        bool lep1IsoPass, lep2IsoPass ,OS,SS, PassTrigger_40, PassTrigger_39;
+        bool lep1IsoPass, lep2IsoPass ,OS,SS;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
         float NN_disc;
         float higgs_pT, higgs_m, m_sv;
@@ -121,8 +109,6 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         tree->SetBranchAddress("lep2Pt",&lep2Pt_);
         tree->SetBranchAddress("lep1IsoPass",&lep1IsoPass);
         tree->SetBranchAddress("lep2IsoPass",&lep2IsoPass);
-        tree->SetBranchAddress("PassTrigger_39",&PassTrigger_39);
-        tree->SetBranchAddress("PassTrigger_40",&PassTrigger_40);
         tree->SetBranchAddress("OS",&OS);
         tree->SetBranchAddress("SS",&SS);
         tree->SetBranchAddress("vis_mass",&vis_mass);
@@ -144,7 +130,6 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         for (auto i = 0; i < tree->GetEntries(); i++) {
             tree->GetEntry(i);
             
-            if (!(PassTrigger_39 || PassTrigger_40)) continue;
             std::map<std::string, float>  ObsName {
                 {"lep1Pt",lep1Pt_},
                 {"lep2Pt",lep2Pt_},
@@ -200,7 +185,7 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
         auto tree = reinterpret_cast<TTree *>(fin->Get(tree_name.c_str()));
         
         float lep1Pt_=-10;
-         bool Fail,Pass,PassM,FailM,PassT,FailT,OS,SS, PassTrigger_40, PassTrigger_39;
+         bool Fail,Pass,PassM,FailM,PassT,FailT,OS,SS;
          float weight,lep2Pt_;
          bool lep1IsoPass, lep2IsoPass ;
          
@@ -212,15 +197,10 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
         tree->SetBranchAddress("OS",&OS);
         tree->SetBranchAddress("SS",&SS);
         tree->SetBranchAddress("evtwt",&weight);
-        tree->SetBranchAddress("PassTrigger_39",&PassTrigger_39);
-        tree->SetBranchAddress("PassTrigger_40",&PassTrigger_40);
-
         
         for (auto i = 0; i < tree->GetEntries(); i++) {
             tree->GetEntry(i);
-            
-            if (!(PassTrigger_39 || PassTrigger_40)) continue;
-            
+                        
 //            std::cout<<OS <<Pass << !lepIsoPass<<"\n";
 //            if (OS != 0 && !Pass && !lepIsoPass){
                 if (OS != 0 && (!lep1IsoPass || !lep2IsoPass )){

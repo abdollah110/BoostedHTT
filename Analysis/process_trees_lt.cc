@@ -108,6 +108,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
         float NN_disc;
         float BoostedTauRawIso, higgs_pT, higgs_m, m_sv;
+        int nbjet;
         
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
         tree->SetBranchAddress("lep2Pt",&lep2Pt_);
@@ -128,6 +129,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
         tree->SetBranchAddress("higgs_m",&higgs_m);
         tree->SetBranchAddress("m_sv",&m_sv);
+        tree->SetBranchAddress("nbjet",&nbjet);
         
         
         // Here we have to call OS/SS method extracter
@@ -151,16 +153,19 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
                 {"higgs_pT",higgs_pT},
                 {"higgs_m",higgs_m},
                 {"m_sv",m_sv},
-                {"NN_disc",NN_disc}
+                {"NN_disc",NN_disc},
+                {"nbjet",nbjet}
             };
             
             
             vbf_var1 =ObsName[var_name];
             
             if (OS != 0  && lep1IsoPass && lep2IsoPass) {
+//            if (OS != 0  && !lep1IsoPass && lep2IsoPass) {
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
             }
             if (SS != 0 && lep1IsoPass && lep2IsoPass ){
+//            if (SS != 0 && !lep1IsoPass && lep2IsoPass ){
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight,OSSS[0]);
             }
             if (SS != 0){
@@ -200,10 +205,12 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
         for (auto i = 0; i < tree->GetEntries(); i++) {
             tree->GetEntry(i);
             
-            if (OS != 0 && !lep2IsoPass && !lep1IsoPass){
+//            if (OS != 0 && !lep2IsoPass && !lep1IsoPass){
+            if (OS != 0 && !lep2IsoPass ){
                 fillQCD_OS_CR(zeroJet, name, lep1Pt_,  weight);
             }
-            else if (SS != 0 && !lep2IsoPass && !lep1IsoPass){
+//            else if (SS != 0 && !lep2IsoPass && !lep1IsoPass){
+            else if (SS != 0 && !lep2IsoPass ){
                 fillQCD_SS_CR(zeroJet, name, lep1Pt_,  weight);
             }
         }

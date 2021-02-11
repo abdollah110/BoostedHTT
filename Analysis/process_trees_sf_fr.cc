@@ -162,8 +162,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir,TH1
             
             if (higgs_pT < 250) continue;
             if (vis_mass < 20) continue;
-//            if (lep2Pt_ < lowVal || lep2Pt_ > highVal ) continue;
-            if (dR_lep_lep < lowVal || dR_lep_lep > highVal ) continue;
+            if (lep2Pt_ < lowVal || lep2Pt_ > highVal ) continue;
+//            if (dR_lep_lep < lowVal || dR_lep_lep > highVal ) continue;
             
             float lep2Ptval=lep2Pt_;
             if (lep2Ptval > 200) lep2Ptval=200;
@@ -179,7 +179,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir,TH1
             if (OS != 0  && lep1IsoPass && cut_var1) {
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
             }
-            if (SS != 0 && lep1IsoPass && cut_var1 ){
+//            if (SS != 0 && lep1IsoPass && cut_var1 ){
+            if (OS != 0 && lep1IsoPass && !cut_var1 ){
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight,frValu / (1-frValu));
             }
             if (SS != 0 && ! cut_var1){
