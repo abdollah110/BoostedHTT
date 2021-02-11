@@ -42,11 +42,12 @@ def loadFile(ifile):
     input_df['idx'] = np.array([i for i in xrange(0, len(input_df))])
 
     # preselection
-    slim_df = input_df[
+    slim_df = input_df
+#    [
 #                (input_df['Pass'] > 0)  & (input_df['OS'] > 0)
 #                (input_df['lep2IsoPass'] > 0)
     #            (input_df['njets'] > 1) & (input_df['mjj'] > 300)
-        ]
+#        ]
     
 
     slim_df = slim_df.dropna(axis=0, how='any')  # drop events with a NaN
