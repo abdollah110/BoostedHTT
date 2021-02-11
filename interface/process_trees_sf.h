@@ -11,6 +11,9 @@
 #include "TFile.h"
 #include "TH1F.h"
 #include "TTree.h"
+#include <regex>
+
+using namespace std;
 
 using std::cout;
 using std::string;
@@ -33,7 +36,7 @@ void read_directory(const std::string &name, std::vector<std::string> *v) {
 // class to hold the histograms until I'm ready to write them
 class HistTool {
 public:
-    HistTool(std::string, std::string, std::string,std::vector<int>, bool, bool);
+    HistTool(std::string, std::string, std::string,std::string, std::string, std::vector<int>, bool, bool);
     //  ~HistTool() { delete ff_weight; }
     ~HistTool() {  }
     void writeHistos();
@@ -49,10 +52,8 @@ public:
     
     //  void convertDataToFake(Categories, std::string, double, double, double, double, double, double);  // 2d
     void histoLoop(std::string year  ,std::vector<std::string>, std::string, TH1F *, std::string, std::string,std::vector<float>, std::string, std::string);
-    void histoLoop(std::string year  ,std::vector<std::string>, std::string, std::string, std::string,std::vector<float>, std::string, std::string);
+    void histoLoop(std::string year  ,std::vector<std::string>, std::string,TH1F *, std::string,std::string, std::string,std::vector<float>, float, float , std::string, std::string);
     void histoQCD(std::vector<std::string>, std::string, std::string, std::string);
-    //  void getJetFakes(std::vector<std::string>, std::string, std::string, bool);
-    //    Categories getCategory(std::vector<Float_t>, double, double );
     
     bool doNN, old_selection;
     TFile *fout;
@@ -74,14 +75,14 @@ public:
 // HistTool contructor to create the output file, the qcd histograms with the correct binning
 // and the map from categories to vectors of TH1F*'s. Each TH1F* in the vector corresponds to
 // one file that is being put into that categories directory in the output tempalte
-HistTool::HistTool(std::string channel_prefix, std::string year, std::string suffix,std::vector<int> bins, bool doNN = false, bool old = false)
-: fout(new TFile(("Output/templates/" + channel_prefix + year + "_" + suffix + ".root").c_str(), "recreate")),
+HistTool::HistTool(std::string channel_prefix, std::string year, std::string suffix,std::string cut, std::string bin_name, std::vector<int> bins, bool doNN = false, bool old = false)
+: fout(new TFile(("Output/sf/" + channel_prefix + year + "_" + suffix + cut+ bin_name+ ".root").c_str(), "recreate")),
 
 // x-axis
 //bins_NN{0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0}, // This is for 0jet
 bins_NN(bins), // This is for 0jet
 //bins_NN({20,0,200}),
-bins_FAKE({20,0,2000}),
+bins_FAKE({1,0,2000}),
 channel_prefix(channel_prefix),
 categories{
     channel_prefix + "_0jet",
@@ -122,15 +123,12 @@ systematics{
             
         }
         std::cout<<" cat.c_str()= "<<cat.c_str()<<"\n";
-        
-        //        data.push_back(new TH1F(("data_" + cat).c_str(), ("data_" + cat).c_str(), mvis_bins.size() - 1, &mvis_bins[0], njets_bins.size() - 1, &njets_bins[0]));
     }
     
     // make all of the directories for templates
     for (auto it = hists_1d.begin(); it != hists_1d.end(); it++) {
         fout->cd();
         fout->mkdir((it->first).c_str());
-        std::cout <<"\t test 1   first directory is "<<it->first <<"\n";
         fout->cd();
     }
 }
@@ -232,6 +230,14 @@ void HistTool::writeTemplates() {
     for (auto cat : hists_1d) {
         fout->cd(cat.first.c_str());
         for (auto hist : cat.second) {
+            
+            // change ZTT name to DYLL125
+            string ztt_name = hist->GetName();
+            if (static_cast<std::string>(hist->GetName()).find("ZTT") != std::string::npos) {
+                ztt_name = std::regex_replace(ztt_name, std::regex("\\b(ZTT)"), "DYJets125");
+                hist->SetName(ztt_name.c_str());
+            }
+            
             hist->Write();
         }
         
@@ -249,25 +255,23 @@ void HistTool::writeTemplates() {
         
         //========================================================================================================
         //                // ADD protection
-        //                for (int i = 0 ; i < fake_hist_shape->GetNbinsX(); i++){
-        //                    for (int j = 0 ; j < fake_hist_shape->GetNbinsY(); j++){
-        //                        if (fake_hist_shape->GetBinContent(i+1,j+1) <0 ){
-        //                            float negBin=fake_hist_shape->GetBinContent(i+1,j+1);
-        //                            float totIntegral =fake_hist_shape->Integral();
-        //                            fake_hist_shape->SetBinContent(i+1,j+1, 0.0001);
-        //                            fake_hist_shape->SetBinError(i+1,j+1, 0.0001);
-        //                            std::cout<< cat.first.c_str() << "   QCD bin of "<<i <<"  " <<j<< "  ratio bin/TotIntegral"<< negBin/totIntegral <<"\n";
-        //                        }
-        //                        if (fake_hist_shape_Up->GetBinContent(i+1,j+1) <0 ){
-        //                            fake_hist_shape_Up->SetBinContent(i+1,j+1, 0.0001);
-        //                            fake_hist_shape_Up->SetBinError(i+1,j+1, 0.0001);
-        //                        }
-        //                        if (fake_hist_shape_Down->GetBinContent(i+1,j+1) <0 ){
-        //                            fake_hist_shape_Down->SetBinContent(i+1,j+1, 0.0001);
-        //                            fake_hist_shape_Down->SetBinError(i+1,j+1, 0.0001);
-        //                        }
-        //                    }
-        //                }
+                        for (int i = 0 ; i < fake_hist_shape->GetNbinsX(); i++){
+                                if (fake_hist_shape->GetBinContent(i+1) <0 ){
+                                    float negBin=fake_hist_shape->GetBinContent(i+1);
+                                    float totIntegral =fake_hist_shape->Integral();
+                                    fake_hist_shape->SetBinContent(i+1, 0.0001);
+                                    fake_hist_shape->SetBinError(i+1, 0.0001);
+                                    std::cout<< cat.first.c_str() << "   QCD bin of "<<i <<"  ratio bin/TotIntegral"<< negBin/totIntegral <<"\n";
+                                }
+                                if (fake_hist_shape_Up->GetBinContent(i+1) <0 ){
+                                    fake_hist_shape_Up->SetBinContent(i+1, 0.0001);
+                                    fake_hist_shape_Up->SetBinError(i+1, 0.0001);
+                                }
+                                if (fake_hist_shape_Down->GetBinContent(i+1) <0 ){
+                                    fake_hist_shape_Down->SetBinContent(i+1, 0.0001);
+                                    fake_hist_shape_Down->SetBinError(i+1, 0.0001);
+                                }
+                            }
         //========================================================================================================
         
         fake_hist_shape->SetName("QCD");
