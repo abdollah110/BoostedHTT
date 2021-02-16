@@ -77,6 +77,11 @@ int main(int argc, char* argv[]) {
         HistoPUMC=HistPUMC(InputFile);
     
     
+        // Z-pT reweighting
+    TFile *zpt_file = new TFile(("data/zmm_2d"+year_str+".root").c_str());
+    auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("Ratio2D"));
+
+
     //###############################################################################################
     //  Fix Parameters
     //###############################################################################################
@@ -86,6 +91,9 @@ int main(int argc, char* argv[]) {
     float BJetPtCut=20;
     float muonPtCut=30;
     if (year==2018) muonPtCut=35;
+    float zmasspt_weight=1;
+    float zmasspt_weight_err=0;
+    float zmasspt_weight_nom=1;
     
     
     float DeepCSVCut=   1000   ;                  //  loose  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
@@ -192,7 +200,19 @@ int main(int argc, char* argv[]) {
                     if (name == "W" && (sample.find("_HT_") != string::npos) ){
                         WBosonKFactor= FuncBosonKFactor("W1Cen") + FuncBosonKFactor("W2Cen") * WBosonPt; //HT binned & inclusive K-factor
                     }
-                    
+                
+                    if  (name == "ZL" || name == "ZTT" || name == "ZLL") {
+                        
+                        if (ZBosonPt > 999) ZBosonPt=999;
+                        if (ZBosonMass < 61) ZBosonMass = 61;
+                        if (ZBosonMass > 119) ZBosonMass = 119;
+                        zmasspt_weight_nom=zpt_hist->GetBinContent(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+                        zmasspt_weight_err=zpt_hist->GetBinError(zpt_hist->GetXaxis()->FindBin(ZBosonMass), zpt_hist->GetYaxis()->FindBin(ZBosonPt));
+                        
+                        zmasspt_weight = zmasspt_weight_nom + 0 * zmasspt_weight_err;
+                        if (syst == "Z_masspt_Up")  zmasspt_weight = zmasspt_weight_nom + 1 * zmasspt_weight_err;
+                        if (syst == "Z_masspt_Down") zmasspt_weight = zmasspt_weight_nom + -1 * zmasspt_weight_err;
+                    }
                     
                 }
                 
@@ -201,6 +221,8 @@ int main(int argc, char* argv[]) {
                 plotFill("PUWeight",PUWeight ,200,0,2);
                 plotFill("WBosonKFactor",WBosonKFactor ,200,0,2);
                 plotFill("preFireWeight",preFireWeight ,200,0,2);
+                plotFill("zmasspt_weight",zmasspt_weight ,200,0,2);
+                
                 
                 //###############################################################################################
                 //  Gen Info
@@ -226,7 +248,7 @@ int main(int argc, char* argv[]) {
                     if (Q_category[iq]) {
                         
                         
-                        float FullWeight = LumiWeight*LepCorrection * PUWeight * WBosonKFactor * preFireWeight;
+                        float FullWeight = LumiWeight*LepCorrection * PUWeight * WBosonKFactor * preFireWeight * zmasspt_weight;
                         std::string FullStringName = Q_Cat[iq] ;
                         
                         plotFill("dR"+FullStringName,SubMu4Momentum.DeltaR(LeadMu4Momentum) ,100,0,1,FullWeight);
