@@ -99,19 +99,19 @@ def MakePlot(FileName,categoriy,HistName,Xaxis, Status, Channel, year):
 #        print "[(%d, %d), %d, (%0.1f,    %0.1f),%0.1f],"%(LowEdge,endEdge,data_val,bkg_val,bkg_val_err,Signal_val_)
 
     
-    QCD=file.Get(categoriy).Get("QCD")
+    QCD=file.Get(categoriy).Get("W")
     QCD.Rebin(RB_)
 
-    W=file.Get(categoriy).Get("WJets")
+    W=file.Get(categoriy).Get("W")
     W.Rebin(RB_)
 
-    TT=file.Get(categoriy).Get("ttbar")
+    TT=file.Get(categoriy).Get("TT")
     TT.Rebin(RB_)
 
 #    ZJ=file.Get(categoriy).Get("ZJ")
 #    ZJ.Rebin(RB_)
     
-    VV=file.Get(categoriy).Get("Diboson")
+    VV=file.Get(categoriy).Get("VV")
     VV.Rebin(RB_)
 
     ZTT=file.Get(categoriy).Get("DYJets")
@@ -448,6 +448,7 @@ FileNamesInfo=[
 for i in range(0,len(FileNamesInfo)):
 
     year=0
+    if '2016' in InputRootfile: year =2016
     if '2017' in InputRootfile: year =2017
     if '2018' in InputRootfile: year =2018
 

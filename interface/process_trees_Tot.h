@@ -50,6 +50,8 @@ public:
     //  void convertDataToFake(Categories, std::string, double, double, double, double, double, double);  // 2d
     void histoLoop(std::string year  ,std::vector<std::string>, std::string, TH1F *, std::string, std::string,std::vector<float>, std::string, std::string);
     void histoLoop(std::string year  ,std::vector<std::string>, std::string, std::string, std::string,std::vector<float>, std::string, std::string);
+    void histoLoop(std::string year  ,std::vector<std::string>, std::string, TH1F *, std::string, std::string, std::string);
+    
     void histoQCD(std::vector<std::string>, std::string, std::string, std::string);
     //  void getJetFakes(std::vector<std::string>, std::string, std::string, bool);
     //    Categories getCategory(std::vector<Float_t>, double, double );
@@ -188,6 +190,7 @@ void HistTool::fillQCD_Norm(int cat, std::string name, double var1,  double weig
         fakes_1d_norm_Down.at(cat)->Fill(var1, 1*OSSS_val);
         //            } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZJ"|| name == "ZLL" || name == "EWKZ" ) {
     } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
+//    } else if ( name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
         fakes_1d_norm.at(cat)->Fill(var1, -1*OSSS_val*weight);
         fakes_1d_norm_Up.at(cat)->Fill(var1, -1*OSSS_val*weight*0.9);
         fakes_1d_norm_Down.at(cat)->Fill(var1, -1*OSSS_val*weight*1.1);
@@ -203,6 +206,7 @@ void HistTool::fillQCD_Shape(int cat, std::string name, double var1,  double wei
         fakes_1d_shape_Down.at(cat)->Fill(var1, 1*OSSS_val);
         //            } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZJ"|| name == "ZLL" || name == "EWKZ" ) {
     } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+//    } else if ( name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
         
         fakes_1d_shape.at(cat)->Fill(var1, -1*OSSS_val*weight);
         fakes_1d_shape_Up.at(cat)->Fill(var1, -1*OSSS_val*weight*0.9);

@@ -1,3 +1,6 @@
+// command line
+//BoostedTau_limit_single_plus_CR_new --year=2018 --bin=bin0 --WP=T --DIR=tgp_v1
+
 #include <string>
 #include <map>
 #include <set>
@@ -34,7 +37,7 @@ int main(int argc, char** argv) {
 //    string input_folder_mt="USCMS/";
 //    string input_folder_tt="USCMS/";
 //    string input_folder_mm="USCMS/";
-//    string input_folder_ttbar="USCMS/";
+//    string input_folder_TT="USCMS/";
     string postfix="";
 //    string vbfcateStr_tt="tt_vbf_ggHMELA_bin";
 //    string vbfcateStr_mt="mt_vbf_ggHMELA_bin";
@@ -47,11 +50,14 @@ int main(int argc, char** argv) {
     string year = "2016";
     string inputFile="";
     string WP="WP";
+    string bin="bin";
+    string DIR="DIR";
+    
 //    bool check_neg_bins = false;
 //    bool poisson_bbb = false;
 //    bool do_w_weighting = false;
 //    bool mm_fit = false;
-//    bool ttbar_fit = false;
+//    bool TT_fit = false;
 //    bool do_jetfakes = true;
 //    bool do_embedded = true;
 //    bool do_shapeSyst = false;
@@ -70,7 +76,7 @@ int main(int argc, char** argv) {
 //      ("input_folder_mt", po::value<string>(&input_folder_mt)->default_value("USCMS"))
 //      ("input_folder_tt", po::value<string>(&input_folder_tt)->default_value("USCMS"))
 //      ("input_folder_mm", po::value<string>(&input_folder_mm)->default_value("USCMS"))
-//      ("input_folder_ttbar", po::value<string>(&input_folder_ttbar)->default_value("USCMS"))
+//      ("input_folder_TT", po::value<string>(&input_folder_TT)->default_value("USCMS"))
       ("postfix", po::value<string>(&postfix)->default_value(""))
 //      ("vbfcateStr_tt", po::value<string>(&vbfcateStr_tt)->default_value("tt_vbf_ggHMELA_bin"))
 //      ("vbfcateStr_mt", po::value<string>(&vbfcateStr_mt)->default_value("mt_vbf_ggHMELA_bin"))
@@ -82,9 +88,11 @@ int main(int argc, char** argv) {
 //      ("control_region", po::value<int>(&control_region)->default_value(0))
       ("year", po::value<string>(&year)->default_value("2016"))
       ("WP", po::value<string>(&WP)->default_value(""))
-      ("inputFile", po::value<string>(&inputFile)->default_value(""));
+      ("bin", po::value<string>(&bin)->default_value(""))
+      ("inputFile", po::value<string>(&inputFile)->default_value(""))
+      ("DIR", po::value<string>(&DIR)->default_value(""));
 //      ("mm_fit", po::value<bool>(&mm_fit)->default_value(true))
-//      ("ttbar_fit", po::value<bool>(&ttbar_fit)->default_value(true))
+//      ("TT_fit", po::value<bool>(&TT_fit)->default_value(true))
 //      ("jetfakes", po::value<bool>(&do_jetfakes)->default_value(false))
 //      ("embedded", po::value<bool>(&do_embedded)->default_value(false))
 //      ("shapeSyst", po::value<bool>(&do_shapeSyst)->default_value(false))
@@ -133,10 +141,13 @@ int main(int argc, char** argv) {
     };
     
     map<string, VString> bkg_procs;
-//    bkg_procs["mt"] = {"WJets", "QCD", "ttbar","Diboson","ZLL","ZJ"};
-    bkg_procs["mt"] = {"WJets", "QCD", "ttbar","Diboson"};
-    bkg_procs["mm"] = {"WJets", "QCD", "ttbar","Diboson"};
-    
+//    bkg_procs["mt"] = {"W", "QCD", "TT","VV","ZLL","ZJ"};
+    bkg_procs["mt"] = {"W", "QCD", "TT","VV"};
+//    bkg_procs["mm"] = {"W", "QCD", "TT","VV"};
+//    bkg_procs["mt"] = {"W",  "TT","VV"};
+    bkg_procs["mm"] = {"W",  "TT","VV"};
+
+
     VString sig_procs = {"DYJets"};
     
     map<string, Categories> cats;
@@ -145,7 +156,7 @@ int main(int argc, char** argv) {
     
     
     cats["mt_13TeV"] = {
-        {1, "pass"},
+        {1, "mt_0jet"},
 //        {2, "fail"}
     };
     cats["mm_13TeV"] = {
@@ -185,8 +196,10 @@ int main(int argc, char** argv) {
     cout << ">> Extracting histograms from input root files...\n";
     for (string era : {"13TeV"}) {
         for (string chn : chns) {
-            
-            string file = aux_shapes + input_folders[chn] + "/template_boostedH_"+chn+"_"+year+"_"+WP+".root";
+//            /mt2017_vis_masslep2IsoPassV_bin2.root
+            string file = aux_shapes + input_folders[chn] + "/"+chn+year+"_vis_masslep2IsoPass"+WP+"_"+bin+".root";
+//            string file = aux_shapes + input_folders[chn] + "/newtemplate_boostedH_"+chn+"_"+year+"_"+WP+".root";
+            if (chn.find("mm") != string::npos ) file = aux_shapes + input_folders[chn] + "/newtemplate_boostedH_"+chn+"_"+year+".root";
             cb.cp().channel({chn}).era({era}).backgrounds().ExtractShapes(
                                                                           file, "$BIN/$PROCESS", "$BIN/$PROCESS_$SYSTEMATIC");
             cb.cp().channel({chn}).era({era}).signals().ExtractShapes(
@@ -206,31 +219,31 @@ int main(int argc, char** argv) {
     
     // Norm systematics
     
-    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson"}}))
+    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
     .AddSyst(cb, "CMS_lumi_$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.024));
     
-//    cb.cp().channel({"mt"}).bin_id({1}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","ZLL","ZJ"}}))
+//    cb.cp().channel({"mt"}).bin_id({1}).process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZLL","ZJ"}}))
 //    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.1/0.9));
 //
-//    cb.cp().channel({"mt"}).bin_id({2}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson","ZLL","ZJ"}}))
+//    cb.cp().channel({"mt"}).bin_id({2}).process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZLL","ZJ"}}))
 //    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 0.9/1.1));
     
     
-    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson"}}))
+    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
     .AddSyst(cb, "CMS_eff_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
     
-    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson"}}))
+    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
     .AddSyst(cb, "CMS_trg_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
 
 
-    cb.cp().channel({"mm"}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson"}}))
+    cb.cp().channel({"mm"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
     .AddSyst(cb, "CMS_lumi_$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.024));
         
     
-    cb.cp().channel({"mm"}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson"}}))
+    cb.cp().channel({"mm"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
     .AddSyst(cb, "CMS_eff_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
     
-    cb.cp().channel({"mm"}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson"}}))
+    cb.cp().channel({"mm"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
     .AddSyst(cb, "CMS_trg_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
 
 
@@ -238,11 +251,11 @@ int main(int argc, char** argv) {
 //    cb.cp().process({"DYJets"})
 //    .AddSyst(cb, "CMS_htt_ZTTNorm", "lnN", SystMap<>::init(1.10));
     
-    cb.cp().process({"ttbar"})
+    cb.cp().process({"TT"})
     .AddSyst(cb, "CMS_htt_TTNorm", "lnN", SystMap<>::init(1.10));
     
-    cb.cp().process({"Diboson"})
-    .AddSyst(cb, "CMS_htt_DibosonNorm", "lnN", SystMap<>::init(1.10));
+    cb.cp().process({"VV"})
+    .AddSyst(cb, "CMS_htt_VVNorm", "lnN", SystMap<>::init(1.10));
     
 //    cb.cp().process({"ZLL"})
 //    .AddSyst(cb, "CMS_htt_ZLLNorm", "lnN", SystMap<>::init(1.10));
@@ -250,7 +263,7 @@ int main(int argc, char** argv) {
 //    cb.cp().process({"ZJ"})
 //    .AddSyst(cb, "CMS_htt_ZJNorm", "lnN", SystMap<>::init(1.10));
     
-    cb.cp().process({"WJets"})
+    cb.cp().process({"W"})
     .AddSyst(cb, "CMS_htt_WNorm", "lnN", SystMap<>::init(1.10));
     
     cb.cp().process({"QCD"})
@@ -259,11 +272,11 @@ int main(int argc, char** argv) {
     
     // Shape systematics
     
-    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson"}}))
-    .AddSyst(cb, "met_JES", "shape", SystMap<>::init(1.00));
-
-    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson"}}))
-    .AddSyst(cb, "met_UES", "shape", SystMap<>::init(1.00));
+//    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
+//    .AddSyst(cb, "met_JES", "shape", SystMap<>::init(1.00));
+//
+//    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
+//    .AddSyst(cb, "met_UES", "shape", SystMap<>::init(1.00));
 
 //    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"ZLL","ZJ"}}))
 //    .AddSyst(cb, "dyShape_", "shape", SystMap<>::init(1.00));
@@ -284,11 +297,14 @@ int main(int argc, char** argv) {
     //! [part7]
     
     cb.cp().backgrounds().ExtractShapes(
-                                        aux_shapes + "/"+inputFile,
+//                                        aux_shapes + "/"+inputFile,
+                                        aux_shapes + "/mt"+year+"_vis_masslep2IsoPass"+WP+"_"+bin+".root",
+                                        
                                         "$BIN/$PROCESS",
                                         "$BIN/$PROCESS_$SYSTEMATIC");
     cb.cp().signals().ExtractShapes(
-                                        aux_shapes + "/"+inputFile,
+//                                        aux_shapes + "/"+inputFile,
+                                        aux_shapes + "/mt"+year+"_vis_masslep2IsoPass"+WP+"_"+bin+".root",
                                     "$BIN/$PROCESS$MASS",
                                     "$BIN/$PROCESS$MASS_$SYSTEMATIC");
     
@@ -333,7 +349,7 @@ int main(int argc, char** argv) {
     << "\n";
     
     
-    string folder = "TagNProbe/"+postfix;
+    string folder = DIR+"/"+year+"_"+WP+"_"+bin;
     boost::filesystem::create_directories(folder);
     boost::filesystem::create_directories(folder + "/common");
     for (auto m : masses) {

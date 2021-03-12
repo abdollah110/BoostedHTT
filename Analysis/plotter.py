@@ -18,15 +18,17 @@ style_map = {
     "data_obs": style_map_tuple(no_color, black, 1, 1, 8),
     "backgrounds": {
 #        "embedded": style_map_tuple(GetColor("#f9cd66"), black, 1, 1, 1),
-        "ZTT": style_map_tuple(GetColor(108, 226, 354), black, 1, 1, 1),
+        
 #        "jetFakes": style_map_tuple(GetColor("#ffccff"), black, 1, 1, 1),
-        "QCD": style_map_tuple(GetColor(408, 106, 154), black, 1, 1, 1),
+        
         "TT": style_map_tuple(GetColor(208, 376, 124), black, 1, 1, 1),
+        "QCD": style_map_tuple(GetColor(408, 106, 154), black, 1, 1, 1),
 #        "ZLL": style_map_tuple(GetColor(150, 132, 232), black, 1, 1, 1),
+        "ZTT": style_map_tuple(GetColor(108, 226, 354), black, 1, 1, 1),
         },
     "EWK": {
         "VV": style_map_tuple(GetColor(200, 282, 232), black, 1, 1, 1),
-        "W": style_map_tuple(GetColor(200, 282, 232), no_color, 1, 0, 1),
+#        "W": style_map_tuple(GetColor(200, 282, 232), no_color, 1, 0, 1),
 #        "EWKZ": style_map_tuple(GetColor("#9feff2"), no_color, 1, 0, 1),
 #        "ZJ": style_map_tuple(GetColor(200, 282, 232), no_color, 1, 0, 1),
     },
@@ -203,7 +205,7 @@ def blindData(data, signal, background):
     return data
 
 def BuildPlot(args):
-    print "ifile,category,category ", args.input ,args.category ,args.variable
+    print "ifile,category,variable ", args.input ,args.category ,args.variable
     InputFile=args.input.replace('m_sv',args.variable)
     ifile = ROOT.TFile(InputFile)
     category = ifile.Get(args.category)
@@ -220,12 +222,12 @@ def BuildPlot(args):
     for hkey in variableX.GetListOfKeys():
         hname = hkey.GetName()
         ihist = variableX.Get(hname).Clone()
-        if hname in style_map['backgrounds']:
-            ihist = ApplyStyle(ihist, style_map['backgrounds'][hname])
-            backgrounds[hname] = ihist
         if hname in style_map['EWK']:
             ihist = ApplyStyle(ihist, style_map['EWK'][hname])
             backgrounds_EWK[hname] = ihist
+        if hname in style_map['backgrounds']:
+            ihist = ApplyStyle(ihist, style_map['backgrounds'][hname])
+            backgrounds[hname] = ihist
         elif hname in style_map['signals']:
             ihist = ApplyStyle(ihist, style_map['signals'][hname])
             signals[hname] = ihist
@@ -234,11 +236,11 @@ def BuildPlot(args):
     stat = data_hist.Clone() # sum of all backgrounds
     stat.Reset()
     stack = ROOT.THStack() # stack of all backgrounds
-    for bkg in sorted(backgrounds.itervalues(), key = lambda hist: 1./hist.Integral()):
+    for bkg in sorted(backgrounds_EWK.itervalues(), key = lambda hist: 1./hist.Integral()):
         print "\t\t = ", bkg.GetName(),"  int= ",bkg.Integral()
         stat.Add(bkg)
         stack.Add(bkg)
-    for bkg in sorted(backgrounds_EWK.itervalues(), key = lambda hist: 1./hist.Integral()):
+    for bkg in sorted(backgrounds.itervalues(), key = lambda hist: hist.Integral()):
         print "\t\t = ", bkg.GetName(),"  int= ",bkg.Integral()
         stat.Add(bkg)
         stack.Add(bkg)
@@ -246,6 +248,7 @@ def BuildPlot(args):
 
 #    sig_yields = [ihist.GetMaximum() for ihist in signals.itervalues()] + [data_hist.GetMaximum(), stat.GetMaximum()]
     stack.SetMaximum(data_hist.GetMaximum() * args.scale)
+#    stack.SetMaximum(data_hist.GetMaximum() * 1000)
     
     # format the plots
     can = createCanvas()
@@ -283,6 +286,7 @@ def BuildPlot(args):
     ll.SetNDC(ROOT.kTRUE)
     ll.SetTextSize(0.06)
     ll.SetTextFont(42)
+    print 'args.category = {} args.year {}'.format(args.category, args.year)
     if 'em_' in args.category:
         lepLabel = "e#mu"
     elif 'mt_' in args.category:
@@ -291,12 +295,13 @@ def BuildPlot(args):
         lepLabel = "e#tau_{h}"
     elif 'tt_' in args.category:
         lepLabel = "#tau_{h}#tau_{h}"
-
-    if args.year == '2016':
+        
+    lumi='XXX'
+    if args.year == 2016:
         lumi = "35.9 fb^{-1}"
-    elif args.year == '2017':
+    elif args.year == 2017:
         lumi = "41.5 fb^{-1}"
-    elif args.year == '2018':
+    elif args.year == 2018:
         lumi = "59.7 fb^{-1}"
 
     ll.DrawLatex(0.42, 0.94, "{} {}, {} (13 TeV)".format(lepLabel, args.year, lumi))

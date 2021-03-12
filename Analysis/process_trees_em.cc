@@ -17,11 +17,7 @@ int main(int argc, char *argv[]) {
     CLParser parser(argc, argv);
     bool doSyst = parser.Flag("-s");
     string dir = parser.Option("-d");
-//    string year = parser.Option("-y");
     string suffix = parser.Option("--suf");
-//    string tree_name = parser.Option("-t");
-//    string channel = parser.Option("-c");
-
     std::string var_name = parser.Option("-v");
     std::vector<std::string> sbins = parser.MultiOption("-b", 3);
     
@@ -65,16 +61,6 @@ int main(int argc, char *argv[]) {
     std::cout<<"\n\n\n\n OSSS  "<<OSSS[0]<<"\n";
     
     hists->histoLoop(year, files, dir, tree_name,var_name,OSSS, "None","");    // fill histograms
-    std::vector<std::string> ListSys{ "",
-        //        "_JetRelBal_Up","_JetRelSam_Up",
-        //        "_JetRelBal_Down","_JetRelSam_Down",
-        //        "_EEScale_Up","_EEScale_Down","_EESigma_Up","_EESigma_Down","_MES_Up","_MES_Down",
-        //        "_JER_Down","_JER_Up","_JetAbsolute_Down","_JetAbsolute_Up","_JetAbsoluteyear_Down","_JetAbsoluteyear_Up",
-        //        "_JetEC2_Down","_JetEC2_Up","_JetEC2year_Down","_JetEC2year_Up", "_JetFlavorQCD_Down","_JetFlavorQCD_Up",
-        //        "_JetHFyear_Down","_JetHFyear_Up",
-        //        "_RecoilReso_Up","_RecoilReso_Down","_RecoilResp_Up","_RecoilResp_Down"
-    };
-    
     hists->writeTemplates();  // write histograms to file
     hists->fout->Close();
     
@@ -154,20 +140,24 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
             };
             
             
+            // The OS/SS is measured in a QCD populated CR and it is 2.21 for 2016 and 2017 and 2.3 for 2018. We will simply us 2.2 for all 3 years
+            float meausred_OSSS = 2.2;
+            
             vbf_var1 =ObsName[var_name];
 
-//            if (OS != 0  && lep1IsoPass && lep2IsoPass) {
-            if (OS != 0  && lep1IsoPass ) {
+            if (OS != 0  && lep1IsoPass && lep2IsoPass) {
+//            if (OS != 0  && lep1IsoPass ) {
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
             }
 
-//            if (SS != 0 && lep1IsoPass && lep2IsoPass ){
-            if (SS != 0 && lep1IsoPass  ){
-                fillQCD_Norm(zeroJet, name, vbf_var1,  weight,OSSS[0]);
+            if (SS != 0 && lep1IsoPass && lep2IsoPass ){
+//            if (SS != 0 && lep1IsoPass  ){
+                fillQCD_Norm(zeroJet, name, vbf_var1,  weight,meausred_OSSS);
             }
 
-            if (SS != 0){
-                fillQCD_Shape(zeroJet, name, vbf_var1,  weight,OSSS[0]);
+            if (SS != 0 ){
+//            if (SS != 0 && lep1IsoPass && lep2IsoPass){
+                fillQCD_Shape(zeroJet, name, vbf_var1,  weight,meausred_OSSS);
             }
         }
         delete fin;
@@ -208,13 +198,13 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
             tree->GetEntry(i);
             
 //            if (OS != 0 && !Pass && !lep1IsoPass){
-                if (OS != 0 && (!lep1IsoPass || !lep2IsoPass)){
+                if (OS != 0 &&  !lep2IsoPass){
 //            if (OS != 0 &&  !lep1IsoPass){
 //            if (OS != 0 ){
                 fillQCD_OS_CR(zeroJet, name, lep1Pt_,  weight);
             }
 //            else if (SS != 0 && !Pass && !lep1IsoPass){
-            else if (SS != 0 && (!lep1IsoPass || !lep2IsoPass)){
+            else if (SS != 0 &&  !lep2IsoPass){
 //            else if (SS != 0  && !lep1IsoPass){
 //            else if (SS != 0 ){
 //            std::cout<<"\t "<<name<< " "<<lep1Pt_<<"  " << weight<<"\n";

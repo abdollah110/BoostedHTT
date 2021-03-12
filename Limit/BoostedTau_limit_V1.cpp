@@ -96,18 +96,20 @@ int main(int argc, char** argv) {
     // Here we will just define two categories for an 8TeV analysis. Each entry in
     // the vector below specifies a bin name and corresponding bin_id.
     
-    VString chns = { "mt","et","em"};
+    VString chns = { "mt","et","em","tt"};
     
     map<string, string> input_folders = {
         {"mt", "."},
         {"et", "."},
-        {"em", "."}
+        {"em", "."},
+        {"tt", "."}
     };
     
     map<string, VString> bkg_procs;
     bkg_procs["mt"] = {"W", "QCD", "TT","VV","ZTT"};
     bkg_procs["et"] = {"W", "QCD", "TT","VV","ZTT"};
     bkg_procs["em"] = {"W", "TT","VV","ZTT"};
+    bkg_procs["tt"] = {"W", "QCD", "TT","VV","ZTT"};
     
     VString sig_procs = {"JJH"};
     
@@ -126,6 +128,10 @@ int main(int argc, char** argv) {
     };
     cats["em_13TeV"] = {
         {1, "em_0jet"},
+//        {2, "fail"}
+    };
+    cats["tt_13TeV"] = {
+        {1, "tt_0jet"},
 //        {2, "fail"}
     };
     

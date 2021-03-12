@@ -26,9 +26,9 @@ void SkimerBoost::Loop(TString OutputFile)
     int year=0;
     float muPt_cut= 30;
     
-    if (string(file->GetName()).find("2016") != string::npos) {year =2016; muPt_cut= 25;}
-    else if (string(file->GetName()).find("2017") != string::npos ) {year =2017; muPt_cut= 28;}
-    else if (string(file->GetName()).find("2018") != string::npos) {year =2018; muPt_cut= 28;}
+    if (string(file->GetName()).find("2016") != string::npos) {year =2016; }
+    else if (string(file->GetName()).find("2017") != string::npos ) {year =2017; }
+    else if (string(file->GetName()).find("2018") != string::npos) {year =2018; }
     else (std::cout << "Year is not specificed in the outFile name !\n");
     
     
@@ -51,25 +51,6 @@ void SkimerBoost::Loop(TString OutputFile)
     float pfCovMatrix01 = 0;
     float pfCovMatrix10 = 0;
     float pfCovMatrix11 = 0;
-    
-//    float  _met_JESUp = 0 ;
-//    float  _met_JESDown = 0 ;
-//    float  _met_UESUp = 0 ;
-//    float  _met_UESDown = 0 ;
-//    float  _metphi_JESUp = 0 ;
-//    float  _metphi_JESDown = 0 ;
-//    float  _metphi_UESUp = 0 ;
-//    float  _metphi_UESDown = 0 ;
-//    
-//    float  _met_reso_Up = 0;
-//    float  _met_reso_Down = 0;
-//    float  _met_resp_Up = 0;
-//    float  _met_resp_Down = 0;
-//    float  _metphi_reso_Up = 0;
-//    float  _metphi_reso_Down = 0;
-//    float  _metphi_resp_Up = 0;
-//    float  _metphi_resp_Down = 0;
-    
     
     float  m_1 = 0;
     float  px_1 = 0;
@@ -107,25 +88,6 @@ void SkimerBoost::Loop(TString OutputFile)
     BoostTree->Branch("metcov01", &pfCovMatrix01);
     BoostTree->Branch("metcov10", &pfCovMatrix10);
     BoostTree->Branch("metcov11", &pfCovMatrix11);
-    
-//    // Systematics
-//    BoostTree->Branch("met_JESUp", &_met_JESUp);
-//    BoostTree->Branch("met_JESDown", &_met_JESDown);
-//    BoostTree->Branch("met_UESUp", &_met_UESUp);
-//    BoostTree->Branch("met_UESDown", &_met_UESDown);
-//    BoostTree->Branch("metphi_JESUp", &_metphi_JESUp);
-//    BoostTree->Branch("metphi_JESDown", &_metphi_JESDown);
-//    BoostTree->Branch("metphi_UESUp", &_metphi_UESUp);
-//    BoostTree->Branch("metphi_UESDown", &_metphi_UESDown);
-//
-//    BoostTree->Branch("met_reso_Up", &_met_reso_Up);
-//    BoostTree->Branch("met_reso_Down", &_met_reso_Down);
-//    BoostTree->Branch("met_resp_Up", &_met_resp_Up);
-//    BoostTree->Branch("met_resp_Down", &_met_resp_Down);
-//    BoostTree->Branch("metphi_reso_Up", &_metphi_reso_Up);
-//    BoostTree->Branch("metphi_reso_Down", &_metphi_reso_Down);
-//    BoostTree->Branch("metphi_resp_Up", &_metphi_resp_Up);
-//    BoostTree->Branch("metphi_resp_Down", &_metphi_resp_Down);
     
     BoostTree->Branch("m_1", &m_1);
     BoostTree->Branch("px_1", &px_1);
@@ -232,24 +194,6 @@ void SkimerBoost::Loop(TString OutputFile)
         pfCovMatrix11 = metcov11;
         era = year;
         NumPair=numLepLep;
-        
-//        _met_JESUp = met_JESUp ;
-//        _met_JESDown = met_JESDown ;
-//        _met_UESUp = met_UESUp ;
-//        _met_UESDown = met_UESDown ;
-//        _metphi_JESUp = metphi_JESUp ;
-//        _metphi_JESDown = metphi_JESDown ;
-//        _metphi_UESUp = metphi_UESUp ;
-//        _metphi_UESDown = metphi_UESDown ;
-//
-//        _met_reso_Up = met_reso_Up;
-//        _met_reso_Down = met_reso_Down;
-//        _met_resp_Up = met_resp_Up;
-//        _met_resp_Down = met_resp_Down;
-//        _metphi_reso_Up = metphi_reso_Up;
-//        _metphi_reso_Down = metphi_reso_Down;
-//        _metphi_resp_Up = metphi_resp_Up;
-//        _metphi_resp_Down = metphi_resp_Down;
         
         BoostTree->Fill();
     }
