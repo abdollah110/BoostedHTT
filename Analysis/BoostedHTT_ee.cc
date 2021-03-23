@@ -250,7 +250,7 @@ int main(int argc, char* argv[]) {
         
 
         plotFill("cutFlowTable",6 ,15,0,15);
-        IsoLep1Value=elePFChIso->at(idx_mu)/muPt->at(idx_mu);
+        IsoLep1Value=muPFChIso->at(idx_mu)/muPt->at(idx_mu);
         if ( (muPFNeuIso->at(idx_mu) + muPFPhoIso->at(idx_mu) - 0.5* muPFPUIso->at(idx_mu) )  > 0.0)
             IsoLep1Value= ( muPFChIso->at(idx_mu) + muPFNeuIso->at(idx_mu) + muPFPhoIso->at(idx_mu) - 0.5* muPFPUIso->at(idx_mu))/muPt->at(idx_mu);
                 
