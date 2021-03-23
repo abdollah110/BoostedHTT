@@ -238,7 +238,7 @@ int main(int argc, char* argv[]) {
         int idx_mu= tauIndex;
         Mu4Momentum.SetPtEtaPhiM(muPt->at(idx_mu),muEta->at(idx_mu),muPhi->at(idx_mu),MuMass);
         
-        if (muPt->at(idx_mu) <= 10 || fabs(eleEta->at(idx_mu)) >= 2.5) continue;
+        if (muPt->at(idx_mu) <= 10 || fabs(muEta->at(idx_mu)) >= 2.4) continue;
         plotFill("cutFlowTable",4 ,15,0,15);
 
 
