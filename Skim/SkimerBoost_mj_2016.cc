@@ -10,8 +10,8 @@
 #include <TMath.h>
 #include <string>
 #include <sstream>
-//#include "../interface/Functions.h"
-#include "../interface/makeHisto.h"
+#include "../interface/Functions.h"
+//#include "../interface/makeHisto.h"
 using namespace std;
 
 
@@ -41,6 +41,12 @@ void SkimerBoost::Loop(TString OutputFile)
     Long64_t nbytes = 0, nb = 0;
     float MuMass= 0.10565837;
     float eleMass= 0.000511;
+    
+    
+    float LumiWeight= 1.0;
+    std::string sample =OutputFile.Data();
+    LumiWeight = getLuminsoity(year) * XSection(sample)*1.0 / hEvents->GetBinContent(2);
+    cout<<"\n %%%% \n sample = "<<sample <<"  xsection= " <<XSection(sample) << "lumi weight = " << LumiWeight <<"\n";
     
     
     
