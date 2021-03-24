@@ -46,7 +46,7 @@ void SkimerBoost::Loop(TString OutputFile)
     float LumiWeight= 1.0;
     std::string sample =OutputFile.Data();
     LumiWeight = getLuminsoity(year) * XSection(sample)*1.0 / hEvents->GetBinContent(2);
-    cout<<"\n %%%% \n sample = "<<sample <<"  xsection= " <<XSection(sample) << "lumi weight = " << LumiWeight <<"\n";
+    cout<<"\n %%%% \n sample = "<<sample <<"  xsection= " <<getLuminsoity(year) <<"  "<<XSection(sample) << " " <<hEvents->GetBinContent(2)<<" lumi weight = " << LumiWeight <<"\n";
     
     
     
