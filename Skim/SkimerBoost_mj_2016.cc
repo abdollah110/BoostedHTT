@@ -10,8 +10,8 @@
 #include <TMath.h>
 #include <string>
 #include <sstream>
-#include "../interface/Functions.h"
-//#include "../interface/makeHisto.h"
+#include "../interface/WeightCalculator.h"
+#include "../interface/makeHisto.h"
 using namespace std;
 
 
