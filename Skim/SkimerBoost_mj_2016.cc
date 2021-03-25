@@ -44,7 +44,8 @@ void SkimerBoost::Loop(TString OutputFile)
     
          
     //Lumi Weight
-    float LumiWeight = getLuminsoity(year) * XSection(OutputFile.Data())*1.0 / hEvents->GetBinContent(2);
+//    float LumiWeight = getLuminsoity(year) * XSection(OutputFile.Data())*1.0 / hEvents->GetBinContent(2);
+    float LumiWeight = XSection(OutputFile.Data())*1.0 ;
     cout<<"\n %%%% \n sample = "<<OutputFile <<"  xsection= " <<getLuminsoity(year) <<"  "<<XSection(OutputFile.Data()) << " " <<hEvents->GetBinContent(2)<<" lumi weight = " << LumiWeight <<"\n";
     
     
@@ -58,6 +59,7 @@ void SkimerBoost::Loop(TString OutputFile)
         
         //lumi weight
         if (isData) LumiWeight=1.0;
+        else LumiWeight *= year;
         
         bool HLT_Mu50 = ((HLTEleMuX >> 21 & 1)==1);
         if (! HLT_Mu50) continue;
