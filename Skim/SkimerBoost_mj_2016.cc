@@ -60,6 +60,7 @@ void SkimerBoost::Loop(TString OutputFile)
         //lumi weight
         if (isData) LumiWeight=1.0;
         else LumiWeight *= year;
+        cout<<"year "<<year<<"\n";
         
         bool HLT_Mu50 = ((HLTEleMuX >> 21 & 1)==1);
         if (! HLT_Mu50) continue;
