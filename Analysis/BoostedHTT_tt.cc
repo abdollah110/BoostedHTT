@@ -338,30 +338,30 @@ int main(int argc, char* argv[]) {
         bool passing= true;
 
  ////apply trigger only on data
-        if ( (!isData ||  (isData && _Pass_AK8_Trigger_)) &&  AK8Pt > _cut_AK8Pt_ && AK8Mass > _cut_AK8Mass_ && AK8Eta < 2.5){
-            TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT);
-            passing= true;
-        }
-        else if ( (!isData ||  (isData && _Pass_METHT_Trigger_)) &&  PFHT > _cut_PFHT_ && PFMET > _cut_PFMET_ && MHT> _cut_PFMHT_ && PFMET+MHT > _cut_PFMETMHT_){
-            TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MET);
-            passing= true;
-        }
-        else {
-            passing = false;
-        }
-
-//// apply trigger on simulation as well as data
-//        if ( _Pass_AK8_Trigger_ &&  AK8Pt > _cut_AK8Pt_ && AK8Mass > _cut_AK8Mass_ && AK8Eta < 2.5){
-//            TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT_SF);
+//        if ( (!isData ||  (isData && _Pass_AK8_Trigger_)) &&  AK8Pt > _cut_AK8Pt_ && AK8Mass > _cut_AK8Mass_ && AK8Eta < 2.5){
+//            TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT);
 //            passing= true;
 //        }
-//        else if (_Pass_METHT_Trigger_ &&  PFHT > _cut_PFHT_ && PFMET > _cut_PFMET_ && MHT> _cut_PFMHT_ && PFMET+MHT > _cut_PFMETMHT_){
-//            TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MET_SF);
+//        else if ( (!isData ||  (isData && _Pass_METHT_Trigger_)) &&  PFHT > _cut_PFHT_ && PFMET > _cut_PFMET_ && MHT> _cut_PFMHT_ && PFMET+MHT > _cut_PFMETMHT_){
+//            TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MET);
 //            passing= true;
 //        }
 //        else {
 //            passing = false;
 //        }
+
+// apply trigger on simulation as well as data
+        if ( _Pass_AK8_Trigger_ &&  AK8Pt > _cut_AK8Pt_ && AK8Mass > _cut_AK8Mass_ && AK8Eta < 2.5){
+            TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT_SF);
+            passing= true;
+        }
+        else if (_Pass_METHT_Trigger_ &&  PFHT > _cut_PFHT_ && PFMET > _cut_PFMET_ && MHT> _cut_PFMHT_ && PFMET+MHT > _cut_PFMETMHT_){
+            TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MET_SF);
+            passing= true;
+        }
+        else {
+            passing = false;
+        }
         
 
         if (! passing) continue;
@@ -374,10 +374,10 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",8 ,15,0,15);
         
         tmass = TMass_F(LeadTau4Momentum.Pt(), LeadTau4Momentum.Px(), LeadTau4Momentum.Py(),  Met,  Metphi);
-//        if (tmass > 200) continue; FIXME removed for Validation study
+        if (tmass > 200) continue; //FIXME removed for Validation study
         plotFill("cutFlowTable",9 ,15,0,15);
         
-//        if (m_sv < 50) continue; FIXME removed for Validation study
+        if (m_sv < 50) continue; //FIXME removed for Validation study
         plotFill("cutFlowTable",10 ,15,0,15);
         
         // BJet veto
