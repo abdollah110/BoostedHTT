@@ -26,11 +26,11 @@ int main(int argc, char *argv[]) {
     else if (dir.find("2018") != string::npos) year ="2018";
     else (std::cout << "Year is not specificed in the outFile name !\n");
 
-    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+".root").c_str(),"r");
-    TH1F * FRhist=(TH1F *) FRFile->Get("numVLoose");
+//    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+".root").c_str(),"r");
+//    TH1F * FRhist=(TH1F *) FRFile->Get("numVLoose");
 
-//    TFile * FRFile= new TFile(("data/File_fr_numLoose_"+year+".root").c_str(),"r");
-//    TH1F * FRhist=(TH1F *) FRFile->Get("numLoose");
+    TFile * FRFile= new TFile(("data/File_fr_numLoose_"+year+".root").c_str(),"r");
+    TH1F * FRhist=(TH1F *) FRFile->Get("numLoose");
 
     string channel, tree_name;
     if (dir.find("_em_") != string::npos) {channel ="em"; tree_name="emu_tree";}
@@ -168,12 +168,14 @@ string Sys = "") {
             
             
 //            if (OS != 0  && lep1IsoPassV && lep2IsoPassV) {
-            if (SS != 0  && lep1IsoPassV && lep2IsoPassV) { // Validation
+            if (OS != 0  && lep1IsoPassL && lep2IsoPassL) {
+//            if (SS != 0  && lep1IsoPassV && lep2IsoPassV) { // Validation
 //            if (SS != 0  && lep1IsoPass && lep2IsoPassV) { // Validation
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
             }
 //            if (OS != 0 && !lep1IsoPassV && lep2IsoPassV ){
-            if (SS != 0 && lep1IsoPassV && !lep2IsoPassV ){ // Validation
+            if (OS != 0 && !lep1IsoPassL && lep2IsoPassL ){
+//            if (SS != 0 && lep1IsoPassV && !lep2IsoPassV ){ // Validation
 //            if (SS != 0 && !lep1IsoPassV && !lep2IsoPassV ){ // Validation
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu2 / (1-frValu2));
 //                fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu*frValu2 / (1-frValu*frValu2));
