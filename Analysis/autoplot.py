@@ -15,9 +15,10 @@ plots = [
     ('LeadJetPt', 'LeadJetPt', 3.0),
     ('ht', 'ht', 3.0),
     ('st', 'st', 3.0),
-##    ('ZMass', 'ZMass', 3.0),
+###    ('ZMass', 'ZMass', 3.0),
     ('BoostedTauRawIso', 'BoostedTauRawIso', 5.0),
-
+#    ('nbjet', 'nbjet', 3.0),
+#
 ]
 
 categories = ['_0jet']
@@ -89,6 +90,4 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--input', '-i', required=True, help='path to input files')
     parser.add_argument('--prefix', '-p', required=True, help='prefix for files')
-#    parser.add_argument('--year', '-y', required=True, help='year to process')
-#    parser.add_argument('--channel', '-c', required=True, help='channel to plot')
     main(parser.parse_args())

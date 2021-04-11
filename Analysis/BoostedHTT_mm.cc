@@ -243,10 +243,15 @@ int main(int argc, char* argv[]) {
                 
                 
                 //###############################################################################################
-                
+                TLorentzVector Met4Momentum, MetNoRecoil4Momentum;
                 for (int iq = 0; iq < size_q; iq++) {
                     if (Q_category[iq]) {
+
+                        Met4Momentum.SetPtEtaPhiM(pfMET, 0, pfMETPhi, 0);
+                        MetNoRecoil4Momentum.SetPtEtaPhiM(pfMetNoRecoil, 0, pfMetPhiNoRecoil, 0);
                         
+                        float U1_met= Met4Momentum.Dot(ZCandida)/ZCandida.Pt();
+                        float U1_metNoRecoil= MetNoRecoil4Momentum.Dot(ZCandida)/ZCandida.Pt();
                         
                         float FullWeight = LumiWeight*LepCorrection * PUWeight * WBosonKFactor * preFireWeight * zmasspt_weight;
                         std::string FullStringName = Q_Cat[iq] ;
@@ -267,7 +272,14 @@ int main(int argc, char* argv[]) {
                             plotFill("ZPt_OnMass"+FullStringName,ZCandida.Pt() ,100,0,1000,FullWeight);
                         if (ZCandida.M() > 95)
                             plotFill("ZPt_Above"+FullStringName,ZCandida.Pt() ,100,0,1000,FullWeight);
-                        
+                        if (ZCandida.M() < 110 && ZCandida.M() > 70  ){
+                            plotFill("pfMet"+FullStringName,pfMET ,200,0,1000,FullWeight);
+                            plotFill("pfMETPhi"+FullStringName,pfMETPhi ,80,-4,4,FullWeight);
+                            plotFill("pfMetNoRecoil"+FullStringName,pfMetNoRecoil ,200,0,1000,FullWeight);
+                            plotFill("pfMetPhiNoRecoil"+FullStringName,pfMetPhiNoRecoil ,80,-4,4,FullWeight);
+                            plotFill("U1_met"+FullStringName,U1_met ,200,0,1000,FullWeight);
+                            plotFill("U1_metNoRecoil"+FullStringName,U1_metNoRecoil ,200,0,1000,FullWeight);
+                        }
                         
                     }
                 }
