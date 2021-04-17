@@ -22,13 +22,7 @@ void SkimerBoost::Loop(TString OutputFile)
     
     TFile* file = TFile::Open(OutputFile, "RECREATE");
     TTree* MyNewTree = fChain->CloneTree(0);
-    
-    int year=0;
-    if (string(file->GetName()).find("2016") != string::npos) year =2016;
-    else if (string(file->GetName()).find("2017") != string::npos ) year =2017;
-    else if (string(file->GetName()).find("2018") != string::npos) year =2018;
-    else (std::cout << "Year is not specificed in the outFile name !\n");
-    
+        
     fChain->SetBranchStatus("*",1);
     
     myMap1 = new std::map<std::string, TH1F*>();

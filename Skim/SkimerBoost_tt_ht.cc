@@ -22,14 +22,7 @@ void SkimerBoost::Loop(TString OutputFile)
     
     TFile* file = TFile::Open(OutputFile, "RECREATE");
     TTree* BoostTree = fChain->CloneTree(0);
-    
-    int year=0;
-    if (string(file->GetName()).find("2016") != string::npos) year =2016;
-    else if (string(file->GetName()).find("2017") != string::npos ) year =2017;
-    else if (string(file->GetName()).find("2018") != string::npos) year =2018;
-    else (std::cout << "Year is not specificed in the outFile name !\n");
-    
-    
+        
     fChain->SetBranchStatus("*",1);
     
     TH1F* hcount = new TH1F("hcount", "", 10, 0, 10);
@@ -40,34 +33,6 @@ void SkimerBoost::Loop(TString OutputFile)
     Long64_t nbytes = 0, nb = 0;
     float MuMass= 0.10565837;
     float eleMass= 0.000511;
-    
-    float  met_px = 0;
-    float  met_py = 0;
-    float  met = 0;
-    float  metphi = 0;
-    float pfCovMatrix00 = 0;
-    float pfCovMatrix01 = 0;
-    float pfCovMatrix10 = 0;
-    float pfCovMatrix11 = 0;
-    
-//    float  _met_JESUp = 0 ;
-//    float  _met_JESDown = 0 ;
-//    float  _met_UESUp = 0 ;
-//    float  _met_UESDown = 0 ;
-//    float  _metphi_JESUp = 0 ;
-//    float  _metphi_JESDown = 0 ;
-//    float  _metphi_UESUp = 0 ;
-//    float  _metphi_UESDown = 0 ;
-//
-//    float  _met_reso_Up = 0;
-//    float  _met_reso_Down = 0;
-//    float  _met_resp_Up = 0;
-//    float  _met_resp_Down = 0;
-//    float  _metphi_reso_Up = 0;
-//    float  _metphi_reso_Down = 0;
-//    float  _metphi_resp_Up = 0;
-//    float  _metphi_resp_Down = 0;
-    
     
     float  m_1 = 0;
     float  px_1 = 0;
@@ -87,45 +52,14 @@ void SkimerBoost::Loop(TString OutputFile)
     float  phi_2 = 0;
     float  eta_2 = 0;
     
-    int era = 0;
     int decayMode1 = -1;
     int decayMode2 = -1;
     int leadtauIndex = -1;
     int subtauIndex= -1;
     int NumPair=0;
     
-    
-    BoostTree->Branch("era", &era);
     BoostTree->Branch("NumPair", &NumPair);
-    
-    BoostTree->Branch("met_px", &met_px);
-    BoostTree->Branch("met_py", &met_py);
-    BoostTree->Branch("met", &met);
-    BoostTree->Branch("metphi", &metphi);
-    BoostTree->Branch("metcov00", &pfCovMatrix00);
-    BoostTree->Branch("metcov01", &pfCovMatrix01);
-    BoostTree->Branch("metcov10", &pfCovMatrix10);
-    BoostTree->Branch("metcov11", &pfCovMatrix11);
-    
-//    // Systematics
-//    BoostTree->Branch("met_JESUp", &_met_JESUp);
-//    BoostTree->Branch("met_JESDown", &_met_JESDown);
-//    BoostTree->Branch("met_UESUp", &_met_UESUp);
-//    BoostTree->Branch("met_UESDown", &_met_UESDown);
-//    BoostTree->Branch("metphi_JESUp", &_metphi_JESUp);
-//    BoostTree->Branch("metphi_JESDown", &_metphi_JESDown);
-//    BoostTree->Branch("metphi_UESUp", &_metphi_UESUp);
-//    BoostTree->Branch("metphi_UESDown", &_metphi_UESDown);
-//
-//    BoostTree->Branch("met_reso_Up", &_met_reso_Up);
-//    BoostTree->Branch("met_reso_Down", &_met_reso_Down);
-//    BoostTree->Branch("met_resp_Up", &_met_resp_Up);
-//    BoostTree->Branch("met_resp_Down", &_met_resp_Down);
-//    BoostTree->Branch("metphi_reso_Up", &_metphi_reso_Up);
-//    BoostTree->Branch("metphi_reso_Down", &_metphi_reso_Down);
-//    BoostTree->Branch("metphi_resp_Up", &_metphi_resp_Up);
-//    BoostTree->Branch("metphi_resp_Down", &_metphi_resp_Down);
-    
+        
     BoostTree->Branch("m_1", &m_1);
     BoostTree->Branch("px_1", &px_1);
     BoostTree->Branch("py_1", &py_1);
@@ -210,11 +144,6 @@ void SkimerBoost::Loop(TString OutputFile)
         BoostLeadTau4Mom.SetPtEtaPhiM(boostedTauPt->at(leadtauIndex),boostedTauEta->at(leadtauIndex),boostedTauPhi->at(leadtauIndex),boostedTauMass->at(leadtauIndex));
         BoostSubTau4Mom.SetPtEtaPhiM(boostedTauPt->at(subtauIndex),boostedTauEta->at(subtauIndex),boostedTauPhi->at(subtauIndex),boostedTauMass->at(subtauIndex));
         
-        met_px = pfMET*sin(pfMETPhi);
-        met_py = pfMET*cos(pfMETPhi);
-        met = pfMET;
-        metphi = pfMETPhi;
-        
         m_1 = BoostLeadTau4Mom.M();
         px_1 = BoostLeadTau4Mom.Px();
         py_1 = BoostLeadTau4Mom.Py();
@@ -233,30 +162,7 @@ void SkimerBoost::Loop(TString OutputFile)
         phi_2 = BoostSubTau4Mom.Phi();
         eta_2 = BoostSubTau4Mom.Eta();
         
-        pfCovMatrix00 = metcov00;
-        pfCovMatrix01 = metcov01;
-        pfCovMatrix10 = metcov10;
-        pfCovMatrix11 = metcov11;
-        era = year;
         NumPair=numTauTau;
-        
-//        _met_JESUp = met_JESUp ;
-//        _met_JESDown = met_JESDown ;
-//        _met_UESUp = met_UESUp ;
-//        _met_UESDown = met_UESDown ;
-//        _metphi_JESUp = metphi_JESUp ;
-//        _metphi_JESDown = metphi_JESDown ;
-//        _metphi_UESUp = metphi_UESUp ;
-//        _metphi_UESDown = metphi_UESDown ;
-//        
-//        _met_reso_Up = met_reso_Up;
-//        _met_reso_Down = met_reso_Down;
-//        _met_resp_Up = met_resp_Up;
-//        _met_resp_Down = met_resp_Down;
-//        _metphi_reso_Up = metphi_reso_Up;
-//        _metphi_reso_Down = metphi_reso_Down;
-//        _metphi_resp_Up = metphi_resp_Up;
-//        _metphi_resp_Down = metphi_resp_Down;
         
         BoostTree->Fill();
     }

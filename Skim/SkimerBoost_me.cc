@@ -42,15 +42,15 @@ void SkimerBoost::Loop(TString OutputFile)
     Long64_t nbytes = 0, nb = 0;
     float MuMass= 0.10565837;
     float eleMass= 0.000511;
-    
-    float  met_px = 0;
-    float  met_py = 0;
-    float  met = 0;
-    float  metphi = 0;
-    float pfCovMatrix00 = 0;
-    float pfCovMatrix01 = 0;
-    float pfCovMatrix10 = 0;
-    float pfCovMatrix11 = 0;
+        
+    float  m_1 = 0;
+    float  px_1 = 0;
+    float  py_1 = 0;
+    float  pz_1 = 0;
+    float  e_1 = 0;
+    float  pt_1 = 0;
+    float  phi_1 = 0;
+    float  eta_1 = 0;
     
     float  m_2 = 0;
     float  px_2 = 0;
@@ -61,33 +61,22 @@ void SkimerBoost::Loop(TString OutputFile)
     float  phi_2 = 0;
     float  eta_2 = 0;
     
-    float  m_1 = 0;
-    float  px_1 = 0;
-    float  py_1 = 0;
-    float  pz_1 = 0;
-    float  e_1 = 0;
-    float  pt_1 = 0;
-    float  phi_1 = 0;
-    float  eta_1 = 0;
-    
-    int era = 0;
     int decayMode2 = 1;
     int lepIndex = -1;
     int tauIndex= -1;
     int NumPair=0;
     
     
-    BoostTree->Branch("era", &era);
     BoostTree->Branch("NumPair", &NumPair);
-    
-    BoostTree->Branch("met_px", &met_px);
-    BoostTree->Branch("met_py", &met_py);
-    BoostTree->Branch("met", &met);
-    BoostTree->Branch("metphi", &metphi);
-    BoostTree->Branch("metcov00", &pfCovMatrix00);
-    BoostTree->Branch("metcov01", &pfCovMatrix01);
-    BoostTree->Branch("metcov10", &pfCovMatrix10);
-    BoostTree->Branch("metcov11", &pfCovMatrix11);
+        
+    BoostTree->Branch("m_1", &m_1);
+    BoostTree->Branch("px_1", &px_1);
+    BoostTree->Branch("py_1", &py_1);
+    BoostTree->Branch("pz_1", &pz_1);
+    BoostTree->Branch("e_1", &e_1);
+    BoostTree->Branch("pt_1", &pt_1);
+    BoostTree->Branch("phi_1", &phi_1);
+    BoostTree->Branch("eta_1", &eta_1);
     
     BoostTree->Branch("m_2", &m_2);
     BoostTree->Branch("px_2", &px_2);
@@ -97,15 +86,6 @@ void SkimerBoost::Loop(TString OutputFile)
     BoostTree->Branch("pt_2", &pt_2);
     BoostTree->Branch("phi_2", &phi_2);
     BoostTree->Branch("eta_2", &eta_2);
-    
-    BoostTree->Branch("m_1", &m_1);
-    BoostTree->Branch("px_1", &px_1);
-    BoostTree->Branch("py_1", &py_1);
-    BoostTree->Branch("pz_1", &pz_1);
-    BoostTree->Branch("e_1", &e_1);
-    BoostTree->Branch("pt_1", &pt_1);
-    BoostTree->Branch("phi_1", &phi_1);
-    BoostTree->Branch("eta_1", &eta_1);
     BoostTree->Branch("decayMode2", &decayMode2);
     
     BoostTree->Branch("lepIndex", &lepIndex);
@@ -123,39 +103,40 @@ void SkimerBoost::Loop(TString OutputFile)
         if (!isData)
             hcount->Fill(2,genWeight);
         
-        TLorentzVector Ele4Mom, Lep4Mom;
+        TLorentzVector Ele4Mom, Mu4Mom;
         auto numLepLep(0);
         bool foundApair= false;
         
-        
-        for (int iele = 0; iele < nEle; ++iele){
-            if (elePt->at(iele) < 40 || fabs(eleEta->at(iele)) > 2.5) continue;
+        for (int imu = 0; imu < nMu; ++imu){
+            
+            if (muPt->at(imu) < muPt_cut || fabs(muEta->at(imu)) > 2.4) continue;
             hcount->Fill(3);
-            
-            bool eleMVAId= false;
-            if (fabs (eleSCEta->at(iele)) <= 0.8 && eleIDMVANoIso->at(iele) >    0.837   ) eleMVAId= true;
-            else if (fabs (eleSCEta->at(iele)) >  0.8 &&fabs (eleSCEta->at(iele)) <=  1.5 && eleIDMVANoIso->at(iele) >    0.715   ) eleMVAId= true;
-            else if ( fabs (eleSCEta->at(iele)) >=  1.5 && eleIDMVANoIso->at(iele) >   0.357   ) eleMVAId= true;
-            else eleMVAId= false;
-            
-            if (!eleMVAId) continue;
+            if (muPt->at(imu) < 55  && pfMetNoRecoil < 40  ) continue;
             hcount->Fill(4);
             
-            Ele4Mom.SetPtEtaPhiM(elePt->at(iele),eleEta->at(iele),elePhi->at(iele),eleMass);
+            Mu4Mom.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
-            for (int imu = 0; imu < nMu; ++imu){
-                
-                if (muPt->at(imu) < 10 || fabs(muEta->at(imu)) > 2.4) continue;
+            for (int iele = 0; iele < nEle; ++iele){
+                if (elePt->at(iele) < 10 || fabs(eleEta->at(iele)) > 2.5) continue;
                 hcount->Fill(5);
                 
-                Lep4Mom.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
+                bool eleMVAId= false;
+                if (fabs (eleSCEta->at(iele)) <= 0.8 && eleIDMVANoIso->at(iele) >    0.837   ) eleMVAId= true;
+                else if (fabs (eleSCEta->at(iele)) >  0.8 &&fabs (eleSCEta->at(iele)) <=  1.5 && eleIDMVANoIso->at(iele) >    0.715   ) eleMVAId= true;
+                else if ( fabs (eleSCEta->at(iele)) >=  1.5 && eleIDMVANoIso->at(iele) >   0.357   ) eleMVAId= true;
+                else eleMVAId= false;
                 
-                if(Ele4Mom.DeltaR(Lep4Mom) > 0.8 || Ele4Mom.DeltaR(Lep4Mom) < 0.1) continue;
+                if (!eleMVAId) continue;
                 hcount->Fill(6);
+                
+                Ele4Mom.SetPtEtaPhiM(elePt->at(iele),eleEta->at(iele),elePhi->at(iele),eleMass);
+                
+                if(Ele4Mom.DeltaR(Mu4Mom) > 0.8 || Ele4Mom.DeltaR(Mu4Mom) < 0.1) continue;
+                hcount->Fill(7);
                 numLepLep++;
                 if (!foundApair){
-                    lepIndex=iele;
-                    tauIndex=imu;
+                    lepIndex=imu;
+                    tauIndex=iele;
                 }
                 foundApair=true;
             }
@@ -164,41 +145,31 @@ void SkimerBoost::Loop(TString OutputFile)
         if(numLepLep < 1) continue;
         hcount->Fill(8);
         
-        met_px = pfMET*sin(pfMETPhi);
-        met_py = pfMET*cos(pfMETPhi);
-        met = pfMET;
-        metphi = pfMETPhi;
+        m_1 = Mu4Mom.M();
+        px_1 = Mu4Mom.Px();
+        py_1 = Mu4Mom.Py();
+        pz_1 = Mu4Mom.Pz();
+        e_1 = Mu4Mom.E();
+        pt_1 = Mu4Mom.Pt();
+        phi_1 = Mu4Mom.Phi();
+        eta_1 = Mu4Mom.Eta();
         
-        m_2 = Lep4Mom.M();
-        px_2 = Lep4Mom.Px();
-        py_2 = Lep4Mom.Py();
-        pz_2 = Lep4Mom.Pz();
-        e_2 = Lep4Mom.E();
-        pt_2 = Lep4Mom.Pt();
-        phi_2 = Lep4Mom.Phi();
-        eta_2 = Lep4Mom.Eta();
+        m_2 = Ele4Mom.M();
+        px_2 = Ele4Mom.Px();
+        py_2 = Ele4Mom.Py();
+        pz_2 = Ele4Mom.Pz();
+        e_2 = Ele4Mom.E();
+        pt_2 = Ele4Mom.Pt();
+        phi_2 = Ele4Mom.Phi();
+        eta_2 = Ele4Mom.Eta();
         
-        m_1 = Ele4Mom.M();
-        px_1 = Ele4Mom.Px();
-        py_1 = Ele4Mom.Py();
-        pz_1 = Ele4Mom.Pz();
-        e_1 = Ele4Mom.E();
-        pt_1 = Ele4Mom.Pt();
-        phi_1 = Ele4Mom.Phi();
-        eta_1 = Ele4Mom.Eta();
-        
-        pfCovMatrix00 = metcov00;
-        pfCovMatrix01 = metcov01;
-        pfCovMatrix10 = metcov10;
-        pfCovMatrix11 = metcov11;
-        era = year;
         NumPair=numLepLep;
         
         BoostTree->Fill();
     }
     
     
-    BoostTree->SetName("emu_tree");
+    BoostTree->SetName("mue_tree");
     BoostTree->AutoSave();
     hEvents->Write();
     hcount->Write();
