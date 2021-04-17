@@ -35,6 +35,7 @@ public :
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
    // Declaration of leaf types
+   int             year;
    Int_t           run;
    Long64_t        event;
    Int_t           lumis;
@@ -442,6 +443,7 @@ public :
    vector<vector<float> > *AK8puppiSDSJCSV;
 
    // List of branches
+   TBranch        *b_year;   //!
    TBranch        *b_run;   //!
    TBranch        *b_event;   //!
    TBranch        *b_lumis;   //!
@@ -1241,6 +1243,7 @@ void SkimerBoost::Init(TTree *tree)
    fCurrent = -1;
    fChain->SetMakeClass(1);
 
+   fChain->SetBranchAddress("year", &year, &b_year);
    fChain->SetBranchAddress("run", &run, &b_run);
    fChain->SetBranchAddress("event", &event, &b_event);
    fChain->SetBranchAddress("lumis", &lumis, &b_lumis);
