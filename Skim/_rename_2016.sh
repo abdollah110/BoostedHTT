@@ -14,9 +14,6 @@ hadd $dir/WJetsToLNu_HT-2500ToInf.root  $dir/WJetsToLNu_HT-2500ToInf*.root
 hadd $dir/WJetsToLNu_HT-400To600.root  $dir/WJetsToLNu_HT-400To600*.root
 hadd $dir/WJetsToLNu_HT-600To800.root  $dir/WJetsToLNu_HT-600To800*.root
 hadd $dir/WJetsToLNu_HT-800To1200.root  $dir/WJetsToLNu_HT-800To1200*.root
-mv $dir/jjh_0j_a1_madgraph.root $dir/JJH0PMToTauTauPlusZeroJets.root
-mv $dir/jjh_1j_a1_madgraph.root $dir/JJH0PMToTauTauPlusOneJets.root
-mv $dir/jjh_2j_a1_madgraph.root $dir/JJH0PMToTauTauPlusTwoJets.root
 hadd $dir/ggH125.root  $dir/GluGluHToTauTau*.root
 mv $dir/VBFHToTauTau_M125.root   $dir/qqH125.root
 mv $dir/WminusHToTauTau_M125.root   $dir/WMinusH125.root
