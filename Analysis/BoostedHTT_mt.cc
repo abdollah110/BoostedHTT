@@ -131,7 +131,7 @@ int main(int argc, char* argv[]) {
     float vis_mass=-10;
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
-    bool OS,SS,lep1IsoPass,lep2IsoPassL,lep2IsoPassV,lep2IsoPassM,lep2IsoPassT,lep2IsoDeepL,lep2IsoDeepM,lep2IsoDeepT;
+    bool OS,SS,lep1IsoPass,lep2IsoPassL,lep2IsoPassV,lep2IsoPassM,lep2IsoPassT;
     float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
     int nbjet;
     
@@ -146,9 +146,6 @@ int main(int argc, char* argv[]) {
     outTr->Branch("lep2IsoPassV",&lep2IsoPassV,"lep2IsoPassV/O");
     outTr->Branch("lep2IsoPassM",&lep2IsoPassM,"lep2IsoPassM/O");
     outTr->Branch("lep2IsoPassT",&lep2IsoPassT,"lep2IsoPassT/O");
-    outTr->Branch("lep2IsoDeepL",&lep2IsoDeepL,"lep2IsoDeepL/O");
-    outTr->Branch("lep2IsoDeepM",&lep2IsoDeepM,"lep2IsoDeepM/O");
-    outTr->Branch("lep2IsoDeepT",&lep2IsoDeepT,"lep2IsoDeepT/O");
     outTr->Branch("vis_mass",&vis_mass,"vis_mass/F");
     outTr->Branch("tmass",&tmass,"tmass/F");
     outTr->Branch("ht",&ht,"ht/F");
@@ -185,15 +182,20 @@ int main(int argc, char* argv[]) {
         if (isData && (metFilters!=0)) continue;
         //=========================================================================================================
         //MET Shape systematics
-        Met=pfMET;
-        Metphi=pfMETPhi;
-//        Met=pfMetNoRecoil;
-//        Metphi=pfMetPhiNoRecoil;
+//        Met=pfMET;
+//        Metphi=pfMETPhi;
+        Met=pfMetNoRecoil;
+        Metphi=pfMetPhiNoRecoil;
 
+//        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
+//        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
+//        if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
+//        if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
         if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
         if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
         if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
         if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
+
 
         if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
         if (syst == "met_resp_Up") {Met = met_resp_Up; Metphi=metphi_resp_Up;}
