@@ -25,6 +25,7 @@ int main(int argc, char* argv[]) {
     else if (path.find("2017") != string::npos) year_str = "2017";
     else if (path.find("2018") != string::npos) year_str = "2018";
     else cout<<"Which year are you looking for \n\n";
+    cout<<"%%%% Note: you are running on  "<< year_str <<"%%%%\n";
     
     stringstream yearstream(year_str);
     int year=0;
