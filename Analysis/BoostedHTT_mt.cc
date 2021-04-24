@@ -188,10 +188,6 @@ int main(int argc, char* argv[]) {
         Met=pfMetNoRecoil;
         Metphi=pfMetPhiNoRecoil;
 
-//        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
-//        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
-//        if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
-//        if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
         if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
         if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
         if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}

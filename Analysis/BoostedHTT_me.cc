@@ -196,33 +196,36 @@ int main(int argc, char* argv[]) {
         TLorentzVector Mu4Momentum,Ele4Momentum, Z4Momentum, Met4Momentum;
         //=========================================================================================================
         // Muon selection
-        int idx_lep= lepIndex;
-        Mu4Momentum.SetPtEtaPhiM(muPt->at(idx_lep),muEta->at(idx_lep),muPhi->at(idx_lep),MuMass);
+        int idx_mu= lepIndex;
+        int idx_ele= tauIndex;
+        
+        
+        Mu4Momentum.SetPtEtaPhiM(muPt->at(idx_mu),muEta->at(idx_mu),muPhi->at(idx_mu),MuMass);
         
         bool selectMuon_1= false;
         bool selectMuon_2= false;
         
-        IsoLep1Value=muPFChIso->at(idx_lep)/muPt->at(idx_lep);
-        if ( (muPFNeuIso->at(idx_lep) + muPFPhoIso->at(idx_lep) - 0.5* muPFPUIso->at(idx_lep) )  > 0.0)
-            IsoLep1Value= ( muPFChIso->at(idx_lep) + muPFNeuIso->at(idx_lep) + muPFPhoIso->at(idx_lep) - 0.5* muPFPUIso->at(idx_lep))/muPt->at(idx_lep);
+        IsoLep1Value=muPFChIso->at(idx_mu)/muPt->at(idx_mu);
+        if ( (muPFNeuIso->at(idx_mu) + muPFPhoIso->at(idx_mu) - 0.5* muPFPUIso->at(idx_mu) )  > 0.0)
+            IsoLep1Value= ( muPFChIso->at(idx_mu) + muPFNeuIso->at(idx_mu) + muPFPhoIso->at(idx_mu) - 0.5* muPFPUIso->at(idx_mu))/muPt->at(idx_mu);
         
         
-        if (muPt->at(idx_lep) < 30 || fabs(muEta->at(idx_lep)) > 2.4) continue;
+        if (muPt->at(idx_mu) < 30 || fabs(muEta->at(idx_mu)) > 2.4) continue;
         plotFill("cutFlowTable",2 ,15,0,15);
         
-        bool MuId=( (muIDbit->at(idx_lep) >> 1 & 1)  && fabs(muD0->at(idx_lep)) < 0.045 && fabs(muDz->at(idx_lep)) < 0.2);
+        bool MuId=( (muIDbit->at(idx_mu) >> 1 & 1)  && fabs(muD0->at(idx_mu)) < 0.045 && fabs(muDz->at(idx_mu)) < 0.2);
         MuIdCorrection = getCorrFactorMuonId(year, isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuId);
         
         if (! MuId) continue;
         plotFill("cutFlowTable",3 ,15,0,15);
         
-        if (muPt->at(idx_lep) < 55  && HLT_Mu27 && Met > 40 && elePt->at(idx_ele) < 40){
+        if (muPt->at(idx_mu) < 55  && HLT_Mu27 && Met > 40 && elePt->at(idx_ele) < 40){
             selectMuon_1 = true;
             MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg27);
             MuIsoCorrection = getCorrFactorMuonIso(year, isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuIso);
             
         }
-        if (muPt->at(idx_lep) >= 55  && HLT_Mu50 ) {
+        if (muPt->at(idx_mu) >= 55  && HLT_Mu50 ) {
             selectMuon_2 = true;
             MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg50);
         }
@@ -231,7 +234,6 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",4 ,15,0,15);
         //=========================================================================================================
         // Electron selection
-        int idx_ele= tauIndex;
         Ele4Momentum.SetPtEtaPhiM(elePt->at(idx_ele),eleEta->at(idx_ele),elePhi->at(idx_ele),eleMass);
         
         if (elePt->at(idx_ele) <= 10 || fabs(eleEta->at(idx_ele)) >= 2.5) continue;
@@ -379,11 +381,11 @@ int main(int argc, char* argv[]) {
 
         higgs_pT = higgs.Pt();
         higgs_m = higgs.M();
-        OS = muCharge->at(idx_lep) * eleCharge->at(idx_ele) < 0;
-        SS =  muCharge->at(idx_lep) * eleCharge->at(idx_ele) > 0;
+        OS = muCharge->at(idx_mu) * eleCharge->at(idx_ele) < 0;
+        SS =  muCharge->at(idx_mu) * eleCharge->at(idx_ele) > 0;
         lep1IsoPass= selectMuon_1? IsoLep1Value < LeptonIsoCut : 1;
         lep2IsoPass= selectMuon_1? IsoLep2Value < LeptonIsoCut : 1;
-        lepPt_=muPt->at(idx_lep);
+        lepPt_=muPt->at(idx_mu);
         elept_=elePt->at(idx_ele);
         vis_mass=Z4Momentum.M();
         LeadJetPt = LeadJet.Pt();

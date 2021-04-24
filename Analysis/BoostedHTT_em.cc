@@ -178,8 +178,11 @@ int main(int argc, char* argv[]) {
         if (isData && (metFilters!=0)) continue;
         //=========================================================================================================
         //MET Shape systematics
-        Met=pfMET;
-        Metphi=pfMETPhi;
+//        Met=pfMET;
+//        Metphi=pfMETPhi;
+        Met=pfMetNoRecoil;
+        Metphi=pfMetPhiNoRecoil;
+        
         if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
         if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
         if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
@@ -194,6 +197,8 @@ int main(int argc, char* argv[]) {
         //=========================================================================================================
         // Muon selection
         int idx_ele= lepIndex;
+        int idx_mu= tauIndex;
+        
         Ele4Momentum.SetPtEtaPhiM(elePt->at(idx_ele),eleEta->at(idx_ele),elePhi->at(idx_ele),eleMass);
         
         
@@ -232,7 +237,7 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",3 ,15,0,15);
         //=========================================================================================================
         // Electron selection
-        int idx_mu= tauIndex;
+        
         Mu4Momentum.SetPtEtaPhiM(muPt->at(idx_mu),muEta->at(idx_mu),muPhi->at(idx_mu),MuMass);
         
         if (muPt->at(idx_mu) <= 10 || fabs(muEta->at(idx_mu)) >= 2.4) continue;
