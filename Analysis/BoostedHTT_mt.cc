@@ -267,8 +267,8 @@ int main(int argc, char* argv[]) {
         if (tmass > 80) continue;
         plotFill("cutFlowTable",7 ,15,0,15);
         
-        if (m_sv < 50) continue;
-        plotFill("cutFlowTable",8 ,15,0,15);
+//        if (m_sv < 50) continue;
+//        plotFill("cutFlowTable",8 ,15,0,15);
         
         // BJet veto
         int numBJet=numBJets(BJetPtCut,DeepCSVCut);
@@ -288,8 +288,8 @@ int main(int argc, char* argv[]) {
         if (numele > 0) continue;
         plotFill("cutFlowTable",11 ,15,0,15);
         
-        if (higgs.Pt() < 280) continue;
-        plotFill("cutFlowTable",12 ,15,0,15);
+//        if (higgs.Pt() < 280) continue;
+//        plotFill("cutFlowTable",12 ,15,0,15);
         
         //=========================================================================================================
         // Separate Drell-Yan processes
