@@ -187,11 +187,11 @@ int main(int argc, char* argv[]) {
 //        Metphi=pfMETPhi;
         Met=pfMetNoRecoil;
         Metphi=pfMetPhiNoRecoil;
-
-        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
-        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
-        if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
-        if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
+                
+        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp; m_sv=m_sv_JES_Up ;}
+        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown; m_sv=m_sv_JES_Down ;}
+        if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp; m_sv=m_sv_UES_Up ;}
+        if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown; m_sv=m_sv_UES_Down ;}
 
 
         if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
@@ -288,8 +288,9 @@ int main(int argc, char* argv[]) {
         if (numele > 0) continue;
         plotFill("cutFlowTable",11 ,15,0,15);
         
+        if (higgs.Pt() < 250) continue;
 //        if (higgs.Pt() < 280) continue;
-//        plotFill("cutFlowTable",12 ,15,0,15);
+        plotFill("cutFlowTable",12 ,15,0,15);
         
         //=========================================================================================================
         // Separate Drell-Yan processes
