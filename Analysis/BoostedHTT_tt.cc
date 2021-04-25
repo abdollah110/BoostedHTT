@@ -373,6 +373,10 @@ int main(int argc, char* argv[]) {
         //=========================================================================================================
         // Event Selection
         //=========================================================================================================
+        Met4Momentum.SetPtEtaPhiM(Met, 0, Metphi, 0);
+        Z4Momentum=SubTau4Momentum+LeadTau4Momentum;
+        TLorentzVector higgs = SubTau4Momentum+LeadTau4Momentum +Met4Momentum;
+
         
         if( dR_lep_lep > 0.8 || dR_lep_lep < 0.1) continue;
         plotFill("cutFlowTable",8 ,15,0,15);
@@ -402,8 +406,8 @@ int main(int argc, char* argv[]) {
         if (numMu > 0) continue;
         plotFill("cutFlowTable",12 ,15,0,15);
         
-        //st cut
-        //        if (st < _cut_st_) continue;
+        higgs_pT = higgs.Pt();
+        if (higgs_pT < 250 ) continue;
         plotFill("cutFlowTable",13 ,15,0,15);
         
         //=========================================================================================================
@@ -475,14 +479,7 @@ int main(int argc, char* argv[]) {
         //###############################################################################################
         //  tree branches
         //###############################################################################################
-        
-        Met4Momentum.SetPtEtaPhiM(Met, 0, Metphi, 0);
-        Z4Momentum=SubTau4Momentum+LeadTau4Momentum;
-        TLorentzVector higgs = SubTau4Momentum+LeadTau4Momentum +Met4Momentum;
-        
-        higgs_pT = higgs.Pt();
-        if (higgs_pT < 250 ) continue;
-        plotFill("cutFlowTable",14 ,15,0,15);
+            
         
         higgs_m = higgs.M();
         OS = boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) < 0;
