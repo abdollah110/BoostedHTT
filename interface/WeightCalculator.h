@@ -29,6 +29,19 @@ float TT_FulLep_BR= 0.1061;
 float TT_SemiLep_BR= 0.4392;
 float TT_Had_BR= 0.4544;
 
+float getLuminsoity(int year, string channel) {
+    if (channel.find("tt") != string::npos){
+    if (year == 2016) return 35900.;
+    else if (year == 2017) return 36700;  //    else if (year == 2017) return 41500.; TrimMass triggers not available in Run2017B (reduced luminosity)
+    else if (year == 2018) return 59610.;
+    else return 0;
+    }
+    else{
+    cout<<"channel is not recognized \n";
+    return 0;
+    }
+}
+
 float getLuminsoity(int year) {
     if (year == 2016) return 35900.;
     else if (year == 2017) return 41500.;

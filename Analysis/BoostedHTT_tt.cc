@@ -415,7 +415,7 @@ int main(int argc, char* argv[]) {
         if (!isData){
             
             // Lumi weight
-            LumiWeight = getLuminsoity(year) * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
+            LumiWeight = getLuminsoity(year,"tt") * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
             
             float PUMC_=HistoPUMC->GetBinContent(puTrue->at(0)+1);
             float PUData_=HistoPUData->GetBinContent(puTrue->at(0)+1);
@@ -521,5 +521,4 @@ int main(int argc, char* argv[]) {
     
     fout->Close();
 }
-
 
