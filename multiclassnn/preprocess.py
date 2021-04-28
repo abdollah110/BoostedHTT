@@ -25,11 +25,13 @@ def loadFile(ifile):
         channel = 'et'
     elif 'emu' in ifile or 'em' in ifile:
         channel = 'em'
+    elif 'mue' in ifile or 'me' in ifile:
+        channel = 'me'
     elif 'tautau' in ifile or 'tt' in ifile:
         channel = 'tt'
     else:
         raise Exception(
-            'Input files must have MUTAU or ETAU or EMU in the provided path. You gave {}, ya goober.'.format(ifile))
+            'Input files must have MUTAU or ETAU, EMU, MUE or TauTau in the provided path. You gave {}, ya goober.'.format(ifile))
 
     filename = ifile.split('/')[-1]
     print 'Loading input file...', filename

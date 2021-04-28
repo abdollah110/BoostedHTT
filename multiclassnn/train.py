@@ -53,6 +53,7 @@ def main(args):
     etau   = boost_processes[(boost_processes['lepton'] == 'et')]
     mutau  = boost_processes[(boost_processes['lepton'] == 'mt')]
     emu  = boost_processes[(boost_processes['lepton'] == 'em')]
+    mue  = boost_processes[(boost_processes['lepton'] == 'me')]
     tautau  = boost_processes[(boost_processes['lepton'] == 'tt')]
 
 
@@ -60,6 +61,7 @@ def main(args):
     selected_mt = pd.DataFrame()
     selected_et = pd.DataFrame()
     selected_em = pd.DataFrame()
+    selected_me = pd.DataFrame()
     selected_tt = pd.DataFrame()
     combine= pd.DataFrame()
 
@@ -80,6 +82,11 @@ def main(args):
         selected_em = emu
         print '\n\nchannel is emu'
         combine = pd.concat([selected_em])
+
+    if len(mue) > 0:
+        selected_me = mue
+        print '\n\nchannel is mue'
+        combine = pd.concat([selected_me])
 
 
     if len(tautau) > 0:

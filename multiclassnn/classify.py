@@ -117,24 +117,15 @@ def main(args):
     elif '_em_' in args.input_dir:
         channel = 'em'
         treeName = 'emu_tree'
+    elif '_me_' in args.input_dir:
+        channel = 'me'
+        treeName = 'mue_tree'
     elif '_tt_' in args.input_dir:
         channel = 'tt'
         treeName = 'tautau_tree'
     else:
         raise Exception('Hey. Bad channel. No. Try again.')
 
-#    if args.treename == 'mutau_tree':
-#        channel = 'mt'
-#    elif args.treename == 'etau_tree':
-#        channel = 'et'
-#    elif args.treename == 'emu_tree':
-#        channel = 'em'
-#    elif args.treename == 'tautau_tree':
-#        channel = 'tt'
-#    else:
-#        raise Exception('Hey. Bad channel. No. Try again.')
-#
-#
 
     if not path.isdir(args.output_dir):
         mkdir(args.output_dir)
