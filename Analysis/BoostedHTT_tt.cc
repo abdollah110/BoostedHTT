@@ -273,6 +273,15 @@ int main(int argc, char* argv[]) {
         dR_lep_lep= SubTau4Momentum.DeltaR(LeadTau4Momentum);
         TLorentzVector LeadJet= getLeadJet(LeadTau4Momentum, SubTau4Momentum);
         
+        
+        plotFill("RunBeforeTrigger",run, 100 ,297000,307000);
+        
+        if (PassTrigger_37) plotFill("RunHLTJet37",run, 100 ,297000,307000);
+        if (PassTrigger_38) plotFill("RunHLTJet38",run, 100 ,297000,307000);
+        if (PassTrigger_39) plotFill("RunHLTJet39",run, 100 ,297000,307000);
+        if (PassTrigger_40) plotFill("RunHLTJet340",run, 100 ,297000,307000);
+        
+        
         //=========================================================================================================
         // Cut on AK8 (for trigger purposes)
         float AK8Pt=0;
