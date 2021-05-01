@@ -274,14 +274,6 @@ int main(int argc, char* argv[]) {
         TLorentzVector LeadJet= getLeadJet(LeadTau4Momentum, SubTau4Momentum);
         
         
-        plotFill("RunBeforeTrigger",run, 100 ,297000,307000);
-        
-        if (PassTrigger_37) plotFill("RunHLTJet37",run, 100 ,297000,307000);
-        if (PassTrigger_38) plotFill("RunHLTJet38",run, 100 ,297000,307000);
-        if (PassTrigger_39) plotFill("RunHLTJet39",run, 100 ,297000,307000);
-        if (PassTrigger_40) plotFill("RunHLTJet340",run, 100 ,297000,307000);
-        
-        
         //=========================================================================================================
         // Cut on AK8 (for trigger purposes)
         float AK8Pt=0;
@@ -297,7 +289,38 @@ int main(int argc, char* argv[]) {
         float TriggerWeight = 1;
         float _cut_AK8Pt_,_cut_AK8Mass_,_cut_PFHT_,_cut_PFMET_,_cut_PFMHT_, _cut_PFMETMHT_, _cut_st_;
         bool _Pass_AK8_Trigger_, _Pass_METHT_Trigger_;
-        
+
+
+
+
+
+        //=========================================================================================================
+        // Trigger Efficiency
+        //=========================================================================================================
+        if (year== 2016  && PFHT > 400 ){
+        plotFill("RunBeforeTrigger",run, 50 ,273000,285000);
+        if (PassTrigger_20) plotFill("RunHLTJet37",run, 50 ,273000,285000);
+        if (PassTrigger_21) plotFill("RunHLTJet38",run, 50 ,273000,285000);
+        if (PassTrigger_22) plotFill("RunHLTJet39",run, 50 ,273000,285000);
+        if (PassTrigger_40) plotFill("RunHLTJet40",run, 50 ,273000,285000);
+        }
+        else if (year== 2017 && PFHT > 400){
+        plotFill("RunBeforeTrigger",run, 50 ,297000,307000);
+        if (PassTrigger_37) plotFill("RunHLTJet37",run, 50 ,297000,307000);
+        if (PassTrigger_38) plotFill("RunHLTJet38",run, 50 ,297000,307000);
+        if (PassTrigger_39) plotFill("RunHLTJet39",run, 50 ,297000,307000);
+        if (PassTrigger_40) plotFill("RunHLTJet40",run, 50 ,297000,307000);
+        }
+        else if (year== 2018 && PFHT > 400){
+        plotFill("RunBeforeTrigger",run, 50 ,315000,326000);
+        if (PassTrigger_37) plotFill("RunHLTJet37",run, 50 ,315000,326000);
+        if (PassTrigger_38) plotFill("RunHLTJet38",run, 50 ,315000,326000);
+        if (PassTrigger_39) plotFill("RunHLTJet39",run, 50 ,315000,326000);
+        if (PassTrigger_40) plotFill("RunHLTJet40",run, 50 ,315000,326000);
+        }
+        //=========================================================================================================
+
+
         if (year== 2016){
             
             _cut_AK8Pt_ = 450;
@@ -351,18 +374,20 @@ int main(int argc, char* argv[]) {
         bool passing= true;
 
  ////apply trigger only on data
-//        if ( (!isData ||  (isData && _Pass_AK8_Trigger_)) &&  AK8Pt > _cut_AK8Pt_ && AK8Mass > _cut_AK8Mass_ && AK8Eta < 2.5){
-//            TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT);
-//            passing= true;
-//        }
-//        else if ( (!isData ||  (isData && _Pass_METHT_Trigger_)) &&  PFHT > _cut_PFHT_ && PFMET > _cut_PFMET_ && MHT> _cut_PFMHT_ && PFMET+MHT > _cut_PFMETMHT_){
-//            TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MET);
-//            passing= true;
-//        }
-//        else {
-//            passing = false;
-//        }
-
+ if (year==2017){
+        if ( (!isData ||  (isData && _Pass_AK8_Trigger_)) &&  AK8Pt > _cut_AK8Pt_ && AK8Mass > _cut_AK8Mass_ && AK8Eta < 2.5){
+            TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT);
+            passing= true;
+        }
+        else if ( (!isData ||  (isData && _Pass_METHT_Trigger_)) &&  PFHT > _cut_PFHT_ && PFMET > _cut_PFMET_ && MHT> _cut_PFMHT_ && PFMET+MHT > _cut_PFMETMHT_){
+            TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MET);
+            passing= true;
+        }
+        else {
+            passing = false;
+        }
+}
+else {
 // apply trigger on simulation as well as data
         if ( _Pass_AK8_Trigger_ &&  AK8Pt > _cut_AK8Pt_ && AK8Mass > _cut_AK8Mass_ && AK8Eta < 2.5){
             TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT_SF);
@@ -375,7 +400,7 @@ int main(int argc, char* argv[]) {
         else {
             passing = false;
         }
-        
+}
 
         if (! passing) continue;
         
