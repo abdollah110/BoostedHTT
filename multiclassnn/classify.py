@@ -133,7 +133,8 @@ def main(args):
     file_names = [ifile for ifile in glob('{}/*.root'.format(args.input_dir))]
 
     keep_boost = [
-                'lep1Pt','lep2Pt','Met','m_sv', 'LeadJetPt','higgs_m','higgs_pT','st','tmass'
+#                'lep1Pt','lep2Pt','Met','m_sv', 'LeadJetPt','higgs_m','higgs_pT','st','tmass'
+                'lep1Pt','lep2Pt','Met', 'LeadJetPt','higgs_m','higgs_pT','st','tmass'
                 ]
 
     boost_pred = Predictor(args.input_boost, args.model_boost, keep_boost)
