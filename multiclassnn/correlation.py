@@ -9,7 +9,7 @@ def main(args):
 #    samples = data[(data['sample_names'] == 'JJH125')]
     samples = data[(data['sample_names'] == 'ZTT')]
     sample = samples[(samples['Pass'] > 0) ]
-    correlations = sample[['taupt','Met','m_sv', 'LeadJetPt','higgs_m']].corr(method='pearson') * 100
+    correlations = sample[['lep1Pt','lep2Pt','Met','m_sv', 'LeadJetPt','higgs_m','higgs_pT','st','tmass']].corr(method='pearson') * 100
 #    correlations = sample[['njets','mt', 'el_iso', 'mu_iso', 'D_zeta','mt_elmet','mt_mumet',
 #                       'mjj', 'dEtajj', 'el_pt', 'mu_pt', 'hjj_pT', 'higgs_pT','m_sv']].corr(method='pearson') * 100
 #    correlations = sample[['Q2V1', 'Q2V2', 'Phi', 'Phi1', 'costheta1', 'costheta2', 'costhetastar']].corr(method='pearson') * 100
