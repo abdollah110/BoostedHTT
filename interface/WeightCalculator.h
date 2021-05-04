@@ -108,9 +108,45 @@ float XSection(std::string OutName) {
     else if (OutName.find("TT") != string::npos) return (831.76);
     
     else if (OutName.find("EWK_DYToLL") != string::npos ) return      3.987;
-    else if (OutName.find("QCD_Pt-20toInf_MuEnrichedPt15") != string::npos) return     720648000  * 0.00042 ;
-    else if (OutName.find("QCD") != string::npos) return     720648000  * 0.00042 ;
+//    else if (OutName.find("QCD_Pt-20toInf_MuEnrichedPt15") != string::npos) return     720648000  * 0.00042 ;
+//    else if (OutName.find("QCD") != string::npos) return     720648000  * 0.00042 ;
+
+    else if (OutName.find("QCD_HT300to500") != string::npos) return     347700 ;
+    else if (OutName.find("QCD_HT500to700") != string::npos) return     32100 ;
+    else if (OutName.find("QCD_HT700to1000") != string::npos) return     6831 ;
+    else if (OutName.find("QCD_HT1000to1500") != string::npos) return     1207 ;
+    else if (OutName.find("QCD_HT1500to2000") != string::npos) return     119.9 ;
+    else if (OutName.find("QCD_HT2000toInf") != string::npos) return     25.24 ;
     
+    
+///QCD HT200to300 TuneCUETP8M1 13TeV-madgraphMLM-pythia8 1712000
+///QCD HT300to500 TuneCUETP8M1 13TeV-madgraphMLM-pythia8 347700
+///QCD HT500to700 TuneCUETP8M1 13TeV-madgraphMLM-pythia8 32100
+///QCD HT700to1000 TuneCUETP8M1 13TeV-madgraphMLM-pythia8 6831
+///QCD HT1000to1500 TuneCUETP8M1 13TeV-madgraphMLM-pythia8 1207
+///QCD HT1500to2000 TuneCUETP8M1 13TeV-madgraphMLM-pythia8 119.9
+///QCD HT2000toInf TuneCUETP8M1 13TeV-madgraphMLM-pythia8 25.24
+
+
+//-rw------- 1 abdollah us_cms  3057729 May  4 11:11 QCD_HT1000to1500_v1.root
+//-rw------- 1 abdollah us_cms  4837407 May  4 11:11 QCD_HT1000to1500_v2.root
+//-rw------- 1 abdollah us_cms  2777432 May  4 11:11 QCD_HT1500to2000_v1.root
+//-rw------- 1 abdollah us_cms  5883018 May  4 11:11 QCD_HT1500to2000_v2.root
+//-rw------- 1 abdollah us_cms   346285 May  4 11:11 QCD_HT2000toInf_v1.root
+//-rw------- 1 abdollah us_cms  2110665 May  4 11:11 QCD_HT2000toInf_v2.root
+//-rw------- 1 abdollah us_cms 13794874 May  4 11:11 QCD_HT300to500_v1.root
+//-rw------- 1 abdollah us_cms 24423893 May  4 11:12 QCD_HT300to500_v2.root
+//-rw------- 1 abdollah us_cms 11837551 May  4 11:12 QCD_HT500to700_v1.root
+//-rw------- 1 abdollah us_cms 19168537 May  4 11:12 QCD_HT500to700_v2.root
+//
+//hadd $dir/QCD_HT300to500.root $dir/QCD_HT300to500_v*.root
+//hadd $dir/QCD_HT500to700.root $dir/QCD_HT500to700_v*.root
+//hadd $dir/QCD_HT1000to1500.root $dir/QCD_HT1000to1500_v*.root
+//hadd $dir/QCD_HT1500to2000.root $dir/QCD_HT1500to2000_v*.root
+//hadd $dir/QCD_HT2000toInf.root $dir/QCD_HT2000toInf_v*.root
+//rm $dir/*_v1* $dir/*_v2* $dir/*_v3*
+
+
     //    https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#W_jets
 //    https://cms-gen-dev.cern.ch/xsdb/?searchQuery=DAS=DYJetsToLL_Pt-100To250_TuneCP5_13TeV-amcatnloFXFX-pythia8
     //    else if (OutName.find("WJetsToLNu") != string::npos) return  61526.7   ;

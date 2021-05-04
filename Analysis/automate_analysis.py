@@ -62,7 +62,7 @@ def getSystematics(name):
   systs = ['']
   
    
-  if name != 'data_obs':
+  if name != 'data_obs' || name != 'QCD':
      systs += [
              'met_JESUp', 'met_JESDown', 'met_UESUp', 'met_UESDown', 'prefireUp', 'prefireDown',
 #             'met_reso_Up', 'met_resp_Up','met_reso_Down', 'met_resp_Down'
@@ -107,6 +107,8 @@ for ifile in fileList:
         names = ['ZH125']
     elif 'JJH' in sample or 'jjh' in sample:
         names = ['JJH']
+    elif 'QCD' in sample or 'qcd' in sample:
+        names = ['QCD']
     else:
         names = ['VV']
 
