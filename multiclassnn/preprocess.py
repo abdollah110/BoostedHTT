@@ -67,12 +67,14 @@ def loadFile(ifile):
 
     isSignal = np.zeros(len(slim_df))
     isZTT = np.zeros(len(slim_df))
+    isQCD = np.zeros(len(slim_df))
 
     if 'h125' in ifile.lower() or 'qqh' in ifile.lower() or 'wh' in ifile.lower() or 'zh' in ifile.lower() or 'ggh' in ifile.lower() or 'vbf' in ifile.lower():
         isSignal = np.ones(len(slim_df))
-#    else 'ZTT' in ifile:
-    else:
+    elif 'ZTT' in ifile:
         isZTT = np.ones(len(slim_df))
+    else:
+        isQCD=np.ones(len(slim_df))
 
 
     # save the name of the process
@@ -88,7 +90,7 @@ def loadFile(ifile):
     # get lepton channel
     lepton = np.full(len(slim_df), channel)
 
-    return slim_df, selection_df, somenames, lepton, isSignal,isZTT,weights, index
+    return slim_df, selection_df, somenames, lepton, isSignal,isZTT,isQCD, weights, index
 
 
 def main(args):
@@ -99,12 +101,12 @@ def main(args):
         
     # define collections that will all be merged in the end
     unscaled_data, selection_df = pd.DataFrame(), pd.DataFrame()
-    names, leptons, isSignal,isZTT,weight_df, index = np.array(
-        []), np.array([]), np.array([]), np.array([]), np.array([]), np.array([])
+    names, leptons, isSignal,isZTT,isQCD,weight_df, index = np.array(
+        []), np.array([]), np.array([]), np.array([]), np.array([]), np.array([]), np.array([])
 
     for ifile in input_files:
         print 'file is ', ifile
-        input_data, selection_data, new_name, lepton, sig,ztt, weight, idx = loadFile(ifile)
+        input_data, selection_data, new_name, lepton, sig,ztt,qcd, weight, idx = loadFile(ifile)
         # add data to the full set
         unscaled_data = pd.concat([unscaled_data, input_data])
         # add selection variables to full set
@@ -114,6 +116,7 @@ def main(args):
         leptons = np.append(leptons, lepton)  # lepton channel
         isSignal = np.append(isSignal, sig)  # labels for signal/background
         isZTT = np.append(isZTT, ztt)  # labels for signal/background
+        isQCD = np.append(isQCD, qcd)  # labels for signal/background
         weight_df = np.append(weight_df, weight)  # weights scaled from 0 - 1
         index = np.append(index, idx)
 
@@ -133,6 +136,7 @@ def main(args):
     scaled_data['lepton'] = pd.Series(leptons)
     scaled_data['isSignal'] = pd.Series(isSignal)
     scaled_data['isZTT'] = pd.Series(isZTT)
+    scaled_data['isQCD'] = pd.Series(isQCD)
     scaled_data['evtwt'] = pd.Series(weight_df)
     scaled_data['idx'] = pd.Series(index)
 

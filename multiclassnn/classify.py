@@ -46,18 +46,23 @@ class Predictor:
       print "to_classify.values", to_classify.values
       guesses = self.model.predict(to_classify.values, verbose=True)
       print 'is now predicted'
+
       self.data_copy['guess_sig'] = guesses[:,0]
+      self.data_copy['guess_bkg1'] = guesses[:,1]
+      self.data_copy['guess_bkg2'] = guesses[:,2]
       self.data_copy.set_index('idx', inplace=True)
 
 
   def getGuess(self, index):
     try:
       guess = self.data_copy.loc[index, 'guess_sig']
+      guess1 = self.data_copy.loc[index, 'guess_bkg1']
+      guess2 = self.data_copy.loc[index, 'guess_bkg2']
     except:
-#      print 'guess not found'
-      guess= -999
+      guess,guess1,guess2 = -999,-999,-999
     
-    return guess
+    return guess,guess1,guess2
+
 
 def run_process(proc):
     print proc
@@ -84,20 +89,28 @@ def fillFile(ifile, channel, args, boost_pred, treeName):
 #  nevents.Write()
   ntree = itree.CloneTree(-1, 'fast')
 
+
+
   branch_var = array('f', [0.])
-  disc_branch_boost = ntree.Branch('NN_disc', branch_var, 'NN_disc/F')
+  branch_var1 = array('f', [0.])
+  branch_var2 = array('f', [0.])
+  disc_branch = ntree.Branch('NN_disc', branch_var, 'NN_disc/F')
+  disc_branch1 = ntree.Branch('NN_disc_TT', branch_var1, 'NN_disc_TT/F')
+  disc_branch2 = ntree.Branch('NN_disc_ZTT', branch_var2, 'NN_disc_ZTT/F')
+
   nevts = ntree.GetEntries()
   
   evt_index = 0
   for _ in itree:
-    if evt_index % 10000 == 0 and evt_index > 0:
+    if evt_index % 100000 == 0 and evt_index > 0:
       print 'Process: {} has completed: {} events out of {}'.format(fname, evt_index, nevts)
-    branch_var[0]= boost_pred.getGuess(evt_index)
-#    print 'branch_var= ', branch_var
+    branch_var[0],branch_var1[0],branch_var2[0] = boost_pred.getGuess(evt_index)
 
     evt_index += 1
     fout.cd()
-    disc_branch_boost.Fill()
+    disc_branch.Fill()
+    disc_branch1.Fill()
+    disc_branch2.Fill()
 
 
   root_file.Close()
@@ -105,6 +118,7 @@ def fillFile(ifile, channel, args, boost_pred, treeName):
   ntree.Write()
   fout.Close()
   print '{} Completed.'.format(fname)
+
 
 def main(args):
     print 'args.input_dir is ', args.input_dir
