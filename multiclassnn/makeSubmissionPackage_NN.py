@@ -20,7 +20,6 @@ for line in run_file.readlines():
 
     line=line.replace('abdollah',os.environ['LOGNAME'])
     line=line.replace('TarFile','Files_%s'%args.Name)
-    if '_em_' in args.input: line=line.replace('--QCD W','--QCD TT')
     line=line.replace('OUTPUTFILE_LOCATION','{}_fast'.format(args.Input).replace('/eos/uscms/','').replace('/_','_'))
 
 
