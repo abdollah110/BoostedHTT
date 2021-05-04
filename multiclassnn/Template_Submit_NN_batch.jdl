@@ -1,7 +1,7 @@
 universe = vanilla
 Executable = Submit_run.sh 
 Requirements = OpSys == "LINUX" && (Arch != "DUMMY" )
-request_disk = 200000000
+request_disk = 20000000
 request_memory = 6000
 should_transfer_files = YES
 WhenTOTransferOutput  = ON_EXIT

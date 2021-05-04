@@ -38,9 +38,9 @@ echo "  inputdir is " $inputdir
     
 python preprocess.py -i  ${inputdir}  -o testData_${Name}
 if [[ ${inputdir} == *"_em_"* ]]; then
-  python train.py --signal JJH125 --ZTT ZTT --QCD TT --input datasets/testData_${Name}.h5 --model outputModel_${Name}
+  python train.py --signal JJH125 --ZTT ZTT --QCD NonDY --input datasets/testData_${Name}.h5 --model outputModel_${Name}
 else
-  python train.py --signal JJH125 --ZTT ZTT --QCD W --input datasets/testData_${Name}.h5 --model outputModel_${Name}
+  python train.py --signal JJH125 --ZTT ZTT --QCD NonDY --input datasets/testData_${Name}.h5 --model outputModel_${Name}
 fi
 #python train.py --signal JJH125 --background ZTT --input datasets/testData_${Name}.h5 --model outputModel_${Name}
 python classify.py  --input-boost datasets/testData_${Name}.h5  --model-boost models/outputModel_${Name}.hdf5   --dir ${inputdir}  --output-dir ${Name}_NN
