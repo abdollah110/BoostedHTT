@@ -126,7 +126,7 @@ int main(int argc, char* argv[]) {
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
     bool lep1IsoPassL,lep2IsoPassL,lep1IsoPassV,lep2IsoPassV,OS,SS;
-    float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
+    float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight, gen_higgs_pT;
     // Trigger
     bool PassTrigger_37;
     bool PassTrigger_38;
@@ -139,7 +139,7 @@ int main(int argc, char* argv[]) {
     bool PassTrigger_20;
     bool PassTrigger_21;
     bool PassTrigger_22;
-    
+    int nbjet;
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
     outTr->Branch("zmasspt_weight",&zmasspt_weight,"zmasspt_weight/F");
@@ -173,6 +173,8 @@ int main(int argc, char* argv[]) {
     outTr->Branch("PassTrigger_20",&PassTrigger_20);
     outTr->Branch("PassTrigger_21",&PassTrigger_21);
     outTr->Branch("PassTrigger_22",&PassTrigger_22);
+    outTr->Branch("nbjet",&nbjet,"nbjet/I");
+    outTr->Branch("gen_higgs_pT",&gen_higgs_pT,"gen_higgs_pT/F");
     
     
     
@@ -423,7 +425,7 @@ else {
         plotFill("cutFlowTable",10 ,15,0,15);
         
         // BJet veto
-        //        int numBJet=numBJets(BJetPtCut,DeepCSVCut);
+        int numBJet=numBJets(BJetPtCut,DeepCSVCut);
         //        if (numBJet > 0) continue;
         //        plotFill("cutFlowTable",8 ,15,0,15);
         
@@ -532,6 +534,8 @@ else {
         m_sv_=m_sv;
         //  Weights
         FullWeight = LumiWeight*LepCorrection * PUWeight * TriggerWeight*zmasspt_weight * preFireWeight * WBosonKFactor * ttbar_rwt;
+        nbjet=numBJet;
+        gen_higgs_pT = GetHiggsPt();
         
         // Fill the tree
         outTr->Fill();

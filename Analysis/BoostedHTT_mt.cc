@@ -133,7 +133,7 @@ int main(int argc, char* argv[]) {
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
     bool OS,SS,lep1IsoPass,lep2IsoPassL,lep2IsoPassV,lep2IsoPassM,lep2IsoPassT;
-    float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
+    float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight, gen_higgs_pT;
     int nbjet;
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
@@ -160,6 +160,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("m_sv",&m_sv_,"m_sv/F");
     outTr->Branch("dR_Z_jet",&dR_Z_jet,"dR_Z_jet/F");
     outTr->Branch("nbjet",&nbjet,"nbjet/I");
+    outTr->Branch("gen_higgs_pT",&gen_higgs_pT,"gen_higgs_pT/F");
     
     
     
@@ -422,6 +423,8 @@ int main(int argc, char* argv[]) {
         //  Weights
         FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt;
         nbjet=numBJet;
+        gen_higgs_pT = GetHiggsPt();
+        
         
         // Fill the tree
         outTr->Fill();
