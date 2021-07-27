@@ -49,6 +49,7 @@ int main(int argc, char* argv[]) {
     }
     std::cout<<"output name is "<<filename.c_str()<<"\n";
     
+    float xbin[5]={0,350,450,600,2000};
     
     // open input file
     std::cout << "Opening file... " << sample << std::endl;
@@ -66,8 +67,9 @@ int main(int argc, char* argv[]) {
     myMap1 = new std::map<std::string, TH1F*>();
     myMap2 = new map<string, TH2F*>();
     
-    TTree * outTr=  new TTree("mutau_tree","mutau_tree");
     
+    TTree * outTr=  new TTree("mutau_tree","mutau_tree");
+    TH1F * higpt=new TH1F("hig","hig",sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
     
     //########################################
     // Muon Id, Iso, Trigger and Tracker Eff files
@@ -207,10 +209,10 @@ int main(int argc, char* argv[]) {
             LumiWeight = XSection(sample)*1.0 / HistoTot->GetBinContent(2);
             
             
-            plotFill("HiggspT",higgs.Pt() ,200,0,2);
-            plotFill("LeadJetPt",LeadJet.Pt() ,200,0,2);
+            plotFill("HiggspT",higgs.Pt() ,40,0,2000,LumiWeight);
+            plotFill("LeadJetPt",LeadJet.Pt() ,20,0,1000,LumiWeight);
 
-
+            higpt->Fill(higgs.Pt(),LumiWeight);
 
         
         //###############################################################################################
@@ -250,7 +252,7 @@ int main(int argc, char* argv[]) {
     
     for (; iMap2 != jMap2; ++iMap2)
     nplot2(iMap2->first)->Write();
-    
+    higpt->Write();
     fout->Close();
 }
 
