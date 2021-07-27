@@ -31,11 +31,11 @@ int main(int argc, char* argv[]) {
 
 
     std::string channel_tree;
-    if (path.find("_mt") != string::npos) channel_tree = "mutau_tree";
-    else if (path.find("_et") != string::npos) channel_tree = "etau_tree";
-    else if (path.find("_em") != string::npos) channel_tree = "emu_tree";
-    else if (path.find("_me") != string::npos) channel_tree = "mue_tree";
-    else if (path.find("_tt") != string::npos) channel_tree = "tautau_tree";
+    if (path.find("/mt") != string::npos) channel_tree = "mutau_tree";
+    else if (path.find("/et") != string::npos) channel_tree = "etau_tree";
+    else if (path.find("/em") != string::npos) channel_tree = "emu_tree";
+    else if (path.find("/me") != string::npos) channel_tree = "mue_tree";
+    else if (path.find("/tt") != string::npos) channel_tree = "tautau_tree";
     else cout<<"Which channel are you looking for \n\n";
     cout<<"%%%% Note: you are running on  "<< channel_tree <<"%%%%\n";
 
