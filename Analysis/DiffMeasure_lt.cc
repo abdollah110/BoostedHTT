@@ -2,7 +2,7 @@
 #include "TStopwatch.h"
 #include "TMath.h"
 #include "../interface/CLParser.h"
-#include "../interface/process_trees_Tot.h"
+#include "../interface/DiffMeasure.h"
 #include <iomanip>      // std::setprecision
 
 
@@ -79,7 +79,6 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         
         
         string name = ifile.substr(0, ifile.find(".")).c_str();
-        
         auto fin = new TFile((dir + "/" + ifile).c_str(), "read");
         std::cout<<"ifile is openning: " <<ifile<<"\n";
         auto tree = reinterpret_cast<TTree *>(fin->Get(tree_name.c_str()));
@@ -97,7 +96,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         bool lep2IsoPass,lep2IsoPassV, OS,SS,lep1IsoPass,eleIDMVA, lep2IsoPassT,lep2IsoPassL;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
         float NN_disc;
-        float BoostedTauRawIso, higgs_pT, higgs_m, m_sv;
+        float BoostedTauRawIso, higgs_pT, higgs_m, m_sv,gen_higgs_pT;
         
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
         tree->SetBranchAddress("lep2Pt",&lep2Pt_);
@@ -120,6 +119,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
         tree->SetBranchAddress("higgs_m",&higgs_m);
         tree->SetBranchAddress("m_sv",&m_sv);
+        tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
         
         
         // Here we have to call OS/SS method extracter
@@ -145,8 +145,14 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 {"higgs_pT",higgs_pT},
                 {"higgs_m",higgs_m},
                 {"m_sv",m_sv},
-                {"NN_disc",NN_disc}
+                {"NN_disc",NN_disc},
+                {"gen_higgs_pT",gen_higgs_pT}
             };
+            
+            if (name.find("0_350")!=string::npos &&   ( gen_higgs_pT > 350  || gen_higgs_pT > 350 )) continue ;
+            if (name.find("350_450")!=string::npos && ( gen_higgs_pT <= 350 || gen_higgs_pT > 450 )) continue ;
+            if (name.find("450_600")!=string::npos && ( gen_higgs_pT <= 450 || gen_higgs_pT > 600 )) continue ;
+            if (name.find("GT600")!=string::npos &&   ( gen_higgs_pT <= 600)) continue ;
             
             float Var_cut = ObsName[cut_name];
             if (Var_cut < lowVal || Var_cut > highVal ) continue;
