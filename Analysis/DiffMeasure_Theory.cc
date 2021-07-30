@@ -106,31 +106,222 @@ int main(int argc, char* argv[]) {
         //MET Shape systematics
 //        Met=pfMET;
 //        Metphi=pfMETPhi;
-        float Met=pfMetNoRecoil;
-        float Metphi=pfMetPhiNoRecoil;
-        Met4Momentum.SetPtEtaPhiM(Met, 0, Metphi, 0);
+//        float Met=pfMetNoRecoil;
+//        float Metphi=pfMetPhiNoRecoil;
+        Met4Momentum.SetPtEtaPhiM(genMET, 0, genMETPhi, 0);
                     // Lumi weight
         float LumiWeight = XSection(sample)*1.0 / HistoTot->GetBinContent(2);
 
         //=========================================================================================================
-        
-        if (channel_tree.find("mutau_tree") != string::npos) {
-        
-        // Muon selection
-        int idx_lep= lepIndex;
-        if (muPt->at(idx_lep) < 30 || fabs(muEta->at(idx_lep)) > 2.4) continue;
-        Mu4Momentum.SetPtEtaPhiM(muPt->at(idx_lep),muEta->at(idx_lep),muPhi->at(idx_lep),MuMass);
-        // Tau selection
-        int idx_tau= tauIndex;
-        if (boostedTauPt->at(idx_tau) <= 30 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
-        Tau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
+//
 
-        TLorentzVector higgs = Tau4Momentum+Mu4Momentum +Met4Momentum;
-        TLorentzVector LeadJet= getLeadJet(Mu4Momentum, Tau4Momentum);
-        if (higgs.Pt() < 280) continue;
-        higpt->Fill(higgs.Pt(),LumiWeight);
+
+    TLorentzVector genTau, genMu, genEle, genNuTau, genNuMu, genNuEle;
+    vector<TLorentzVector> genTauVec, genMuVec, genEleVec, genNuTauVec, genNuEleVec, genNuMuVec;
+
+    for (int igen=0;igen < nMC; igen++){
+    
+    
+    if ( fabs(mcPID->at(igen)) ==11 && fabs(mcMomPID->at(igen))==15 && fabs(mcGMomPID->at(igen))==25){
+    genEle.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+    genEleVec.push_back(genEle);
+    }
+    if ( fabs(mcPID->at(igen)) ==12 && fabs(mcMomPID->at(igen))==15 && fabs(mcGMomPID->at(igen))==25){
+    genNuEle.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+    genNuEleVec.push_back(genNuEle);
+    }
+    if ( fabs(mcPID->at(igen)) ==13 && fabs(mcMomPID->at(igen))==15 && fabs(mcGMomPID->at(igen))==25){
+    genMu.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+    genMuVec.push_back(genMu);
+    }
+    if ( fabs(mcPID->at(igen)) ==14 && fabs(mcMomPID->at(igen))==15 && fabs(mcGMomPID->at(igen))==25){
+    genNuMu.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+    genNuMuVec.push_back(genNuMu);
+    }
+    if ( fabs(mcPID->at(igen)) ==15 && fabs(mcMomPID->at(igen))==25){
+    genTau.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+    genTauVec.push_back(genTau);
+    }
+    if ( fabs(mcPID->at(igen)) ==16 && fabs(mcMomPID->at(igen))==15){
+    genNuTau.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+    genNuTauVec.push_back(genNuTau);
+    }
+    
+    }
+
+//    if (genTauVec.size() < 2 ) continue;
+    
+    
+    
+    if (channel_tree.find("mutau_tree") != string::npos) {
+    if (genMuVec.size() < 1) continue;
+    
+    findDr fdMatch0 = FindClosetDr(genTauVec[0],genMuVec);
+    findDr fdMatch1 = FindClosetDr(genTauVec[1],genMuVec);
+    
+    
+    int tauCandOrder=fdMatch0.dR < fdMatch1.dR ?  1:0;
+    
+    findDr fdMatchNu = FindClosetDr(genTauVec[tauCandOrder],genNuTauVec);
+    TLorentzVector VisibleTau = genTauVec[tauCandOrder] - genNuTauVec[fdMatchNu.order];
+    float visibleTauCandPt = VisibleTau.Pt();
+
+    if (genMuVec[0].Pt() < 30 || fabs(genMuVec[0].Eta()) > 2.4) continue;
+    if ( VisibleTau.Pt() < 30 || fabs(VisibleTau.Eta()) > 2.4) continue;
         
-        }
+    TLorentzVector higgs = VisibleTau+genMuVec[0] +Met4Momentum;
+    TLorentzVector LeadJet= getLeadJet(VisibleTau , genMuVec[0]);
+    if (higgs.Pt() < 280) continue;
+    higpt->Fill(higgs.Pt(),LumiWeight);
+
+    }
+    
+    if (channel_tree.find("etau_tree") != string::npos) {
+    if (genEleVec.size() < 1) continue;
+    
+    findDr fdMatch0 = FindClosetDr(genTauVec[0],genEleVec);
+    findDr fdMatch1 = FindClosetDr(genTauVec[1],genEleVec);
+    
+    
+    int tauCandOrder=fdMatch0.dR < fdMatch1.dR ?  1:0;
+    
+    findDr fdMatchNu = FindClosetDr(genTauVec[tauCandOrder],genNuTauVec);
+    TLorentzVector VisibleTau = genTauVec[tauCandOrder] - genNuTauVec[fdMatchNu.order];
+    float visibleTauCandPt = VisibleTau.Pt();
+
+    if (genEleVec[0].Pt() < 30 || fabs(genEleVec[0].Eta() ) > 2.5) continue;
+    if ( VisibleTau.Pt() < 30 || fabs(VisibleTau.Eta() )> 2.5) continue;
+        
+    TLorentzVector higgs = VisibleTau+genEleVec[0] +Met4Momentum;
+    TLorentzVector LeadJet= getLeadJet(VisibleTau , genEleVec[0]);
+    if (higgs.Pt() < 280) continue;
+    higpt->Fill(higgs.Pt(),LumiWeight);
+
+    }
+    if (channel_tree.find("tautau_tree") != string::npos) {
+    
+////    findDr fdMatch0 = FindClosetDr(genTauVec[0],genEleVec);
+////    findDr fdMatch1 = FindClosetDr(genTauVec[1],genEleVec);
+////
+//
+//    int tauCandOrder=fdMatch0.dR < fdMatch1.dR ?  1:0;
+    
+    findDr fdMatchNu0 = FindClosetDr(genTauVec[0],genNuTauVec);
+    findDr fdMatchNu1 = FindClosetDr(genTauVec[1],genNuTauVec);
+    
+    TLorentzVector VisibleTau0 = genTauVec[0] - genNuTauVec[fdMatchNu0.order];
+    TLorentzVector VisibleTau1 = genTauVec[1] - genNuTauVec[fdMatchNu1.order];
+
+    if (VisibleTau0.Pt() < 30 || fabs(VisibleTau0.Eta()) > 2.3) continue;
+    if (VisibleTau1.Pt() < 30 || fabs(VisibleTau1.Eta()) > 2.3) continue;
+    
+//    cout<< VisibleTau0.Pt()<< " " << VisibleTau1.Pt() <<"  \t " << boostedTauPt->at(leadtauIndex) << "  " <<boostedTauPt->at(subtauIndex)<<"\n";
+//    cout<< VisibleTau0.Eta()<< " " << VisibleTau1.Eta() <<"  \t " << boostedTauEta->at(leadtauIndex) << "  " <<boostedTauEta->at(subtauIndex)<<"\n\n";
+        
+    TLorentzVector higgs = VisibleTau0+VisibleTau1 +Met4Momentum;
+    TLorentzVector LeadJet= getLeadJet(VisibleTau0 , VisibleTau1);
+    if (higgs.Pt() < 280) continue;
+    higpt->Fill(higgs.Pt(),LumiWeight);
+
+    }
+    
+    
+    
+    
+    if (channel_tree.find("emu_tree") != string::npos) {
+    
+    if (genMuVec.size() < 1) continue;
+    if (genEleVec.size() < 1) continue;
+
+    if (genMuVec[0].Pt() < 30 || fabs(genMuVec[0].Eta()) > 2.4) continue;
+    if (genEleVec[0].Pt() < 10 || fabs(genEleVec[0].Eta() ) > 2.5) continue;
+        
+    TLorentzVector higgs = genEleVec[0]+genMuVec[0] +Met4Momentum;
+    TLorentzVector LeadJet= getLeadJet(genEleVec[0],genMuVec[0]);
+    if (higgs.Pt() < 280) continue;
+    higpt->Fill(higgs.Pt(),LumiWeight);
+
+    }
+
+    if (channel_tree.find("mue_tree") != string::npos) {
+    
+    if (genMuVec.size() < 1) continue;
+    if (genEleVec.size() < 1) continue;
+
+    if (genMuVec[0].Pt() < 10 || fabs(genMuVec[0].Eta()) > 2.4) continue;
+    if (genEleVec[0].Pt() < 30 || fabs(genEleVec[0].Eta() ) > 2.5) continue;
+        
+    TLorentzVector higgs = genEleVec[0]+genMuVec[0] +Met4Momentum;
+    TLorentzVector LeadJet= getLeadJet(genEleVec[0],genMuVec[0]);
+    if (higgs.Pt() < 280) continue;
+    higpt->Fill(higgs.Pt(),LumiWeight);
+
+    }
+
+    
+    
+    
+    
+    
+    
+//    // try to find which genTay is the recoTau:
+//    for (auto i :  genTauVec){
+//    for (auto j :  genMuVec){
+////    for (auto k in  genEleVec){
+//     if (i.DeltaR(j)< 0.1)
+////    }
+//    }
+//    }
+
+//    TLorentzVector Cand1, Cand2;
+//    if (genTauVec.size() < 2 ) continue;
+//    float dR_0_0 = genTauVec[0].DeltaR(genNuVec[0]);
+//    float dR_0_1 = genTauVec[0].DeltaR(genNuVec[1]);
+//    if (dR_0_0 < dR_0_1 ){
+//        Cand1= genTauVec[0]-genNuVec[0];
+//        Cand2= genTauVec[1]-genNuVec[1];}
+//    else{
+//        Cand1= genTauVec[0]-genNuVec[1];
+//        Cand2= genTauVec[1]-genNuVec[0];}
+//
+//
+//            int idx_lep= lepIndex;
+//            int idx_tau= tauIndex;
+//    cout <<Cand1.Pt()  << " " << Cand2.Pt() <<"\n";
+//    cout<< Cand1.Eta()  << " " << Cand2.Eta() <<"\n";
+//    cout<< "muepT "<< muPt->at(idx_lep) << "  tau "<<boostedTauPt->at(idx_tau)<<"\n";
+//    cout<< "mueta "<<muEta->at(idx_lep) << "  tau "<<boostedTauEta->at(idx_tau)<<"\n\n";
+    
+
+
+
+
+
+//        if (channel_tree.find("mutau_tree") != string::npos) {
+//
+//        // Muon selection
+//        int idx_lep= lepIndex;
+//        if (muPt->at(idx_lep) < 30 || fabs(muEta->at(idx_lep)) > 2.4) continue;
+//        Mu4Momentum.SetPtEtaPhiM(muPt->at(idx_lep),muEta->at(idx_lep),muPhi->at(idx_lep),MuMass);
+//        // Tau selection
+//        int idx_tau= tauIndex;
+//        if (boostedTauPt->at(idx_tau) <= 30 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
+//        Tau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
+//
+//        TLorentzVector higgs = Tau4Momentum+Mu4Momentum +Met4Momentum;
+//        TLorentzVector LeadJet= getLeadJet(Mu4Momentum, Tau4Momentum);
+//        if (higgs.Pt() < 280) continue;
+//        higpt->Fill(higgs.Pt(),LumiWeight);
+//
+//        }
+
+
+
+//
+
+
+
+
     
     
     
