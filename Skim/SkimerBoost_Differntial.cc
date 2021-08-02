@@ -59,7 +59,8 @@ void SkimerBoost::Loop(TString OutputFile)
         Met4Momentum.SetPtEtaPhiM(genMET, 0, genMETPhi, 0);
         // Lumi weight
         std::string sample       = file->GetName();
-        float LumiWeight = XSection(sample)*1.0 / hEvents->GetBinContent(2);
+//        float LumiWeight = XSection(sample)*1.0 / hEvents->GetBinContent(2);
+        float LumiWeight = 1;
         
         //=========================================================================================================
         
@@ -163,16 +164,16 @@ void SkimerBoost::Loop(TString OutputFile)
         cout<<"entering tautau\n";
 //            findDr fdMatchNu0 = FindClosetDr(genTauVec[0],genNuTauVec);
 //            findDr fdMatchNu1 = FindClosetDr(genTauVec[1],genNuTauVec);
-//            
+//
 //            TLorentzVector VisibleTau0 = genTauVec[0] - genNuTauVec[fdMatchNu0.order];
 //            TLorentzVector VisibleTau1 = genTauVec[1] - genNuTauVec[fdMatchNu1.order];
-//            
+//
 //            if (VisibleTau0.Pt() < 30 || fabs(VisibleTau0.Eta()) > 2.3) continue;
 //            if (VisibleTau1.Pt() < 30 || fabs(VisibleTau1.Eta()) > 2.3) continue;
-//            
+//
 //            //    cout<< VisibleTau0.Pt()<< " " << VisibleTau1.Pt() <<"  \t " << boostedTauPt->at(leadtauIndex) << "  " <<boostedTauPt->at(subtauIndex)<<"\n";
 //            //    cout<< VisibleTau0.Eta()<< " " << VisibleTau1.Eta() <<"  \t " << boostedTauEta->at(leadtauIndex) << "  " <<boostedTauEta->at(subtauIndex)<<"\n\n";
-//            
+//
 //            TLorentzVector higgs = VisibleTau0+VisibleTau1 +Met4Momentum;
 //            TLorentzVector LeadJet= getLeadJet(VisibleTau0 , VisibleTau1);
 //            if (higgs.Pt() < 280) continue;
