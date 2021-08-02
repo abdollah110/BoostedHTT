@@ -98,8 +98,8 @@ void SkimerBoost::Loop(TString OutputFile)
         
         if (genTauVec.size() < 2 ) continue;
         
-        cout<<genTauVec<<" "<<genMuVec<<" "<<genEleVec<<"\t";
-        cout<<genNuTauVec<<" "<<genNuMuVec<<" "<<genNuEleVec<<"\n";
+        cout<<genTauVec.size()<<" "<<genMuVec.size()<<" "<<genEleVec.size()<<"\t";
+        cout<<genNuTauVec.size()<<" "<<genNuMuVec.size()<<" "<<genNuEleVec.size()<<"\n";
         
         
         //emu
