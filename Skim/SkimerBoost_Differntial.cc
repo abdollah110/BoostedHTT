@@ -98,10 +98,14 @@ void SkimerBoost::Loop(TString OutputFile)
         
         if (genTauVec.size() < 2 ) continue;
         
+        cout<<genTauVec<<" "<<genMuVec<<" "<<genEleVec<<"\t";
+        cout<<genNuTauVec<<" "<<genNuMuVec<<" "<<genNuEleVec<<"\n";
+        
         
         //emu
         if (genMuVec.size() > 0 && genEleVec.size() > 0 ) {
             
+            cout<<"entering emu\n";
             if (genMuVec[0].Pt() < 10 || fabs(genMuVec[0].Eta()) > 2.4) continue;
             if (genEleVec[0].Pt() < 10 || fabs(genEleVec[0].Eta() ) > 2.5) continue;
             
@@ -113,7 +117,7 @@ void SkimerBoost::Loop(TString OutputFile)
         
         //mutau
         else if (genMuVec.size() > 0 &&  genEleVec.size() < 1 ){
-                        
+            cout<<"entering mutau\n";
             findDr fdMatch0 = FindClosetDr(genTauVec[0],genMuVec);
             findDr fdMatch1 = FindClosetDr(genTauVec[1],genMuVec);
                         
@@ -135,7 +139,7 @@ void SkimerBoost::Loop(TString OutputFile)
         //etau
         else if (genMuVec.size() < 1 &&  genEleVec.size() > 0 ){
             
-            
+            cout<<"entering etau\n";
             findDr fdMatch0 = FindClosetDr(genTauVec[0],genEleVec);
             findDr fdMatch1 = FindClosetDr(genTauVec[1],genEleVec);
             
@@ -156,6 +160,7 @@ void SkimerBoost::Loop(TString OutputFile)
         }
         else
         {
+        cout<<"entering tautau\n";
             findDr fdMatchNu0 = FindClosetDr(genTauVec[0],genNuTauVec);
             findDr fdMatchNu1 = FindClosetDr(genTauVec[1],genNuTauVec);
             
