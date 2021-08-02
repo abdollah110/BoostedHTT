@@ -31,9 +31,9 @@ float TT_Had_BR= 0.4544;
 
 float getLuminsoity(int year, string channel) {
     if (channel.find("tt") != string::npos){
-    if (year == 2016) return 35900.;
+    if (year == 2016) return 36330.;
     else if (year == 2017) return 36700;  //    else if (year == 2017) return 41500.; TrimMass triggers not available in Run2017B (reduced luminosity)
-    else if (year == 2018) return 59610.;
+    else if (year == 2018) return 59830.;
     else return 0;
     }
     else{
@@ -43,9 +43,9 @@ float getLuminsoity(int year, string channel) {
 }
 
 float getLuminsoity(int year) {
-    if (year == 2016) return 35900.;
-    else if (year == 2017) return 41500.;
-    else if (year == 2018) return 59610.;
+    if (year == 2016) return 36330.;
+    else if (year == 2017) return 41480.;
+    else if (year == 2018) return 59830.;
     else return 0;
 }
 
