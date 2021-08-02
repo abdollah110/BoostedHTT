@@ -112,7 +112,7 @@ void SkimerBoost::Loop(TString OutputFile)
             
             TLorentzVector higgs = genEleVec[0]+genMuVec[0] +Met4Momentum;
 //            TLorentzVector LeadJet= getLeadJet(genEleVec[0],genMuVec[0]);
-//            if (higgs.Pt() < 280) continue;
+            if (higgs.Pt() < 280) continue;
             higpt->Fill(higgs.Pt(),LumiWeight);
         }
         
@@ -133,7 +133,7 @@ void SkimerBoost::Loop(TString OutputFile)
             
             TLorentzVector higgs = VisibleTau+genMuVec[0] +Met4Momentum;
 //            TLorentzVector LeadJet= getLeadJet(VisibleTau , genMuVec[0]);
-//            if (higgs.Pt() < 280) continue;
+            if (higgs.Pt() < 280) continue;
             higpt->Fill(higgs.Pt(),LumiWeight);
         }
         
@@ -154,7 +154,7 @@ void SkimerBoost::Loop(TString OutputFile)
             
             TLorentzVector higgs = VisibleTau+genEleVec[0] +Met4Momentum;
 //            TLorentzVector LeadJet= getLeadJet(VisibleTau , genEleVec[0]);
-//            if (higgs.Pt() < 280) continue;
+            if (higgs.Pt() < 280) continue;
             higpt->Fill(higgs.Pt(),LumiWeight);
             
         }
@@ -174,7 +174,7 @@ void SkimerBoost::Loop(TString OutputFile)
 
             TLorentzVector higgs = VisibleTau0+VisibleTau1 +Met4Momentum;
 //            TLorentzVector LeadJet= getLeadJet(VisibleTau0 , VisibleTau1);
-//            if (higgs.Pt() < 280) continue;
+            if (higgs.Pt() < 280) continue;
             higpt->Fill(higgs.Pt(),LumiWeight);
             
         }
