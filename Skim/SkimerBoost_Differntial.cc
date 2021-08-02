@@ -106,19 +106,19 @@ void SkimerBoost::Loop(TString OutputFile)
         //emu
         if (genMuVec.size() > 0 && genEleVec.size() > 0 ) {
             
-            cout<<"entering emu\n";
+
             if (genMuVec[0].Pt() < 10 || fabs(genMuVec[0].Eta()) > 2.4) continue;
             if (genEleVec[0].Pt() < 10 || fabs(genEleVec[0].Eta() ) > 2.5) continue;
             
             TLorentzVector higgs = genEleVec[0]+genMuVec[0] +Met4Momentum;
 //            TLorentzVector LeadJet= getLeadJet(genEleVec[0],genMuVec[0]);
-            if (higgs.Pt() < 280) continue;
+//            if (higgs.Pt() < 280) continue;
             higpt->Fill(higgs.Pt(),LumiWeight);
         }
         
         //mutau
         else if (genMuVec.size() > 0 &&  genEleVec.size() < 1 ){
-            cout<<"entering mutau\n";
+
             findDr fdMatch0 = FindClosetDr(genTauVec[0],genMuVec);
             findDr fdMatch1 = FindClosetDr(genTauVec[1],genMuVec);
                         
@@ -133,14 +133,13 @@ void SkimerBoost::Loop(TString OutputFile)
             
             TLorentzVector higgs = VisibleTau+genMuVec[0] +Met4Momentum;
 //            TLorentzVector LeadJet= getLeadJet(VisibleTau , genMuVec[0]);
-            if (higgs.Pt() < 280) continue;
+//            if (higgs.Pt() < 280) continue;
             higpt->Fill(higgs.Pt(),LumiWeight);
         }
         
         //etau
         else if (genMuVec.size() < 1 &&  genEleVec.size() > 0 ){
             
-            cout<<"entering etau\n";
             findDr fdMatch0 = FindClosetDr(genTauVec[0],genEleVec);
             findDr fdMatch1 = FindClosetDr(genTauVec[1],genEleVec);
             
@@ -155,13 +154,12 @@ void SkimerBoost::Loop(TString OutputFile)
             
             TLorentzVector higgs = VisibleTau+genEleVec[0] +Met4Momentum;
 //            TLorentzVector LeadJet= getLeadJet(VisibleTau , genEleVec[0]);
-            if (higgs.Pt() < 280) continue;
+//            if (higgs.Pt() < 280) continue;
             higpt->Fill(higgs.Pt(),LumiWeight);
             
         }
         else
         {
-        cout<<"entering tautau\n";
             findDr fdMatchNu0 = FindClosetDr(genTauVec[0],genNuTauVec);
             findDr fdMatchNu1 = FindClosetDr(genTauVec[1],genNuTauVec);
 
@@ -176,7 +174,7 @@ void SkimerBoost::Loop(TString OutputFile)
 
             TLorentzVector higgs = VisibleTau0+VisibleTau1 +Met4Momentum;
 //            TLorentzVector LeadJet= getLeadJet(VisibleTau0 , VisibleTau1);
-            if (higgs.Pt() < 280) continue;
+//            if (higgs.Pt() < 280) continue;
             higpt->Fill(higgs.Pt(),LumiWeight);
             
         }
