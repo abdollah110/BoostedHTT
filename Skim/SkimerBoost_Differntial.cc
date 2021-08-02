@@ -59,8 +59,8 @@ void SkimerBoost::Loop(TString OutputFile)
         Met4Momentum.SetPtEtaPhiM(genMET, 0, genMETPhi, 0);
         // Lumi weight
         std::string sample       = file->GetName();
-        float LumiWeight = XSection(sample)*1.0 / hEvents->GetBinContent(2);
-//        float LumiWeight = 1;
+//        float LumiWeight = XSection(sample)*1.0 / hEvents->GetBinContent(2);
+        float LumiWeight = 1;
         
         //=========================================================================================================
         
