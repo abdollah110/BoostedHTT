@@ -88,6 +88,25 @@ i++;
 return fd;
 }
 
+
+
+float XSection_Diff(std::string OutName) {
+
+    // SM Higgs
+     if (OutName.find("GluGluHToTauTau") != string::npos) return 48.30* 0.0621;
+    else if (OutName.find("VBFHToTauTau") != string::npos) return 3.770 * 0.0621;
+    else if (OutName.find("WplusHToTauTau") != string::npos) return 0.8331 * 0.0621;
+    else if (OutName.find("WminusHToTauTau") != string::npos) return 0.5272 * 0.0621;
+    else if (OutName.find("ZHToTauTau") != string::npos) return 0.7544 * 0.0621;
+    else if (OutName.find("ggZH_HToTauTau_ZToLL") != string::npos) return 0.1223 * 0.062 * 3*0.033658;
+    else if (OutName.find("ggZH_HToTauTau_ZToNuNu") != string::npos) return 0.1223 * 0.062 * 0.2000;
+    else if (OutName.find("ggZH_HToTauTau_ZToQQ") != string::npos) return 0.1223 * 0.062 * 0.6991;
+    else {
+        cout<<"\n\n*********\nNot Listed in XSection menu !!!! Watch cout    "<<OutName<< "\n\n*********\n";
+        return 0;
+    }
+}
+
 //########################################
 // Pileup files
 //########################################

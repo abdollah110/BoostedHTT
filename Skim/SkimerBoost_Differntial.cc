@@ -1,5 +1,6 @@
 #define SkimerBoost_cxx
-#include "SkimerBoost.h"
+//#include "SkimerBoost.h"
+#include "SkimerBoost_Diff.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
@@ -18,7 +19,7 @@
 using namespace std;
 
 
-void SkimerBoost::Loop(TString OutputFile)
+void SkimerBoost::Loop(TString OutputFile,std::string InputFile)
 {
     
     TH1F* hEvents = (TH1F*)gDirectory->Get("ggNtuplizer/hEvents");
@@ -41,7 +42,7 @@ void SkimerBoost::Loop(TString OutputFile)
     float MuMass= 0.10565837;
     float eleMass= 0.000511;
     float xbin[5]={0,350,450,600,2000};
-    TH1F * higpt=new TH1F("hig","hig",sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
+    TH1F * higpt=new TH1F("HiggsPt","HiggsPt",sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
     
     
     for (int jentry=0; jentry<nentries;jentry++) {
@@ -59,8 +60,8 @@ void SkimerBoost::Loop(TString OutputFile)
         Met4Momentum.SetPtEtaPhiM(genMET, 0, genMETPhi, 0);
         // Lumi weight
         std::string sample       = file->GetName();
-//        float LumiWeight = XSection(sample)*1.0 / hEvents->GetBinContent(2);
-        float LumiWeight = 1;
+        float LumiWeight = XSection_Diff(InputFile)*1.0 / hEvents->GetBinContent(2);
+//        float LumiWeight = 1;
         
         //=========================================================================================================
         
@@ -198,7 +199,7 @@ int main(int argc, char* argv[]){
     cout<< "\n===\n input is "<<InputFile  <<"  and output is "<<OutputFile<<"\n===\n";
     
     SkimerBoost t(InputFile);
-    t.Loop(OutputFile);
+    t.Loop(OutputFile,InputFile);
     return 0;
 }
 
