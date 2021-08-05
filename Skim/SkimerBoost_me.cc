@@ -22,9 +22,7 @@ void SkimerBoost::Loop(TString OutputFile)
     
     TFile* file = TFile::Open(OutputFile, "RECREATE");
     TTree* BoostTree = fChain->CloneTree(0);
-    
-    float muPt_cut= 30;
-        
+            
     fChain->SetBranchStatus("*",1);
     
     TH1F* hcount = new TH1F("hcount", "", 10, 0, 10);
@@ -102,9 +100,9 @@ void SkimerBoost::Loop(TString OutputFile)
         
         for (int imu = 0; imu < nMu; ++imu){
             
-            if (muPt->at(imu) < muPt_cut || fabs(muEta->at(imu)) > 2.4) continue;
+            if (muPt->at(imu) < 28 || fabs(muEta->at(imu)) > 2.4) continue;
             hcount->Fill(3);
-            if (muPt->at(imu) < 55  && pfMetNoRecoil < 40  ) continue;
+            if (muPt->at(imu) < 52  && pfMetNoRecoil < 30  ) continue;
             hcount->Fill(4);
             
             Mu4Mom.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);

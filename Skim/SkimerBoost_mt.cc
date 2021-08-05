@@ -24,8 +24,6 @@ void SkimerBoost::Loop(TString OutputFile)
     TTree* BoostTree = fChain->CloneTree(0);
     
     int year=0;
-    float muPt_cut= 25;
-    float tauPt_cut= 20;
         
     fChain->SetBranchStatus("*",1);
     
@@ -104,16 +102,16 @@ void SkimerBoost::Loop(TString OutputFile)
         
         for (int imu = 0; imu < nMu; ++imu){
             
-            if (muPt->at(imu) < muPt_cut || fabs(muEta->at(imu)) > 2.4) continue;
+            if (muPt->at(imu) < 28 || fabs(muEta->at(imu)) > 2.4) continue;
             hcount->Fill(3);
-            if (muPt->at(imu) < 52  && pfMetNoRecoil < 40  ) continue;
+            if (muPt->at(imu) < 52  && pfMetNoRecoil < 30  ) continue;
             hcount->Fill(4);
             
             Lep4Mom.SetPtEtaPhiM(muPt->at(imu),muEta->at(imu),muPhi->at(imu),MuMass);
             
             for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                 
-                if (boostedTauPt->at(ibtau) < tauPt_cut || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
+                if (boostedTauPt->at(ibtau) < 20 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
                 if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5) continue;
                 if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < -0.5) continue;

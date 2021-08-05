@@ -22,9 +22,7 @@ void SkimerBoost::Loop(TString OutputFile)
     
     TFile* file = TFile::Open(OutputFile, "RECREATE");
     TTree* BoostTree = fChain->CloneTree(0);
-    
-    float muPt_cut= 30;
-    
+        
     fChain->SetBranchStatus("*",1);
     
     TH1F* hcount = new TH1F("hcount", "", 10, 0, 10);
@@ -102,7 +100,7 @@ void SkimerBoost::Loop(TString OutputFile)
         
         
         for (int iele = 0; iele < nEle; ++iele){
-            if (elePt->at(iele) < 40 || fabs(eleEta->at(iele)) > 2.5) continue;
+            if (elePt->at(iele) < 37 || fabs(eleEta->at(iele)) > 2.5) continue;
             hcount->Fill(3);
             
             bool eleMVAId= false;

@@ -23,9 +23,6 @@ void SkimerBoost::Loop(TString OutputFile)
     TFile* file = TFile::Open(OutputFile, "RECREATE");
     TTree* BoostTree = fChain->CloneTree(0);
     
-    float elePt_cut= 35;
-    float tauPt_cut= 20;
-        
     fChain->SetBranchStatus("*",1);
     
     TH1F* hcount = new TH1F("hcount", "", 10, 0, 10);
@@ -103,9 +100,9 @@ void SkimerBoost::Loop(TString OutputFile)
         
         for (int iele = 0; iele < nEle; ++iele){
             
-            if (elePt->at(iele) < elePt_cut || fabs(eleEta->at(iele)) > 2.5) continue;
+            if (elePt->at(iele) < 37 || fabs(eleEta->at(iele)) > 2.5) continue;
             hcount->Fill(3);
-            if (elePt->at(iele) < 120 &&  pfMetNoRecoil < 40) continue;
+            if (elePt->at(iele) < 120 &&  pfMetNoRecoil < 30) continue;
             hcount->Fill(4);
             
             bool eleMVAId= false;
@@ -123,7 +120,7 @@ void SkimerBoost::Loop(TString OutputFile)
             for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                 
                 
-                if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
+                if (boostedTauPt->at(ibtau) < 20 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
                 if (boostedTauagainstElectronVLooseMVA62018->at(ibtau) < 0.5) continue;
                 if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < -0.5) continue;

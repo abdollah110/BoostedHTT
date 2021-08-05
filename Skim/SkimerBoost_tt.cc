@@ -22,9 +22,7 @@ void SkimerBoost::Loop(TString OutputFile)
     
     TFile* file = TFile::Open(OutputFile, "RECREATE");
     TTree* BoostTree = fChain->CloneTree(0);
-    
-    float tauPt_cut= 20;
-    
+        
     fChain->SetBranchStatus("*",1);
     
     TH1F* hcount = new TH1F("hcount", "", 10, 0, 10);
@@ -105,7 +103,7 @@ void SkimerBoost::Loop(TString OutputFile)
         
         for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
             
-            if (boostedTauPt->at(ibtau) < tauPt_cut || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
+            if (boostedTauPt->at(ibtau) < 20 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
             if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
             //                if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
             if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < -0.5) continue;
@@ -116,7 +114,7 @@ void SkimerBoost::Loop(TString OutputFile)
             
             for (int jbtau = ibtau+1; jbtau < nBoostedTau; ++jbtau){
                 
-                if (boostedTauPt->at(jbtau) < tauPt_cut || fabs(boostedTauEta->at(jbtau)) > 2.3 ) continue;
+                if (boostedTauPt->at(jbtau) < 20 || fabs(boostedTauEta->at(jbtau)) > 2.3 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(jbtau) < 0.5 ) continue;
                 //                    if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(jbtau) < 0.5 ) continue;
                 if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(jbtau) < -0.5) continue;
