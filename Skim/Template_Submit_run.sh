@@ -54,7 +54,8 @@ ShortName2=${DataSetName##*crab_}
 FinalOutName=`tr '/' '_' <<<"$ShortName2"`_$rootNumber".root"
 
 echo "FinalOutName is " $FinalOutName
-hadd -f $FinalOutName "skimed_"*.root
+ls
+hadd -f $FinalOutName *"skimed_"*.root
 
 ##################### Cope the output file the output directory
 xrdcp -f $FinalOutName  root://cmseos.fnal.gov//OUTPUTFILE_LOCATION/$FinalOutName
