@@ -250,7 +250,7 @@ int main(int argc, char* argv[]){
     for (auto Sys : AllSys){
         cout<<"Sys is "<<Sys<<"\n";
         SkimerBoost t(InputFile);
-        t.Loop(OutputFile+Sys,InputFile,Sys);
+        t.Loop("OutDiff_"+Sys+"_"+OutputFile,InputFile,Sys);
         }
     return 0;
 }
