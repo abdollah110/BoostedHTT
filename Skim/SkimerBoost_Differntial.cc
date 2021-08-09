@@ -247,7 +247,9 @@ int main(int argc, char* argv[]){
     cout<< "\n===\n input is "<<InputFile  <<"  and output is "<<OutputFile<<"\n===\n";
     
     SkimerBoost t(InputFile);
-    t.Loop(OutputFile+Sys,InputFile,Sys);
+    vector<std::string> AllSys  {"_Nominal","_THU_ggH_Mu","_THU_ggH_Res","_THU_ggH_Mig01","_THU_ggH_Mig12","_THU_ggH_VBF2j","_THU_ggH_VBF3j","_THU_ggH_PT60","_THU_ggH_PT120","_THU_ggH_qmtop"};
+    for (auto Sys : AllSys)
+        t.Loop(OutputFile+Sys,InputFile,Sys);
     return 0;
 }
 
