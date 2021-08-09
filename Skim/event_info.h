@@ -182,11 +182,12 @@ event_info::event_info(std::string syst) :
 //year_(year),
 //isEmbed(false),
 unc_map{
-    {"Rivet0_Up", 0}, {"Rivet0_Down", 0}, {"Rivet1_Up", 1}, {"Rivet1_Down", 1},
-    {"Rivet2_Up", 2}, {"Rivet2_Down", 2}, {"Rivet3_Up", 3}, {"Rivet3_Down", 3},
-    {"Rivet4_Up", 4}, {"Rivet4_Down", 4}, {"Rivet5_Up", 5}, {"Rivet5_Down", 5},
-    {"Rivet6_Up", 6}, {"Rivet6_Down", 6}, {"Rivet7_Up", 7}, {"Rivet7_Down", 7},
-    {"Rivet8_Up", 8}, {"Rivet8_Down", 8}
+{"_THU_ggH_Mu",0},{"_THU_ggH_Res",1},{"_THU_ggH_Mig01",2},{"_THU_ggH_Mig12",3},{"_THU_ggH_VBF2j",4},{"_THU_ggH_VBF3j",5},{"_THU_ggH_PT60",6},{"_THU_ggH_PT120",7},{"_THU_ggH_qmtop",8}
+//    {"Rivet0_Up", 0}, {"Rivet0_Down", 0}, {"Rivet1_Up", 1}, {"Rivet1_Down", 1},
+//    {"Rivet2_Up", 2}, {"Rivet2_Down", 2}, {"Rivet3_Up", 3}, {"Rivet3_Down", 3},
+//    {"Rivet4_Up", 4}, {"Rivet4_Down", 4}, {"Rivet5_Up", 5}, {"Rivet5_Down", 5},
+//    {"Rivet6_Up", 6}, {"Rivet6_Down", 6}, {"Rivet7_Up", 7}, {"Rivet7_Down", 7},
+//    {"Rivet8_Up", 8}, {"Rivet8_Down", 8}
 }
 
 {
@@ -312,16 +313,21 @@ unc_map{
 //        }
         
         Float_t event_info::getRivetUnc(std::vector<double> uncs, std::string syst) {
-            if (syst.find("Rivet") != std::string::npos) {
+            if (syst.find("_THU_ggH") != std::string::npos) {
                 int index = unc_map[syst];
-                if (syst.find("Up") != std::string::npos) {
-                    return uncs.at(index);
-                } else {
-                    return -1 * uncs.at(index);
-                }
+                return uncs.at(index);
+//
+//                if (syst.find("Up") != std::string::npos) {
+//                    return uncs.at(index);
+//                } else {
+//                    return -1 * uncs.at(index);
+//                }
             }
+            else {
         return 1;
         }
+        }
+        
         
         
 //        Bool_t event_info::getPassFlags() {

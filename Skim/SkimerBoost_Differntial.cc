@@ -22,7 +22,7 @@
 using namespace std;
 
 
-void SkimerBoost::Loop(TString OutputFile,std::string InputFile)
+void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
 {
     
     TH1F* hEvents = (TH1F*)gDirectory->Get("ggNtuplizer/hEvents");
@@ -45,7 +45,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile)
     float MuMass= 0.10565837;
     float eleMass= 0.000511;
     float xbin[5]={0,350,450,600,2000};
-    TH1F * higpt=new TH1F("HiggsPt","HiggsPt",sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
+    TH1F * higpt=new TH1F(("HiggsPt"+Sys).c_str(),"HiggsPt",sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
+    TH1F * higpt_nnlops=new TH1F(("HiggsPt_nnlops"+Sys).c_str(),"HiggsPt_nnlops",sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
     
     TFile *f_NNLOPS = TFile::Open("NNLOPS_reweight.root");
     TGraph *g_NNLOPS_0jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_powheg_0jet"));
@@ -56,7 +57,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile)
     TGraph *g_NNLOPS_mcatnlo_1jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_1jet"));
     TGraph *g_NNLOPS_mcatnlo_2jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_2jet"));
     TGraph *g_NNLOPS_mcatnlo_3jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_3jet"));
-    event_info event("");
+    event_info event(Sys);
     
     for (int jentry=0; jentry<nentries;jentry++) {
         
@@ -114,11 +115,10 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile)
         if (genTauVec.size() < 2 ) continue;
         
         
-        
+            float weight_Rivet =1;
             float weight_g_NNLOPS = 1;
             NumV WG1unc;
-            if (InputFile.find("GluGluHToTauTau") != std::string::npos) {
-                
+//            if (InputFile.find("GluGluHToTauTau") != std::string::npos) { // now is used for all of prodiuction mode
                 if (Rivet_nJets30 == 0)
                     weight_g_NNLOPS = g_NNLOPS_0jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(125.0)));
                 if (Rivet_nJets30 == 1)
@@ -129,10 +129,11 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile)
                     weight_g_NNLOPS = g_NNLOPS_3jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(925.0)));
                 
                 WG1unc = qcd_ggF_uncert_2017(Rivet_nJets30, Rivet_higgsPt, Rivet_stage1_cat_pTjet30GeV);
-//                if (syst.find("Rivet") != std::string::npos) {
-                    cout<< (1 + event.getRivetUnc(WG1unc, "Rivet0_Up"))<<"\n";
-//                }
-            }
+                if (Sys.find("THU_ggH") != std::string::npos) {
+                    weight_Rivet= 1 + event.getRivetUnc(WG1unc, Sys);
+                }
+//            }
+            
             
             
             
@@ -153,7 +154,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile)
             TLorentzVector higgs = genEleVec[0]+genMuVec[0] +Met4Momentum;
 //            TLorentzVector LeadJet= getLeadJet(genEleVec[0],genMuVec[0]);
             if (higgs.Pt() < 280) continue;
-            higpt->Fill(higgs.Pt(),LumiWeight);
+            higpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
+            higpt_nnlops->Fill(higgs.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
         }
         
         //mutau
@@ -174,7 +176,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile)
             TLorentzVector higgs = VisibleTau+genMuVec[0] +Met4Momentum;
 //            TLorentzVector LeadJet= getLeadJet(VisibleTau , genMuVec[0]);
             if (higgs.Pt() < 280) continue;
-            higpt->Fill(higgs.Pt(),LumiWeight);
+            higpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
+            higpt_nnlops->Fill(higgs.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
         }
         
         //etau
@@ -195,7 +198,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile)
             TLorentzVector higgs = VisibleTau+genEleVec[0] +Met4Momentum;
 //            TLorentzVector LeadJet= getLeadJet(VisibleTau , genEleVec[0]);
             if (higgs.Pt() < 280) continue;
-            higpt->Fill(higgs.Pt(),LumiWeight);
+            higpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
+            higpt_nnlops->Fill(higgs.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
             
         }
         else
@@ -215,8 +219,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile)
             TLorentzVector higgs = VisibleTau0+VisibleTau1 +Met4Momentum;
 //            TLorentzVector LeadJet= getLeadJet(VisibleTau0 , VisibleTau1);
             if (higgs.Pt() < 280) continue;
-            higpt->Fill(higgs.Pt(),LumiWeight);
-            
+            higpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
+            higpt_nnlops->Fill(higgs.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
         }
     }
     
@@ -225,6 +229,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile)
     hEvents->Write();
     hcount->Write();
     higpt->Write();
+    higpt_nnlops->Write();
 //    if (hPU) hPU->Write();
 //    if (hPUTrue) hPUTrue->Write();
     file->Close();
@@ -234,11 +239,12 @@ int main(int argc, char* argv[]){
     
     string InputFile=argv[1];
     string OutputFile=argv[2];
+    string Sys=argv[3];
     
     cout<< "\n===\n input is "<<InputFile  <<"  and output is "<<OutputFile<<"\n===\n";
     
     SkimerBoost t(InputFile);
-    t.Loop(OutputFile,InputFile);
+    t.Loop(OutputFile+Sys,InputFile,Sys);
     return 0;
 }
 
