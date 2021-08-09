@@ -248,9 +248,10 @@ int main(int argc, char* argv[]){
     
     SkimerBoost t(InputFile);
     vector<std::string> AllSys  {"_Nominal","_THU_ggH_Mu","_THU_ggH_Res","_THU_ggH_Mig01","_THU_ggH_Mig12","_THU_ggH_VBF2j","_THU_ggH_VBF3j","_THU_ggH_PT60","_THU_ggH_PT120","_THU_ggH_qmtop"};
-    for (auto Sys : AllSys)
+    for (auto Sys : AllSys){
         cout<<"Sys is "<<Sys<<"\n";
         t.Loop(OutputFile+Sys,InputFile,Sys);
+        }
     return 0;
 }
 
