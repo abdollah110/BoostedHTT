@@ -44,6 +44,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
     TFile* file = TFile::Open(OutputFile, "RECREATE");
     TTree* BoostTree = fChain->CloneTree(0);
     
+    cout<<"test1\n";
     float tauPt_cut= 20;
     
     fChain->SetBranchStatus("*",1);
@@ -64,7 +65,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
     TH1F * higpt_nnlops=new TH1F("HiggsPt_nnlops","HiggsPt",sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
 
     event_info event(Sys);
-    
+    cout<<"test2\n";
     for (int jentry=0; jentry<nentries;jentry++) {
         
         Long64_t ientry = LoadTree(jentry);
@@ -84,7 +85,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
 //        float LumiWeight = 1;
         
         //=========================================================================================================
-        
+        cout<<"test3\n";
         TLorentzVector genTau, genMu, genEle, genNuTau, genNuMu, genNuEle;
         vector<TLorentzVector> genTauVec, genMuVec, genEleVec, genNuTauVec, genNuEleVec, genNuMuVec;
         
@@ -120,7 +121,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         
         if (genTauVec.size() < 2 ) continue;
         
-        
+        cout<<"test4\n";
             float weight_Rivet =1;
             float weight_g_NNLOPS = 1;
             NumV WG1unc;
@@ -133,10 +134,12 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
                     weight_g_NNLOPS = g_NNLOPS_2jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(800.0)));
                 if (Rivet_nJets30 >= 3)
                     weight_g_NNLOPS = g_NNLOPS_3jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(925.0)));
-                
+                cout<<"test5\n";
                 WG1unc = qcd_ggF_uncert_2017(Rivet_nJets30, Rivet_higgsPt, Rivet_stage1_cat_pTjet30GeV);
+                cout<<"test6\n";
                 cout<<Rivet_nJets30<<" "<< Rivet_higgsPt<<" "<< Rivet_stage1_cat_pTjet30GeV<<"\n";
-                cout<<"event.getRivetUnc(WG1unc, Sys)   "<<event.getRivetUnc(WG1unc, "_THU_ggH_Res")<<"\n";
+                
+                cout<<"event.getRivetUnc(WG1unc, Sys)   "<<event.getRivetUnc(WG1unc, "_THU_ggH_Mu")<<"\n";
                 
                 if (Sys.find("THU_ggH") != std::string::npos) {
                     weight_Rivet= 1 + event.getRivetUnc(WG1unc, Sys);
@@ -253,7 +256,8 @@ int main(int argc, char* argv[]){
     cout<< "\n===\n input is "<<InputFile  <<"  and output is "<<OutputFile<<"\n===\n";
     
     SkimerBoost t(InputFile);
-    vector<std::string> AllSys  {"_Nominal","_THU_ggH_Mu","_THU_ggH_Res","_THU_ggH_Mig01","_THU_ggH_Mig12","_THU_ggH_VBF2j","_THU_ggH_VBF3j","_THU_ggH_PT60","_THU_ggH_PT120","_THU_ggH_qmtop"};
+//    vector<std::string> AllSys  {"_Nominal","_THU_ggH_Mu","_THU_ggH_Res","_THU_ggH_Mig01","_THU_ggH_Mig12","_THU_ggH_VBF2j","_THU_ggH_VBF3j","_THU_ggH_PT60","_THU_ggH_PT120","_THU_ggH_qmtop"};
+    {"_THU_ggH_Mu","_THU_ggH_Res","_THU_ggH_Mig01","_THU_ggH_Mig12","_THU_ggH_VBF2j","_THU_ggH_VBF3j","_THU_ggH_PT60","_THU_ggH_PT120","_THU_ggH_qmtop"};
     for (auto Sys : AllSys){
         cout<<"Sys is "<<Sys<<"\n";
         t.Loop(OutputFile+Sys,InputFile,Sys);
