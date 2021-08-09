@@ -57,9 +57,12 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
     float MuMass= 0.10565837;
     float eleMass= 0.000511;
     float xbin[5]={0,350,450,600,2000};
-    TH1F * higpt=new TH1F(("HiggsPt"+Sys).c_str(),("HiggsPt"+Sys).c_str(),sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
-    TH1F * higpt_nnlops=new TH1F(("HiggsPt_nnlops"+Sys).c_str(),("HiggsPt"+Sys).c_str(),sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
-    
+//    TH1F * higpt=new TH1F(("HiggsPt"+Sys).c_str(),("HiggsPt"+Sys).c_str(),sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
+//    TH1F * higpt_nnlops=new TH1F(("HiggsPt_nnlops"+Sys).c_str(),("HiggsPt"+Sys).c_str(),sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
+
+    TH1F * higpt=new TH1F("HiggsPt","HiggsPt",sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
+    TH1F * higpt_nnlops=new TH1F("HiggsPt_nnlops","HiggsPt",sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
+
     event_info event(Sys);
     
     for (int jentry=0; jentry<nentries;jentry++) {
