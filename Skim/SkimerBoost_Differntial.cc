@@ -242,7 +242,7 @@ int main(int argc, char* argv[]){
     
     string InputFile=argv[1];
     string OutputFile=argv[2];
-    string Sys=argv[3];
+//    string Sys=argv[3];
     
     cout<< "\n===\n input is "<<InputFile  <<"  and output is "<<OutputFile<<"\n===\n";
     
