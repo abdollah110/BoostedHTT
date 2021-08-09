@@ -132,6 +132,9 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
                     weight_g_NNLOPS = g_NNLOPS_3jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(925.0)));
                 
                 WG1unc = qcd_ggF_uncert_2017(Rivet_nJets30, Rivet_higgsPt, Rivet_stage1_cat_pTjet30GeV);
+                cout<<Rivet_nJets30<<" "<< Rivet_higgsPt<<" "<< Rivet_stage1_cat_pTjet30GeV<<"\n";
+                cout<<"event.getRivetUnc(WG1unc, Sys)   "<<event.getRivetUnc(WG1unc, "_THU_ggH_Res")<<"\n";
+                
                 if (Sys.find("THU_ggH") != std::string::npos) {
                     weight_Rivet= 1 + event.getRivetUnc(WG1unc, Sys);
                 }
