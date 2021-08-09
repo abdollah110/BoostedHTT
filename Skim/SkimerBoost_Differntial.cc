@@ -1,6 +1,8 @@
 #define SkimerBoost_cxx
 //#include "SkimerBoost.h"
 #include "SkimerBoost_Diff.h"
+#include "ComputeWG1Unc.h"
+#include "event_info.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
@@ -16,6 +18,7 @@
 //#include "../interface/makeHisto.h"
 
 #include "Function_Skim.h"
+#include "event_info.h"
 using namespace std;
 
 
@@ -44,6 +47,16 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile)
     float xbin[5]={0,350,450,600,2000};
     TH1F * higpt=new TH1F("HiggsPt","HiggsPt",sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
     
+    TFile *f_NNLOPS = TFile::Open("NNLOPS_reweight.root");
+    TGraph *g_NNLOPS_0jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_powheg_0jet"));
+    TGraph *g_NNLOPS_1jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_powheg_1jet"));
+    TGraph *g_NNLOPS_2jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_powheg_2jet"));
+    TGraph *g_NNLOPS_3jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_powheg_3jet"));
+    TGraph *g_NNLOPS_mcatnlo_0jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_0jet"));
+    TGraph *g_NNLOPS_mcatnlo_1jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_1jet"));
+    TGraph *g_NNLOPS_mcatnlo_2jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_2jet"));
+    TGraph *g_NNLOPS_mcatnlo_3jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_3jet"));
+    event_info event("");
     
     for (int jentry=0; jentry<nentries;jentry++) {
         
@@ -99,6 +112,32 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile)
         }
         
         if (genTauVec.size() < 2 ) continue;
+        
+        
+        
+            float weight_g_NNLOPS = 1;
+            NumV WG1unc;
+            if (InputFile.find("GluGluHToTauTau") != std::string::npos) {
+                
+                if (Rivet_nJets30 == 0)
+                    weight_g_NNLOPS = g_NNLOPS_0jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(125.0)));
+                if (Rivet_nJets30 == 1)
+                    weight_g_NNLOPS = g_NNLOPS_1jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(625.0)));
+                if (Rivet_nJets30 == 2)
+                    weight_g_NNLOPS = g_NNLOPS_2jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(800.0)));
+                if (Rivet_nJets30 >= 3)
+                    weight_g_NNLOPS = g_NNLOPS_3jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(925.0)));
+                
+                WG1unc = qcd_ggF_uncert_2017(Rivet_nJets30, Rivet_higgsPt, Rivet_stage1_cat_pTjet30GeV);
+//                if (syst.find("Rivet") != std::string::npos) {
+                    cout<< (1 + event.getRivetUnc(WG1unc, "Rivet0_Up"))<<"\n";
+//                }
+            }
+            
+            
+            
+            
+        
         
 //        cout<<genTauVec.size()<<" "<<genMuVec.size()<<" "<<genEleVec.size()<<"\t";
 //        cout<<genNuTauVec.size()<<" "<<genNuMuVec.size()<<" "<<genNuEleVec.size()<<"\n";

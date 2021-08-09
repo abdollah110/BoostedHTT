@@ -1244,3 +1244,6 @@ Int_t SkimerBoost::Cut(Long64_t entry)
    return 1;
 }
 #endif // #ifdef SkimerBoost_cxx
+
+
+//for i in em et mt me tt ; do for j in 2016 2017 2018 ; do echo python makeSubmissionPackage.py -x SkimerBoost_$i -n File_$i\_mc\_$j -i InputSample_$j\_mc.txt -o /store/user/abdollah/SkimBoostedH2/$j/$i/v3/ ; done ; done
