@@ -57,8 +57,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
     float MuMass= 0.10565837;
     float eleMass= 0.000511;
     float xbin[5]={0,350,450,600,2000};
-    TH1F * higpt=new TH1F(("HiggsPt"+Sys).c_str(),"HiggsPt",sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
-    TH1F * higpt_nnlops=new TH1F(("HiggsPt_nnlops"+Sys).c_str(),"HiggsPt_nnlops",sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
+    TH1F * higpt=new TH1F(("HiggsPt"+Sys).c_str(),"HiggsPt"+Sys).c_str(),sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
+    TH1F * higpt_nnlops=new TH1F(("HiggsPt_nnlops"+Sys).c_str(),"HiggsPt"+Sys).c_str(),sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
     
     event_info event(Sys);
     
@@ -249,6 +249,7 @@ int main(int argc, char* argv[]){
     SkimerBoost t(InputFile);
     vector<std::string> AllSys  {"_Nominal","_THU_ggH_Mu","_THU_ggH_Res","_THU_ggH_Mig01","_THU_ggH_Mig12","_THU_ggH_VBF2j","_THU_ggH_VBF3j","_THU_ggH_PT60","_THU_ggH_PT120","_THU_ggH_qmtop"};
     for (auto Sys : AllSys)
+        cout<<"Sys is "<<Sys<<"\n";
         t.Loop(OutputFile+Sys,InputFile,Sys);
     return 0;
 }
