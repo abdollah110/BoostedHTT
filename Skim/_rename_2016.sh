@@ -14,12 +14,17 @@ hadd $dir/WJetsToLNu_HT-2500ToInf.root  $dir/WJetsToLNu_HT-2500ToInf*.root
 hadd $dir/WJetsToLNu_HT-400To600.root  $dir/WJetsToLNu_HT-400To600*.root
 hadd $dir/WJetsToLNu_HT-600To800.root  $dir/WJetsToLNu_HT-600To800*.root
 hadd $dir/WJetsToLNu_HT-800To1200.root  $dir/WJetsToLNu_HT-800To1200*.root
+hadd $dir/QCD_HT300to500.root $dir/QCD_HT300to500_v*.root
+hadd $dir/QCD_HT500to700.root $dir/QCD_HT500to700_v*.root
+hadd $dir/QCD_HT1000to1500.root $dir/QCD_HT1000to1500_v*.root
+hadd $dir/QCD_HT1500to2000.root $dir/QCD_HT1500to2000_v*.root
+hadd $dir/QCD_HT2000toInf.root $dir/QCD_HT2000toInf_v*.root
 hadd $dir/ggH125.root  $dir/GluGluHToTauTau*.root
 mv $dir/VBFHToTauTau_M125.root   $dir/qqH125.root
 mv $dir/WminusHToTauTau_M125.root   $dir/WMinusH125.root
 mv $dir/WplusHToTauTau_M125.root   $dir/WPlusH125.root
 mv $dir/ZHToTauTau_M125.root   $dir/ZH125.root
-echo 'Removing the following files' $dir/*_v1* $dir/*_v2* $dir/*_v3*
-rm $dir/*_v1* $dir/*_v2* $dir/*_v3*
+echo 'Removing the following files' $dir/*_v1* $dir/*_v2* $dir/*_v3* $dir/*_v4*
+rm $dir/*_v1* $dir/*_v2* $dir/*_v3* $dir/*_v4*
 
 
