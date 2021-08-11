@@ -55,6 +55,13 @@ void plotFill(string name, float x, int nx, float nxmin, float nxmax, double wei
     (*myMap1)[name]->SetDefaultSumw2();
     (*myMap1)[name]->Fill(x,weight);
 }
+    
+//void plotFill(string name, float x, double xbin[], double weight=1) {
+//    if (myMap1->find(name) == myMap1->end())
+//        (*myMap1)[name] = new TH1F(name.c_str(), name.c_str(),sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
+//    (*myMap1)[name]->SetDefaultSumw2();
+//    (*myMap1)[name]->Fill(x,weight);
+//}
 
 void plotFill(string name, float x, float y, int nx, float nxmin, float nxmax, int ny, float nymin, float nymax, double weight=1) {
     if (myMap2->find(name) == myMap2->end())

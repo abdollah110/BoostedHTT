@@ -214,11 +214,16 @@ float XSection(std::string OutName) {
 
 
     // SM Higgs
-    else if (OutName.find("ggH125") != string::npos) return 48.58* 0.0627;
-    else if (OutName.find("qqH125") != string::npos) return 3.782 * 0.0627;
-    else if (OutName.find("WPlusH125") != string::npos) return 0.840 * 0.0627;
-    else if (OutName.find("WMinusH125") != string::npos) return 0.5328 * 0.0627;
-    else if (OutName.find("ZH125") != string::npos) return 0.8839 * 0.062;
+    else if (OutName.find("ggH125") != string::npos) return 48.30* 0.0621;
+    else if (OutName.find("qqH125") != string::npos) return 3.770 * 0.0621;
+    else if (OutName.find("WPlusH125") != string::npos) return 0.8331 * 0.0621;
+    else if (OutName.find("WMinusH125") != string::npos) return 0.5272 * 0.0621;
+//    else if (OutName.find("ZH125") != string::npos) return 0.8839 * 0.062;
+    else if (OutName.find("ZH125") != string::npos) return 0.7544 * 0.0621;
+    else if (OutName.find("ggZHLL125") != string::npos) return 0.1223 * 0.062 * 3*0.033658;
+    else if (OutName.find("ggZHNuNu125") != string::npos) return 0.1223 * 0.062 * 0.2000;
+    else if (OutName.find("ggZHQQ125") != string::npos) return 0.1223 * 0.062 * 0.6991;    
+    else if (OutName.find("toptopH125") != string::npos) return 0.5033 * 0.062;
     
     else if (OutName.find("JJH0PMToTauTauPlusTwoJets") != string::npos) return     0.1383997884      ;
     else if (OutName.find("JJH0PMToTauTauPlusOneJets") != string::npos) return       0.2270577971    ;
