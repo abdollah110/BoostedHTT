@@ -324,7 +324,42 @@ using namespace std;
    vector<vector<int> > *AK8puppiSDSJCharge;
    vector<vector<int> > *AK8puppiSDSJFlavour;
    vector<vector<float> > *AK8puppiSDSJCSV;
-
+    Int_t           NumPair;
+   Float_t         m_1;
+   Float_t         px_1;
+   Float_t         py_1;
+   Float_t         pz_1;
+   Float_t         e_1;
+   Float_t         pt_1;
+   Float_t         phi_1;
+   Float_t         eta_1;
+   Float_t         m_2;
+   Float_t         px_2;
+   Float_t         py_2;
+   Float_t         pz_2;
+   Float_t         e_2;
+   Float_t         pt_2;
+   Float_t         phi_2;
+   Float_t         eta_2;
+   Int_t           decayMode2;
+   Int_t           lepIndex;
+   Int_t           tauIndex;
+   Int_t           leadtauIndex;
+   Int_t           subtauIndex;
+   Float_t         m_sv;
+   Float_t         pt_sv;
+   Float_t         m_sv_JES_Up;
+   Float_t         pt_sv_JES_Up;
+   Float_t         m_sv_JES_Down;
+   Float_t         pt_sv_JES_Down;
+   Float_t         m_sv_UES_Up;
+   Float_t         pt_sv_UES_Up;
+   Float_t         m_sv_UES_Down;
+   Float_t         pt_sv_UES_Down;
+   Float_t         m_sv_TES_Up;
+   Float_t         pt_sv_TES_Up;
+   Float_t         m_sv_TES_Down;
+   Float_t         pt_sv_TES_Down;
       // List of branches
    TBranch        *b_run;   //!
    TBranch        *b_event;   //!
@@ -627,6 +662,43 @@ using namespace std;
    TBranch        *b_AK8puppiSDSJCharge;   //!
    TBranch        *b_AK8puppiSDSJFlavour;   //!
    TBranch        *b_AK8puppiSDSJCSV;   //!
+   TBranch        *b_NumPair;   //!
+   TBranch        *b_m_1;   //!
+   TBranch        *b_px_1;   //!
+   TBranch        *b_py_1;   //!
+   TBranch        *b_pz_1;   //!
+   TBranch        *b_e_1;   //!
+   TBranch        *b_pt_1;   //!
+   TBranch        *b_phi_1;   //!
+   TBranch        *b_eta_1;   //!
+   TBranch        *b_m_2;   //!
+   TBranch        *b_px_2;   //!
+   TBranch        *b_py_2;   //!
+   TBranch        *b_pz_2;   //!
+   TBranch        *b_e_2;   //!
+   TBranch        *b_pt_2;   //!
+   TBranch        *b_phi_2;   //!
+   TBranch        *b_eta_2;   //!
+   TBranch        *b_decayMode2;   //!
+   TBranch        *b_lepIndex;   //!
+   TBranch        *b_tauIndex;   //!
+   TBranch        *b_leadtauIndex;   //!
+   TBranch        *b_subtauIndex;   //!
+   TBranch        *b_m_sv;   //!
+   TBranch        *b_pt_sv;   //!
+   TBranch        *b_m_sv_JES_Up;   //!
+   TBranch        *b_pt_sv_JES_Up;   //!
+   TBranch        *b_m_sv_JES_Down;   //!
+   TBranch        *b_pt_sv_JES_Down;   //!
+   TBranch        *b_m_sv_UES_Up;   //!
+   TBranch        *b_pt_sv_UES_Up;   //!
+   TBranch        *b_m_sv_UES_Down;   //!
+   TBranch        *b_pt_sv_UES_Down;   //!
+   TBranch        *b_m_sv_TES_Up;   //!
+   TBranch        *b_pt_sv_TES_Up;   //!
+   TBranch        *b_m_sv_TES_Down;   //!
+   TBranch        *b_pt_sv_TES_Down;   //!
+
 //
 //   boostHTT2(TTree *tree=0);
 //   virtual ~boostHTT2();
