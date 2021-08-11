@@ -240,6 +240,9 @@ int main(int argc, char* argv[]) {
         if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp; m_sv=m_sv_UES_Up ;}
         if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown; m_sv=m_sv_UES_Down ;}
         
+        if (syst == "TESUp") {m_sv=m_sv_TES_Up ;}
+        if (syst == "TESDown") {m_sv=m_sv_TES_Down ;}
+
         if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
         if (syst == "met_resp_Up") {Met = met_resp_Up; Metphi=metphi_resp_Up;}
         if (syst == "met_reso_Down") {Met = met_reso_Down; Metphi=metphi_reso_Down;}
