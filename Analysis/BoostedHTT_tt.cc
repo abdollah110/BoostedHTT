@@ -101,7 +101,7 @@ int main(int argc, char* argv[]) {
     float MuMass= 0.10565837;
     float eleMass= 0.000511;
     float JetPtCut=30;
-    float BJetPtCut=20;
+    float BJetPtCut=30;
     
     float DeepCSVCut=   1000   ;                  //  loose  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
     if (year== 2016) DeepCSVCut =     0.8953  ;
@@ -235,10 +235,10 @@ int main(int argc, char* argv[]) {
         Met=pfMetNoRecoil;
         Metphi=pfMetPhiNoRecoil;
         
-        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
-        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
-        if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
-        if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
+        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp; m_sv=m_sv_JES_Up ;}
+        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown; m_sv=m_sv_JES_Down ;}
+        if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp; m_sv=m_sv_UES_Up ;}
+        if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown; m_sv=m_sv_UES_Down ;}
         
         if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
         if (syst == "met_resp_Up") {Met = met_resp_Up; Metphi=metphi_resp_Up;}

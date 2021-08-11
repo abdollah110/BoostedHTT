@@ -103,7 +103,7 @@ int main(int argc, char* argv[]) {
     float MuMass= 0.10565837;
     float eleMass= 0.000511;
     float JetPtCut=30;
-    float BJetPtCut=20;
+    float BJetPtCut=30;
     
     float DeepCSVCut= 1   ;                  //  Tight  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
     if (year== 2016) DeepCSVCut =     0.8953  ;
@@ -111,7 +111,8 @@ int main(int argc, char* argv[]) {
     if (year== 2018) DeepCSVCut =    0.7527   ;
     
     
-    float LeptonIsoCut=0.30;
+//    float LeptonIsoCut=0.30;
+    float LeptonIsoCut=0.15;
     bool debug= false;
     float MuIdCorrection=1;
     float MuIsoCorrection=1;
@@ -213,8 +214,8 @@ int main(int argc, char* argv[]) {
         if ( (muPFNeuIso->at(idx_lep) + muPFPhoIso->at(idx_lep) - 0.5* muPFPUIso->at(idx_lep) )  > 0.0)
             IsoLep1Value= ( muPFChIso->at(idx_lep) + muPFNeuIso->at(idx_lep) + muPFPhoIso->at(idx_lep) - 0.5* muPFPUIso->at(idx_lep))/muPt->at(idx_lep);
         
-        
-        if (muPt->at(idx_lep) < 30 || fabs(muEta->at(idx_lep)) > 2.4) continue;
+        // muon pt from 30 to 28
+        if (muPt->at(idx_lep) < 28 || fabs(muEta->at(idx_lep)) > 2.4) continue;
         
         plotFill("cutFlowTable",2 ,15,0,15);
         
@@ -225,13 +226,15 @@ int main(int argc, char* argv[]) {
         
         plotFill("cutFlowTable",3 ,15,0,15);
         
-        if (muPt->at(idx_lep) < 55  && HLT_Mu27 && Met > 40 ){
+        // muon pt to 55 to 52 and met frm 40 to 30
+        if (muPt->at(idx_lep) < 52  && HLT_Mu27 && Met > 30 ){
             selectMuon_1 = true;
             MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg27);
             MuIsoCorrection = getCorrFactorMuonIso(year, isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuIso);
             
         }
-        if (muPt->at(idx_lep) >= 55  && HLT_Mu50 ) {
+        // muon pt to 55 to 52
+        if (muPt->at(idx_lep) >= 52  && HLT_Mu50 ) {
             selectMuon_2 = true;
             MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg50);
         }
@@ -244,7 +247,7 @@ int main(int argc, char* argv[]) {
         //=========================================================================================================
         // Tau selection
         int idx_tau= tauIndex;
-        
+        // pt from 30 to 20
         if (boostedTauPt->at(idx_tau) <= 30 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_tau) < 0.5 ) continue;
         //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_tau) < 0.5) continue;
@@ -290,7 +293,7 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",11 ,15,0,15);
         
 //        if (higgs.Pt() < 250) continue;
-        if (higgs.Pt() < 280) continue;
+        if (higgs.Pt() < 250) continue;
         plotFill("cutFlowTable",12 ,15,0,15);
         
         //=========================================================================================================

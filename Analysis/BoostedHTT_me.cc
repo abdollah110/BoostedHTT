@@ -98,7 +98,7 @@ int main(int argc, char* argv[]) {
     float MuMass= 0.10565837;
     float eleMass= 0.000511;
     float JetPtCut=30;
-    float BJetPtCut=20;
+    float BJetPtCut=30;
     
     float DeepCSVCut=   1000   ;                  //  Medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
     if (year== 2016) DeepCSVCut =       0.6321    ;
@@ -185,10 +185,10 @@ int main(int argc, char* argv[]) {
         Met=pfMetNoRecoil;
         Metphi=pfMetPhiNoRecoil;
 
-        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
-        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
-        if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
-        if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
+        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp; m_sv=m_sv_JES_Up ;}
+        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown; m_sv=m_sv_JES_Down ;}
+        if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp; m_sv=m_sv_UES_Up ;}
+        if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown; m_sv=m_sv_UES_Down ;}
         
         if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
         if (syst == "met_resp_Up") {Met = met_resp_Up; Metphi=metphi_resp_Up;}
@@ -211,8 +211,8 @@ int main(int argc, char* argv[]) {
         if ( (muPFNeuIso->at(idx_mu) + muPFPhoIso->at(idx_mu) - 0.5* muPFPUIso->at(idx_mu) )  > 0.0)
             IsoLep1Value= ( muPFChIso->at(idx_mu) + muPFNeuIso->at(idx_mu) + muPFPhoIso->at(idx_mu) - 0.5* muPFPUIso->at(idx_mu))/muPt->at(idx_mu);
         
-        
-        if (muPt->at(idx_mu) < 30 || fabs(muEta->at(idx_mu)) > 2.4) continue;
+        // from 30 to 28
+        if (muPt->at(idx_mu) < 28 || fabs(muEta->at(idx_mu)) > 2.4) continue;
         plotFill("cutFlowTable",2 ,15,0,15);
         
         bool MuId=( (muIDbit->at(idx_mu) >> 1 & 1)  && fabs(muD0->at(idx_mu)) < 0.045 && fabs(muDz->at(idx_mu)) < 0.2);
@@ -221,13 +221,15 @@ int main(int argc, char* argv[]) {
         if (! MuId) continue;
         plotFill("cutFlowTable",3 ,15,0,15);
         
-        if (muPt->at(idx_mu) < 55  && HLT_Mu27 && Met > 40 && elePt->at(idx_ele) < 40){
+        // 55 to 52 and met from 40 to 30
+        if (muPt->at(idx_mu) < 52  && HLT_Mu27 && Met > 30 && elePt->at(idx_ele) < 37){
             selectMuon_1 = true;
             MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg27);
             MuIsoCorrection = getCorrFactorMuonIso(year, isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuIso);
             
         }
-        if (muPt->at(idx_mu) >= 55  && HLT_Mu50 ) {
+        // 55 to 52
+        if (muPt->at(idx_mu) >= 52  && HLT_Mu50 ) {
             selectMuon_2 = true;
             MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg50);
         }
@@ -300,7 +302,7 @@ int main(int argc, char* argv[]) {
         if (numMu > 1) continue;
         plotFill("cutFlowTable",13 ,15,0,15);
 
-        if (higgs.Pt() < 280) continue;
+        if (higgs.Pt() < 250) continue;
         plotFill("cutFlowTable",14 ,15,0,15);
 
         //=========================================================================================================

@@ -97,7 +97,7 @@ int main(int argc, char* argv[]) {
     float MuMass= 0.10565837;
     float eleMass= 0.000511;
     float JetPtCut=30;
-    float BJetPtCut=20;
+    float BJetPtCut=30;
     float muonPtCut=30;
     if (year==2018) muonPtCut=35;
     float leadMuIdCorrection=1;

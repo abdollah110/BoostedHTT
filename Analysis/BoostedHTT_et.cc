@@ -92,7 +92,7 @@ int main(int argc, char* argv[]) {
     float MuMass= 0.10565837;
     float eleMass= 0.000511;
     float JetPtCut=30;
-    float BJetPtCut=20;
+    float BJetPtCut=30;
     
     float DeepCSVCut=   1000   ;                  //  loose  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
     if (year== 2016) DeepCSVCut =     0.8953  ;
@@ -174,10 +174,10 @@ int main(int argc, char* argv[]) {
 //        Metphi=pfMETPhi;
         Met=pfMetNoRecoil;
         Metphi=pfMetPhiNoRecoil;
-        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
-        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
-        if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
-        if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
+        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp; m_sv=m_sv_JES_Up ;}
+        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown; m_sv=m_sv_JES_Down ;}
+        if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp; m_sv=m_sv_UES_Up ;}
+        if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown; m_sv=m_sv_UES_Down ;}
         
         if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
         if (syst == "met_resp_Up") {Met = met_resp_Up; Metphi=metphi_resp_Up;}
@@ -211,8 +211,8 @@ int main(int argc, char* argv[]) {
         
         if (elePt->at(idx_lep) < 38 || fabs(eleEta->at(idx_lep)) > 2.5) continue;
         plotFill("cutFlowTable",3 ,15,0,15);
-        
-        if (elePt->at(idx_lep) < 120  && HLT_Ele35 && Met > 40 ){
+        // met from 40 to 30
+        if (elePt->at(idx_lep) < 120  && HLT_Ele35 && Met > 30 ){
             selectElectron_1 = true;
         }
         if (elePt->at(idx_lep) >= 120  && HLT_Ele115 ) {
@@ -228,7 +228,7 @@ int main(int argc, char* argv[]) {
         //=========================================================================================================
         // Tau selection
         int idx_tau= tauIndex;
-        
+        // pt from 30 to 20
         if (boostedTauPt->at(idx_tau) <= 30 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_tau) < 0.5 ) continue;
         //        if (boostedTauagainstElectronTightMVA62018->at(idx_tau) < 0.5) continue;
@@ -275,7 +275,7 @@ int main(int argc, char* argv[]) {
         if (numMu > 0) continue;
         plotFill("cutFlowTable",11 ,15,0,15);
         
-        if (higgs.Pt() < 280) continue;
+        if (higgs.Pt() < 250) continue;
         plotFill("cutFlowTable",12 ,15,0,15);
         
         //        //=========================================================================================================

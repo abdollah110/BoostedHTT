@@ -94,7 +94,7 @@ int main(int argc, char* argv[]) {
     float MuMass= 0.10565837;
     float eleMass= 0.000511;
     float JetPtCut=30;
-    float BJetPtCut=20;
+    float BJetPtCut=30;
     
     float DeepCSVCut=   1000   ;                  //  loose  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
     if (year== 2016) DeepCSVCut =     0.8953  ;
@@ -217,12 +217,15 @@ PassTrigger_39 = ((HLTJet >> 39 & 1)==1); //HLT_PFHT500_PFMET100_PFMHT100_IDTigh
         
         //=========================================================================================================
         //MET Shape systematics
-        Met=pfMET;
-        Metphi=pfMETPhi;
-        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
-        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
-        if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
-        if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
+//        Met=pfMET;
+//        Metphi=pfMETPhi;
+        Met=pfMetNoRecoil;
+        Metphi=pfMetPhiNoRecoil;
+
+        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp; m_sv=m_sv_JES_Up ;}
+        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown; m_sv=m_sv_JES_Down ;}
+        if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp; m_sv=m_sv_UES_Up ;}
+        if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown; m_sv=m_sv_UES_Down ;}
         
         TLorentzVector LeadTau4Momentum,SubTau4Momentum, Z4Momentum, Met4Momentum;
         //=========================================================================================================
