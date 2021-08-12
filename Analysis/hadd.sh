@@ -22,7 +22,8 @@ do
 #    hadd   -f NN${SYS}/ZH125${SYS}.root    ${SYS}/*ZH125_*
 #    hadd   -f NN${SYS}/ggH125${SYS}.root    ${SYS}/*ggH125*
 #    hadd   -f NN${SYS}/qqH125${SYS}.root    ${SYS}/*qqH125*
-    hadd  -f NN${SYS}/H125${SYS}.root   ${SYS}/*WMinusH125_* ${SYS}/*WPlusH125_*  ${SYS}/*ZH125_*  ${SYS}/*ggH125*  ${SYS}/*qqH125*
+    hadd  -f NN${SYS}/ggH125${SYS}.root  ${SYS}/*ggH125*
+    hadd  -f NN${SYS}/XH125${SYS}.root   ${SYS}/*WMinusH125_* ${SYS}/*WPlusH125_*  ${SYS}/*ZH*  ${SYS}/*qqH125* 
     hadd   -f NN${SYS}/QCD${SYS}.root    ${SYS}/*QCD*
     hadd   -f NN${SYS}/NonDY${SYS}.root    ${SYS}/*QCD*  ${SYS}/TT* ${SYS}/*_VV_*.root  ${SYS}/*_W_*.root
 

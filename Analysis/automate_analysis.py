@@ -103,7 +103,7 @@ for ifile in fileList:
         names = ['WPlusH125']
     elif 'WMinusH125' in sample:
         names = ['WMinusH125']
-    elif 'ZH125' in sample:
+    elif 'ZH125' in sample or 'ZH' in sample or 'toptopH' in sample:
         names = ['ZH125']
     elif 'JJH' in sample or 'jjh' in sample:
         names = ['JJH']
