@@ -109,7 +109,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir,TH1
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
         tree->SetBranchAddress("lep2Pt",&lep2Pt_);
         tree->SetBranchAddress("lep1IsoPass",&lep1IsoPass);
-        tree->SetBranchAddress("lep2IsoPass",&lep2IsoPassL);
+        tree->SetBranchAddress("lep2IsoPassL",&lep2IsoPassL);
         tree->SetBranchAddress("lep2IsoPassV",&lep2IsoPassV);
         tree->SetBranchAddress("lep2IsoPassM",&lep2IsoPassM);
         tree->SetBranchAddress("lep2IsoPassT",&lep2IsoPassT);
@@ -160,7 +160,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir,TH1
                 {"lep2IsoPassT",lep2IsoPassT},
             };
             
-            if (higgs_pT < 250) continue;
+            if (higgs_pT < 200) continue;
             if (vis_mass < 20) continue;
             if (lep2Pt_ < lowVal || lep2Pt_ > highVal ) continue;
 //            if (dR_lep_lep < lowVal || dR_lep_lep > highVal ) continue;
@@ -208,14 +208,14 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
         
         float lep1Pt_=-10;
         float lep2Pt_=-10;
-        bool lep2IsoPass, OS,SS,lep1IsoPass;
+        bool lep2IsoPassV, OS,SS,lep1IsoPass;
         float weight;
         
         
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
         tree->SetBranchAddress("lep2Pt",&lep2Pt_);
         tree->SetBranchAddress("lep1IsoPass",&lep1IsoPass);
-        tree->SetBranchAddress("lep2IsoPass",&lep2IsoPass);
+        tree->SetBranchAddress("lep2IsoPassV",&lep2IsoPassV);
         tree->SetBranchAddress("OS",&OS);
         tree->SetBranchAddress("SS",&SS);
         tree->SetBranchAddress("evtwt",&weight);
@@ -224,11 +224,11 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
             tree->GetEntry(i);
             
 //            if (OS != 0 && !lep2IsoPass && !lep1IsoPass){
-            if (OS != 0 && !lep2IsoPass ){
+            if (OS != 0 && !lep2IsoPassV ){
                 fillQCD_OS_CR(zeroJet, name, lep1Pt_,  weight);
             }
 //            else if (SS != 0 && !lep2IsoPass && !lep1IsoPass){
-            else if (SS != 0 && !lep2IsoPass ){
+            else if (SS != 0 && !lep2IsoPassV ){
                 fillQCD_SS_CR(zeroJet, name, lep1Pt_,  weight);
             }
         }

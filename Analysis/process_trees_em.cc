@@ -30,10 +30,7 @@ int main(int argc, char *argv[]) {
 
     string channel, tree_name;
     if (dir.find("_em_") != string::npos) { channel ="em"; tree_name="emu_tree";}
-    else if (dir.find("_et_") != string::npos ) { channel ="et";tree_name="etau_tree";}
-    else if (dir.find("_mt_") != string::npos) { channel ="mt";tree_name="mutau_tree";}
-    else if (dir.find("_tt_") != string::npos) { channel ="tt";tree_name="tautau_tree";}
-    else if (dir.find("_mm_") != string::npos) { channel ="mm";tree_name="mumu_tree";}
+    else if (dir.find("_me_") != string::npos ) { channel ="me";tree_name="mue_tree";}
     else (std::cout << "channel is not specificed in the outFile name !\n");
 
 
@@ -54,13 +51,14 @@ int main(int argc, char *argv[]) {
     vector<string> files;
     read_directory(dir, &files);
     // initialize histogram holder
-    auto hists = new HistTool(channel, year, suffix, bins);
+    auto hists = new HistTool(channel, var_name, year, suffix, bins);
     // This part is tro derive the OS/SS ratio (one can actually get the 2D pt/eta binned Values as well)
-    hists->histoQCD(files, dir, tree_name,  "None");    // fill histograms QCD
+//    hists->histoQCD(files,var_name,  dir, tree_name,  "None");    // fill histograms QCD
+    hists->histoQCD(files,var_name,  dir, tree_name);    // fill histograms QCD
     std::vector<float>  OSSS= hists->Get_OS_SS_ratio();
-    std::cout<<"\n\n\n\n OSSS  "<<OSSS[0]<<"\n";
+//    std::cout<<"\n\n\n\n OSSS  "<<OSSS[0]<<"\n";
     
-    hists->histoLoop(year, files, dir, tree_name,var_name,OSSS, "None","");    // fill histograms
+    hists->histoLoop(year, files, dir, tree_name,var_name,OSSS,"");    // fill histograms
     hists->writeTemplates();  // write histograms to file
     hists->fout->Close();
     
@@ -68,9 +66,13 @@ int main(int argc, char *argv[]) {
     
     //  delete hists->ff_weight;
 }
+//           void histoLoop(std::string year  ,std::vector<std::string>, std::string, std::string, std::string,std::vector<float>, std::string, std::string);
+//void HistTool::histoLoop(std::string year , vector<string> files, string dir, string tree_name , string var_name, vector<float> OSSS, string acWeight = "None", string Sys = "") {
+void HistTool::histoLoop(std::string year , vector<string> files, string dir, string tree_name , string var_name, vector<float> OSSS, string Sys = "") {
 
-void HistTool::histoLoop(std::string year , vector<string> files, string dir, string tree_name , string var_name, vector<float> OSSS, string acWeight = "None", string Sys = "") {
+    
     std::cout<< "starting .... "<<dir<<"\n";
+    
     float vbf_var1(0.);
     for (auto ifile : files) {
         
@@ -139,7 +141,9 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
                 {"NN_disc",NN_disc}
             };
             
+//            if (higgs_pT < 400) continue;
             
+//            if (NN_disc < 0.3) continue;
             // The OS/SS is measured in a QCD populated CR and it is 2.21 for 2016 and 2017 and 2.3 for 2018. We will simply us 2.2 for all 3 years
             float meausred_OSSS = 2.2;
             
@@ -166,26 +170,25 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
 
 
 
+//hists->histoQCD(files,var_name,  dir, tree_name);    // fill histograms QCD
+void HistTool::histoQCD( vector<string> files, string var_name , string dir, string tree_name) {
 
-void HistTool::histoQCD( vector<string> files, string dir, string tree_name, string acWeight = "None") {
-    
-    
-    
+
     std::cout<< "starting OS/SS calculation .... "<<dir<<"\n";
     float vbf_var1(0.);
     for (auto ifile : files) {
-        
+
         string name = ifile.substr(0, ifile.find(".")).c_str();
         if (!(name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZLL" || name == "ZJ" || name == "Data" )) continue;
         auto fin = new TFile((dir + "/" + ifile).c_str(), "read");
         auto tree = reinterpret_cast<TTree *>(fin->Get(tree_name.c_str()));
-        
+
         float lep1Pt_=-10;
         float lepPt2_=-10;
          bool OS,SS,lep1IsoPass,lep2IsoPass;
          float weight;
-         
-        
+
+
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
         tree->SetBranchAddress("lep2Pt",&lepPt2_);
         tree->SetBranchAddress("OS",&OS);
@@ -193,10 +196,10 @@ void HistTool::histoQCD( vector<string> files, string dir, string tree_name, str
         tree->SetBranchAddress("lep1IsoPass",&lep1IsoPass);
         tree->SetBranchAddress("lep2IsoPass",&lep2IsoPass);
         tree->SetBranchAddress("evtwt",&weight);
-        
+
         for (auto i = 0; i < tree->GetEntries(); i++) {
             tree->GetEntry(i);
-            
+
 //            if (OS != 0 && !Pass && !lep1IsoPass){
                 if (OS != 0 &&  !lep2IsoPass){
 //            if (OS != 0 &&  !lep1IsoPass){

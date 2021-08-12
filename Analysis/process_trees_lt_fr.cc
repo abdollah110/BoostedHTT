@@ -32,11 +32,8 @@ int main(int argc, char *argv[]) {
     TH1F * FRhist=(TH1F *) FRFile->Get("numVLoose");
 
     string channel, tree_name;
-    if (dir.find("_em_") != string::npos) { channel ="em"; tree_name="emu_tree";}
-    else if (dir.find("_et_") != string::npos ) { channel ="et";tree_name="etau_tree";}
+    if (dir.find("_et_") != string::npos ) { channel ="et";tree_name="etau_tree";}
     else if (dir.find("_mt_") != string::npos) { channel ="mt";tree_name="mutau_tree";}
-    else if (dir.find("_tt_") != string::npos) { channel ="tt";tree_name="tautau_tree";}
-    else if (dir.find("_mm_") != string::npos) { channel ="mm";tree_name="mumu_tree";}
     else (std::cout << "channel is not specificed in the outFile name !\n");
     
     // get the provided histogram binning
@@ -56,13 +53,13 @@ int main(int argc, char *argv[]) {
     vector<string> files;
     read_directory(dir, &files);
     // initialize histogram holder
-    auto hists = new HistTool(channel, year, suffix, bins);
+    auto hists = new HistTool(channel, var_name, year, suffix, bins);
     // This part is tro derive the OS/SS ratio (one can actually get the 2D pt/eta binned Values as well)
 //    hists->histoQCD(files, dir, tree_name,  "None");    // fill histograms QCD
     std::vector<float>  OSSS= hists->Get_OS_SS_ratio();
-    std::cout<<"\n\n\n\n OSSS  "<<OSSS[0]<<"\n";
+//    std::cout<<"\n\n\n\n OSSS  "<<OSSS[0]<<"\n";
     
-    hists->histoLoop(year, files, dir, FRhist,tree_name,var_name,OSSS, "None","");    // fill histograms
+    hists->histoLoop(year, files, dir, FRhist,tree_name,var_name,OSSS,"");    // fill histograms
     hists->writeTemplates();  // write histograms to file
     hists->fout->Close();
     
@@ -71,7 +68,7 @@ int main(int argc, char *argv[]) {
     //  delete hists->ff_weight;
 }
 
-void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FRhist, string tree_name , string var_name, vector<float> OSSS, string acWeight = "None", string Sys = "") {
+void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FRhist, string tree_name , string var_name, vector<float> OSSS, string Sys = "") {
     std::cout<< "starting .... "<<dir<<"\n";
     float vbf_var1(0.);
     for (auto ifile : files) {
@@ -146,6 +143,12 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 {"m_sv",m_sv},
                 {"NN_disc",NN_disc}
             };
+            
+            // apply tau Id SF
+            if (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("H125")!= string::npos || name.find("JJH125")!= string::npos ) weight *= 0.9;
+            
+//            if (higgs_pT < 400) continue;
+//            if (NN_disc < 0.3) continue;
             
             float lep2Ptval=lep2Pt_;
             if (lep2Ptval > 200) lep2Ptval=200;
