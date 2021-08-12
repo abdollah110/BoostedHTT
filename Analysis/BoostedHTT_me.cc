@@ -266,6 +266,8 @@ int main(int argc, char* argv[]) {
         Met4Momentum.SetPtEtaPhiM(Met, 0, Metphi, 0);
         Z4Momentum=Ele4Momentum+Mu4Momentum;
         TLorentzVector higgs = Ele4Momentum+Mu4Momentum +Met4Momentum;
+//        if (event==58851135 || event==17274037) cout<<"Hey there is an event with njet ======0\n";
+        if (nJet < 1 ) continue;
         TLorentzVector LeadJet= getLeadJet(Mu4Momentum, Ele4Momentum);
 
         dR_lep_lep= Ele4Momentum.DeltaR(Mu4Momentum);
