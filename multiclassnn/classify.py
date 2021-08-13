@@ -194,4 +194,4 @@ if __name__ == "__main__":
 
     main(parser.parse_args())
 
-python classify.py --input-boost datasets/Training_v1_2016.h5   --model-boost models/outputModel_v1_2016.hdf5   --dir CADI_mt_2016_v1  --output-dir CADI_mt_2016_v1_OUT -s 1 --nominal_input datasets/Training_v1_2016.h5
+#python classify.py --input-boost datasets/Training_v1_2016.h5   --model-boost models/outputModel_v1_2016.hdf5   --dir CADI_mt_2016_v1  --output-dir CADI_mt_2016_v1_OUT -s 1 --nominal_input datasets/Training_v1_2016.h5
