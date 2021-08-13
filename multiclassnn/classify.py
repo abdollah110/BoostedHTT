@@ -133,7 +133,7 @@ def main(args):
         treeName = 'emu_tree'
     elif '_me_' in args.input_dir:
         channel = 'me'
-        treeName = 'mue_tree'
+        treeName = 'emu_tree'
     elif '_tt_' in args.input_dir:
         channel = 'tt'
         treeName = 'tautau_tree'

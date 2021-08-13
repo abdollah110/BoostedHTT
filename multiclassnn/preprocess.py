@@ -69,7 +69,7 @@ def loadFile(ifile):
     isZTT = np.zeros(len(slim_df))
     isQCD = np.zeros(len(slim_df))
 
-    if 'h125' in ifile.lower() or 'qqh' in ifile.lower() or 'wh' in ifile.lower() or 'zh' in ifile.lower() or 'ggh' in ifile.lower() or 'vbf' in ifile.lower():
+    if 'h125' in ifile.lower() or 'qqh' in ifile.lower() or 'wh' in ifile.lower() or 'zh' in ifile.lower() or 'ggh' in ifile.lower() or 'vbf' in ifile.lower() or 'ggh125' in ifile.lower() or 'xh125' in ifile.lower():
         isSignal = np.ones(len(slim_df))
     elif 'ZTT' in ifile:
         isZTT = np.ones(len(slim_df))
