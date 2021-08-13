@@ -44,10 +44,11 @@ def main(args):
     ]
 
     ## apply VBF category selection
-    boost_processes = training_processes[
-        (training_processes['is_signal'] > 0) &
-        (training_processes['OS'] > 0)
-        ]
+    boost_processes = training_processes
+#    [
+#        (training_processes['is_signal'] > 0) &
+#        (training_processes['OS'] > 0)
+#        ]
 
     print 'No. Signal Events:     {}'.format(len(boost_processes[boost_processes['sample_names'] == args.signal]))
     print 'No. Background Events: {}'.format(len(boost_processes[boost_processes['sample_names'] == args.background]))
