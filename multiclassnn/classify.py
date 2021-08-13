@@ -33,7 +33,8 @@ class Predictor:
     self.data_copy = self.data_copy.iloc[0:0]
     if not self.bad:
       self.data_copy = self.data[
-              (self.data['sample_names'] == fname) & (self.data['lepton'] == channel)
+#              (self.data['sample_names'] == fname) & (self.data['lepton'] == channel)
+              (self.data['sample_names'] == fname)
           ].copy()
 
 #       get scaler setup
@@ -192,3 +193,5 @@ if __name__ == "__main__":
 
 
     main(parser.parse_args())
+
+python classify.py --input-boost datasets/Training_v1_2016.h5   --model-boost models/outputModel_v1_2016.hdf5   --dir CADI_mt_2016_v1  --output-dir CADI_mt_2016_v1_OUT -s 1 --nominal_input datasets/Training_v1_2016.h5
