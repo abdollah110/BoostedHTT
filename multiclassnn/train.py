@@ -13,22 +13,10 @@ from visualize import *
 def main(args):
     data = pd.HDFStore(args.input)['df']
     ## define training variables
-    if args.category == 'vbf':
-        training_variables = [
-#                            'njets','mt',  'mu_iso','D_zeta',
-#                              'mjj', 'higgs_pT','m_sv',
-#                              'Q2V1', 'Q2V2', 'Phi', 'Phi1', 'costheta1', 'costheta2', 'costhetastar',
-#2016                              'njets','mt',  'mu_iso','D_zeta','mjj', 'higgs_pT','vis_mass'
-#                              'mjj', 'higgs_pT','m_sv','mt'
-#                              'njets','mt','mu_iso','mjj', 'higgs_pT','m_sv','Q2V1', 'Q2V2', 'Phi0', 'Phi1', 'costheta1', 'costheta2', 'costhetastar'
-    'njets','D_zeta','mjj', 'higgs_pT','m_sv','Q2V1', 'Q2V2', 'Phi0', 'Phi1', 'costheta1', 'costheta2', 'costhetastar'
-        ]
-    elif args.category == 'boosted':
-        training_variables = [
-            'higgs_pT', 't1_pt', 'lt_dphi', 'lep_pt', 'hj_dphi',# 'MT_lepMET', 'MT_HiggsMET'
-        ]
-    else:
-        raise Exception('{} isn\'t an acceptable category')
+    training_variables = [
+                    'lep1Pt','lep2Pt','Met','m_sv', 'LeadJetPt','higgs_m','higgs_pT','st','tmass'
+#                    'lep1Pt','lep2Pt','Met', 'LeadJetPt','higgs_m','higgs_pT','st','tmass'
+    ]
 
     nvars = len(training_variables)
 
@@ -56,39 +44,84 @@ def main(args):
     ]
 
     ## apply VBF category selection
-    vbf_processes = training_processes[
+    boost_processes = training_processes[
         (training_processes['is_signal'] > 0) &
         (training_processes['OS'] > 0)
         ]
 
-    print 'No. Signal Events:     {}'.format(len(vbf_processes[vbf_processes['sample_names'] == args.signal]))
-    print 'No. Background Events: {}'.format(len(vbf_processes[vbf_processes['sample_names'] == args.background]))
-    print 'No. Background2 Events:{}'.format(len(vbf_processes[vbf_processes['sample_names'] == args.background2]))
+    print 'No. Signal Events:     {}'.format(len(boost_processes[boost_processes['sample_names'] == args.signal]))
+    print 'No. Background Events: {}'.format(len(boost_processes[boost_processes['sample_names'] == args.background]))
+    print 'No. Background2 Events:{}'.format(len(boost_processes[boost_processes['sample_names'] == args.background2]))
 
-#    etau   = vbf_processes[(vbf_processes['lepton'] == 'et')]
-#    mutau  = vbf_processes[(vbf_processes['lepton'] == 'mt')]
-    emu  = vbf_processes[(vbf_processes['lepton'] == 'em')]
+
+    etau   = boost_processes[(boost_processes['lepton'] == 'et')]
+    mutau  = boost_processes[(boost_processes['lepton'] == 'mt')]
+    emu  = boost_processes[(boost_processes['lepton'] == 'em')]
+    mue  = boost_processes[(boost_processes['lepton'] == 'me')]
+    tautau  = boost_processes[(boost_processes['lepton'] == 'tt')]
+    
 
     ## do event selection
-#    selected_et, selected_mt = pd.DataFrame(), pd.DataFrame()
-    selected_em = pd.DataFrame(), pd.DataFrame()
+    selected_mt = pd.DataFrame()
+    selected_et = pd.DataFrame()
+    selected_em = pd.DataFrame()
+    selected_me = pd.DataFrame()
+    selected_tt = pd.DataFrame()
+    combine= pd.DataFrame()
 
-    ## electron-tau channel selection (all in vbf_process for now)
-#    if len(etau) > 0:
-#        selected_et = etau
+    ## electron-tau channel selection (all in boost_process for now)
+    if len(etau) > 0:
+        selected_et = etau
+        print '\n\nchannel is etau'
+        combine = pd.concat([selected_et])
+        
+    ## muon-tau channel selection (all in boost_process for now)
+    if len(mutau) > 0:
+        selected_mt = mutau
+        print '\n\nchannel is mutau'
+        combine = pd.concat([selected_mt])
 
-    ## muon-tau channel selection (all in vbf_process for now)
-#    if len(mutau) > 0:
-#        selected_mt = mutau
 
-    ## muon-tau channel selection (all in vbf_process for now)
     if len(emu) > 0:
         selected_em = emu
-    
+        print '\n\nchannel is emu'
+        combine = pd.concat([selected_em])
+
+    if len(mue) > 0:
+        selected_me = mue
+        print '\n\nchannel is mue'
+        combine = pd.concat([selected_me])
+
+
+    if len(tautau) > 0:
+        selected_tt = tautau
+        print '\n\nchannel is tautau'
+        combine = pd.concat([selected_tt])
+        
+        
+#
+#    ## do event selection
+##    selected_et, selected_mt = pd.DataFrame(), pd.DataFrame()
+#    selected_em = pd.DataFrame(), pd.DataFrame()
+#
+#    ## electron-tau channel selection (all in vbf_process for now)
+##    if len(etau) > 0:
+##        selected_et = etau
+#
+#    ## muon-tau channel selection (all in vbf_process for now)
+##    if len(mutau) > 0:
+##        selected_mt = mutau
+#
+#    ## muon-tau channel selection (all in vbf_process for now)
+#    if len(emu) > 0:
+#        selected_em = emu
+#
 
     ## combine channels into total dataset
 #    combine = pd.concat([selected_et, selected_mt])
-    combine = pd.concat([selected_em])
+#    combine = pd.concat([selected_em])
+
+
     sig_df = combine[(combine['sample_names'] == args.signal)]
     bkg_df = combine[(combine['sample_names'] == args.background)]
     bkg_df2 = combine[(combine['sample_names'] == args.background2)]
@@ -114,10 +147,10 @@ def main(args):
 
 
     ## remove all columns except those needed for training
-    training_dataframe = selected_events[training_variables + ['isSignal','isTT','isZTT', 'evtwt']]
+    training_dataframe = selected_events[training_variables + ['isSignal','isQCD','isZTT', 'evtwt']]
     
     training_data, testing_data, training_meta, testing_meta, training_weights, testing_weights  = train_test_split(
-        training_dataframe[training_variables].values, training_dataframe[['isSignal','isTT','isZTT']].values, training_dataframe['evtwt'].values,
+        training_dataframe[training_variables].values, training_dataframe[['isSignal','isQCD','isZTT']].values, training_dataframe['evtwt'].values,
         test_size=0.1, random_state=7
         )
 
@@ -197,3 +230,13 @@ if __name__ == "__main__":
     parser.add_argument('--category', '-c', action='store', dest='category', default='vbf', help='category to train')
     parser.add_argument('--year', '-y', action='store', dest='year', default='2018', help='which year')
     main(parser.parse_args())
+
+#    parser.add_argument('--model', '-m', action='store', dest='model', default='testModel', help='name of the model to train')
+#    parser.add_argument('--input', '-i', action='store', dest='input', default='test', help='full name of input file')
+#    parser.add_argument('--signal', '-s', action='store', dest='signal', default='boost125.root', help='name of signal file')
+#    parser.add_argument('--ZTT', '-b', action='store', dest='ZTT', default='ZTT.root', help='name of ZTT file')
+#    parser.add_argument('--QCD', '-q', action='store', dest='QCD', default='QCD.root', help='name of QCD file')
+##    parser.add_argument('--ZTT2', '-b2', action='store', dest='ZTT2', default='ZTT.root', help='name of ZTT file')
+#    parser.add_argument('--dont-plot', action='store_true', dest='dont_plot', help='don\'t make training plots')
+#    parser.add_argument('--category', '-c', action='store', dest='category', default='boost', help='category to train')
+#    parser.add_argument('--year', '-y', action='store', dest='year', default='2018', help='which year')
