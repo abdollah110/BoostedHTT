@@ -190,21 +190,23 @@ def main(args):
 
         trainingPlots(history, 'trainingPlot_{}'.format(args.model))
 
-#        test_sig, test_tt = [], []
-#        for i in range(len(testing_labels)):
-#            if testing_labels[i] == 1:
-#                test_sig.append(testing_data[i, :])
-#            elif testing_labels[i] == 0:
-#                test_tt.append(testing_data[i, :])
-#
-#        train_sig, train_tt = [], []
-#        for i in range(len(training_labels)):
-#            if training_labels[i] == 1:
-#                train_sig.append(training_data[i, :])
-#            elif training_labels[i] == 0:
-#                train_tt.append(training_data[i, :])
+        test_sig, test_tt, test_ztt = [], [], []
+        for i in range(len(testing_meta)):
+            if testing_meta[i, 0] == 1:
+                test_sig.append(testing_data[i, :])
+            elif testing_meta[i, 1] == 1:
+                test_tt.append(testing_data[i, :])
+            elif testing_meta[i, 2] == 1:
+                test_ztt.append(testing_data[i, :])
 
-#        discPlot('NN_disc_{}'.format(args.model), model, np.array(train_sig), np.array(train_tt), np.array(test_sig), np.array(test_tt))
+        train_sig, train_tt, train_ztt = [], [], []
+        for i in range(len(training_meta)):
+            if training_meta[i, 0] == 1:
+                train_sig.append(training_data[i, :])
+            elif training_meta[i, 1] == 1:
+                train_tt.append(training_data[i, :])
+            elif training_meta[i, 2] == 1:
+                train_ztt.append(training_data[i, :])
 
 
         discPlot('NN_sig_{}_vbf_ztt'.format(args.model), model, np.array(train_sig), np.array(train_ztt), np.array(test_sig), np.array(test_ztt))
