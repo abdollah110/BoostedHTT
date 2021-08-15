@@ -69,12 +69,14 @@ root_file=open(args.Input,'r')
 CurrentDIR=os.getcwd()
 for line in root_file.readlines():
         newline=line.replace('\n','')
-        outname=line.split('/')[-2]+line.split('/')[-1]
-        print '\n line {} and outname is {} \n'.format(line,outname)
+#        outname=line.split('/')[-2]
+        channelYear=line.split('/')[-2]
+        SysName=line.split('/')[-1]
+        print '\n line {} and outname is {} \n'.format(line,outname+SysName)
         os.chdir('{}'.format(newline))
-        os.chdir('../../')
+        os.chdir('../')
         os.system('ls')
-        os.system('tar -zcp -f  /eos/uscms/store/user/abdollah/NN_input_Sys/{}.tar.gz  {}'.format(outname,outname))
+        os.system('tar -zcp -f  /eos/uscms/store/user/abdollah/NN_input_Sys/{}.tar.gz  {}'.format(channelYear+SysName,SysName))
         os.chdir(CurrentDIR)
 
 ## Print the condos submit command
