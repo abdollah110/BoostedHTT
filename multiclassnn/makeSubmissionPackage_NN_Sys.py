@@ -69,7 +69,7 @@ root_file=open(args.Input,'r')
 CurrentDIR=os.getcwd()
 for line in root_file.readlines():
         newline=line.replace('\n','')
-        outname=line.split('/')[-2]
+        outname=line.split('/')[-2]+line.split('/')[-1]
         print '\n line {} and outname is {} \n'.format(line,outname)
         os.chdir('{}'.format(newline))
         os.chdir('../../')
