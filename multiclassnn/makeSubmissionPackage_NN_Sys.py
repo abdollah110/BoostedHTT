@@ -72,7 +72,7 @@ for line in root_file.readlines():
 #        outname=line.split('/')[-2]
         channelYear=line.split('/')[-2]
         SysName=line.split('/')[-1]
-        print '\n line {} and outname is {} \n'.format(line,outname+SysName)
+        print '\n line {} and outname is {} \n'.format(line,channelYear+SysName)
         os.chdir('{}'.format(newline))
         os.chdir('../')
         os.system('ls')
