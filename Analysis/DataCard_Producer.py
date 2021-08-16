@@ -73,11 +73,12 @@ for ifile in glob('{}/*'.format(InputFile)):
     #            ['m_sv', 20,0,200],
                 ['NN_disc',20,0,1]
     ]
-
-
-    print 'ifile is   -- >>>  {}  year is {}   channel is {} '.format(ifile,year,channel)
+    
+    sample=ifile.replace(InputFile,'').replace('/','')
+    
+    print 'ifile is   -- >>>  {}  sample is {} year is {}   channel is {} '.format(ifile,sample, year,channel)
 
     for var in Variable:
-        print './{} -d {}  --suf {} -v {} -b {} {} {}'.format( executable, ifile, suffice, var[0],var[1],var[2],var[3])
-        os.system('./{} -d {}  --suf {} -v {} -b {} {} {}'.format( executable, ifile,suffice, var[0],var[1],var[2],var[3]))
+        print './{} -d {}  --suf {} -v {} -b {} {} {}'.format( executable, ifile, sample+suffice, var[0],var[1],var[2],var[3])
+        os.system('./{} -d {}  --suf {} -v {} -b {} {} {}'.format( executable, ifile,sample+suffice, var[0],var[1],var[2],var[3]))
         print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
