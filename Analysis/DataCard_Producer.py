@@ -79,5 +79,5 @@ for ifile in glob('{}/*'.format(InputFile)):
 
     for var in Variable:
         print '{} -d {}  --suf {} -v {} -b {} {} {}'.format( executable, ifile, suffice, var[0],var[1],var[2],var[3])
-        os.system('{} -d {}  --suf {} -v {} -b {} {} {}'.format( executable ifile,suffice, var[0],var[1],var[2],var[3]))
+        os.system('{} -d {}  --suf {} -v {} -b {} {} {}'.format( executable, ifile,suffice, var[0],var[1],var[2],var[3]))
         print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
