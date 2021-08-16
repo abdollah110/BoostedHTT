@@ -27,15 +27,17 @@ ShortName=${FullSampleName##*/}
 
 ArrayName=(${FullSampleName//// })
 order=${#ArrayName[@]}-2
-NewName=${ArrayName[${order}]}
+sys=${#ArrayName[@]}-1
+NewName=${ArrayName[${order}]}${ArrayName[${sys}]}
 xrdcp root://cmseos.fnal.gov//store/user/abdollah/NN_input_Sys/${NewName}.tar.gz .
 tar -xf ${NewName}.tar.gz
+mv ${ArrayName[${sys}]} ${NewName}
 
 Name="NN_"$NewName
-inputdir=$NewName"/NN_nominal"
+inputdir=${NewName}
 
 echo "  inputdir is " $inputdir
-
+    
 
 if [[ ${inputdir} == *"_em_"* ]]; then
   channel="em"
@@ -54,9 +56,9 @@ fi
 if [[ ${inputdir} == *"2016"* ]]; then
   year="2016"
 elif [[ ${inputdir} == *"2017"* ]]; then
-  channel="2017"
+  year="2017"
 elif [[ ${inputdir} == *"2018"* ]]; then
-  channel="2018"
+  year="2018"
 else
  echo "Year does not exist"
 fi
@@ -65,6 +67,9 @@ fi
 
 NominalPreprocess="NominalPreprocess_"${channel}"_"${year}".h5"
 NominalTraining="outputModel_NominalTraining_"${channel}"_"${year}".hdf5"
+
+xrdcp root://cmseos.fnal.gov//store/user/abdollah/NominalPreprocess/${NominalPreprocess} .
+xrdcp root://cmseos.fnal.gov//store/user/abdollah/NominalTrainings/${NominalTraining} .
 
 echo "  nominal preprocess and trainings are " NominalPreprocess NominalTraining
 
@@ -78,7 +83,7 @@ python preprocess.py -i  ${inputdir}  -o testData_${Name}
 #python train.py --signal JJH125 --background ZTT --input datasets/testData_${Name}.h5 --model outputModel_${Name}
 #python classify.py  --input-boost datasets/testData_${Name}.h5  --model-boost models/outputModel_${Name}.hdf5   --dir ${inputdir}  --output-dir ${Name}_NN
 
-python classify.py --input-boost datasets/testData_${Name}.h5 --model-boost /eos/uscms/store/user/abdollah/NominalTrainings/${NominalTraining} --dir ${inputdir} --output-dir ${Name}_NN -s 1 --nominal_input /eos/uscms/store/user/abdollah/NominalPreprocess/${NominalPreprocess}
+python classify.py --input-boost datasets/testData_${Name}.h5 --model-boost ${NominalTraining} --dir ${inputdir} --output-dir ${Name}_NN -s 1 --nominal_input ${NominalPreprocess}
 
 xrdfs root://cmseos.fnal.gov/ mkdir /store/user/abdollah/NN_output_Sys/${Name}_NN
 xrdcp -rf ${Name}_NN  root://cmseos.fnal.gov//store/user/abdollah/NN_output_Sys/${Name}_NN

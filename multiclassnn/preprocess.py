@@ -99,20 +99,21 @@ def format_for_store(all_data, scaler):
 def loadFile(ifile):
     from root_pandas import read_root
 
-    if 'mutau' in ifile or 'mt' in ifile:
+    if 'mutau' in ifile or '_mt_' in ifile:
         channel = 'mt'
-    elif 'etau' in ifile or 'et' in ifile:
+    elif 'etau' in ifile or '_et_' in ifile:
         channel = 'et'
-    elif 'emu' in ifile or 'em' in ifile:
+    elif 'emu' in ifile or '_em_' in ifile:
         channel = 'em'
-    elif 'mue' in ifile or 'me' in ifile:
+    elif 'mue' in ifile or '_me_' in ifile:
         channel = 'me'
-    elif 'tautau' in ifile or 'tt' in ifile:
+    elif 'tautau' in ifile or '_tt_' in ifile:
         channel = 'tt'
     else:
         raise Exception(
             'Input files must have MUTAU or ETAU, EMU, MUE or TauTau in the provided path. You gave {}, ya goober.'.format(ifile))
     
+    print 'identified channel is {}'.format(channel)
     
     filename = ifile.split('/')[-1]
     print 'Loading input file...', filename

@@ -33,8 +33,7 @@ class Predictor:
     self.data_copy = self.data_copy.iloc[0:0]
     if not self.bad:
       self.data_copy = self.data[
-#              (self.data['sample_names'] == fname) & (self.data['lepton'] == channel)
-              (self.data['sample_names'] == fname)
+              (self.data['sample_names'] == fname) & (self.data['lepton'] == channel)
           ].copy()
 
 #       get scaler setup
@@ -44,6 +43,7 @@ class Predictor:
       scaler.mean_ = scaler_info['mean'].values.reshape(1, -1)
       scaler.scale_ = scaler_info['scale'].values.reshape(1, -1)
       scaler_columns = scaler_info.index.values
+      print scaler.mean_, scaler.scale_
 
       
       to_classify = self.data_copy[scaler_columns]
@@ -90,14 +90,14 @@ def fillFile(ifile, channel, args, boost_pred, treeName):
 
   ## now let's try and get this into the root file
   root_file = TFile(ifile, 'READ')
-  itree = root_file.Get(treename)
+  itree = root_file.Get(treeName)
 
 
   oname = ifile.split('/')[-1].split('.root')[0]
   fout = TFile('{}/{}.root'.format(args.output_dir, oname), 'recreate')  ## make new file for output
   fout.cd()
-  nevents = root_file.Get('nevents').Clone()
-  nevents.Write()
+#  nevents = root_file.Get('nevents').Clone()
+#  nevents.Write()
   ntree = itree.CloneTree(-1, 'fast')
 
   branch_var = array('f', [0.])
@@ -129,7 +129,7 @@ def fillFile(ifile, channel, args, boost_pred, treeName):
 
 def main(args):
 
-
+    treeName=''
     print 'args.input_dir is ', args.input_dir
     if '_mt_' in args.input_dir:
         channel = 'mt'
@@ -161,8 +161,8 @@ def main(args):
 
 #    boost_pred = Predictor(args.input_boost, args.model_boost, keep_vbf)
     boost_pred = Predictor(args.input_boost, args.model_boost)
-    processes = [Process(target=fillFile, args=(ifile, channel, args, boost_pred,treeName)) for ifile in file_names]
-    
+#    processes = [Process(target=fillFile, args=(ifile, channel, args, boost_pred,treeName)) for ifile in file_names]
+    processes = [fillFile(ifile, channel, args, boost_pred, treeName) for ifile in file_names]
     
 #    n_processes = min(8, multiprocessing.cpu_count() / 2)
 #    print multiprocessing.cpu_count(), "  n_process= ",n_processes
@@ -172,10 +172,10 @@ def main(args):
 #    r.wait()
     
     
-    for process in processes:
-      process.start()
-    for process in processes:
-      process.join()
+#    for process in processes:
+#      process.start()
+#    for process in processes:
+#      process.join()
 
     print 'Finished processing.'
 
