@@ -149,6 +149,10 @@ int main(int argc, char* argv[]) {
     outTr->Branch("nbjet",&nbjet,"nbjet/I");
     outTr->Branch("gen_higgs_pT",&gen_higgs_pT,"gen_higgs_pT/F");
     
+    string JetSys="Nominal";
+    if (syst=="JEnTotUp") JetSys="JetTotUp";
+    else if (syst=="JEnTotDown") JetSys="JetTotDown";
+    else std::cout<<"This is nominal Jet\n";
     
     Int_t nentries_wtn = (Int_t) Run_Tree->GetEntries();
     cout<<"nentries_wtn===="<<nentries_wtn<<"\n";
@@ -233,7 +237,12 @@ int main(int argc, char* argv[]) {
         // Tau selection
         int idx_tau= tauIndex;
         // pt from 30 to 20
-        if (boostedTauPt->at(idx_tau) <= 30 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
+        Tau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
+        if (syst == "TESUp") {Tau4Momentum *= 1+0.03 ;}
+        if (syst == "TESDown") {Tau4Momentum *= 1-0.03 ;}
+
+
+        if (Tau4Momentum.Pt() <= 30 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_tau) < 0.5 ) continue;
         //        if (boostedTauagainstElectronTightMVA62018->at(idx_tau) < 0.5) continue;
         if (boostedTauagainstElectronLooseMVA62018->at(idx_tau) < 0.5) continue;
@@ -241,14 +250,14 @@ int main(int argc, char* argv[]) {
         //        if (boostedTauByLooseMuonRejection3->at(idx_tau) < 0.5) continue;
         //        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < 0) continue;
         
-        Tau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
+        
         plotFill("cutFlowTable",5 ,15,0,15);
         //=========================================================================================================
         // Event Selection
         Met4Momentum.SetPtEtaPhiM(Met, 0, Metphi, 0);
         Z4Momentum=Tau4Momentum+Ele4Momentum;
         TLorentzVector higgs = Tau4Momentum+Ele4Momentum +Met4Momentum;
-        TLorentzVector LeadJet= getLeadJet(Ele4Momentum, Tau4Momentum);
+        TLorentzVector LeadJet= getLeadJet(Ele4Momentum, Tau4Momentum,JetSys);
         
         dR_lep_lep= Tau4Momentum.DeltaR(Ele4Momentum);
         if( dR_lep_lep > 0.8 || dR_lep_lep < 0.1) continue;
@@ -262,17 +271,17 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",8 ,15,0,15);
         
         // BJet veto
-        int numBJet=numBJets(BJetPtCut,DeepCSVCut);
+        int numBJet=numBJets(BJetPtCut,DeepCSVCut,JetSys);
         if (numBJet > 0) continue;
         plotFill("cutFlowTable",9 ,15,0,15);
         
         // HT cut
-        ht= getHT(JetPtCut, Ele4Momentum, Tau4Momentum);
+        ht= getHT(JetPtCut, Ele4Momentum, Tau4Momentum,JetSys);
         if (ht < 200) continue;
         plotFill("cutFlowTable",10 ,15,0,15);
         
         // ST definition
-        st= getST(JetPtCut);
+        st= getST(JetPtCut,JetSys);
         
         //muon veto
         int numMu =getNumMuon();
@@ -372,7 +381,7 @@ int main(int argc, char* argv[]) {
         lep2IsoPassV= boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
         eleIDMVA=eleIDMVANoIso->at(idx_lep);
         lepPt_=elePt->at(idx_lep);
-        taupt_=boostedTauPt->at(idx_tau);
+        taupt_=Tau4Momentum.Pt();
         vis_mass=Z4Momentum.M();
         LeadJetPt = LeadJet.Pt();
         dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
