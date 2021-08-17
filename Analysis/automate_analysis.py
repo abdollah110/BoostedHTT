@@ -64,7 +64,7 @@ def getSystematics(name):
    
   if name != 'data_obs' or name != 'QCD':
      systs += [
-             'met_JESUp', 'met_JESDown', 'met_UESUp', 'met_UESDown', 'prefireUp', 'prefireDown','TESUp', 'TESDown'
+             'MissingEn_JESUp', 'MissingEn_JESDown', 'MissingEn_UESUp', 'MissingEn_UESDown', 'prefireUp', 'prefireDown','TESUp', 'TESDown'
 #             'met_reso_Up', 'met_resp_Up','met_reso_Down', 'met_resp_Down'
               ]
               
@@ -108,7 +108,7 @@ for ifile in fileList:
     elif 'JJH' in sample or 'jjh' in sample:
         names = ['JJH']
     elif 'QCD' in sample or 'qcd' in sample:
-        names = ['QCD']
+        names = ['mcQCD']
     else:
         names = ['VV']
 
@@ -122,7 +122,7 @@ for ifile in fileList:
         pass
 
 
-    if options.syst and not 'Data' in sample.lower():
+    if options.syst and not 'data' in sample.lower() and not 'run' in sample.lower() and not 'qcd' in sample.lower():
         for name in names:
             for isyst in getSystematics(name):
                 #AM
