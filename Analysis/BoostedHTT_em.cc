@@ -138,6 +138,9 @@ int main(int argc, char* argv[]) {
     float ttbar_rwt=1;
     float zmasspt_weight_err=0;
     float zmasspt_weight_nom=1;
+    float weight_Rivet =1;
+    float weight_g_NNLOPS = 1;
+
     
     float lepPt_=-10;
     float elept_=-10;
@@ -389,7 +392,31 @@ int main(int argc, char* argv[]) {
                 }
             }            
         }
+        //###############################################################################################
+        //  Higgs theory uncertainty
+        //###############################################################################################
+            
+        if (fname.find("ggH125") != std::string::npos) { // now is used for all of prodiuction mode
+            if (Rivet_nJets30 == 0)
+                weight_g_NNLOPS = g_NNLOPS_0jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(125.0)));
+            if (Rivet_nJets30 == 1)
+                weight_g_NNLOPS = g_NNLOPS_1jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(625.0)));
+            if (Rivet_nJets30 == 2)
+                weight_g_NNLOPS = g_NNLOPS_2jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(800.0)));
+            if (Rivet_nJets30 >= 3)
+                weight_g_NNLOPS = g_NNLOPS_3jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(925.0)));
+                
+            NumV WG1unc;
+            WG1unc = qcd_ggF_uncert_2017(Rivet_nJets30, Rivet_higgsPt, Rivet_stage1_cat_pTjet30GeV);
+            if (syst.find("THU_ggH") != std::string::npos) {
+                weight_Rivet= 1 + event.getRivetUnc(WG1unc, syst);
+            }
+        }
+        //###############################################################################################
         
+        plotFill("weight_g_NNLOPS",weight_g_NNLOPS ,100,0,2);
+        plotFill("weight_Rivet",weight_Rivet ,100,0,2);
+
         plotFill("LepCorrection",LepCorrection ,100,0,2);
         plotFill("LumiWeight",LumiWeight ,1000,0,10000);
         plotFill("PUWeight",PUWeight ,200,0,2);
@@ -398,34 +425,6 @@ int main(int argc, char* argv[]) {
         plotFill("WBosonKFactor",WBosonKFactor ,200,0,2);
         plotFill("ttbar_rwt",ttbar_rwt ,200,0,2);
 
-        //###############################################################################################
-        //  Higgs theory uncertainty
-        //###############################################################################################
-        
-            float weight_Rivet =1;
-            float weight_g_NNLOPS = 1;
-            NumV WG1unc;
-            if (fname.find("ggH125") != std::string::npos) { // now is used for all of prodiuction mode
-                if (Rivet_nJets30 == 0)
-                    weight_g_NNLOPS = g_NNLOPS_0jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(125.0)));
-                if (Rivet_nJets30 == 1)
-                    weight_g_NNLOPS = g_NNLOPS_1jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(625.0)));
-                if (Rivet_nJets30 == 2)
-                    weight_g_NNLOPS = g_NNLOPS_2jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(800.0)));
-                if (Rivet_nJets30 >= 3)
-                    weight_g_NNLOPS = g_NNLOPS_3jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(925.0)));
-                    
-                    
-                WG1unc = qcd_ggF_uncert_2017(Rivet_nJets30, Rivet_higgsPt, Rivet_stage1_cat_pTjet30GeV);
-                if (syst.find("THU_ggH") != std::string::npos) {
-                    weight_Rivet= 1 + event.getRivetUnc(WG1unc, syst);
-                    
-                    cout<<"Rivet_nJets30, Rivet_higgsPt, Rivet_stage1_cat_pTjet30GeV "<<Rivet_nJets30<<" "<<Rivet_higgsPt<<" "<< Rivet_stage1_cat_pTjet30GeV<<" weight_Rivet== "<<weight_Rivet<<"\n";
-                }
-            }
-                
-        plotFill("weight_g_NNLOPS",weight_g_NNLOPS ,100,0,2);
-        plotFill("weight_Rivet",weight_Rivet ,100,0,2);
         //###############################################################################################
         //  tree branches
         //###############################################################################################

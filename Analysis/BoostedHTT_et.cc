@@ -359,7 +359,32 @@ int main(int argc, char* argv[]) {
             }
             
         }
+
+        //###############################################################################################
+        //  Higgs theory uncertainty
+        //###############################################################################################
+            
+        if (fname.find("ggH125") != std::string::npos) { // now is used for all of prodiuction mode
+            if (Rivet_nJets30 == 0)
+                weight_g_NNLOPS = g_NNLOPS_0jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(125.0)));
+            if (Rivet_nJets30 == 1)
+                weight_g_NNLOPS = g_NNLOPS_1jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(625.0)));
+            if (Rivet_nJets30 == 2)
+                weight_g_NNLOPS = g_NNLOPS_2jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(800.0)));
+            if (Rivet_nJets30 >= 3)
+                weight_g_NNLOPS = g_NNLOPS_3jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(925.0)));
+                
+            NumV WG1unc;
+            WG1unc = qcd_ggF_uncert_2017(Rivet_nJets30, Rivet_higgsPt, Rivet_stage1_cat_pTjet30GeV);
+            if (syst.find("THU_ggH") != std::string::npos) {
+                weight_Rivet= 1 + event.getRivetUnc(WG1unc, syst);
+            }
+        }
+        //###############################################################################################
         
+        plotFill("weight_g_NNLOPS",weight_g_NNLOPS ,100,0,2);
+        plotFill("weight_Rivet",weight_Rivet ,100,0,2);
+
         plotFill("LepCorrection",LepCorrection ,100,0,2);
         plotFill("LumiWeight",LumiWeight ,1000,0,10000);
         plotFill("PUWeight",PUWeight ,200,0,2);
@@ -387,7 +412,7 @@ int main(int argc, char* argv[]) {
         dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
         BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_tau);
         m_sv_=m_sv;
-        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * preFireWeight * WBosonKFactor * ttbar_rwt;
+        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * preFireWeight * WBosonKFactor * ttbar_rwt* weight_Rivet;
         nbjet= numBJet;
         gen_higgs_pT = GetHiggsPt();
         

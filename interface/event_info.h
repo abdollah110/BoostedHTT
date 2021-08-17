@@ -312,8 +312,7 @@ unc_map{
 //            input->SetBranchAddress("Rivet_stage1_1_fine_cat_pTjet30GeV", &Rivet_stage1_1_fine_cat_pTjet30GeV); //tmp solution
 //        }
                 
-       Float_t event_info::getRivetUnc(std::vector<double> uncs, std::string syst) {
-            cout<<" sys is "<<syst <<"\n";
+       Float_t event_info::getRivetUnc(std::vector<double> uncs, std::string syst) {            
             if (syst.find("THU_ggH") != std::string::npos) {
                 int index = unc_map[syst];
                 if (syst.find("Up") != std::string::npos) {

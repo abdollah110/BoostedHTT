@@ -74,6 +74,12 @@ def getSystematics(name):
   if name == 'ZLL' or name == 'ZTT' or name == 'ZJ':
     systs += ['Z_masspt_Up', 'Z_masspt_Down']
 
+if name == 'ggH125':
+    systs +=["THU_ggH_Mu_Up","THU_ggH_Res_Up","THU_ggH_Mig01_Up","THU_ggH_Mig12_Up","THU_ggH_VBF2j_Up","THU_ggH_VBF3j_Up","THU_ggH_PT60_Up","THU_ggH_PT120_Up","THU_ggH_qmtop_Up","THU_ggH_Mu_Down","THU_ggH_Res_Down","THU_ggH_Mig01_Down","THU_ggH_Mig12_Down","THU_ggH_VBF2j_Down","THU_ggH_VBF3j_Down","THU_ggH_PT60_Down","THU_ggH_PT120_Down","THU_ggH_qmtop_Down"]
+
+
+
+
 #  if name == 'W':
 #    systs += ['WBosonKFactorUp', 'WBosonKFactorDown']
 
