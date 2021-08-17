@@ -64,7 +64,7 @@ def getSystematics(name):
    
   if name != 'data_obs' or name != 'QCD':
      systs += [
-             'MissingEn_JESUp', 'MissingEn_JESDown', 'MissingEn_UESUp', 'MissingEn_UESDown', 'prefireUp', 'prefireDown','TESUp', 'TESDown'
+             'MissingEn_JESUp', 'MissingEn_JESDown', 'MissingEn_UESUp', 'MissingEn_UESDown', 'prefireUp', 'prefireDown','TESUp', 'TESDown','JEnTotUp','JEnTotDown'
 #             'met_reso_Up', 'met_resp_Up','met_reso_Down', 'met_resp_Down'
               ]
               

@@ -34,6 +34,9 @@
 #include "../interface/WeightCalculator.h"
 #include "../interface/Corrector.h"
 #include "../interface/makeHisto.h"
+#include "../interface/event_info.h"
+#include "../interface/ComputeWG1Unc.h"
+
 
 float MuMass= 0.10565837;
 float eleMass= 0.000511;
@@ -65,27 +68,27 @@ float dR_(float ieta, float iphi, float jeta, float jphi){
 
 
 struct findDr{
-int order;
-float dR;
+    int order;
+    float dR;
 };
 
 findDr FindClosetDr(TLorentzVector TauCand, vector<TLorentzVector> Collection){
-
-struct findDr fd;
-fd.dR=1000.;
-fd.order=-1;
-int i =0;
-float minVal = 1000;
-for (auto cand : Collection){
     
-if (TauCand.DeltaR(cand) < minVal){
-    fd.order = i;
-    fd.dR=TauCand.DeltaR(cand);
-    minVal=TauCand.DeltaR(cand);
-}
-i++;
-}
-return fd;
+    struct findDr fd;
+    fd.dR=1000.;
+    fd.order=-1;
+    int i =0;
+    float minVal = 1000;
+    for (auto cand : Collection){
+        
+        if (TauCand.DeltaR(cand) < minVal){
+            fd.order = i;
+            fd.dR=TauCand.DeltaR(cand);
+            minVal=TauCand.DeltaR(cand);
+        }
+        i++;
+    }
+    return fd;
 }
 
 //########################################
@@ -984,25 +987,25 @@ int numBJets( float BJetPtCut, float CSVCut, string JetSys){
     int numBJet=0;
     
     if (JetSys.find("Nominal")!=string::npos){
-    for (int ijet= 0 ; ijet < nJet ; ijet++){
-        if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > BJetPtCut && fabs(jetEta->at(ijet)) < 2.4  &&
-            jetDeepCSVTags_b->at(ijet) >  CSVCut)
-            numBJet++;
-    }
+        for (int ijet= 0 ; ijet < nJet ; ijet++){
+            if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > BJetPtCut && fabs(jetEta->at(ijet)) < 2.4  &&
+                jetDeepCSVTags_b->at(ijet) >  CSVCut)
+                numBJet++;
+        }
     }
     else if (JetSys.find("JetTotUp")!=string::npos){
-    for (int ijet= 0 ; ijet < nJet ; ijet++){
-        if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncUp->at(ijet) > BJetPtCut && fabs(jetEta->at(ijet)) < 2.4  &&
-            jetDeepCSVTags_b->at(ijet) >  CSVCut)
-            numBJet++;
-    }
+        for (int ijet= 0 ; ijet < nJet ; ijet++){
+            if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncUp->at(ijet) > BJetPtCut && fabs(jetEta->at(ijet)) < 2.4  &&
+                jetDeepCSVTags_b->at(ijet) >  CSVCut)
+                numBJet++;
+        }
     }
     else if (JetSys.find("JetTotDown")!=string::npos){
-    for (int ijet= 0 ; ijet < nJet ; ijet++){
-        if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncDown->at(ijet) > BJetPtCut && fabs(jetEta->at(ijet)) < 2.4  &&
-            jetDeepCSVTags_b->at(ijet) >  CSVCut)
-            numBJet++;
-    }
+        for (int ijet= 0 ; ijet < nJet ; ijet++){
+            if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncDown->at(ijet) > BJetPtCut && fabs(jetEta->at(ijet)) < 2.4  &&
+                jetDeepCSVTags_b->at(ijet) >  CSVCut)
+                numBJet++;
+        }
     }
     
     
@@ -1058,24 +1061,24 @@ int subLeadingCSV (int leadCSV){
 int numJets( float SimpleJetPtCut, string JetSys){
     int numJet=0;
     if (JetSys.find("Nominal")!=string::npos){
-    for (int ijet= 0 ; ijet < nJet ; ijet++){
-        if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 2.4 )
-            numJet++;
+        for (int ijet= 0 ; ijet < nJet ; ijet++){
+            if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 2.4 )
+                numJet++;
+        }
     }
+    else if (JetSys.find("JetTotUp")!=string::npos){
+        for (int ijet= 0 ; ijet < nJet ; ijet++){
+            if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncUp->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 2.4 )
+                numJet++;
+        }
     }
-else if (JetSys.find("JetTotUp")!=string::npos){
-    for (int ijet= 0 ; ijet < nJet ; ijet++){
-        if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncUp->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 2.4 )
-            numJet++;
+    else if (JetSys.find("JetTotDown")!=string::npos){
+        for (int ijet= 0 ; ijet < nJet ; ijet++){
+            if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncDown->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 2.4 )
+                numJet++;
+        }
     }
-    }
-else if (JetSys.find("JetTotDown")!=string::npos){
-    for (int ijet= 0 ; ijet < nJet ; ijet++){
-        if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncDown->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 2.4 )
-            numJet++;
-    }
-    }
-
+    
     return numJet;
 }
 
@@ -1083,33 +1086,33 @@ else if (JetSys.find("JetTotDown")!=string::npos){
 float getHT( float SimpleJetPtCut, TLorentzVector lep4Mom, TLorentzVector tau4Mom, string JetSys){
     TLorentzVector  Jet;
     float HT=0;
-if (JetSys.find("Nominal")!=string::npos){
-    for (int ijet= 0 ; ijet < nJet ; ijet++){
-        Jet.SetPtEtaPhiE(jetPt->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
-        if (Jet.DeltaR(lep4Mom) < 0.5) continue;
-        if (Jet.DeltaR(tau4Mom) < 0.5) continue;
-        if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 3.0 )
-            HT += jetPt->at(ijet);
+    if (JetSys.find("Nominal")!=string::npos){
+        for (int ijet= 0 ; ijet < nJet ; ijet++){
+            Jet.SetPtEtaPhiE(jetPt->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
+            if (Jet.DeltaR(lep4Mom) < 0.5) continue;
+            if (Jet.DeltaR(tau4Mom) < 0.5) continue;
+            if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 3.0 )
+                HT += jetPt->at(ijet);
+        }
     }
-}
-else if (JetSys.find("JetTotUp")!=string::npos){
-    for (int ijet= 0 ; ijet < nJet ; ijet++){
-        Jet.SetPtEtaPhiE(jetPtTotUncUp->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
-        if (Jet.DeltaR(lep4Mom) < 0.5) continue;
-        if (Jet.DeltaR(tau4Mom) < 0.5) continue;
-        if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncUp->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 3.0 )
-            HT += jetPtTotUncUp->at(ijet);
+    else if (JetSys.find("JetTotUp")!=string::npos){
+        for (int ijet= 0 ; ijet < nJet ; ijet++){
+            Jet.SetPtEtaPhiE(jetPtTotUncUp->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
+            if (Jet.DeltaR(lep4Mom) < 0.5) continue;
+            if (Jet.DeltaR(tau4Mom) < 0.5) continue;
+            if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncUp->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 3.0 )
+                HT += jetPtTotUncUp->at(ijet);
+        }
     }
-}
-        else if (JetSys.find("JetTotDown")!=string::npos){
-    for (int ijet= 0 ; ijet < nJet ; ijet++){
-        Jet.SetPtEtaPhiE(jetPtTotUncDown->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
-        if (Jet.DeltaR(lep4Mom) < 0.5) continue;
-        if (Jet.DeltaR(tau4Mom) < 0.5) continue;
-        if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncDown->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 3.0 )
-            HT += jetPtTotUncDown->at(ijet);
+    else if (JetSys.find("JetTotDown")!=string::npos){
+        for (int ijet= 0 ; ijet < nJet ; ijet++){
+            Jet.SetPtEtaPhiE(jetPtTotUncDown->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
+            if (Jet.DeltaR(lep4Mom) < 0.5) continue;
+            if (Jet.DeltaR(tau4Mom) < 0.5) continue;
+            if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncDown->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 3.0 )
+                HT += jetPtTotUncDown->at(ijet);
+        }
     }
-}
     
     return HT;
 }
@@ -1132,24 +1135,24 @@ float getST( float SimpleJetPtCut, string JetSys){
     float ST=0;
     
     if (JetSys.find("Nominal")!=string::npos){
-    for (int ijet= 0 ; ijet < nJet ; ijet++){
-        if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 3.0 )
-            ST += jetPt->at(ijet);
+        for (int ijet= 0 ; ijet < nJet ; ijet++){
+            if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 3.0 )
+                ST += jetPt->at(ijet);
+        }
     }
-}
-else if (JetSys.find("JetTotUp")!=string::npos){
-    for (int ijet= 0 ; ijet < nJet ; ijet++){
-        if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncUp->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 3.0 )
-            ST += jetPtTotUncUp->at(ijet);
+    else if (JetSys.find("JetTotUp")!=string::npos){
+        for (int ijet= 0 ; ijet < nJet ; ijet++){
+            if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncUp->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 3.0 )
+                ST += jetPtTotUncUp->at(ijet);
+        }
     }
-}
-        else if (JetSys.find("JetTotDown")!=string::npos){
-    for (int ijet= 0 ; ijet < nJet ; ijet++){
-        if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncDown->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 3.0 )
-            ST += jetPtTotUncDown->at(ijet);
+    else if (JetSys.find("JetTotDown")!=string::npos){
+        for (int ijet= 0 ; ijet < nJet ; ijet++){
+            if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncDown->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 3.0 )
+                ST += jetPtTotUncDown->at(ijet);
+        }
     }
-}
-
+    
     return ST;
 }
 
@@ -1159,25 +1162,25 @@ float getMHT( float SimpleJetPtCut, string JetSys){
     float MHT_y=0;
     
     if (JetSys.find("Nominal")!=string::npos){
-    for (int ijet= 0 ; ijet < nJet ; ijet++){
-        if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 5.0 )
-            MHT_x += jetPt->at(ijet)*cos(jetPhi->at(ijet));
-        MHT_y += jetPt->at(ijet)*sin(jetPhi->at(ijet));
-    }
+        for (int ijet= 0 ; ijet < nJet ; ijet++){
+            if (jetPFLooseId->at(ijet) > 0.5 && jetPt->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 5.0 )
+                MHT_x += jetPt->at(ijet)*cos(jetPhi->at(ijet));
+            MHT_y += jetPt->at(ijet)*sin(jetPhi->at(ijet));
+        }
     }
     else if (JetSys.find("JetTotUp")!=string::npos){
         for (int ijet= 0 ; ijet < nJet ; ijet++){
-        if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncUp->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 5.0 )
-            MHT_x += jetPtTotUncUp->at(ijet)*cos(jetPhi->at(ijet));
-        MHT_y += jetPtTotUncUp->at(ijet)*sin(jetPhi->at(ijet));
+            if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncUp->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 5.0 )
+                MHT_x += jetPtTotUncUp->at(ijet)*cos(jetPhi->at(ijet));
+            MHT_y += jetPtTotUncUp->at(ijet)*sin(jetPhi->at(ijet));
+        }
     }
-    }
-        else if (JetSys.find("JetTotDown")!=string::npos){
+    else if (JetSys.find("JetTotDown")!=string::npos){
         for (int ijet= 0 ; ijet < nJet ; ijet++){
-        if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncDown->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 5.0 )
-            MHT_x += jetPtTotUncDown->at(ijet)*cos(jetPhi->at(ijet));
-        MHT_y += jetPtTotUncDown->at(ijet)*sin(jetPhi->at(ijet));
-    }
+            if (jetPFLooseId->at(ijet) > 0.5 && jetPtTotUncDown->at(ijet) > SimpleJetPtCut && fabs(jetEta->at(ijet)) < 5.0 )
+                MHT_x += jetPtTotUncDown->at(ijet)*cos(jetPhi->at(ijet));
+            MHT_y += jetPtTotUncDown->at(ijet)*sin(jetPhi->at(ijet));
+        }
     }
     return sqrt(MHT_x*MHT_x + MHT_y*MHT_y);
 }
@@ -1189,13 +1192,13 @@ TLorentzVector getLeadJet(TLorentzVector lep4Mom, TLorentzVector tau4Mom, string
     float MaxJetPt=0;
     int leadJetPtIndex=0;
     if (JetSys.find("Nominal")!=string::npos){
-    leadJet.SetPtEtaPhiE(jetPt->at(leadJetPtIndex),jetEta->at(leadJetPtIndex),jetPhi->at(leadJetPtIndex),jetEn->at(leadJetPtIndex));
+        leadJet.SetPtEtaPhiE(jetPt->at(leadJetPtIndex),jetEta->at(leadJetPtIndex),jetPhi->at(leadJetPtIndex),jetEn->at(leadJetPtIndex));
     }
     else if (JetSys.find("JetTotUp")!=string::npos){
-    leadJet.SetPtEtaPhiE(jetPtTotUncUp->at(leadJetPtIndex),jetEta->at(leadJetPtIndex),jetPhi->at(leadJetPtIndex),jetEn->at(leadJetPtIndex));
+        leadJet.SetPtEtaPhiE(jetPtTotUncUp->at(leadJetPtIndex),jetEta->at(leadJetPtIndex),jetPhi->at(leadJetPtIndex),jetEn->at(leadJetPtIndex));
     }
     else if (JetSys.find("JetTotDown")!=string::npos){
-    leadJet.SetPtEtaPhiE(jetPtTotUncDown->at(leadJetPtIndex),jetEta->at(leadJetPtIndex),jetPhi->at(leadJetPtIndex),jetEn->at(leadJetPtIndex));
+        leadJet.SetPtEtaPhiE(jetPtTotUncDown->at(leadJetPtIndex),jetEta->at(leadJetPtIndex),jetPhi->at(leadJetPtIndex),jetEn->at(leadJetPtIndex));
     }
     return leadJet;
 }

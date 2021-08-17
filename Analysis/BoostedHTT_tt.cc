@@ -176,6 +176,10 @@ int main(int argc, char* argv[]) {
     outTr->Branch("nbjet",&nbjet,"nbjet/I");
     outTr->Branch("gen_higgs_pT",&gen_higgs_pT,"gen_higgs_pT/F");
     
+    string JetSys="Nominal";
+    if (syst=="JEnTotUp") JetSys="JetTotUp";
+    else if (syst=="JEnTotDown") JetSys="JetTotDown";
+    else std::cout<<"This is nominal Jet\n";
     
     
     Int_t nentries_wtn = (Int_t) Run_Tree->GetEntries();
@@ -230,8 +234,8 @@ int main(int argc, char* argv[]) {
         if (isData && (metFilters!=0)) continue;
         //=========================================================================================================
         //MET Shape systematics
-//        Met=pfMET;
-//        Metphi=pfMETPhi;
+        //        Met=pfMET;
+        //        Metphi=pfMETPhi;
         Met=pfMetNoRecoil;
         Metphi=pfMetPhiNoRecoil;
         
@@ -242,41 +246,48 @@ int main(int argc, char* argv[]) {
         
         if (syst == "TESUp") {m_sv=m_sv_TES_Up ;}
         if (syst == "TESDown") {m_sv=m_sv_TES_Down ;}
-
-//        if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
-//        if (syst == "met_resp_Up") {Met = met_resp_Up; Metphi=metphi_resp_Up;}
-//        if (syst == "met_reso_Down") {Met = met_reso_Down; Metphi=metphi_reso_Down;}
-//        if (syst == "met_resp_Down") {Met = met_resp_Down; Metphi=metphi_resp_Down;}
-
+        
+        //        if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
+        //        if (syst == "met_resp_Up") {Met = met_resp_Up; Metphi=metphi_resp_Up;}
+        //        if (syst == "met_reso_Down") {Met = met_reso_Down; Metphi=metphi_reso_Down;}
+        //        if (syst == "met_resp_Down") {Met = met_resp_Down; Metphi=metphi_resp_Down;}
+        
         
         TLorentzVector LeadTau4Momentum,SubTau4Momentum, Z4Momentum, Met4Momentum;
         //=========================================================================================================
         // Lead tau selection
         int idx_leadtau= leadtauIndex;
+        LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_leadtau),boostedTauEta->at(idx_leadtau),boostedTauPhi->at(idx_leadtau),boostedTauMass->at(idx_leadtau));
         
-        if (boostedTauPt->at(idx_leadtau) <= 30 || fabs(boostedTauEta->at(idx_leadtau)) >= 2.3 ) continue;
+        if (syst == "TESUp") {LeadTau4Momentum *= 1+0.03 ;}
+        if (syst == "TESDown") {LeadTau4Momentum *= 1-0.03 ;}
+        
+        
+        if (LeadTau4Momentum.Pt() <= 30 || fabs(boostedTauEta->at(idx_leadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_leadtau) < 0.5 ) continue;
         if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_leadtau) < -0.5) continue;
         //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_leadtau) < 0.5) continue;
         //        if (boostedTauByLooseMuonRejection3->at(idx_leadtau) < 0.5) continue;
-        LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_leadtau),boostedTauEta->at(idx_leadtau),boostedTauPhi->at(idx_leadtau),boostedTauMass->at(idx_leadtau));
         plotFill("cutFlowTable",3 ,15,0,15);
         
         //=========================================================================================================
         // sublead Tau selection
         int idx_subleadtau= subtauIndex;
+        SubTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_subleadtau),boostedTauEta->at(idx_subleadtau),boostedTauPhi->at(idx_subleadtau),boostedTauMass->at(idx_subleadtau));
         
-        if (boostedTauPt->at(idx_subleadtau) <= 30 || fabs(boostedTauEta->at(idx_subleadtau)) >= 2.3 ) continue;
+        if (syst == "TESUp") {SubTau4Momentum *= 1+0.03 ;}
+        if (syst == "TESDown") {SubTau4Momentum *= 1-0.03 ;}
+        
+        if (SubTau4Momentum.Pt() <= 30 || fabs(boostedTauEta->at(idx_subleadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_subleadtau) < 0.5 ) continue;
         if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_subleadtau) < -0.5) continue;
         //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_subleadtau) < 0.5) continue;
         //        if (boostedTauByLooseMuonRejection3->at(idx_subleadtau) < 0.5) continue;
         
-        SubTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_subleadtau),boostedTauEta->at(idx_subleadtau),boostedTauPhi->at(idx_subleadtau),boostedTauMass->at(idx_subleadtau));
         plotFill("cutFlowTable",4 ,15,0,15);
         
         dR_lep_lep= SubTau4Momentum.DeltaR(LeadTau4Momentum);
-        TLorentzVector LeadJet= getLeadJet(LeadTau4Momentum, SubTau4Momentum);
+        TLorentzVector LeadJet= getLeadJet(LeadTau4Momentum, SubTau4Momentum,JetSys);
         
         
         //=========================================================================================================
@@ -285,47 +296,47 @@ int main(int argc, char* argv[]) {
         float AK8Mass=0;
         float AK8Eta=100;
         
-        float PFHT= getST(JetPtCut);
+        float PFHT= getST(JetPtCut,JetSys);
         float PFMET=Met;
-        float MHT=getMHT(JetPtCut);
-        st= getST(JetPtCut);
-        ht= getHT(JetPtCut, LeadTau4Momentum, SubTau4Momentum);
+        float MHT=getMHT(JetPtCut,JetSys);
+        st= getST(JetPtCut,JetSys);
+        ht= getHT(JetPtCut, LeadTau4Momentum, SubTau4Momentum,JetSys);
         
         float TriggerWeight = 1;
         float _cut_AK8Pt_,_cut_AK8Mass_,_cut_PFHT_,_cut_PFMET_,_cut_PFMHT_, _cut_PFMETMHT_, _cut_st_;
         bool _Pass_AK8_Trigger_, _Pass_METHT_Trigger_;
-
-
-
-
-
+        
+        
+        
+        
+        
         //=========================================================================================================
         // Trigger Efficiency
         //=========================================================================================================
         if (year== 2016  && PFHT > 400 ){
-        plotFill("RunBeforeTrigger",run, 50 ,273000,285000);
-        if (PassTrigger_20) plotFill("RunHLTJet37",run, 50 ,273000,285000);
-        if (PassTrigger_21) plotFill("RunHLTJet38",run, 50 ,273000,285000);
-        if (PassTrigger_22) plotFill("RunHLTJet39",run, 50 ,273000,285000);
-        if (PassTrigger_40) plotFill("RunHLTJet40",run, 50 ,273000,285000);
+            plotFill("RunBeforeTrigger",run, 50 ,273000,285000);
+            if (PassTrigger_20) plotFill("RunHLTJet37",run, 50 ,273000,285000);
+            if (PassTrigger_21) plotFill("RunHLTJet38",run, 50 ,273000,285000);
+            if (PassTrigger_22) plotFill("RunHLTJet39",run, 50 ,273000,285000);
+            if (PassTrigger_40) plotFill("RunHLTJet40",run, 50 ,273000,285000);
         }
         else if (year== 2017 && PFHT > 400){
-        plotFill("RunBeforeTrigger",run, 50 ,297000,307000);
-        if (PassTrigger_37) plotFill("RunHLTJet37",run, 50 ,297000,307000);
-        if (PassTrigger_38) plotFill("RunHLTJet38",run, 50 ,297000,307000);
-        if (PassTrigger_39) plotFill("RunHLTJet39",run, 50 ,297000,307000);
-        if (PassTrigger_40) plotFill("RunHLTJet40",run, 50 ,297000,307000);
+            plotFill("RunBeforeTrigger",run, 50 ,297000,307000);
+            if (PassTrigger_37) plotFill("RunHLTJet37",run, 50 ,297000,307000);
+            if (PassTrigger_38) plotFill("RunHLTJet38",run, 50 ,297000,307000);
+            if (PassTrigger_39) plotFill("RunHLTJet39",run, 50 ,297000,307000);
+            if (PassTrigger_40) plotFill("RunHLTJet40",run, 50 ,297000,307000);
         }
         else if (year== 2018 && PFHT > 400){
-        plotFill("RunBeforeTrigger",run, 50 ,315000,326000);
-        if (PassTrigger_37) plotFill("RunHLTJet37",run, 50 ,315000,326000);
-        if (PassTrigger_38) plotFill("RunHLTJet38",run, 50 ,315000,326000);
-        if (PassTrigger_39) plotFill("RunHLTJet39",run, 50 ,315000,326000);
-        if (PassTrigger_40) plotFill("RunHLTJet40",run, 50 ,315000,326000);
+            plotFill("RunBeforeTrigger",run, 50 ,315000,326000);
+            if (PassTrigger_37) plotFill("RunHLTJet37",run, 50 ,315000,326000);
+            if (PassTrigger_38) plotFill("RunHLTJet38",run, 50 ,315000,326000);
+            if (PassTrigger_39) plotFill("RunHLTJet39",run, 50 ,315000,326000);
+            if (PassTrigger_40) plotFill("RunHLTJet40",run, 50 ,315000,326000);
         }
         //=========================================================================================================
-
-
+        
+        
         if (year== 2016){
             
             _cut_AK8Pt_ = 450;
@@ -367,7 +378,10 @@ int main(int argc, char* argv[]) {
         
         for (int ijet=0; ijet < nAK8Jet ; ijet ++){
             
-            AK8Pt=AK8JetPt->at(ijet);
+            AK8Pt=AK8JetPt->at(ijet);            
+            if (syst=="JEnTotUp") AK8Pt=AK8JetPtTotUncUp->at(ijet);;
+            if (syst=="JEnTotDown") AK8Pt=AK8JetPtTotUncDown->at(ijet);;
+            
             AK8Mass=AK8JetSoftDropMass->at(ijet);
             AK8Eta=fabs(AK8JetEta->at(ijet));
             
@@ -377,36 +391,36 @@ int main(int argc, char* argv[]) {
         
         
         bool passing= true;
-
- ////apply trigger only on data
- if (year==2017){
-        if ( (!isData ||  (isData && _Pass_AK8_Trigger_)) &&  AK8Pt > _cut_AK8Pt_ && AK8Mass > _cut_AK8Mass_ && AK8Eta < 2.5){
-            TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT);
-            passing= true;
-        }
-        else if ( (!isData ||  (isData && _Pass_METHT_Trigger_)) &&  PFHT > _cut_PFHT_ && PFMET > _cut_PFMET_ && MHT> _cut_PFMHT_ && PFMET+MHT > _cut_PFMETMHT_){
-            TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MET);
-            passing= true;
-        }
-        else {
-            passing = false;
-        }
-}
-else {
-// apply trigger on simulation as well as data
-        if ( _Pass_AK8_Trigger_ &&  AK8Pt > _cut_AK8Pt_ && AK8Mass > _cut_AK8Mass_ && AK8Eta < 2.5){
-            TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT_SF);
-            passing= true;
-        }
-        else if (_Pass_METHT_Trigger_ &&  PFHT > _cut_PFHT_ && PFMET > _cut_PFMET_ && MHT> _cut_PFMHT_ && PFMET+MHT > _cut_PFMETMHT_){
-            TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MET_SF);
-            passing= true;
+        
+        ////apply trigger only on data
+        if (year==2017){
+            if ( (!isData ||  (isData && _Pass_AK8_Trigger_)) &&  AK8Pt > _cut_AK8Pt_ && AK8Mass > _cut_AK8Mass_ && AK8Eta < 2.5){
+                TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT);
+                passing= true;
+            }
+            else if ( (!isData ||  (isData && _Pass_METHT_Trigger_)) &&  PFHT > _cut_PFHT_ && PFMET > _cut_PFMET_ && MHT> _cut_PFMHT_ && PFMET+MHT > _cut_PFMETMHT_){
+                TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MET);
+                passing= true;
+            }
+            else {
+                passing = false;
+            }
         }
         else {
-            passing = false;
+            // apply trigger on simulation as well as data
+            if ( _Pass_AK8_Trigger_ &&  AK8Pt > _cut_AK8Pt_ && AK8Mass > _cut_AK8Mass_ && AK8Eta < 2.5){
+                TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT_SF);
+                passing= true;
+            }
+            else if (_Pass_METHT_Trigger_ &&  PFHT > _cut_PFHT_ && PFMET > _cut_PFMET_ && MHT> _cut_PFMHT_ && PFMET+MHT > _cut_PFMETMHT_){
+                TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MET_SF);
+                passing= true;
+            }
+            else {
+                passing = false;
+            }
         }
-}
-
+        
         if (! passing) continue;
         
         //=========================================================================================================
@@ -415,7 +429,7 @@ else {
         Met4Momentum.SetPtEtaPhiM(Met, 0, Metphi, 0);
         Z4Momentum=SubTau4Momentum+LeadTau4Momentum;
         TLorentzVector higgs = SubTau4Momentum+LeadTau4Momentum +Met4Momentum;
-
+        
         
         if( dR_lep_lep > 0.8 || dR_lep_lep < 0.1) continue;
         plotFill("cutFlowTable",8 ,15,0,15);
@@ -428,7 +442,7 @@ else {
         plotFill("cutFlowTable",10 ,15,0,15);
         
         // BJet veto
-        int numBJet=numBJets(BJetPtCut,DeepCSVCut);
+        int numBJet=numBJets(BJetPtCut,DeepCSVCut,JetSys);
         //        if (numBJet > 0) continue;
         //        plotFill("cutFlowTable",8 ,15,0,15);
         
@@ -518,7 +532,7 @@ else {
         //###############################################################################################
         //  tree branches
         //###############################################################################################
-            
+        
         
         higgs_m = higgs.M();
         OS = boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) < 0;
@@ -528,8 +542,8 @@ else {
         lep1IsoPassV = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
         lep2IsoPassV = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
         
-        lep1Pt_=boostedTauPt->at(idx_leadtau);
-        lep2Pt_=boostedTauPt->at(idx_subleadtau);
+        lep1Pt_=LeadTau4Momentum.Pt();
+        lep2Pt_=SubTau4Momentum.Pt();
         vis_mass=Z4Momentum.M();
         LeadJetPt = LeadJet.Pt();
         dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
@@ -551,14 +565,14 @@ else {
     map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
     
     for (; iMap1 != jMap1; ++iMap1)
-    nplot1(iMap1->first)->Write();
+        nplot1(iMap1->first)->Write();
     outTr->Write();
     
     map<string, TH2F*>::const_iterator iMap2 = myMap2->begin();
     map<string, TH2F*>::const_iterator jMap2 = myMap2->end();
     
     for (; iMap2 != jMap2; ++iMap2)
-    nplot2(iMap2->first)->Write();
+        nplot2(iMap2->first)->Write();
     
     fout->Close();
 }
