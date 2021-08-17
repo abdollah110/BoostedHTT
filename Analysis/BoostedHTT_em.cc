@@ -92,7 +92,7 @@ int main(int argc, char* argv[]) {
     //########################################
     // Rivet
     //########################################
-    TFile *f_NNLOPS = TFile::Open("NNLOPS_reweight.root");
+    TFile *f_NNLOPS = TFile::Open("data/NNLOPS_reweight.root");
     TGraph *g_NNLOPS_0jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_powheg_0jet"));
     TGraph *g_NNLOPS_1jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_powheg_1jet"));
     TGraph *g_NNLOPS_2jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_powheg_2jet"));
