@@ -159,6 +159,12 @@ int main(int argc, char* argv[]) {
     outTr->Branch("nbjet",&nbjet,"nbjet/I");
     outTr->Branch("gen_higgs_pT",&gen_higgs_pT,"gen_higgs_pT/F");
     
+    string JetSys="Nominal";
+    if (syst=="JEnTotUp") JetSys="JetTotUp";
+    else if (syst=="JEnTotDown") JetSys="JetTotDown";
+    else std::cout<<"This is nominal Jet\n";
+    
+    
     Int_t nentries_wtn = (Int_t) Run_Tree->GetEntries();
     cout<<"nentries_wtn===="<<nentries_wtn<<"\n";
     for (Int_t i = 0; i < nentries_wtn; i++) {
@@ -266,7 +272,7 @@ int main(int argc, char* argv[]) {
         Met4Momentum.SetPtEtaPhiM(Met, 0, Metphi, 0);
         Z4Momentum=Ele4Momentum+Mu4Momentum;
         TLorentzVector higgs = Ele4Momentum+Mu4Momentum +Met4Momentum;
-        TLorentzVector LeadJet= getLeadJet(Mu4Momentum, Ele4Momentum);
+        TLorentzVector LeadJet= getLeadJet(Mu4Momentum, Ele4Momentum,JetSys);
 
         dR_lep_lep= Ele4Momentum.DeltaR(Mu4Momentum);
         if( dR_lep_lep > 0.8 || dR_lep_lep < 0.1) continue;
@@ -280,17 +286,17 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",9 ,15,0,15);
         
         // BJet veto
-        int numBJet=numBJets(BJetPtCut,DeepCSVCut);
+        int numBJet=numBJets(BJetPtCut,DeepCSVCut,JetSys);
         if (numBJet > 0) continue;
         plotFill("cutFlowTable",10 ,15,0,15);
         
         // HT cut
-        ht= getHT(JetPtCut, Mu4Momentum, Ele4Momentum);
+        ht= getHT(JetPtCut, Mu4Momentum, Ele4Momentum,JetSys);
         if (ht < 200) continue;
         plotFill("cutFlowTable",11 ,15,0,15);
         
         // ST definition
-        st= getST(JetPtCut);
+        st= getST(JetPtCut,JetSys);
         
         //electron veto
         int numele =getNumElectron();
