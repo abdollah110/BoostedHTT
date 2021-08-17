@@ -419,6 +419,8 @@ int main(int argc, char* argv[]) {
                 WG1unc = qcd_ggF_uncert_2017(Rivet_nJets30, Rivet_higgsPt, Rivet_stage1_cat_pTjet30GeV);
                 if (syst.find("THU_ggH") != std::string::npos) {
                     weight_Rivet= 1 + event.getRivetUnc(WG1unc, syst);
+                    
+                    cout<<"Rivet_nJets30, Rivet_higgsPt, Rivet_stage1_cat_pTjet30GeV "<<Rivet_nJets30<<" "<<Rivet_higgsPt<<" "<< Rivet_stage1_cat_pTjet30GeV<<" weight_Rivet== "<<weight_Rivet<<"\n";
                 }
             }
                 
