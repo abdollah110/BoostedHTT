@@ -311,23 +311,20 @@ unc_map{
 //            input->SetBranchAddress("Rivet_stage1_cat_pTjet30GeV", &Rivet_stage1_cat_pTjet30GeV);
 //            input->SetBranchAddress("Rivet_stage1_1_fine_cat_pTjet30GeV", &Rivet_stage1_1_fine_cat_pTjet30GeV); //tmp solution
 //        }
-        
-        Float_t event_info::getRivetUnc(std::vector<double> uncs, std::string syst) {
+                
+       Float_t event_info::getRivetUnc(std::vector<double> uncs, std::string syst) {
             if (syst.find("_THU_ggH") != std::string::npos) {
                 int index = unc_map[syst];
-                return uncs.at(index);
-//
-//                if (syst.find("Up") != std::string::npos) {
-//                    return uncs.at(index);
-//                } else {
-//                    return -1 * uncs.at(index);
-//                }
+                if (syst.find("Up") != std::string::npos) {
+                    return uncs.at(index);
+                } else {
+                    return -1 * uncs.at(index);
+                }
             }
             else {
         return 1;
         }
         }
-        
         
         
 //        Bool_t event_info::getPassFlags() {
