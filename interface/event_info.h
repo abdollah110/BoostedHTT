@@ -313,7 +313,8 @@ unc_map{
 //        }
                 
        Float_t event_info::getRivetUnc(std::vector<double> uncs, std::string syst) {
-            if (syst.find("_THU_ggH") != std::string::npos) {
+            cout<<" sys is "<<syst <<"\n";
+            if (syst.find("THU_ggH") != std::string::npos) {
                 int index = unc_map[syst];
                 if (syst.find("Up") != std::string::npos) {
                     return uncs.at(index);
