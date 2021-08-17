@@ -423,6 +423,7 @@ int main(int argc, char* argv[]) {
             }
                 
         plotFill("weight_g_NNLOPS",weight_g_NNLOPS ,100,0,2);
+        plotFill("weight_Rivet",weight_Rivet ,100,0,2);
         //###############################################################################################
         //  tree branches
         //###############################################################################################
@@ -439,7 +440,7 @@ int main(int argc, char* argv[]) {
         LeadJetPt = LeadJet.Pt();
         dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
         m_sv_=m_sv;
-        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt * weight_g_NNLOPS;
+        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt * weight_Rivet;
         nbjet= numBJet;
         gen_higgs_pT = GetHiggsPt();
         
