@@ -127,6 +127,8 @@ int main(int argc, char* argv[]) {
     float preFireWeight=1;
     float bjetsWeightOnMC=1;
     float ttbar_rwt=1;
+    float weight_Rivet =1;
+    float weight_g_NNLOPS = 1;
     
     float lepPt_=-10;
     float taupt_=-10;

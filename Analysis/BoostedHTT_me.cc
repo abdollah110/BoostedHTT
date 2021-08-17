@@ -127,7 +127,9 @@ int main(int argc, char* argv[]) {
     float ttbar_rwt=1;
     float zmasspt_weight_err=0;
     float zmasspt_weight_nom=1;
-    
+    float weight_Rivet =1;
+    float weight_g_NNLOPS = 1;
+
     float lepPt_=-10;
     float elept_=-10;
     float vis_mass=-10;
