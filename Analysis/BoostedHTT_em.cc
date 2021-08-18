@@ -288,6 +288,7 @@ int main(int argc, char* argv[]) {
         Met4Momentum.SetPtEtaPhiM(Met, 0, Metphi, 0);
         Z4Momentum=Ele4Momentum+Mu4Momentum;
         TLorentzVector higgs = Ele4Momentum+Mu4Momentum +Met4Momentum;
+        if (nJet < 1 ) continue;
         TLorentzVector LeadJet= getLeadJet(Mu4Momentum, Ele4Momentum,JetSys);
 
         dR_lep_lep= Ele4Momentum.DeltaR(Mu4Momentum);

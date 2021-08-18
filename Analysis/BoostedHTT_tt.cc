@@ -303,6 +303,7 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",4 ,15,0,15);
         
         dR_lep_lep= SubTau4Momentum.DeltaR(LeadTau4Momentum);
+        if (nJet < 1 ) continue;
         TLorentzVector LeadJet= getLeadJet(LeadTau4Momentum, SubTau4Momentum,JetSys);
         
         
