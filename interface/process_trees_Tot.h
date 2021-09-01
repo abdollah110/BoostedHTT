@@ -34,7 +34,7 @@ void read_directory(const string &name, std::vector<string> *v) {
 // class to hold the histograms until I'm ready to write them
 class HistTool {
 public:
-    HistTool(string,string, string, string,std::vector<int>);
+    HistTool(string, string,string, string, string,std::vector<int>);
     //  ~HistTool() { delete ff_weight; }
     ~HistTool() {  }
     void writeHistos();
@@ -63,7 +63,7 @@ public:
     bool doNN, old_selection;
     TFile *fout;
     //  FakeFactor *ff_weight;
-    string channel_prefix;
+    string channel_prefix, tree_name;
     std::vector<string> categories, systematics;
     //    std::vector<float> mvis_bins, njets_bins;
     std::map<string, std::vector<TH1F *>> hists_1d, FF_systs, qcd_AM;
@@ -80,7 +80,7 @@ public:
 // HistTool contructor to create the output file, the qcd histograms with the correct binning
 // and the map from categories to vectors of TH1F*'s. Each TH1F* in the vector corresponds to
 // one file that is being put into that categories directory in the output tempalte
-HistTool::HistTool(string channel_prefix, string var, string year, string suffix,std::vector<int> bins)
+HistTool::HistTool(string treeName, string channel_prefix, string var, string year, string suffix,std::vector<int> bins)
 : fout(new TFile(("Output/templates/" + channel_prefix + year + "_" + var+"_" + suffix + ".root").c_str(), "recreate")),
 
 // x-axis
@@ -89,8 +89,9 @@ bins_NN(bins), // This is for 0jet
 //bins_NN({20,0,200}),
 bins_FAKE({20,0,2000}),
 channel_prefix(channel_prefix),
+tree_name(treeName),
 categories{
-    channel_prefix + "_0jet",
+    tree_name + "_0jet",
     //    channel_prefix + "_boosted",
     //    channel_prefix + "_vbf",
 },
@@ -145,7 +146,7 @@ void HistTool::initVectors2d(string name) {
         if (name.find("Data") != string::npos) {
             name = "data_obs";
         }
-        if (key.first == channel_prefix + "_0jet") {
+        if (key.first == tree_name + "_0jet") {
             hists_1d.at(key.first.c_str()).push_back(new TH1F(name.c_str(), name.c_str(), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
         }
     }
@@ -278,10 +279,11 @@ void HistTool::writeTemplates(string dir) {
             fake_hist_shape->SetName("QCD");
             fake_hist_shape_Up->SetName("QCD_shape_Up");
             fake_hist_shape_Down->SetName("QCD_shape_Down");
-        }
+//        }
         fake_hist_shape->Write();
         fake_hist_shape_Up->Write();
         fake_hist_shape_Down->Write();
+        }
         
         order++;
     }
