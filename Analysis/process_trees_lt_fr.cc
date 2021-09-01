@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
     if (dir.find("_et_") != string::npos ) { channel ="et";tree_name="etau_tree";}
     else if (dir.find("_mt_") != string::npos) { channel ="mt";tree_name="mutau_tree";}
     else (std::cout << "channel is not specificed in the outFile name !\n");
-    
+    string newChannelName= channel;
     // get the provided histogram binning
     std::vector<int> bins;
     for (auto sbin : sbins) {
@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
     vector<string> files;
     read_directory(dir, &files);
     // initialize histogram holder
-    auto hists = new HistTool(channel, var_name, year, suffix, bins);
+    auto hists = new HistTool(newChannelName, channel, var_name, year, suffix, bins);
     // This part is tro derive the OS/SS ratio (one can actually get the 2D pt/eta binned Values as well)
 //    hists->histoQCD(files, dir, tree_name,  "None");    // fill histograms QCD
     std::vector<float>  OSSS= hists->Get_OS_SS_ratio();
