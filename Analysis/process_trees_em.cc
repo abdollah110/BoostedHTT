@@ -160,8 +160,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight,meausred_OSSS);
             }
 
-            if (SS != 0 ){
-//            if (SS != 0 && lep1IsoPass && lep2IsoPass){
+//            if (SS != 0 ){
+            if (SS != 0 && lep1IsoPass && lep2IsoPass ){
                 fillQCD_Shape(zeroJet, name, vbf_var1,  weight,meausred_OSSS);
             }
         }
