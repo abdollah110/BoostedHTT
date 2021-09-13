@@ -142,7 +142,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
                 {"NN_disc",NN_disc}
             };
             
-//            if (higgs_pT < 400) continue;
+            if (lep1Pt_ < 20) continue;
             
 //            if (NN_disc < 0.3) continue;
             // The OS/SS is measured in a QCD populated CR and it is 2.21 for 2016 and 2017 and 2.3 for 2018. We will simply us 2.2 for all 3 years
@@ -160,8 +160,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight,meausred_OSSS);
             }
 
-//            if (SS != 0 ){
-            if (SS != 0 && lep1IsoPass && lep2IsoPass ){
+            if (SS != 0 ){
+//            if (SS != 0 && lep1IsoPass && lep2IsoPass ){
                 fillQCD_Shape(zeroJet, name, vbf_var1,  weight,meausred_OSSS);
             }
         }
