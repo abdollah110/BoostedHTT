@@ -282,8 +282,8 @@ int main(int argc, char* argv[]) {
         if (LeadTau4Momentum.Pt() <= 30 || fabs(boostedTauEta->at(idx_leadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_leadtau) < 0.5 ) continue;
         if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_leadtau) < -0.5) continue;
-        //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_leadtau) < 0.5) continue;
-        //        if (boostedTauByLooseMuonRejection3->at(idx_leadtau) < 0.5) continue;
+        if (boostedTauagainstElectronVLooseMVA62018->at(idx_leadtau) < 0.5) continue;
+        if (boostedTauByLooseMuonRejection3->at(idx_leadtau) < 0.5) continue;
         plotFill("cutFlowTable",3 ,15,0,15);
         
         //=========================================================================================================
@@ -297,8 +297,8 @@ int main(int argc, char* argv[]) {
         if (SubTau4Momentum.Pt() <= 30 || fabs(boostedTauEta->at(idx_subleadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_subleadtau) < 0.5 ) continue;
         if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_subleadtau) < -0.5) continue;
-        //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_subleadtau) < 0.5) continue;
-        //        if (boostedTauByLooseMuonRejection3->at(idx_subleadtau) < 0.5) continue;
+        if (boostedTauagainstElectronVLooseMVA62018->at(idx_subleadtau) < 0.5) continue;
+        if (boostedTauByLooseMuonRejection3->at(idx_subleadtau) < 0.5) continue;
         
         plotFill("cutFlowTable",4 ,15,0,15);
         
