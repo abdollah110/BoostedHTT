@@ -65,8 +65,13 @@ fi
 
 
 
-NominalPreprocess="NominalPreprocess_"${channel}"_"${year}".h5"
-NominalTraining="outputModel_NominalTraining_"${channel}"_"${year}".hdf5"
+#This is for when you do not combine all 3 years
+#NominalPreprocess="NominalPreprocess_"${channel}"_"${year}".h5"
+#NominalTraining="outputModel_NominalTraining_"${channel}"_"${year}".hdf5"
+
+#This is for when you DO combine all 3 years
+NominalPreprocess="NominalPreprocess_"${channel}".h5"
+NominalTraining="outputModel_NominalTraining_"${channel}".hdf5"
 
 xrdcp root://cmseos.fnal.gov//store/user/abdollah/NominalPreprocess/${NominalPreprocess} .
 xrdcp root://cmseos.fnal.gov//store/user/abdollah/NominalTrainings/${NominalTraining} .
