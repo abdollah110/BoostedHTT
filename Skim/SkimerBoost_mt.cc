@@ -111,7 +111,7 @@ void SkimerBoost::Loop(TString OutputFile)
             
             for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                 
-                if (boostedTauPt->at(ibtau) < 20 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
+                if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
                 if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5) continue;
                 if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < -0.5) continue;
