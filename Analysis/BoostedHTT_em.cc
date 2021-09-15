@@ -263,7 +263,8 @@ int main(int argc, char* argv[]) {
         
         Mu4Momentum.SetPtEtaPhiM(muPt->at(idx_mu),muEta->at(idx_mu),muPhi->at(idx_mu),MuMass);
         
-        if (muPt->at(idx_mu) <= 10 || fabs(muEta->at(idx_mu)) >= 2.4) continue;
+//        if (muPt->at(idx_mu) <= 10 || fabs(muEta->at(idx_mu)) >= 2.4) continue;  // change from 10 to 20 to get ride of fakes
+        if (muPt->at(idx_mu) <= 20 || fabs(muEta->at(idx_mu)) >= 2.4) continue;
         plotFill("cutFlowTable",4 ,15,0,15);
 
 
