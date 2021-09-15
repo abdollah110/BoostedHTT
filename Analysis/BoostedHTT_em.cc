@@ -296,10 +296,10 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",7 ,15,0,15);
         
         tmass = TMass_F(Z4Momentum.Pt(), Z4Momentum.Px(), Z4Momentum.Py(),  Met,  Metphi);
-        if (tmass > 80 ) continue;
+//        if (tmass > 80 ) continue;  //remove for OS/SS
         plotFill("cutFlowTable",8 ,15,0,15);
         
-        if (m_sv < 50) continue;
+//        if (m_sv < 50) continue; //remove for OS/SS
         plotFill("cutFlowTable",9 ,15,0,15);
         
         // BJet veto
@@ -325,7 +325,7 @@ int main(int argc, char* argv[]) {
         if (numMu > 1) continue;
         plotFill("cutFlowTable",13 ,15,0,15);
 
-        if (higgs.Pt() < 250) continue;
+//        if (higgs.Pt() < 250) continue; //remove for OS/SS
         plotFill("cutFlowTable",14 ,15,0,15);
 
         //=========================================================================================================
