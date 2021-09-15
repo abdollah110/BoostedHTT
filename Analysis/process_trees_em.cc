@@ -57,9 +57,9 @@ int main(int argc, char *argv[]) {
 //    hists->histoQCD(files,var_name,  dir, tree_name,  "None");    // fill histograms QCD
     hists->histoQCD(files,var_name,  dir, tree_name);    // fill histograms QCD
     std::vector<float>  OSSS= hists->Get_OS_SS_ratio();
-//    std::cout<<"\n\n\n\n OSSS  "<<OSSS[0]<<"\n";
+    std::cout<<"\n\n\n\n OSSS  "<<OSSS[0]<<"\n";
     
-    hists->histoLoop(year, files, dir, tree_name,var_name,OSSS,"");    // fill histograms
+    hists->histoLoop(channel,year, files, dir, tree_name,var_name,OSSS,"");    // fill histograms
     hists->writeTemplates(dir);  // write histograms to file
     hists->fout->Close();
     
@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
 }
 //           void histoLoop(std::string year  ,std::vector<std::string>, std::string, std::string, std::string,std::vector<float>, std::string, std::string);
 //void HistTool::histoLoop(std::string year , vector<string> files, string dir, string tree_name , string var_name, vector<float> OSSS, string acWeight = "None", string Sys = "") {
-void HistTool::histoLoop(std::string year , vector<string> files, string dir, string tree_name , string var_name, vector<float> OSSS, string Sys = "") {
+void HistTool::histoLoop(std::string channel ,std::string year , vector<string> files, string dir, string tree_name , string var_name, vector<float> OSSS, string Sys = "") {
 
     
     std::cout<< "starting .... "<<dir<<"\n";
@@ -142,7 +142,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
                 {"NN_disc",NN_disc}
             };
             
-            if (lep1Pt_ < 20) continue;
+            if (channel.find("em")!=string::npos  && lep1Pt_ < 20) continue;
             
 //            if (NN_disc < 0.3) continue;
             // The OS/SS is measured in a QCD populated CR and it is 2.21 for 2016 and 2017 and 2.3 for 2018. We will simply us 2.2 for all 3 years

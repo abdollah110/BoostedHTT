@@ -52,8 +52,8 @@ public:
     void histoLoop(string year  ,std::vector<string>, string, TH1F *, string, string,std::vector<float>,  string);
     void histoLoop(string year  ,std::vector<string>, string, TH1F *, string, string,std::vector<float>,string, float, float,  string);
 //    void histoLoop(string year  ,std::vector<string>, string, TH1F *, string, string, string);
-    void histoLoop(string year  ,std::vector<string>, string, string, string,std::vector<float>, string); //for emu
-    void histoLoop(string year  ,std::vector<string>, string, string, string,std::vector<float>,string, float, float, string); //for emu
+    void histoLoop(string channel, string year  ,std::vector<string>, string, string, string,std::vector<float>, string); //for emu
+    void histoLoop(string, string   ,std::vector<string>, string, string, string,std::vector<float>,string, float, float, string); //for emu
 
     
     void histoQCD(std::vector<string>, string, string, string);
