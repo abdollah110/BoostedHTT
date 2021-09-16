@@ -285,6 +285,11 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
         auto fake_hist_norm = fakes_1d_norm.at(order);
         auto fake_hist_norm_Up = fakes_1d_norm_Up.at(order);
         auto fake_hist_norm_Down = fakes_1d_norm_Down.at(order);
+
+        fake_hist_norm->Scale(CorrFactor);
+        fake_hist_norm_Up->Scale(CorrFactor);
+        fake_hist_norm_Down->Scale(CorrFactor);
+
         auto fake_hist_shape = fakes_1d_shape.at(order);
         auto fake_hist_shape_Up = fakes_1d_shape_Up.at(order);
         auto fake_hist_shape_Down = fakes_1d_shape_Down.at(order);
