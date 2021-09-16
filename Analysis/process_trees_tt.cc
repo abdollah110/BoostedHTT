@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
     
 
     hists->histoLoop(year, files, dir, FRhist,tree_name,var_name,OSSS,"");    // fill histograms
-    hists->writeTemplates(dir);  // write histograms to file
+    hists->writeTemplates(dir,channel,year);  // write histograms to file
     hists->fout->Close();
     
     std::cout << "Template created.\n Timing Info: \n\t CPU Time: " << watch.CpuTime() << "\n\tReal Time: " << watch.RealTime() << std::endl;
@@ -191,7 +191,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             }
 //            if (SS != 0 && !lep2IsoPassV){
 //            if (SS != 0 && !lep2IsoPassV){
-            if (SS != 0 && (!lep1IsoPassV || !lep2IsoPassV )){ // Validation with lep2
+            if (SS != 0 && (!lep1IsoPassV || !lep2IsoPassV )){
+//            if (SS != 0 && (!lep1IsoPassV || !lep2IsoPassV )){ // Validation with lep2
 //            if (SS != 0 && !lep1IsoPassV && lep2IsoPassV ){ // Validation with lep1
 //            if (SS != 0 && !lep1IsoPassV && !lep2IsoPassV ){ // Validation with both lep1 and lep2
                 fillQCD_Shape(zeroJet, name, vbf_var1,  weight, frValu2 / (1-frValu2));

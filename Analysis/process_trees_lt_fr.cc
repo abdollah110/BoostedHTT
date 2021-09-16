@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
 //    std::cout<<"\n\n\n\n OSSS  "<<OSSS[0]<<"\n";
     
     hists->histoLoop(year, files, dir, FRhist,tree_name,var_name,OSSS,"");    // fill histograms
-    hists->writeTemplates(dir);  // write histograms to file
+    hists->writeTemplates(dir,channel,year);  // write histograms to file
     hists->fout->Close();
     
     std::cout << "Template created.\n Timing Info: \n\t CPU Time: " << watch.CpuTime() << "\n\tReal Time: " << watch.RealTime() << std::endl;
