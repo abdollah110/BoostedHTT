@@ -246,12 +246,12 @@ void HistTool::fillQCD_Shape_emu(int cat, string name, double var1,  double weig
         fakes_1d_shape_Up.at(cat)->Fill(var1, 1*OSSS_val);
         fakes_1d_shape_Down.at(cat)->Fill(var1, 1*OSSS_val);
         //            } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZJ"|| name == "ZLL" || name == "EWKZ" ) {
-    } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
-//    } else if ( name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
-        
-        fakes_1d_shape.at(cat)->Fill(var1, -1*OSSS_val*weight);
-        fakes_1d_shape_Up.at(cat)->Fill(var1, -1*OSSS_val*weight*0.9);
-        fakes_1d_shape_Down.at(cat)->Fill(var1, -1*OSSS_val*weight*1.1);
+//    } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+////    } else if ( name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+//        
+//        fakes_1d_shape.at(cat)->Fill(var1, -1*OSSS_val*weight);
+//        fakes_1d_shape_Up.at(cat)->Fill(var1, -1*OSSS_val*weight*0.9);
+//        fakes_1d_shape_Down.at(cat)->Fill(var1, -1*OSSS_val*weight*1.1);
     }
 }
 
