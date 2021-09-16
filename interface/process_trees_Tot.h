@@ -44,6 +44,8 @@ public:
     
     void fillQCD_Norm(int, string, double, double,float);
     void fillQCD_Shape(int, string, double, double,float);
+    void fillQCD_Norm_emu(int, string, double, double,float);
+    void fillQCD_Shape_emu(int, string, double, double,float);
     void fillQCD_OS_CR(int, string, double, double);
     void fillQCD_SS_CR(int, string, double, double);
     std::vector<float>  Get_OS_SS_ratio();
@@ -198,6 +200,22 @@ void HistTool::fillQCD_Norm(int cat, string name, double var1,  double weight, f
     }
 }
 
+void HistTool::fillQCD_Norm_emu(int cat, string name, double var1,  double weight, float OSSS_val) {
+    TH1F *hist;
+    if (name == "Data") {
+        fakes_1d_norm.at(cat)->Fill(var1, 1*OSSS_val);
+        fakes_1d_norm_Up.at(cat)->Fill(var1, 1*OSSS_val);
+        fakes_1d_norm_Down.at(cat)->Fill(var1, 1*OSSS_val);
+        //            } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZJ"|| name == "ZLL" || name == "EWKZ" ) {
+    } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
+//    } else if ( name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
+        fakes_1d_norm.at(cat)->Fill(var1, -1*OSSS_val*weight);
+        fakes_1d_norm_Up.at(cat)->Fill(var1, -1*OSSS_val*weight*0.9);
+        fakes_1d_norm_Down.at(cat)->Fill(var1, -1*OSSS_val*weight*1.1);
+    }
+}
+
+
 // This is Loose SS region [To get the shape of QCD from SS and loose region]
 void HistTool::fillQCD_Shape(int cat, string name, double var1,  double weight, float OSSS_val) {
     TH1F *hist;
@@ -208,6 +226,23 @@ void HistTool::fillQCD_Shape(int cat, string name, double var1,  double weight, 
         //            } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZJ"|| name == "ZLL" || name == "EWKZ" ) {
 //    } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
     } else if ( name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+        
+        fakes_1d_shape.at(cat)->Fill(var1, -1*OSSS_val*weight);
+        fakes_1d_shape_Up.at(cat)->Fill(var1, -1*OSSS_val*weight*0.9);
+        fakes_1d_shape_Down.at(cat)->Fill(var1, -1*OSSS_val*weight*1.1);
+    }
+}
+
+// This is Loose SS region [To get the shape of QCD from SS and loose region]
+void HistTool::fillQCD_Shape_emu(int cat, string name, double var1,  double weight, float OSSS_val) {
+    TH1F *hist;
+    if (name == "Data") {
+        fakes_1d_shape.at(cat)->Fill(var1, 1*OSSS_val);
+        fakes_1d_shape_Up.at(cat)->Fill(var1, 1*OSSS_val);
+        fakes_1d_shape_Down.at(cat)->Fill(var1, 1*OSSS_val);
+        //            } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZJ"|| name == "ZLL" || name == "EWKZ" ) {
+    } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+//    } else if ( name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
         
         fakes_1d_shape.at(cat)->Fill(var1, -1*OSSS_val*weight);
         fakes_1d_shape_Up.at(cat)->Fill(var1, -1*OSSS_val*weight*0.9);

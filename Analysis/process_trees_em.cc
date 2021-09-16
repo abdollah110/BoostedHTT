@@ -157,12 +157,12 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
 
             if (SS != 0 && lep1IsoPass && lep2IsoPass ){
 //            if (SS != 0 && lep1IsoPass  ){
-                fillQCD_Norm(zeroJet, name, vbf_var1,  weight,meausred_OSSS);
+                fillQCD_Norm_emu(zeroJet, name, vbf_var1,  weight,meausred_OSSS);
             }
 
             if (SS != 0 ){
 //            if (SS != 0 && lep1IsoPass && lep2IsoPass ){
-                fillQCD_Shape(zeroJet, name, vbf_var1,  weight,meausred_OSSS);
+                fillQCD_Shape_emu(zeroJet, name, vbf_var1,  weight,meausred_OSSS);
             }
         }
         delete fin;
@@ -202,15 +202,15 @@ void HistTool::histoQCD( vector<string> files, string var_name , string dir, str
             tree->GetEntry(i);
 
 //            if (OS != 0 && !Pass && !lep1IsoPass){
-                if (OS != 0 &&  !lep2IsoPass){
+//                if (OS != 0 &&  !lep2IsoPass){
 //            if (OS != 0 &&  !lep1IsoPass){
-//            if (OS != 0 ){
+            if (OS != 0 ){
                 fillQCD_OS_CR(zeroJet, name, lep1Pt_,  weight);
             }
 //            else if (SS != 0 && !Pass && !lep1IsoPass){
-            else if (SS != 0 &&  !lep2IsoPass){
+//            else if (SS != 0 &&  !lep2IsoPass){
 //            else if (SS != 0  && !lep1IsoPass){
-//            else if (SS != 0 ){
+            else if (SS != 0 ){
 //            std::cout<<"\t "<<name<< " "<<lep1Pt_<<"  " << weight<<"\n";
                 fillQCD_SS_CR(zeroJet, name, lep1Pt_,  weight);
             }

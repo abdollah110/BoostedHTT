@@ -159,15 +159,17 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             // apply tau Id SF
             if (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("H125")!= string::npos || name.find("JJH125")!= string::npos ) weight *= 0.81;
             
+            
+            float lep1Ptval=lep1Pt_;
+            if (lep1Ptval > 200) lep1Ptval=200;
+            float frValu1 = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep1Ptval));
+
+
             float lep2Ptval=lep2Pt_;
             if (lep2Ptval > 200) lep2Ptval=200;
             float frValu2 = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
-
-//            float lep1Ptval=lep1Pt_;
-//            if (lep1Ptval > 200) lep1Ptval=200;
-//            float frValu2 = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep1Ptval));
-
-
+            
+            
             vbf_var1 =ObsName[var_name];
             
             
@@ -175,19 +177,26 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             if (OS != 0  && lep1IsoPassV && lep2IsoPassV) {
 //            if (OS != 0  && lep1IsoPassL && lep2IsoPassL) {
 //            if (SS != 0  && lep1IsoPassV && lep2IsoPassV) { // Validation
-//            if (SS != 0  && lep1IsoPass && lep2IsoPassV) { // Validation
+//            if (SS != 0  && lep1IsoPassL && lep2IsoPassL) { // Validation
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
             }
-            if (OS != 0 && !lep1IsoPassV && lep2IsoPassV ){
+            if (OS != 0 && lep1IsoPassV && !lep2IsoPassV ){
 //            if (OS != 0 && !lep1IsoPassL && lep2IsoPassL ){
-//            if (SS != 0 && lep1IsoPassV && !lep2IsoPassV ){ // Validation
-//            if (SS != 0 && !lep1IsoPassV && !lep2IsoPassV ){ // Validation
+//            if (SS != 0 && !lep1IsoPassV && lep2IsoPassV ){ // Validation with lep1
+//                fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu1 / (1-frValu1));
+//            if (SS != 0 && lep1IsoPassV && !lep2IsoPassV ){ // Validation with lep2
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu2 / (1-frValu2));
-//                fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu*frValu2 / (1-frValu*frValu2));
+//            if (SS != 0 && !lep1IsoPassV && !lep2IsoPassV ){ // Validation with both lep1 and lep2
+//                fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu1*frValu2 / (1-frValu1*frValu2));
             }
 //            if (SS != 0 && !lep2IsoPassV){
-            if (SS != 0 && !lep2IsoPassV){
+//            if (SS != 0 && !lep2IsoPassV){
+            if (SS != 0 && (!lep1IsoPassV || !lep2IsoPassV )){ // Validation with lep2
+//            if (SS != 0 && !lep1IsoPassV && lep2IsoPassV ){ // Validation with lep1
+//            if (SS != 0 && !lep1IsoPassV && !lep2IsoPassV ){ // Validation with both lep1 and lep2
                 fillQCD_Shape(zeroJet, name, vbf_var1,  weight, frValu2 / (1-frValu2));
+//                fillQCD_Shape(zeroJet, name, vbf_var1,  weight, frValu1 / (1-frValu1));
+//                fillQCD_Shape(zeroJet, name, vbf_var1,  weight, frValu1*frValu2 / (1-frValu1*frValu2));
             }
 //            if (OS != 0  && lep1IsoPass && lep2IsoPass) {
 //                hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
@@ -205,57 +214,3 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         delete fin;
     }
 }
-
-
-
-
-//void HistTool::histoQCD( vector<string> files, string dir, string tree_name, string acWeight = "None") {
-//    
-//    
-//    
-//    std::cout<< "starting OS/SS calculation .... "<<dir<<"\n";
-//    float vbf_var1(0.);
-//    for (auto ifile : files) {
-//        
-//        string name = ifile.substr(0, ifile.find(".")).c_str();
-//        if (!(name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZLL" || name == "ZJ" || name == "Data" )) continue;
-//        auto fin = new TFile((dir + "/" + ifile).c_str(), "read");
-//        auto tree = reinterpret_cast<TTree *>(fin->Get(tree_name.c_str()));
-//        
-//        float lep1Pt_=-10;
-//         bool Fail,Pass,PassM,FailM,PassT,FailT,OS,SS;
-//         float weight,lep2Pt_;
-//         bool lep1IsoPass, lep2IsoPass ;
-//         
-//        
-//        tree->SetBranchAddress("lep1Pt",&lep1Pt_);
-//        tree->SetBranchAddress("lep2Pt",&lep2Pt_);
-//        tree->SetBranchAddress("lep1IsoPass",&lep1IsoPass);
-//        tree->SetBranchAddress("lep2IsoPass",&lep2IsoPass);
-//        tree->SetBranchAddress("OS",&OS);
-//        tree->SetBranchAddress("SS",&SS);
-//        tree->SetBranchAddress("evtwt",&weight);
-//        
-//        for (auto i = 0; i < tree->GetEntries(); i++) {
-//            tree->GetEntry(i);
-//                        
-////            std::cout<<OS <<Pass << !lepIsoPass<<"\n";
-////            if (OS != 0 && !Pass && !lepIsoPass){
-//                if (OS != 0 && (!lep1IsoPass || !lep2IsoPass )){
-////            if (OS != 0 &&  !lepIsoPass){
-////            if (OS != 0 ){
-////            std::cout<<name<< " "<<lep1Pt_<<"  " << weight<<"\n";
-//                fillQCD_OS_CR(zeroJet, name, lep1Pt_,  weight);
-//            }
-////            else if (SS != 0 && !Pass && !lepIsoPass){
-//            else if (SS != 0 && (!lep1IsoPass || !lep2IsoPass )){
-////            else if (SS != 0  && !lepIsoPass){
-////            else if (SS != 0 ){
-////            std::cout<<"\t "<<name<< " "<<lep1Pt_<<"  " << weight<<"\n";
-//                fillQCD_SS_CR(zeroJet, name, lep1Pt_,  weight);
-//            }
-//        }
-//        fin->Close();
-//        delete fin;
-//    }
-//}
