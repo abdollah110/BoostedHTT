@@ -38,7 +38,7 @@ public:
     //  ~HistTool() { delete ff_weight; }
     ~HistTool() {  }
     void writeHistos();
-    void writeTemplates(string);
+    void writeTemplates(string,string,string);
     void initVectors2d(string);
     void initSystematics(string);
     
@@ -71,8 +71,8 @@ public:
     std::map<string, std::vector<TH1F *>> hists_1d, FF_systs, qcd_AM;
     std::vector<TH1F *> fakes_1d_norm,  fakes_1d_norm_Up,  fakes_1d_norm_Down , data;
     std::vector<TH1F *> fakes_1d_SS_CR, fakes_1d_SS_CR_Up, fakes_1d_SS_CR_Down;
-    std::vector<TH1F *> fakes_1d_OS_CR, fakes_1d_OS_CR_Up, fakes_1d_OS_CR_Down;
-    std::vector<TH1F *> fakes_1d_shape, fakes_1d_shape_Up, fakes_1d_shape_Down;
+    std::vector<TH1F *> fakes_1d_OS_CR, fakes_1d_OS_CR_Up, fakes_1d_OS_CR_Down, fakes_1d_OS_CR_data;
+    std::vector<TH1F *> fakes_1d_shape, fakes_1d_shape_Up, fakes_1d_shape_Down, fakes_1d_SS_CR_data;
     
     // binning
     std::vector<int> bins_NN, bins_FAKE;
@@ -89,7 +89,8 @@ HistTool::HistTool(string treeName, string channel_prefix, string var, string ye
 //bins_NN{0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0}, // This is for 0jet
 bins_NN(bins), // This is for 0jet
 //bins_NN({20,0,200}),
-bins_FAKE({20,0,2000}),
+bins_FAKE({10,0,300}),
+//bins_FAKE({10,0,1}),
 channel_prefix(channel_prefix),
 tree_name(treeName),
 categories{
@@ -117,10 +118,12 @@ systematics{
             fakes_1d_shape_Down.push_back(new TH1F("fake_0jet_shape_Down", "fake_SS_shape_0_Down_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
             
             fakes_1d_OS_CR.push_back(new TH1F("OS_CR_0jet", "OS_CR_0jet", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
+            fakes_1d_OS_CR_data.push_back(new TH1F("OS_CR_0jet_data", "OS_CR_0jet_data", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
             fakes_1d_OS_CR_Up.push_back(new TH1F("OS_CR_0jet_Up", "OS_CR_0jet_Up", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
             fakes_1d_OS_CR_Down.push_back(new TH1F("OS_CR_0jet_Down", "OS_CR_0jet_Down", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
             
             fakes_1d_SS_CR.push_back(new TH1F("SS_CR_0jet", "SS_CR_0jet", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
+            fakes_1d_SS_CR_data.push_back(new TH1F("SS_CR_0jet_data", "SS_CR_0jet_data", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
             fakes_1d_SS_CR_Up.push_back(new TH1F("SS_CR_0jet_Up", "SS_CR_0jet_Up", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
             fakes_1d_SS_CR_Down.push_back(new TH1F("SS_CR_0jet_Down", "SS_CR_0jet_Down", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
             
@@ -161,6 +164,7 @@ void HistTool::fillQCD_OS_CR(int cat, string name, double var1,  double weight) 
         fakes_1d_OS_CR.at(cat)->Fill(var1, 1);
         fakes_1d_OS_CR_Up.at(cat)->Fill(var1, 1);
         fakes_1d_OS_CR_Down.at(cat)->Fill(var1, 1);
+        fakes_1d_OS_CR_data.at(cat)->Fill(var1, 1);
         //            } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZJ"|| name == "ZLL" || name == "EWKZ" ) {
     } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
         
@@ -176,6 +180,7 @@ void HistTool::fillQCD_SS_CR(int cat, string name, double var1,  double weight) 
         fakes_1d_SS_CR.at(cat)->Fill(var1, 1);
         fakes_1d_SS_CR_Up.at(cat)->Fill(var1, 1);
         fakes_1d_SS_CR_Down.at(cat)->Fill(var1, 1);
+        fakes_1d_SS_CR_data.at(cat)->Fill(var1, 1);
         //            } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZJ"|| name == "ZLL" || name == "EWKZ" ) {
     } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" ||  name == "EWKZ" ) {
         fakes_1d_SS_CR.at(cat)->Fill(var1, -1*weight);
@@ -257,23 +262,25 @@ std::vector<float>  HistTool::Get_OS_SS_ratio(){
     os_ss_values.clear();
     
     float OS_SS_0jet = fakes_1d_OS_CR.at(0)->Integral() /  fakes_1d_SS_CR.at(0)->Integral();
-    
-    cout<<"OS/SS num = "<<fakes_1d_OS_CR.at(0)->Integral() << "  OS/SS denum = "<<fakes_1d_SS_CR.at(0)->Integral() << "\n";
-    
+    cout<<"OS num = "<<fakes_1d_OS_CR.at(0)->Integral() << "  SS denum = "<<fakes_1d_SS_CR.at(0)->Integral() << "\n";
+    cout<<"OS num (data) = "<<fakes_1d_OS_CR_data.at(0)->Integral() << "  SS denum (data)= "<<fakes_1d_SS_CR_data.at(0)->Integral() << "\n";
+    cout<<" num purity = "<<fakes_1d_OS_CR.at(0)->Integral()/fakes_1d_OS_CR_data.at(0)->Integral() << "  denum purity= "<<fakes_1d_SS_CR.at(0)->Integral()/fakes_1d_SS_CR_data.at(0)->Integral() << "\n";
     os_ss_values.push_back(OS_SS_0jet);
-    
-    cout<< "numerator is "<<fakes_1d_OS_CR.at(0)->Integral()  << "   and denumerator is" <<fakes_1d_SS_CR.at(0)->Integral()<<"\n";
     return os_ss_values;
 }
 
 // write output histograms including the QCD histograms after scaling by OS/SS ratio
-void HistTool::writeTemplates(string dir) {
+void HistTool::writeTemplates(string dir, string channel, string year) {
     auto order(0);
     for (auto cat : hists_1d) {
         fout->cd(cat.first.c_str());
         for (auto hist : cat.second) {
             hist->Write();
         }
+        float CorrFactor=1;
+        if (channel.find("tt") != string::npos && year.find("2016") != string::npos ) CorrFactor =0.70;
+        if (channel.find("tt") != string::npos && year.find("2017") != string::npos ) CorrFactor =0.95;
+        if (channel.find("tt") != string::npos && year.find("2018") != string::npos ) CorrFactor =0.80;
         
         auto fake_hist_norm = fakes_1d_norm.at(order);
         auto fake_hist_norm_Up = fakes_1d_norm_Up.at(order);
@@ -318,6 +325,12 @@ void HistTool::writeTemplates(string dir) {
         fake_hist_shape->Write();
         fake_hist_shape_Up->Write();
         fake_hist_shape_Down->Write();
+        
+        // shape for qcd OS/SS
+        fakes_1d_OS_CR.at(0)->Write();
+        fakes_1d_SS_CR.at(0)->Write();
+        fakes_1d_OS_CR_data.at(0)->Write();
+        fakes_1d_SS_CR_data.at(0)->Write();
         }
         
         order++;
