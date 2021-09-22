@@ -281,7 +281,22 @@ int main(int argc, char* argv[]) {
         EleIdCorrection = getCorrFactorEleId(isData,  Ele4Momentum.Pt(), eleSCEta->at(idx_ele) ,HistoEleId);
                                 
         LepCorrection= MuIdCorrection * MuIsoCorrection * MuTrgCorrection * EleIdCorrection;
-        
+
+
+        bool MuMatchedTauStatus=MatchedBoostedTauId(Mu4Momentum);
+        bool muonIsoStatu = IsoLep1Value < LeptonIsoCut;
+        plotFill("IsoCorrelationMu",muonIsoStatu, MuMatchedTauStatus, 2, 0, 2, 2, 0, 2);
+//        plotFill("cutFlowTable",2 ,15,0,15);
+        if (!MuMatchedTauStatus ) continue;
+
+
+        bool EleMatchedTauStatus=MatchedBoostedTauId(Ele4Momentum);
+        bool eleIsoStatu = IsoLep2Value < LeptonIsoCut;
+        plotFill("IsoCorrelationEle",eleIsoStatu, EleMatchedTauStatus, 2, 0, 2, 2, 0, 2);
+//        plotFill("cutFlowTable",2 ,15,0,15);
+        if (!EleMatchedTauStatus ) continue;
+
+
         
         //=========================================================================================================
         // Event Selection

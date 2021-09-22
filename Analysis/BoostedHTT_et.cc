@@ -249,7 +249,11 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",4 ,15,0,15);
         LepCorrection = EleIdCorrection;
         
-        
+        bool MatchedTauStatus=MatchedBoostedTauId(Ele4Momentum);
+        bool eleIsoStatu = IsoLep1Value < LeptonIsoCut;
+        plotFill("IsoCorrelation",eleIsoStatu, MatchedTauStatus, 2, 0, 2, 2, 0, 2);
+        plotFill("cutFlowTable",2 ,15,0,15);
+        if (!MatchedTauStatus ) continue;
         //=========================================================================================================
         // Tau selection
         int idx_tau= tauIndex;

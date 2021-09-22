@@ -239,13 +239,7 @@ int main(int argc, char* argv[]) {
         
         // muon pt from 30 to 28
         if (muPt->at(idx_lep) < 28 || fabs(muEta->at(idx_lep)) > 2.4) continue;
-        
-        bool MatchedTauStatus=MatchedBoostedTauId(Mu4Momentum);
-        bool muonIsoStatu = IsoLep1Value < LeptonIsoCut;
-        
-        plotFill("IsoCorrelation",muonIsoStatu, MatchedTauStatus, 2, 0, 2, 2, 0, 2);
-        plotFill("cutFlowTable",2 ,15,0,15);
-        
+                
         bool MuId=( (muIDbit->at(idx_lep) >> 1 & 1)  && fabs(muD0->at(idx_lep)) < 0.045 && fabs(muDz->at(idx_lep)) < 0.2);
         MuIdCorrection = getCorrFactorMuonId(year, isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuId);
         
@@ -271,6 +265,13 @@ int main(int argc, char* argv[]) {
         
         
         plotFill("cutFlowTable",4 ,15,0,15);
+        
+        bool MatchedTauStatus=MatchedBoostedTauId(Mu4Momentum);
+        bool muonIsoStatu = IsoLep1Value < LeptonIsoCut;
+        plotFill("IsoCorrelation",muonIsoStatu, MatchedTauStatus, 2, 0, 2, 2, 0, 2);
+        plotFill("cutFlowTable",2 ,15,0,15);
+        if (!MatchedTauStatus ) continue;
+
         //=========================================================================================================
         // Tau selection
         int idx_tau= tauIndex;
