@@ -99,15 +99,15 @@ def format_for_store(all_data, scaler):
 def loadFile(ifile):
     from root_pandas import read_root
 
-    if 'mutau' in ifile or '_mt_' in ifile:
+    if 'mutau' in ifile or '_mt' in ifile:
         channel = 'mt'
-    elif 'etau' in ifile or '_et_' in ifile:
+    elif 'etau' in ifile or '_et' in ifile:
         channel = 'et'
-    elif 'emu' in ifile or '_em_' in ifile:
+    elif 'emu' in ifile or '_em' in ifile:
         channel = 'em'
-    elif 'mue' in ifile or '_me_' in ifile:
+    elif 'mue' in ifile or '_me' in ifile:
         channel = 'me'
-    elif 'tautau' in ifile or '_tt_' in ifile:
+    elif 'tautau' in ifile or '_tt' in ifile:
         channel = 'tt'
     else:
         raise Exception(
