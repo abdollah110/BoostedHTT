@@ -122,19 +122,19 @@ def fillFile(ifile, channel, args, boost_pred, treeName):
 
 def main(args):
     print 'args.input_dir is ', args.input_dir
-    if '_mt_' in args.input_dir:
+    if '_mt' in args.input_dir:
         channel = 'mt'
         treeName = 'mutau_tree'
-    elif '_et_' in args.input_dir:
+    elif '_et' in args.input_dir:
         channel = 'et'
         treeName = 'etau_tree'
-    elif '_em_' in args.input_dir:
+    elif '_em' in args.input_dir:
         channel = 'em'
         treeName = 'emu_tree'
-    elif '_me_' in args.input_dir:
+    elif '_me' in args.input_dir:
         channel = 'me'
         treeName = 'emu_tree'
-    elif '_tt_' in args.input_dir:
+    elif '_tt' in args.input_dir:
         channel = 'tt'
         treeName = 'tautau_tree'
     else:
