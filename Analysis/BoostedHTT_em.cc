@@ -149,6 +149,7 @@ int main(int argc, char* argv[]) {
     float dR_Z_jet=-10;
     bool OS,SS,lep1IsoPass,lep2IsoPass;
     float tmass,tmass2, ht,st,Met,FullWeight, dR_lep_lep, Metphi, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight, gen_higgs_pT;
+    float MuMatchedIsolation= -1; float EleMatchedIsolation =-1;
     float IsoLep1Value, IsoLep2Value;
     int nbjet;
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
@@ -174,6 +175,8 @@ int main(int argc, char* argv[]) {
     outTr->Branch("dR_Z_jet",&dR_Z_jet,"dR_Z_jet/F");
     outTr->Branch("nbjet",&nbjet,"nbjet/I");
     outTr->Branch("gen_higgs_pT",&gen_higgs_pT,"gen_higgs_pT/F");
+    outTr->Branch("MuMatchedIsolation",&MuMatchedIsolation,"MuMatchedIsolation/F");
+    outTr->Branch("EleMatchedIsolation",&EleMatchedIsolation,"EleMatchedIsolation/F");
     
     string JetSys="Nominal";
     if (syst=="JEnTotUp") JetSys="JetTotUp";
@@ -287,14 +290,16 @@ int main(int argc, char* argv[]) {
         bool muonIsoStatu = IsoLep1Value < LeptonIsoCut;
         plotFill("IsoCorrelationMu",muonIsoStatu, MuMatchedTauStatus, 2, 0, 2, 2, 0, 2);
 //        plotFill("cutFlowTable",2 ,15,0,15);
-        if (!MuMatchedTauStatus ) continue;
+//        if (!MuMatchedTauStatus ) continue;
+         MuMatchedIsolation = MatchedBoostedTauIsolation(Mu4Momentum);
 
 
         bool EleMatchedTauStatus=MatchedBoostedTauId(Ele4Momentum);
         bool eleIsoStatu = IsoLep2Value < LeptonIsoCut;
         plotFill("IsoCorrelationEle",eleIsoStatu, EleMatchedTauStatus, 2, 0, 2, 2, 0, 2);
 //        plotFill("cutFlowTable",2 ,15,0,15);
-        if (!EleMatchedTauStatus ) continue;
+//        if (!EleMatchedTauStatus ) continue;
+         EleMatchedIsolation = MatchedBoostedTauIsolation(Ele4Momentum);
 
 
         //=========================================================================================================

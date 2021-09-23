@@ -476,6 +476,22 @@ bool MatchedBoostedTauId(TLorentzVector Object4Momentum){
     return passVLooseIsolation;
     }
 
+float MatchedBoostedTauIsolation(TLorentzVector Object4Momentum){
+    
+    float BoostTauIsoVar = -1;
+    TLorentzVector BoostTau4Mom;
+    float dR_=100;
+    for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
+        BoostTau4Mom.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
+        if(BoostTau4Mom.DeltaR(Object4Momentum) < dR_ ){
+            BoostTauIsoVar = boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau);
+            dR_=BoostTau4Mom.DeltaR(Object4Momentum);
+        }
+    }
+    return BoostTauIsoVar;
+    }
+    
+    
 int getNumElectron(){
     
     
