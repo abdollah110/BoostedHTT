@@ -143,6 +143,7 @@ int main(int argc, char* argv[]) {
     float dR_Z_jet=-10;
     bool lep1IsoPassL,lep2IsoPassL,lep1IsoPassV,lep2IsoPassV,OS,SS;
     float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight, gen_higgs_pT;
+    float MuMatchedIsolation= -1; float EleMatchedIsolation =-1;
     // Trigger
     bool PassTrigger_37;
     bool PassTrigger_38;
@@ -191,6 +192,8 @@ int main(int argc, char* argv[]) {
     outTr->Branch("PassTrigger_22",&PassTrigger_22);
     outTr->Branch("nbjet",&nbjet,"nbjet/I");
     outTr->Branch("gen_higgs_pT",&gen_higgs_pT,"gen_higgs_pT/F");
+    outTr->Branch("MuMatchedIsolation",&MuMatchedIsolation,"MuMatchedIsolation/F");
+    outTr->Branch("EleMatchedIsolation",&EleMatchedIsolation,"EleMatchedIsolation/F");
     
     string JetSys="Nominal";
     if (syst=="JEnTotUp") JetSys="JetTotUp";
