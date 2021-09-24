@@ -14,7 +14,7 @@ def main(args):
     data = pd.HDFStore(args.input)['df']
     ## define training variables
     training_variables = [
-                    'lep1Pt','lep2Pt','Met','m_sv', 'LeadJetPt','higgs_m','higgs_pT','st','tmass'
+                    'lep1Pt','lep2Pt','Met','m_sv', 'LeadJetPt','higgs_m','higgs_pT','st','tmass', 'MuMatchedIsolation', 'EleMatchedIsolation'
 #                    'lep1Pt','lep2Pt','Met', 'LeadJetPt','higgs_m','higgs_pT','st','tmass'
     ]
 
