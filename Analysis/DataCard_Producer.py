@@ -26,7 +26,7 @@ InputFile=options.inputFile
 suffice=options.suffice
 
 
-for ifile in glob('{}/*'.format(InputFile)):
+for ifile in glob('{}/NN_boost_* _FinalNN*'.format(InputFile)):
 
     print 'ifile is   -- >>>  {}'.format(ifile)
     
