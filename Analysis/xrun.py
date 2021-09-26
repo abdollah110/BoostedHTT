@@ -91,7 +91,8 @@ Variable=[
 #            ['BoostedTauRawIso', 20,0,1],
             ['NN_disc',20,0,1],
 #            ['nbjet',5,0,5]
-
+            ['MuMatchedIsolation',20,0,-1,1],
+            ['EleMatchedIsolation',20,0,-1,1],
 ]
 
 PTrange= [
