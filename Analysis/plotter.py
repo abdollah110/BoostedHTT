@@ -33,7 +33,7 @@ style_map = {
 #        "ZJ": style_map_tuple(GetColor(200, 282, 232), no_color, 1, 0, 1),
     },
     "signals": {
-        "JJH125": style_map_tuple(no_color, GetColor("#FF0000"), 1, 3, 1),
+        "ggH125": style_map_tuple(no_color, GetColor("#FF0000"), 1, 3, 1),
 #         "MG__GGH2Jets_sm_M125": style_map_tuple(no_color, GetColor("#0000FF"), 1, 3, 1),
 #         "MG__GGH2Jets_pseudoscalar_M125": style_map_tuple(no_color, GetColor("#00AAFF"), 1, 3, 1),
 #        # use JHU for 2018 because MG isn't available
@@ -48,6 +48,24 @@ style_map = {
 
     }
 }
+
+style_map_emu = {
+    "data_obs": style_map_tuple(no_color, black, 1, 1, 8),
+    "backgrounds": {
+        "TT": style_map_tuple(GetColor(208, 376, 124), black, 1, 1, 1),
+        "QCD": style_map_tuple(GetColor(408, 106, 154), black, 1, 1, 1),
+#        "ZLL": style_map_tuple(GetColor(150, 132, 232), black, 1, 1, 1),
+        "ZTT": style_map_tuple(GetColor(108, 226, 354), black, 1, 1, 1),
+        },
+    "EWK": {
+        "VV": style_map_tuple(GetColor(200, 282, 232), black, 1, 1, 1),
+        "W": style_map_tuple(GetColor(200, 282, 232), no_color, 1, 0, 1),
+    },
+    "signals": {
+        "ggH125": style_map_tuple(no_color, GetColor("#FF0000"), 1, 3, 1),
+    }
+}
+
 
 
 def ApplyStyle(ihist, styles):
@@ -114,7 +132,7 @@ def fillLegend(data, backgrounds,backgrounds_EWK, signals, stat):
     leg.AddEntry(data, 'Data', 'lep')
 
     # signals
-    leg.AddEntry(signals['JJH125'], ' SM Higgs(125)x50', 'l')
+    leg.AddEntry(signals['ggH125'], ' SM Higgs(125)x50', 'l')
 #    leg.AddEntry(signals['MG__GGH2Jets_pseudoscalar_M125'], 'ggH PS Higgs(125)x50', 'l')
 ##    leg.AddEntry(signals['JHU_GGH2Jets_sm_M125'], 'ggH SM Higgs(125)x50', 'l')
 ##    leg.AddEntry(signals['JHU_GGH2Jets_pseudoscalar_M125'], 'ggH PS Higgs(125)x50', 'l')
@@ -205,12 +223,17 @@ def blindData(data, signal, background):
     return data
 
 def BuildPlot(args):
-    print "ifile,category,variable ", args.input ,args.category ,args.variable
+    print "ifile,category,variable ", args.input ,args.category , args.channelName, args.variable
     InputFile=args.input.replace('m_sv',args.variable)
     ifile = ROOT.TFile(InputFile)
     category = ifile.Get(args.category)
+    channelName = ifile.Get(args.channelName)
 #    variable = category.Get(args.variable)
     variableX = ifile.Get(args.category)
+    
+    style_Xmap=style_map
+    if 'em' in args.category or 'me' in args.category:
+        style_Xmap=style_map_emu
 
     # start getting histograms
     data_hist = variableX.Get('data_obs').Clone()
@@ -222,14 +245,14 @@ def BuildPlot(args):
     for hkey in variableX.GetListOfKeys():
         hname = hkey.GetName()
         ihist = variableX.Get(hname).Clone()
-        if hname in style_map['EWK']:
-            ihist = ApplyStyle(ihist, style_map['EWK'][hname])
+        if hname in style_Xmap['EWK']:
+            ihist = ApplyStyle(ihist, style_Xmap['EWK'][hname])
             backgrounds_EWK[hname] = ihist
-        if hname in style_map['backgrounds']:
-            ihist = ApplyStyle(ihist, style_map['backgrounds'][hname])
+        if hname in style_Xmap['backgrounds']:
+            ihist = ApplyStyle(ihist, style_Xmap['backgrounds'][hname])
             backgrounds[hname] = ihist
-        elif hname in style_map['signals']:
-            ihist = ApplyStyle(ihist, style_map['signals'][hname])
+        elif hname in style_Xmap['signals']:
+            ihist = ApplyStyle(ihist, style_Xmap['signals'][hname])
             signals[hname] = ihist
             
     # now get stat and stack filled
@@ -252,14 +275,15 @@ def BuildPlot(args):
     
     # format the plots
     can = createCanvas()
-    data_hist = ApplyStyle(data_hist, style_map['data_obs'])
+    data_hist = ApplyStyle(data_hist, style_Xmap['data_obs'])
     stat = formatStat(stat)
     stack.Draw('hist')
     formatStack(stack)
 
-    combo_signal = signals['JJH125'].Clone()
+#    combo_signal = signals['H125'].Clone()
+    combo_signal = signals['ggH125'].Clone()
 #    combo_signal = signals['JHU_GGH2Jets_pseudoscalar_M125'].Clone()
-#    combo_signal.Scale(signals['JJH125'].Integral()/combo_signal.Integral())
+#    combo_signal.Scale(signals['H125'].Integral()/combo_signal.Integral())
 #    combo_signal.Add(signals['ggH125'])
 #    combo_signal.Add(signals['VBF125'])
     data_hist = blindData(data_hist, combo_signal, stat)
@@ -289,6 +313,8 @@ def BuildPlot(args):
     print 'args.category = {} args.year {}'.format(args.category, args.year)
     if 'em_' in args.category:
         lepLabel = "e#mu"
+    elif 'me_' in args.category:
+        lepLabel = "#mu e"
     elif 'mt_' in args.category:
         lepLabel = "#mu#tau_{h}"
     elif 'et_' in args.category:
@@ -358,7 +384,7 @@ def BuildPlot(args):
     line3.Draw()
     
     # save the pdf
-    can.SaveAs('Output/plots/{}_{}_{}_{}.pdf'.format(args.prefix, args.variable, args.category, args.year))
+    can.SaveAs('Output/plots/{}_{}_{}_{}.pdf'.format(args.prefix, args.variable, args.channelName, args.year))
 
 
 
