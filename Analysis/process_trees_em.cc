@@ -95,7 +95,7 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
         float dR_Z_jet=-10;
         bool OS,SS,lep1IsoPass,eleIDMVA, lep2IsoPass;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi, lep2Pt_;
-        float NN_disc;
+        float NN_disc,MuMatchedIsolation,EleMatchedIsolation;
         float higgs_pT, higgs_m, m_sv;
         
         
@@ -117,7 +117,8 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
         tree->SetBranchAddress("higgs_m",&higgs_m);
         tree->SetBranchAddress("m_sv",&m_sv);
-
+        tree->SetBranchAddress("MuMatchedIsolation",&MuMatchedIsolation);
+        tree->SetBranchAddress("EleMatchedIsolation",&EleMatchedIsolation);
         
         // Here we have to call OS/SS method extracter
 //        std::cout<<" tree->GetEntries() is "<<tree->GetEntries()<<"\n";
@@ -139,7 +140,10 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
                 {"higgs_pT",higgs_pT},
                 {"higgs_m",higgs_m},
                 {"m_sv",m_sv},
-                {"NN_disc",NN_disc}
+                {"NN_disc",NN_disc},
+                {"MuMatchedIsolation",MuMatchedIsolation},
+                {"EleMatchedIsolation",EleMatchedIsolation}
+                
             };
             
             if (channel.find("em")!=string::npos  && lep1Pt_ < 20) continue;

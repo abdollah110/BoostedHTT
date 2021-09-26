@@ -92,7 +92,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         float dR_Z_jet=-10;
         bool lep2IsoPass,lep2IsoPassV, OS,SS,lep1IsoPass,eleIDMVA, lep2IsoPassT,lep2IsoPassL;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
-        float NN_disc;
+        float NN_disc,MuMatchedIsolation,EleMatchedIsolation;
         float BoostedTauRawIso, higgs_pT, higgs_m, m_sv;
         
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
@@ -116,6 +116,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
         tree->SetBranchAddress("higgs_m",&higgs_m);
         tree->SetBranchAddress("m_sv",&m_sv);
+        tree->SetBranchAddress("MuMatchedIsolation",&MuMatchedIsolation);
+        tree->SetBranchAddress("EleMatchedIsolation",&EleMatchedIsolation);
         
         
         // Here we have to call OS/SS method extracter
@@ -141,7 +143,10 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 {"higgs_pT",higgs_pT},
                 {"higgs_m",higgs_m},
                 {"m_sv",m_sv},
-                {"NN_disc",NN_disc}
+                {"NN_disc",NN_disc},
+                {"MuMatchedIsolation",MuMatchedIsolation},
+                {"EleMatchedIsolation",EleMatchedIsolation}
+                
             };
             
             // apply tau Id SF
