@@ -115,16 +115,16 @@ int main(int argc, char* argv[]) {
     float JetPtCut=30;
     float BJetPtCut=30;
     
-    float DeepCSVCut=   1000   ;                  //  Medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
-    if (year== 2016) DeepCSVCut =       0.6321    ;
-    if (year== 2017) DeepCSVCut =      0.4941    ;
-    if (year== 2018) DeepCSVCut =      0.4184     ;
+//    float DeepCSVCut=   1000   ;                  //  Medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
+//    if (year== 2016) DeepCSVCut =       0.6321    ;
+//    if (year== 2017) DeepCSVCut =      0.4941    ;
+//    if (year== 2018) DeepCSVCut =      0.4184     ;
 
 
-//    float DeepCSVCut=   1000   ;                  //  Loose  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
-//    if (year== 2016) DeepCSVCut =      0.2217   ;
-//    if (year== 2017) DeepCSVCut =     0.1522   ;
-//    if (year== 2018) DeepCSVCut =     0.1241    ;
+    float DeepCSVCut=   1000   ;                  //  Loose  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
+    if (year== 2016) DeepCSVCut =      0.2217   ;
+    if (year== 2017) DeepCSVCut =     0.1522   ;
+    if (year== 2018) DeepCSVCut =     0.1241    ;
 
     
     float LeptonIsoCut=0.30;
@@ -210,10 +210,10 @@ int main(int argc, char* argv[]) {
         Met=pfMetNoRecoil;
         Metphi=pfMetPhiNoRecoil;
 
-        if (syst == "MissingEn_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp; m_sv=m_sv_JES_Up ;}
-        if (syst == "MissingEn_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown; m_sv=m_sv_JES_Down ;}
-        if (syst == "MissingEn_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp; m_sv=m_sv_UES_Up ;}
-        if (syst == "MissingEn_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown; m_sv=m_sv_UES_Down ;}
+        if (syst == "MissingEn_JESUp") {Met = pfMET_T1JESUp; Metphi=pfMETPhi_T1JESUp; m_sv=m_sv_JES_Up ;}
+        if (syst == "MissingEn_JESDown") {Met = pfMET_T1JESDo;  Metphi=pfMETPhi_T1JESDo; m_sv=m_sv_JES_Down ;}
+        if (syst == "MissingEn_UESUp") {Met = pfMET_T1UESUp;  Metphi=pfMETPhi_T1UESUp; m_sv=m_sv_UES_Up ;}
+        if (syst == "MissingEn_UESDown") {Met = pfMET_T1UESDo;  Metphi=pfMETPhi_T1UESDo; m_sv=m_sv_UES_Down ;}
         
 //        if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
 //        if (syst == "met_resp_Up") {Met = met_resp_Up; Metphi=metphi_resp_Up;}
