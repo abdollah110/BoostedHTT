@@ -151,6 +151,9 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
 //            if (NN_disc < 0.3) continue;
             // The OS/SS is measured in a QCD populated CR and it is 2.21 for 2016 and 2017 and 2.3 for 2018. We will simply us 2.2 for all 3 years
             float meausred_OSSS = 2.2;
+            if (year.find("2016") != string::npos ) meausred_OSSS=1.81;
+            else if (year.find("2017") != string::npos ) meausred_OSSS=2.06;
+            else if (year.find("2018") != string::npos ) meausred_OSSS=1.39;
             
             vbf_var1 =ObsName[var_name];
 
