@@ -153,7 +153,7 @@ int main(int argc, char* argv[]) {
     bool OS,SS,lep1IsoPass,lep2IsoPass;
     float tmass,tmass2, ht,st,Met,FullWeight, dR_lep_lep, Metphi, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight, gen_higgs_pT;
     float MuMatchedIsolation= -1; float EleMatchedIsolation =-1;
-    float IsoLep1Value, IsoLep2Value;
+    float IsoLep1Value, IsoLep2Value, D_zeta;
     int nbjet;
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
     outTr->Branch("zmasspt_weight",&zmasspt_weight,"zmasspt_weight/F");
@@ -180,6 +180,8 @@ int main(int argc, char* argv[]) {
     outTr->Branch("gen_higgs_pT",&gen_higgs_pT,"gen_higgs_pT/F");
     outTr->Branch("MuMatchedIsolation",&MuMatchedIsolation,"MuMatchedIsolation/F");
     outTr->Branch("EleMatchedIsolation",&EleMatchedIsolation,"EleMatchedIsolation/F");
+    outTr->Branch("D_zeta",&D_zeta,"D_zeta/F");
+    
     
     string JetSys="Nominal";
     if (syst=="JEnTotUp") JetSys="JetTotUp";
@@ -315,6 +317,24 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",7 ,15,0,15);
         
         tmass = TMass_F(Z4Momentum.Pt(), Z4Momentum.Px(), Z4Momentum.Py(),  Met,  Metphi);
+        
+        // calculate mt, x and y for systematics as well
+        float met_x = Met * cos(Metphi);
+        float met_y = Met * sin(Metphi);
+        
+        // calculate D_zeta
+        float zeta_x = (Ele4Momentum.Px()/Ele4Momentum.Pt()+ Mu4Momentum.Px()/Mu4Momentum.Pt());
+        float zeta_y = (Ele4Momentum.Py()/Ele4Momentum.Pt()+ Mu4Momentum.Py()/Mu4Momentum.Pt());
+        float zeta = sqrt (zeta_x*zeta_x + zeta_y*zeta_y);
+        float p_zeta_x= (Ele4Momentum.Px() + Mu4Momentum.Px() + met_x)*zeta_x/zeta;
+        float p_zeta_y= (Ele4Momentum.Py() + Mu4Momentum.Py() + met_y)*zeta_y/zeta;
+        float p_zeta_vis_x= (Ele4Momentum.Px() + Mu4Momentum.Px() )*zeta_x/zeta;
+        float p_zeta_vis_y= (Ele4Momentum.Py() + Mu4Momentum.Py() )*zeta_y/zeta;
+        
+        D_zeta = (p_zeta_x + p_zeta_y)  - 1.85*(p_zeta_vis_x + p_zeta_vis_y);
+        
+        
+        
 //        if (tmass > 80 ) continue;//remove for OS/SS
         plotFill("cutFlowTable",8 ,15,0,15);
         
@@ -347,6 +367,10 @@ int main(int argc, char* argv[]) {
 //        if (higgs.Pt() < 250) continue;
         if (higgs.Pt() < 250) continue;   //remove for OS/SS
         plotFill("cutFlowTable",14 ,15,0,15);
+
+
+
+
 
         //=========================================================================================================
         // Separate Drell-Yan processes
