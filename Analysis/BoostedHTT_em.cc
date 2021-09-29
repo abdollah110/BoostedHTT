@@ -111,16 +111,16 @@ int main(int argc, char* argv[]) {
     float JetPtCut=30;
     float BJetPtCut=30;
     
-//    float DeepCSVCut=   1000   ;                  //  Medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
-//    if (year== 2016) DeepCSVCut =       0.6321    ;
-//    if (year== 2017) DeepCSVCut =      0.4941    ;
-//    if (year== 2018) DeepCSVCut =      0.4184     ;
+    float DeepCSVCut=   1000   ;                  //  Medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
+    if (year== 2016) DeepCSVCut =       0.6321    ;
+    if (year== 2017) DeepCSVCut =      0.4941    ;
+    if (year== 2018) DeepCSVCut =      0.4184     ;
 
 
-    float DeepCSVCut=   1000   ;                  //  Loose  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
-    if (year== 2016) DeepCSVCut =      0.2217   ;
-    if (year== 2017) DeepCSVCut =     0.1522   ;
-    if (year== 2018) DeepCSVCut =     0.1241    ;
+//    float DeepCSVCut=   1000   ;                  //  Loose  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
+//    if (year== 2016) DeepCSVCut =      0.2217   ;
+//    if (year== 2017) DeepCSVCut =     0.1522   ;
+//    if (year== 2018) DeepCSVCut =     0.1241    ;
 
     
     float LeptonIsoCut=0.30;
@@ -150,7 +150,7 @@ int main(int argc, char* argv[]) {
     bool OS,SS,lep1IsoPass,lep2IsoPass;
     float tmass,tmass2, ht,st,Met,FullWeight, dR_lep_lep, Metphi, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight, gen_higgs_pT;
     float MuMatchedIsolation= -1; float EleMatchedIsolation =-1;
-    float IsoLep1Value, IsoLep2Value;
+    float IsoLep1Value, IsoLep2Value, D_zeta;
     int nbjet;
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
     outTr->Branch("zmasspt_weight",&zmasspt_weight,"zmasspt_weight/F");
@@ -177,6 +177,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("gen_higgs_pT",&gen_higgs_pT,"gen_higgs_pT/F");
     outTr->Branch("MuMatchedIsolation",&MuMatchedIsolation,"MuMatchedIsolation/F");
     outTr->Branch("EleMatchedIsolation",&EleMatchedIsolation,"EleMatchedIsolation/F");
+    outTr->Branch("D_zeta",&D_zeta,"D_zeta/F");
     
     string JetSys="Nominal";
     if (syst=="JEnTotUp") JetSys="JetTotUp";
@@ -318,12 +319,28 @@ int main(int argc, char* argv[]) {
         dR_lep_lep= Ele4Momentum.DeltaR(Mu4Momentum);
         if( dR_lep_lep > 0.8 || dR_lep_lep < 0.1) continue;
         plotFill("cutFlowTable",7 ,15,0,15);
+
+
+        // calculate mt, x and y for systematics as well
+        float met_x = Met * cos(Metphi);
+        float met_y = Met * sin(Metphi);
         
+        // calculate D_zeta
+        float zeta_x = (Ele4Momentum.Px()/Ele4Momentum.Pt()+ Mu4Momentum.Px()/Mu4Momentum.Pt());
+        float zeta_y = (Ele4Momentum.Py()/Ele4Momentum.Pt()+ Mu4Momentum.Py()/Mu4Momentum.Pt());
+        float zeta = sqrt (zeta_x*zeta_x + zeta_y*zeta_y);
+        float p_zeta_x= (Ele4Momentum.Px() + Mu4Momentum.Px() + met_x)*zeta_x/zeta;
+        float p_zeta_y= (Ele4Momentum.Py() + Mu4Momentum.Py() + met_y)*zeta_y/zeta;
+        float p_zeta_vis_x= (Ele4Momentum.Px() + Mu4Momentum.Px() )*zeta_x/zeta;
+        float p_zeta_vis_y= (Ele4Momentum.Py() + Mu4Momentum.Py() )*zeta_y/zeta;
+        
+        D_zeta = (p_zeta_x + p_zeta_y)  - 1.85*(p_zeta_vis_x + p_zeta_vis_y);
+
         tmass = TMass_F(Z4Momentum.Pt(), Z4Momentum.Px(), Z4Momentum.Py(),  Met,  Metphi);
-//        if (tmass > 80 ) continue;  //remove for OS/SS
+        if (tmass > 80 ) continue;  //remove for OS/SS
         plotFill("cutFlowTable",8 ,15,0,15);
         
-//        if (m_sv < 50) continue; //remove for OS/SS
+        if (m_sv < 50) continue; //remove for OS/SS
         plotFill("cutFlowTable",9 ,15,0,15);
         
         // BJet veto
@@ -349,7 +366,7 @@ int main(int argc, char* argv[]) {
         if (numMu > 1) continue;
         plotFill("cutFlowTable",13 ,15,0,15);
 
-//        if (higgs.Pt() < 250) continue; //remove for OS/SS
+        if (higgs.Pt() < 250) continue; //remove for OS/SS
         plotFill("cutFlowTable",14 ,15,0,15);
 
         //=========================================================================================================

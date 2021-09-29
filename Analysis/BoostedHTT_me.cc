@@ -115,16 +115,16 @@ int main(int argc, char* argv[]) {
     float JetPtCut=30;
     float BJetPtCut=30;
     
-//    float DeepCSVCut=   1000   ;                  //  Medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
-//    if (year== 2016) DeepCSVCut =       0.6321    ;
-//    if (year== 2017) DeepCSVCut =      0.4941    ;
-//    if (year== 2018) DeepCSVCut =      0.4184     ;
+    float DeepCSVCut=   1000   ;                  //  Medium  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
+    if (year== 2016) DeepCSVCut =       0.6321    ;
+    if (year== 2017) DeepCSVCut =      0.4941    ;
+    if (year== 2018) DeepCSVCut =      0.4184     ;
 
 
-    float DeepCSVCut=   1000   ;                  //  Loose  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
-    if (year== 2016) DeepCSVCut =      0.2217   ;
-    if (year== 2017) DeepCSVCut =     0.1522   ;
-    if (year== 2018) DeepCSVCut =     0.1241    ;
+//    float DeepCSVCut=   1000   ;                  //  Loose  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
+//    if (year== 2016) DeepCSVCut =      0.2217   ;
+//    if (year== 2017) DeepCSVCut =     0.1522   ;
+//    if (year== 2018) DeepCSVCut =     0.1241    ;
 
     
     float LeptonIsoCut=0.30;
@@ -335,10 +335,10 @@ int main(int argc, char* argv[]) {
         
         
         
-//        if (tmass > 80 ) continue;//remove for OS/SS
+        if (tmass > 80 ) continue;//remove for OS/SS
         plotFill("cutFlowTable",8 ,15,0,15);
         
-//        if (m_sv < 50) continue; //remove for OS/SS
+        if (m_sv < 50) continue; //remove for OS/SS
         plotFill("cutFlowTable",9 ,15,0,15);
         
         // BJet veto
@@ -364,7 +364,6 @@ int main(int argc, char* argv[]) {
         if (numMu > 1) continue;
         plotFill("cutFlowTable",13 ,15,0,15);
 
-//        if (higgs.Pt() < 250) continue;
         if (higgs.Pt() < 250) continue;   //remove for OS/SS
         plotFill("cutFlowTable",14 ,15,0,15);
 
