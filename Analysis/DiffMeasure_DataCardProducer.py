@@ -26,43 +26,7 @@ InputFile=options.inputFile
 prefix=options.prefix
 Observable=options.Obs
 
-year=0
-if '2016' in InputFile:
-    year = 2016
-elif '2017' in InputFile:
-    year = 2017
-elif '2018' in InputFile:
-    year = 2018
-else:
-    print 'which year ???'
 
-channel=''
-treeName=''
-executable=''
-
-
-if '_em_' in InputFile:
-    channel = 'em'
-    treeName = 'emu_tree'
-    executable = 'DiffMeasure_em'
-elif '_me_' in InputFile:
-    channel = 'me'
-    treeName = 'mue_tree'
-    executable = 'DiffMeasure_em'
-elif '_mt_' in InputFile:
-    channel = 'mt'
-    treeName = 'mutau_tree'
-    executable = 'DiffMeasure_lt'
-elif '_et_' in InputFile:
-    channel = 'et'
-    treeName = 'etau_tree'
-    executable = 'DiffMeasure_lt'
-elif '_tt_' in InputFile:
-    channel = 'tt'
-    treeName = 'tautau_tree'
-    executable = 'DiffMeasure_tt'
-else:
-    print 'which channel ???'
 
 
 
@@ -90,10 +54,56 @@ PTrange= [
         [600,100000,'_bin4']
 ]
 
-for pt in PTrange:
-        for var in Variable:
-            if Observable==var[0]:
-                print '\n\n\n\n =====> start making datacard for ', var
-                print 'command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} -c higgs_pT -l {} -h {}  '.format(executable, InputFile, var[0],var[0],var[1],var[2],var[3],pt[0],pt[1])
-                os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c higgs_pT -l {} -h {}  '.format(executable, InputFile, prefix, pt[2],var[0],var[1],var[2],var[3],pt[0],pt[1]))
-                break
+
+for ifile in glob('{}/NN_boost_*Diff_V7*'.format(InputFile)):
+    sample=ifile.replace(InputFile,'').replace('/','')
+    
+    print 'starting from {} and the file name is  {}'.format(ifile,sample)
+    
+        
+        
+    year=0
+    if '2016' in ifile:
+        year = 2016
+    elif '2017' in ifile:
+        year = 2017
+    elif '2018' in ifile:
+        year = 2018
+    else:
+        print 'which year ???'
+
+    channel=''
+    treeName=''
+    executable=''
+
+
+    if '_em_' in ifile:
+        channel = 'em'
+        treeName = 'emu_tree'
+        executable = 'DiffMeasure_em'
+    elif '_me_' in ifile:
+        channel = 'me'
+        treeName = 'mue_tree'
+        executable = 'DiffMeasure_em'
+    elif '_mt_' in ifile:
+        channel = 'mt'
+        treeName = 'mutau_tree'
+        executable = 'DiffMeasure_lt'
+    elif '_et_' in ifile:
+        channel = 'et'
+        treeName = 'etau_tree'
+        executable = 'DiffMeasure_lt'
+    elif '_tt_' in ifile:
+        channel = 'tt'
+        treeName = 'tautau_tree'
+        executable = 'DiffMeasure_tt'
+    else:
+        print 'which channel ???'
+                    
+    for pt in PTrange:
+            for var in Variable:
+                if Observable==var[0]:
+                    print '\n\n\n\n =====> start making datacard for ', var
+                    print 'command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} -c higgs_pT -l {} -h {}  '.format(executable, ifile, var[0],var[0],var[1],var[2],var[3],pt[0],pt[1])
+                    os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c higgs_pT -l {} -h {}  '.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],pt[0],pt[1]))
+                    break
