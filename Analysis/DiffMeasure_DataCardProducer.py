@@ -95,5 +95,5 @@ for pt in PTrange:
             if Observable==var[0]:
                 print '\n\n\n\n =====> start making datacard for ', var
                 print 'command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} -c higgs_pT -l {} -h {}  '.format(executable, InputFile, var[0],var[0],var[1],var[2],var[3],pt[0],pt[1])
-                os.system('./{} -d {}   --suf {} -v {} -b {} {} {} -c higgs_pT -l {} -h {}  '.format(executable, InputFile, pt[2],var[0],var[1],var[2],var[3],pt[0],pt[1]))
+                os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c higgs_pT -l {} -h {}  '.format(executable, InputFile, prefix, pt[2],var[0],var[1],var[2],var[3],pt[0],pt[1]))
                 break

@@ -3,7 +3,7 @@
 #include "TStopwatch.h"
 #include "TMath.h"
 #include "../interface/CLParser.h"
-#include "../interface/process_trees_Tot.h"
+#include "../interface/DiffMeasure.h"
 #include <iomanip>      // std::setprecision
 
 
@@ -18,6 +18,7 @@ int main(int argc, char *argv[]) {
     bool doSyst = parser.Flag("-s");
     string dir = parser.Option("-d");
     string suffix = parser.Option("--suf");
+    string binName = parser.Option("--bin");
     std::string var_name = parser.Option("-v");
     std::string cut_name = parser.Option("-c");
     float lowVal= std::stoi(parser.Option("-l"));
@@ -60,7 +61,7 @@ int main(int argc, char *argv[]) {
     read_directory(dir, &files);
     
     // initialize histogram holder
-    auto hists = new HistTool(channel,var_name,  year, suffix, bins);
+    auto hists = new HistTool(channel, var_name, year, suffix,binName, bins);
     
     
     // This part is tro derive the OS/SS ratio (one can actually get the 2D pt/eta binned Values as well)
@@ -106,7 +107,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         bool lep1IsoPassV, lep2IsoPassV ,OS,SS, lep1IsoPassL, lep2IsoPassL;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
         float NN_disc;
-        float higgs_pT, higgs_m, m_sv;
+        float higgs_pT, higgs_m, m_sv, gen_higgs_pT;
         
         
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
@@ -129,6 +130,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
         tree->SetBranchAddress("higgs_m",&higgs_m);
         tree->SetBranchAddress("m_sv",&m_sv);
+        tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
 
         
         // Here we have to call OS/SS method extracter
@@ -151,8 +153,15 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 {"higgs_pT",higgs_pT},
                 {"higgs_m",higgs_m},
                 {"m_sv",m_sv},
-                {"NN_disc",NN_disc}
+                {"NN_disc",NN_disc},
+                {"gen_higgs_pT",gen_higgs_pT}
             };
+            
+            if (name.find("0_350")!=string::npos &&   ( gen_higgs_pT > 350  || gen_higgs_pT > 350 )) continue ;
+            if (name.find("350_450")!=string::npos && ( gen_higgs_pT <= 350 || gen_higgs_pT > 450 )) continue ;
+            if (name.find("450_600")!=string::npos && ( gen_higgs_pT <= 450 || gen_higgs_pT > 600 )) continue ;
+            if (name.find("GT600")!=string::npos &&   ( gen_higgs_pT <= 600)) continue ;
+
 
             float Var_cut = ObsName[cut_name];
             if (Var_cut < lowVal || Var_cut > highVal ) continue;
@@ -191,7 +200,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
 //                fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu*frValu2 / (1-frValu*frValu2));
             }
 //            if (SS != 0 && !lep2IsoPassV){
-            if (SS != 0 && !lep2IsoPassV){
+//            if (SS != 0 && !lep2IsoPassV){
+            if (SS != 0 && (!lep1IsoPassV || !lep2IsoPassV )){
                 fillQCD_Shape(zeroJet, name, vbf_var1,  weight, frValu2 / (1-frValu2));
             }
 //            if (OS != 0  && lep1IsoPass && lep2IsoPass) {

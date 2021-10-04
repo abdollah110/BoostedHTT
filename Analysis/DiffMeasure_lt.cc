@@ -18,6 +18,7 @@ int main(int argc, char *argv[]) {
     bool doSyst = parser.Flag("-s");
     string dir = parser.Option("-d");
     string suffix = parser.Option("--suf");
+    string binName = parser.Option("--bin");
     std::string var_name = parser.Option("-v");
     std::string cut_name = parser.Option("-c");
     float lowVal= std::stoi(parser.Option("-l"));
@@ -56,7 +57,8 @@ int main(int argc, char *argv[]) {
     vector<string> files;
     read_directory(dir, &files);
     // initialize histogram holder
-    auto hists = new HistTool(channel, var_name, year, suffix, bins);
+    auto hists = new HistTool(channel, var_name, year, suffix,binName, bins);
+    
     // This part is tro derive the OS/SS ratio (one can actually get the 2D pt/eta binned Values as well)
 //    hists->histoQCD(files, dir, tree_name,  "None");    // fill histograms QCD
     std::vector<float>  OSSS= hists->Get_OS_SS_ratio();

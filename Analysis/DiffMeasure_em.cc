@@ -2,7 +2,7 @@
 #include "TStopwatch.h"
 #include "TMath.h"
 #include "../interface/CLParser.h"
-#include "../interface/process_trees_Tot.h"
+#include "../interface/DiffMeasure.h"
 #include <iomanip>      // std::setprecision
 
 
@@ -18,6 +18,7 @@ int main(int argc, char *argv[]) {
     bool doSyst = parser.Flag("-s");
     string dir = parser.Option("-d");
     string suffix = parser.Option("--suf");
+    string binName = parser.Option("--bin");
     std::string var_name = parser.Option("-v");
     std::string cut_name = parser.Option("-c");
     float lowVal= std::stoi(parser.Option("-l"));
@@ -54,7 +55,7 @@ int main(int argc, char *argv[]) {
     vector<string> files;
     read_directory(dir, &files);
     // initialize histogram holder
-    auto hists = new HistTool(channel, var_name, year, suffix, bins);
+    auto hists = new HistTool(channel, var_name, year, suffix,binName, bins);
     // This part is tro derive the OS/SS ratio (one can actually get the 2D pt/eta binned Values as well)
 //    hists->histoQCD(files,var_name,  dir, tree_name,  "None");    // fill histograms QCD
     hists->histoQCD(files,var_name,  dir, tree_name);    // fill histograms QCD
@@ -98,7 +99,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         bool OS,SS,lep1IsoPass,eleIDMVA, lep2IsoPass;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi, lep2Pt_;
         float NN_disc;
-        float higgs_pT, higgs_m, m_sv;
+        float higgs_pT, higgs_m, m_sv, gen_higgs_pT;
         
         
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
@@ -119,6 +120,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
         tree->SetBranchAddress("higgs_m",&higgs_m);
         tree->SetBranchAddress("m_sv",&m_sv);
+        tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
 
         
         // Here we have to call OS/SS method extracter
@@ -141,9 +143,14 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
                 {"higgs_pT",higgs_pT},
                 {"higgs_m",higgs_m},
                 {"m_sv",m_sv},
-                {"NN_disc",NN_disc}
+                {"NN_disc",NN_disc},
+                {"gen_higgs_pT",gen_higgs_pT}
             };
             
+            if (name.find("0_350")!=string::npos &&   ( gen_higgs_pT > 350  || gen_higgs_pT > 350 )) continue ;
+            if (name.find("350_450")!=string::npos && ( gen_higgs_pT <= 350 || gen_higgs_pT > 450 )) continue ;
+            if (name.find("450_600")!=string::npos && ( gen_higgs_pT <= 450 || gen_higgs_pT > 600 )) continue ;
+            if (name.find("GT600")!=string::npos &&   ( gen_higgs_pT <= 600)) continue ;
             
             float Var_cut = ObsName[cut_name];
             if (Var_cut < lowVal || Var_cut > highVal ) continue;
@@ -152,7 +159,12 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
             
 //            if (NN_disc < 0.3) continue;
             // The OS/SS is measured in a QCD populated CR and it is 2.21 for 2016 and 2017 and 2.3 for 2018. We will simply us 2.2 for all 3 years
+
             float meausred_OSSS = 2.2;
+            if (year.find("2016") != string::npos ) meausred_OSSS=1.81;
+            else if (year.find("2017") != string::npos ) meausred_OSSS=2.06;
+            else if (year.find("2018") != string::npos ) meausred_OSSS=1.39;
+            
             
             
             
