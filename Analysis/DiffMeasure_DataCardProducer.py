@@ -1,7 +1,7 @@
 import os
 from subprocess import call
 from optparse import OptionParser
-
+from glob import glob
 
 parser = OptionParser(description='script to make the template and run plot')
 parser.add_option('--input', '-i', action='store',
