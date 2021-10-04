@@ -38,7 +38,7 @@ public:
     //  ~HistTool() { delete ff_weight; }
     ~HistTool() {  }
     void writeHistos();
-    void writeTemplates();
+    void writeTemplates(string,string,string);
     void initVectors2d(string);
     void initSystematics(string);
     
@@ -224,7 +224,7 @@ std::vector<float>  HistTool::Get_OS_SS_ratio(){
 }
 
 // write output histograms including the QCD histograms after scaling by OS/SS ratio
-void HistTool::writeTemplates() {
+void HistTool::writeTemplates(string dir, string channel, string year) {
     auto order(0);
     for (auto cat : hists_1d) {
         fout->cd(cat.first.c_str());
@@ -267,12 +267,20 @@ void HistTool::writeTemplates() {
         //                }
         //========================================================================================================
         
-        fake_hist_shape->SetName("QCD");
-        fake_hist_shape_Up->SetName("QCD_shape_Up");
-        fake_hist_shape_Down->SetName("QCD_shape_Down");
-        fake_hist_shape->Write();
-        fake_hist_shape_Up->Write();
-        fake_hist_shape_Down->Write();
+        if (dir.find("Up")==string::npos && dir.find("Down")==string::npos){
+            fake_hist_shape->SetName("QCD");
+            fake_hist_shape_Up->SetName("QCD_shape_Up");
+            fake_hist_shape_Down->SetName("QCD_shape_Down");
+            fake_hist_shape->Write();
+            fake_hist_shape_Up->Write();
+            fake_hist_shape_Down->Write();
+            
+            // shape for qcd OS/SS
+            fakes_1d_OS_CR.at(0)->Write();
+            fakes_1d_SS_CR.at(0)->Write();
+            fakes_1d_OS_CR_data.at(0)->Write();
+            fakes_1d_SS_CR_data.at(0)->Write();
+        }
         
         order++;
     }

@@ -83,7 +83,7 @@ for ifile in glob('{}/NN_boost_*Diff_V7*'.format(InputFile)):
         executable = 'DiffMeasure_em'
     elif '_me_' in ifile:
         channel = 'me'
-        treeName = 'mue_tree'
+        treeName = 'emu_tree'
         executable = 'DiffMeasure_em'
     elif '_mt_' in ifile:
         channel = 'mt'
