@@ -274,13 +274,7 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
             fake_hist_shape->Write();
             fake_hist_shape_Up->Write();
             fake_hist_shape_Down->Write();
-            
-            // shape for qcd OS/SS
-            fakes_1d_OS_CR.at(0)->Write();
-            fakes_1d_SS_CR.at(0)->Write();
-            fakes_1d_OS_CR_data.at(0)->Write();
-            fakes_1d_SS_CR_data.at(0)->Write();
-        }
+            }
         
         order++;
     }
