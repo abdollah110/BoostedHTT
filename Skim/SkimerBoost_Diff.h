@@ -667,7 +667,7 @@ public :
    virtual void     Loop(TString outputFile,std::string inputFile,std::string Sys);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
-   TLorentzVector getLeadJet(TLorentzVector , TLorentzVector );
+   TLorentzVector getLeadJet(TLorentzVector , TLorentzVector , int);
 };
 
 #endif
@@ -687,7 +687,10 @@ SkimerBoost::SkimerBoost(TString fileName) : fChain(0)
 }
 
 
-TLorentzVector SkimerBoost::getLeadJet(TLorentzVector lep4Mom, TLorentzVector tau4Mom){
+TLorentzVector SkimerBoost::getLeadJet(TLorentzVector lep4Mom, TLorentzVector tau4Mom, int jentry){
+    Long64_t nbytes = 0, nb = 0;
+    Long64_t ientry = LoadTree(jentry);
+    nb = fChain->GetEntry(jentry);   nbytes += nb;
     TLorentzVector leadJet, Jet;
     float MaxJetPt=0;
     int leadJetPtIndex=0;
@@ -696,7 +699,7 @@ TLorentzVector SkimerBoost::getLeadJet(TLorentzVector lep4Mom, TLorentzVector ta
         Jet.SetPtEtaPhiE(jetPt->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
         if (Jet.DeltaR(lep4Mom) < 0.5) continue;
         if (Jet.DeltaR(tau4Mom) < 0.5) continue;
-        if (jetPFLooseId->at(ijet) > 0.5 && fabs(jetEta->at(ijet)) < 3.0  && jetPt->at(ijet) > MaxJetPt ){
+        if (jetPFLooseId->at(ijet) > 0.5 && fabs(jetEta->at(ijet)) < 5.0  && jetPt->at(ijet) > MaxJetPt ){
             MaxJetPt=jetPt->at(ijet);
             leadJetPtIndex=ijet;
         }
