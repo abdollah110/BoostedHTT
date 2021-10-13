@@ -167,8 +167,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if (higgs.Pt() < 250) continue;
             higpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
             higpt_nnlops->Fill(higgs.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
-            jetpt->Fill(LeadJet.Pt(),LumiWeight * weight_Rivet);
-            jetpt_nnlops->Fill(LeadJet.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            jetpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
+            jetpt_nnlops->Fill(higgs.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
 
         }
         
@@ -194,8 +194,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if (higgs.Pt() < 250) continue;
             higpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
             higpt_nnlops->Fill(higgs.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
-            jetpt->Fill(LeadJet.Pt(),LumiWeight * weight_Rivet);
-            jetpt_nnlops->Fill(LeadJet.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            jetpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
+            jetpt_nnlops->Fill(higgs.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
         }
         
         //etau
@@ -220,8 +220,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if (higgs.Pt() < 250) continue;
             higpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
             higpt_nnlops->Fill(higgs.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
-            jetpt->Fill(LeadJet.Pt(),LumiWeight * weight_Rivet);
-            jetpt_nnlops->Fill(LeadJet.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            jetpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
+            jetpt_nnlops->Fill(higgs.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
             
         }
         else
@@ -244,8 +244,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if (higgs.Pt() < 250) continue;
             higpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
             higpt_nnlops->Fill(higgs.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
-            jetpt->Fill(LeadJet.Pt(),LumiWeight * weight_Rivet);
-            jetpt_nnlops->Fill(LeadJet.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            jetpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
+            jetpt_nnlops->Fill(higgs.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
             
             std::cout<<"Channel is tautau: #mu= "<<genMuVec.size() <<"  #ele= "<<genEleVec.size()<<"\n";
         }
