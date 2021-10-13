@@ -30,11 +30,12 @@
 #include <iostream>
 #include <map>
 #include "TLorentzVector.h"
+//#include "SkimerBoost_Diff.h"
 #include "../interface/boostHTT.h"
-#include "../interface/WeightCalculator.h"
+//#include "../interface/WeightCalculator.h"
 //#include "../interface/Corrector.h"
 //#include "../interface/makeHisto.h"
-
+using namespace std;
 float MuMass= 0.10565837;
 float eleMass= 0.000511;
 

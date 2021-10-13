@@ -15,38 +15,33 @@
 // Header file for the classes stored in the TTree if any.
 #include "vector"
 #include "TString.h"
-#include "vector"
-#include "vector"
-#include "vector"
-#include "vector"
-#include "vector"
-#include "vector"
-#include "Function_Skim.h"
+#include "TLorentzVector.h"
+//#include "Function_Skim.h"
 using namespace std;
 
 //float TMass_F(float pt3lep, float px3lep, float py3lep, float met, float metPhi) {
 //    return sqrt(pow(pt3lep + met, 2) - pow(px3lep + met * cos(metPhi), 2) - pow(py3lep + met * sin(metPhi), 2));
 //}
 
-TLorentzVector getLeadJet(TLorentzVector lep4Mom, TLorentzVector tau4Mom){
-    TLorentzVector leadJet, Jet;
-    float MaxJetPt=0;
-    int leadJetPtIndex=0;
-    cout<<"nJet = "<<nJet<<"\n";
-    for (int ijet= 0 ; ijet < nJet ; ijet++){
-        Jet.SetPtEtaPhiE(jetPt->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
-        if (Jet.DeltaR(lep4Mom) < 0.5) continue;
-        if (Jet.DeltaR(tau4Mom) < 0.5) continue;
-        if (jetPFLooseId->at(ijet) > 0.5 && fabs(jetEta->at(ijet)) < 3.0  && jetPt->at(ijet) > MaxJetPt ){
-            MaxJetPt=jetPt->at(ijet);
-            leadJetPtIndex=ijet;
-        }
-    }
-    cout<<"leadJetPtIndex = "<<leadJetPtIndex<<"\n";
-    leadJet.SetPtEtaPhiE(jetPt->at(leadJetPtIndex),jetEta->at(leadJetPtIndex),jetPhi->at(leadJetPtIndex),jetEn->at(leadJetPtIndex));
-    return leadJet;
-}
-
+//TLorentzVector getLeadJet(TLorentzVector lep4Mom, TLorentzVector tau4Mom){
+//    TLorentzVector leadJet, Jet;
+//    float MaxJetPt=0;
+//    int leadJetPtIndex=0;
+//    cout<<"nJet = -------"<<nJet<<"\n";
+//    for (int ijet= 0 ; ijet < nJet ; ijet++){
+//        Jet.SetPtEtaPhiE(jetPt->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
+//        if (Jet.DeltaR(lep4Mom) < 0.5) continue;
+//        if (Jet.DeltaR(tau4Mom) < 0.5) continue;
+//        if (jetPFLooseId->at(ijet) > 0.5 && fabs(jetEta->at(ijet)) < 3.0  && jetPt->at(ijet) > MaxJetPt ){
+//            MaxJetPt=jetPt->at(ijet);
+//            leadJetPtIndex=ijet;
+//        }
+//    }
+//    cout<<"leadJetPtIndex = "<<leadJetPtIndex<<"\n";
+//    leadJet.SetPtEtaPhiE(jetPt->at(leadJetPtIndex),jetEta->at(leadJetPtIndex),jetPhi->at(leadJetPtIndex),jetEn->at(leadJetPtIndex));
+//    return leadJet;
+//}
+//
 
 class SkimerBoost {
 public :
@@ -672,6 +667,7 @@ public :
    virtual void     Loop(TString outputFile,std::string inputFile,std::string Sys);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
+   TLorentzVector getLeadJet(TLorentzVector , TLorentzVector );
 };
 
 #endif
@@ -688,6 +684,26 @@ SkimerBoost::SkimerBoost(TString fileName) : fChain(0)
 //    TTree* tree = (TTree*)gDirectory->Get("EventTree");
     TTree* tree = (TTree*)gDirectory->Get("ggNtuplizer/EventTree");
     Init(tree);
+}
+
+
+TLorentzVector SkimerBoost::getLeadJet(TLorentzVector lep4Mom, TLorentzVector tau4Mom){
+    TLorentzVector leadJet, Jet;
+    float MaxJetPt=0;
+    int leadJetPtIndex=0;
+//    std::cout<<"nJet = "<<nJet<<"\n";
+    for (int ijet= 0 ; ijet < nJet ; ijet++){
+        Jet.SetPtEtaPhiE(jetPt->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
+        if (Jet.DeltaR(lep4Mom) < 0.5) continue;
+        if (Jet.DeltaR(tau4Mom) < 0.5) continue;
+        if (jetPFLooseId->at(ijet) > 0.5 && fabs(jetEta->at(ijet)) < 3.0  && jetPt->at(ijet) > MaxJetPt ){
+            MaxJetPt=jetPt->at(ijet);
+            leadJetPtIndex=ijet;
+        }
+    }
+//    std::cout<<"leadJetPtIndex = "<<leadJetPtIndex<<"\n";
+    leadJet.SetPtEtaPhiE(jetPt->at(leadJetPtIndex),jetEta->at(leadJetPtIndex),jetPhi->at(leadJetPtIndex),jetEn->at(leadJetPtIndex));
+    return leadJet;
 }
 
 
