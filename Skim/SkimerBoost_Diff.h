@@ -691,7 +691,8 @@ TLorentzVector SkimerBoost::getLeadJet(TLorentzVector lep4Mom, TLorentzVector ta
     Long64_t nbytes = 0, nb = 0;
     Long64_t ientry = LoadTree(jentry);
     nb = fChain->GetEntry(jentry);   nbytes += nb;
-    TLorentzVector leadJet, Jet;
+    TLorentzVector leadJet, Jet;    
+    leadJet.SetPtEtaPhiE(0,0,0,0);
     float MaxJetPt=0;
     int leadJetPtIndex=0;
 //    std::cout<<"nJet = "<<nJet<<"\n";
