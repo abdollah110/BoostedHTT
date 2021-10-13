@@ -1128,6 +1128,7 @@ TLorentzVector getLeadJet(TLorentzVector lep4Mom, TLorentzVector tau4Mom){
             leadJetPtIndex=ijet;
         }
     }
+    cout<<"leadJetPtIndex = "<<leadJetPtIndex<<"\n";
     leadJet.SetPtEtaPhiE(jetPt->at(leadJetPtIndex),jetEta->at(leadJetPtIndex),jetPhi->at(leadJetPtIndex),jetEn->at(leadJetPtIndex));
     return leadJet;
 }

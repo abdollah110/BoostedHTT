@@ -188,7 +188,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if ( VisibleTau.Pt() < 30 || fabs(VisibleTau.Eta()) > 2.4) continue;
             
             TLorentzVector higgs = VisibleTau+genMuVec[0] +Met4Momentum;
-//            TLorentzVector LeadJet= getLeadJet(VisibleTau , genMuVec[0]);
+            TLorentzVector LeadJet= getLeadJet(VisibleTau , genMuVec[0]);
             cout<<"Gen Higgs pt I made = "<<higgs.Pt() <<"   v.s.  Rivet_higgsPt  "<<Rivet_higgsPt<<"\n";
             if (genMET < 30 ) continue;
             if (higgs.Pt() < 250) continue;
