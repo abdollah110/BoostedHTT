@@ -151,7 +151,9 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             
             
             
-            
+        if (genMuVec.size() > 1 && genEleVec.size() > 1 ) {
+        std::cout<<"\t\t Channel is emu: #mu= "<<genMuVec[0].Pt()<<"  "<< genMuVec[1].Pt() << "  ele  " <<genEleVec[0].Pt() <<"  "<<genEleVec[1].Pt()  <<"\n";
+        }
         
         
 //        cout<<genTauVec.size()<<" "<<genMuVec.size()<<" "<<genEleVec.size()<<"\t";
