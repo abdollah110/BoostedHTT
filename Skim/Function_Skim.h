@@ -1119,6 +1119,7 @@ TLorentzVector getLeadJet(TLorentzVector lep4Mom, TLorentzVector tau4Mom){
     TLorentzVector leadJet, Jet;
     float MaxJetPt=0;
     int leadJetPtIndex=0;
+    cout<<"nJet = "<<nJet<<"\n";
     for (int ijet= 0 ; ijet < nJet ; ijet++){
         Jet.SetPtEtaPhiE(jetPt->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
         if (Jet.DeltaR(lep4Mom) < 0.5) continue;
