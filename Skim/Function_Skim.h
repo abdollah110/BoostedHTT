@@ -1115,24 +1115,24 @@ float getMHT( float SimpleJetPtCut){
 
 
 
-TLorentzVector getLeadJet(TLorentzVector lep4Mom, TLorentzVector tau4Mom){
-    TLorentzVector leadJet, Jet;
-    float MaxJetPt=0;
-    int leadJetPtIndex=0;
-    cout<<"nJet = "<<nJet<<"\n";
-    for (int ijet= 0 ; ijet < nJet ; ijet++){
-        Jet.SetPtEtaPhiE(jetPt->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
-        if (Jet.DeltaR(lep4Mom) < 0.5) continue;
-        if (Jet.DeltaR(tau4Mom) < 0.5) continue;
-        if (jetPFLooseId->at(ijet) > 0.5 && fabs(jetEta->at(ijet)) < 3.0  && jetPt->at(ijet) > MaxJetPt ){
-            MaxJetPt=jetPt->at(ijet);
-            leadJetPtIndex=ijet;
-        }
-    }
-    cout<<"leadJetPtIndex = "<<leadJetPtIndex<<"\n";
-    leadJet.SetPtEtaPhiE(jetPt->at(leadJetPtIndex),jetEta->at(leadJetPtIndex),jetPhi->at(leadJetPtIndex),jetEn->at(leadJetPtIndex));
-    return leadJet;
-}
+//TLorentzVector getLeadJet(TLorentzVector lep4Mom, TLorentzVector tau4Mom){
+//    TLorentzVector leadJet, Jet;
+//    float MaxJetPt=0;
+//    int leadJetPtIndex=0;
+//    cout<<"nJet = "<<nJet<<"\n";
+//    for (int ijet= 0 ; ijet < nJet ; ijet++){
+//        Jet.SetPtEtaPhiE(jetPt->at(ijet),jetEta->at(ijet),jetPhi->at(ijet),jetEn->at(ijet));
+//        if (Jet.DeltaR(lep4Mom) < 0.5) continue;
+//        if (Jet.DeltaR(tau4Mom) < 0.5) continue;
+//        if (jetPFLooseId->at(ijet) > 0.5 && fabs(jetEta->at(ijet)) < 3.0  && jetPt->at(ijet) > MaxJetPt ){
+//            MaxJetPt=jetPt->at(ijet);
+//            leadJetPtIndex=ijet;
+//        }
+//    }
+//    cout<<"leadJetPtIndex = "<<leadJetPtIndex<<"\n";
+//    leadJet.SetPtEtaPhiE(jetPt->at(leadJetPtIndex),jetEta->at(leadJetPtIndex),jetPhi->at(leadJetPtIndex),jetEn->at(leadJetPtIndex));
+//    return leadJet;
+//}
 
 
 
