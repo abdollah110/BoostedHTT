@@ -169,8 +169,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if (higgs.Pt() < 250) continue;
             higpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
             higpt_nnlops->Fill(higgs.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
-            jetpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
-            jetpt_nnlops->Fill(higgs.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            jetpt->Fill(LeadJet.Pt(),LumiWeight * weight_Rivet);
+            jetpt_nnlops->Fill(LeadJet.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
 
         }
         
@@ -190,7 +190,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if ( VisibleTau.Pt() < 30 || fabs(VisibleTau.Eta()) > 2.4) continue;
             
             TLorentzVector higgs = VisibleTau+genMuVec[0] +Met4Momentum;
-//            TLorentzVector LeadJet= getLeadJet(VisibleTau , genMuVec[0]);
+            TLorentzVector LeadJet= getLeadJet(VisibleTau , genMuVec[0]);
             cout<<"Gen Higgs pt I made = "<<higgs.Pt() <<"   v.s.  Rivet_higgsPt  "<<Rivet_higgsPt<<"\n";
             if (genMET < 30 ) continue;
             if (higgs.Pt() < 250) continue;
@@ -216,7 +216,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if ( VisibleTau.Pt() < 30 || fabs(VisibleTau.Eta() )> 2.5) continue;
             
             TLorentzVector higgs = VisibleTau+genEleVec[0] +Met4Momentum;
-//            TLorentzVector LeadJet= getLeadJet(VisibleTau , genEleVec[0]);
+            TLorentzVector LeadJet= getLeadJet(VisibleTau , genEleVec[0]);
             cout<<"Gen Higgs pt I made = "<<higgs.Pt() <<"   v.s.  Rivet_higgsPt  "<<Rivet_higgsPt<<"\n";
             if (genMET < 30 ) continue;
             if (higgs.Pt() < 250) continue;
@@ -241,7 +241,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if (VisibleTau1.Pt() < 30 || fabs(VisibleTau1.Eta()) > 2.3) continue;
 
             TLorentzVector higgs = VisibleTau0+VisibleTau1 +Met4Momentum;
-//            TLorentzVector LeadJet= getLeadJet(VisibleTau0 , VisibleTau1);
+            TLorentzVector LeadJet= getLeadJet(VisibleTau0 , VisibleTau1);
             cout<<"Gen Higgs pt I made = "<<higgs.Pt() <<"   v.s.  Rivet_higgsPt  "<<Rivet_higgsPt<<"\n";
             if (higgs.Pt() < 250) continue;
             higpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
