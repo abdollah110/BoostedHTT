@@ -1,3 +1,12 @@
+//###################################################################################################
+/*
+What does this code is doing?
+1) First it counts number of true GenTau, GenMu and GenElectron, and  their neutrinos & save the 4-momenta of each candidates in a vector
+2) Find the River weight for each event with njet multiplicity which depends on the generated Higgs pT (also the systematics)
+3) Keep events in case they pass any fiducial cuts for em, et, mt or tt.
+4) Two histograms for Higgs pT are stored, one with lumi weight and the other lumiWeight and River and its uncertainty
+*/
+//###################################################################################################
 #define SkimerBoost_cxx
 //#include "SkimerBoost.h"
 #include "SkimerBoost_Diff.h"
@@ -115,7 +124,10 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             
         }
         
-        if (genTauVec.size() < 2 ) continue;
+        if (genTauVec.size() < 2 ) {
+        std:cout<<"There is no pair of genTau in this event and the size of getTauVector is "<<genTauVec.size()<<"\n";
+        continue;
+        }
         
         
             float weight_Rivet =1;
@@ -149,13 +161,15 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         //emu
         if (genMuVec.size() > 0 && genEleVec.size() > 0 ) {
             
-
+            std::cout<<"Channel is emu: #mu= "<<genMuVec.size() <<"  #ele= "<<genEleVec.size()<<"\n";
+            
             if (genMuVec[0].Pt() < 10 || fabs(genMuVec[0].Eta()) > 2.4) continue;
             if (genEleVec[0].Pt() < 10 || fabs(genEleVec[0].Eta() ) > 2.5) continue;
             
             TLorentzVector higgs = genEleVec[0]+genMuVec[0] +Met4Momentum;
 //            TLorentzVector LeadJet= getLeadJet(genEleVec[0],genMuVec[0]);
-            if (higgs.Pt() < 280) continue;
+            if (genMET < 30 ) continue;
+            if (higgs.Pt() < 250) continue;
             higpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
             higpt_nnlops->Fill(higgs.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
         }
@@ -163,6 +177,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         //mutau
         else if (genMuVec.size() > 0 &&  genEleVec.size() < 1 ){
 
+            std::cout<<"Channel is mutau: #mu= "<<genMuVec.size() <<"  #ele= "<<genEleVec.size()<<"\n";
+            
             findDr fdMatch0 = FindClosetDr(genTauVec[0],genMuVec);
             findDr fdMatch1 = FindClosetDr(genTauVec[1],genMuVec);
                         
@@ -177,13 +193,16 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             
             TLorentzVector higgs = VisibleTau+genMuVec[0] +Met4Momentum;
 //            TLorentzVector LeadJet= getLeadJet(VisibleTau , genMuVec[0]);
-            if (higgs.Pt() < 280) continue;
+            if (genMET < 30 ) continue;
+            if (higgs.Pt() < 250) continue;
             higpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
             higpt_nnlops->Fill(higgs.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
         }
         
         //etau
         else if (genMuVec.size() < 1 &&  genEleVec.size() > 0 ){
+            
+            std::cout<<"Channel is etau: #mu= "<<genMuVec.size() <<"  #ele= "<<genEleVec.size()<<"\n";
             
             findDr fdMatch0 = FindClosetDr(genTauVec[0],genEleVec);
             findDr fdMatch1 = FindClosetDr(genTauVec[1],genEleVec);
@@ -199,13 +218,17 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             
             TLorentzVector higgs = VisibleTau+genEleVec[0] +Met4Momentum;
 //            TLorentzVector LeadJet= getLeadJet(VisibleTau , genEleVec[0]);
-            if (higgs.Pt() < 280) continue;
+            if (genMET < 30 ) continue;
+            if (higgs.Pt() < 250) continue;
             higpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
             higpt_nnlops->Fill(higgs.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
             
         }
         else
         {
+        
+
+            
             findDr fdMatchNu0 = FindClosetDr(genTauVec[0],genNuTauVec);
             findDr fdMatchNu1 = FindClosetDr(genTauVec[1],genNuTauVec);
 
@@ -220,9 +243,11 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
 
             TLorentzVector higgs = VisibleTau0+VisibleTau1 +Met4Momentum;
 //            TLorentzVector LeadJet= getLeadJet(VisibleTau0 , VisibleTau1);
-            if (higgs.Pt() < 280) continue;
+            if (higgs.Pt() < 250) continue;
             higpt->Fill(higgs.Pt(),LumiWeight * weight_Rivet);
             higpt_nnlops->Fill(higgs.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            
+            std::cout<<"Channel is tautau: #mu= "<<genMuVec.size() <<"  #ele= "<<genEleVec.size()<<"\n";
         }
     }
     

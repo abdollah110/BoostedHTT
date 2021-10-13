@@ -1,5 +1,3 @@
-#python hadd_skim.py -g /eos/uscms/store/user/tmitchel/BoostedH/An2017/MC/*/*  -s /eos/uscms/store/user/abdollah/SkimBoost/mm/v4 -n v1
-
 import glob
 import os
 import sys
@@ -42,5 +40,3 @@ for gl in Lines:
 #    os.system('hadd %s/%s.root    %s/%s*.root'%(HaddLoc,sample,skimFiles,sample))
 
 outFile.close()
-    
-
