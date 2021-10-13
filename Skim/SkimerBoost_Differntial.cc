@@ -81,6 +81,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         if (ientry < 0) break;
         nb = fChain->GetEntry(jentry);   nbytes += nb;
         
+        cout<<"test njet " <<nJet<<" -------\n";
         if(jentry % 10000 == 0) cout << "Processed " << jentry << " events out of " <<nentries<<endl;
         
         TLorentzVector Mu4Momentum,Tau4Momentum, Z4Momentum, Met4Momentum,Ele4Momentum;
