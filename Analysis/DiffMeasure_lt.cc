@@ -151,10 +151,11 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 {"gen_higgs_pT",gen_higgs_pT}
             };
             
-            if (name.find("0_350")!=string::npos &&   ( gen_higgs_pT > 350  || gen_higgs_pT > 350 )) continue ;
-            if (name.find("350_450")!=string::npos && ( gen_higgs_pT <= 350 || gen_higgs_pT > 450 )) continue ;
-            if (name.find("450_600")!=string::npos && ( gen_higgs_pT <= 450 || gen_higgs_pT > 600 )) continue ;
-            if (name.find("GT600")!=string::npos &&   ( gen_higgs_pT <= 600)) continue ;
+            if (name.find("0_300")!=string::npos &&   ( gen_higgs_pT > 300  || gen_higgs_pT > 300 )) continue ;
+            if (name.find("300_400")!=string::npos && ( gen_higgs_pT <= 300 || gen_higgs_pT > 400 )) continue ;
+            if (name.find("400_550")!=string::npos && ( gen_higgs_pT <= 400 || gen_higgs_pT > 550 )) continue ;
+            if (name.find("550_800")!=string::npos && ( gen_higgs_pT <= 550 || gen_higgs_pT > 800 )) continue ;
+            if (name.find("GT800")!=string::npos &&   ( gen_higgs_pT <= 800)) continue ;
             
             float Var_cut = ObsName[cut_name];
             if (Var_cut < lowVal || Var_cut > highVal ) continue;

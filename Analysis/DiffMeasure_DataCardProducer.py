@@ -48,14 +48,15 @@ Variable=[
 
 PTrange= [
         [0,100000,'_bin0'],
-        [0,350,'_bin1'],
-        [350,450,'_bin2'],
-        [450,600,'_bin3'],
-        [600,100000,'_bin4']
+        [0,300,'_bin1'],
+        [300,400,'_bin2'],
+        [400,550,'_bin3'],
+        [550,800,'_bin4'],
+        [800,100000,'_bin5']
 ]
 
 
-for ifile in glob('{}/NN_boost_*Diff_V7*'.format(InputFile)):
+for ifile in glob('{}'.format(InputFile)):
     sample=ifile.replace(InputFile,'').replace('/','')
     
     print 'starting from {} and the file name is  {}'.format(ifile,sample)
