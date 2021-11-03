@@ -56,7 +56,7 @@ PTrange= [
 ]
 
 
-for ifile in glob('{}'.format(InputFile)):
+for ifile in glob('{}/NN*'.format(InputFile)):
     sample=ifile.replace(InputFile,'').replace('/','')
     
     print 'starting from {} and the file name is  {}'.format(ifile,sample)
