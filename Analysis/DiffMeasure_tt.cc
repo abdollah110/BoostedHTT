@@ -157,12 +157,18 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 {"gen_higgs_pT",gen_higgs_pT}
             };
             
-            if (name.find("0_300")!=string::npos &&   ( gen_higgs_pT > 300  || gen_higgs_pT > 300 )) continue ;
-            if (name.find("300_400")!=string::npos && ( gen_higgs_pT <= 300 || gen_higgs_pT > 400 )) continue ;
-            if (name.find("400_550")!=string::npos && ( gen_higgs_pT <= 400 || gen_higgs_pT > 550 )) continue ;
-            if (name.find("550_800")!=string::npos && ( gen_higgs_pT <= 550 || gen_higgs_pT > 800 )) continue ;
-            if (name.find("GT800")!=string::npos &&   ( gen_higgs_pT <= 800)) continue ;
+//            if (name.find("0_300")!=string::npos &&   ( gen_higgs_pT > 300  || gen_higgs_pT > 300 )) continue ;
+//            if (name.find("300_400")!=string::npos && ( gen_higgs_pT <= 300 || gen_higgs_pT > 400 )) continue ;
+//            if (name.find("400_550")!=string::npos && ( gen_higgs_pT <= 400 || gen_higgs_pT > 550 )) continue ;
+//            if (name.find("550_800")!=string::npos && ( gen_higgs_pT <= 550 || gen_higgs_pT > 800 )) continue ;
+//            if (name.find("GT800")!=string::npos &&   ( gen_higgs_pT <= 800)) continue ;
 
+
+            if (name.find("0_300")!=string::npos &&   ( LeadJetPt > 300  || LeadJetPt > 300 )) continue ;
+            if (name.find("300_400")!=string::npos && ( LeadJetPt <= 300 || LeadJetPt > 400 )) continue ;
+            if (name.find("400_550")!=string::npos && ( LeadJetPt <= 400 || LeadJetPt > 550 )) continue ;
+            if (name.find("550_800")!=string::npos && ( LeadJetPt <= 550 || LeadJetPt > 800 )) continue ;
+            if (name.find("GT800")!=string::npos &&   ( LeadJetPt <= 800)) continue ;
 
             float Var_cut = ObsName[cut_name];
             if (Var_cut < lowVal || Var_cut > highVal ) continue;
