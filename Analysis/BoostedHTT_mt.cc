@@ -306,10 +306,10 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",6 ,15,0,15);
         
         tmass = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  Met,  Metphi);
-        if (tmass > 80) continue;
+//        if (tmass > 80) continue;  REMOVED for QCD Valiadation
         plotFill("cutFlowTable",7 ,15,0,15);
         
-        if (m_sv < 50) continue;
+//        if (m_sv < 50) continue; REMOVED for QCD Valiadation
         plotFill("cutFlowTable",8 ,15,0,15);
         
         // BJet veto
@@ -330,8 +330,7 @@ int main(int argc, char* argv[]) {
         if (numele > 0) continue;
         plotFill("cutFlowTable",11 ,15,0,15);
         
-//        if (higgs.Pt() < 250) continue;
-        if (higgs.Pt() < 250) continue;
+//        if (higgs.Pt() < 250) continue; REMOVED for QCD Valiadation
         plotFill("cutFlowTable",12 ,15,0,15);
         
         //=========================================================================================================
