@@ -245,7 +245,8 @@ int main(int argc, char* argv[]) {
         // muon pt from 30 to 28
         if (muPt->at(idx_lep) < 28 || fabs(muEta->at(idx_lep)) > 2.4) continue;
                 
-        bool MuId=( (muIDbit->at(idx_lep) >> 1 & 1)  && fabs(muD0->at(idx_lep)) < 0.045 && fabs(muDz->at(idx_lep)) < 0.2);
+//        bool MuId=( (muIDbit->at(idx_lep) >> 1 & 1)  && fabs(muD0->at(idx_lep)) < 0.045 && fabs(muDz->at(idx_lep)) < 0.2);
+        bool MuId= (muIDbit->at(idx_lep) >> 1 & 1);
         MuIdCorrection = getCorrFactorMuonId(year, isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuId);
         
         if (! MuId) continue;
@@ -306,10 +307,10 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",6 ,15,0,15);
         
         tmass = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  Met,  Metphi);
-//        if (tmass > 80) continue;  REMOVED for QCD Valiadation
+        if (tmass > 80) continue;
         plotFill("cutFlowTable",7 ,15,0,15);
         
-//        if (m_sv < 50) continue; REMOVED for QCD Valiadation
+        if (m_sv < 50) continue;
         plotFill("cutFlowTable",8 ,15,0,15);
         
         // BJet veto
@@ -330,7 +331,8 @@ int main(int argc, char* argv[]) {
         if (numele > 0) continue;
         plotFill("cutFlowTable",11 ,15,0,15);
         
-//        if (higgs.Pt() < 250) continue; REMOVED for QCD Valiadation
+//        if (higgs.Pt() < 250) continue;
+        if (higgs.Pt() < 250) continue;
         plotFill("cutFlowTable",12 ,15,0,15);
         
         //=========================================================================================================
@@ -463,7 +465,10 @@ int main(int argc, char* argv[]) {
         plotFill("preFireWeight",preFireWeight ,200,0,2);
         plotFill("WBosonKFactor",WBosonKFactor ,200,0,2);
         plotFill("ttbar_rwt",ttbar_rwt ,200,0,2);
-        
+        plotFill("mu_d0",muD0->at(idx_lep) ,200,-0.2,0.2);
+        plotFill("mu_dz",muDz->at(idx_lep) ,200,-1,1);
+        plotFill("mu_d0_Hpt",fabs(muD0->at(idx_lep)), higgs.Pt(),25,0,0.2,25,0,750);
+        plotFill("mu_dz_Hpt",fabs(muDz->at(idx_lep)), higgs.Pt(),25,0,1,25,0,750);
         
         //###############################################################################################
         //  tree branches
