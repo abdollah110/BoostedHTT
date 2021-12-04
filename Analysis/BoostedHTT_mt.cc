@@ -467,8 +467,8 @@ int main(int argc, char* argv[]) {
         plotFill("ttbar_rwt",ttbar_rwt ,200,0,2);
         plotFill("mu_d0",muD0->at(idx_lep) ,200,-0.2,0.2);
         plotFill("mu_dz",muDz->at(idx_lep) ,200,-1,1);
-        plotFill("mu_d0_Hpt",fabs(muD0->at(idx_lep)), higgs.Pt(),25,0,0.2,25,0,750);
-        plotFill("mu_dz_Hpt",fabs(muDz->at(idx_lep)), higgs.Pt(),25,0,1,25,0,750);
+        plotFill("mu_d0_Hpt",fabs(muD0->at(idx_lep)), higgs.Pt(),25,0,0.025,25,0,750);
+        plotFill("mu_dz_Hpt",fabs(muDz->at(idx_lep)), higgs.Pt(),25,0,0.1,25,0,750);
         
         //###############################################################################################
         //  tree branches
