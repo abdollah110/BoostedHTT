@@ -10,6 +10,7 @@
 // ROOT includes
 #include "TFile.h"
 #include "TH1F.h"
+#include "TH2F.h"
 #include "TTree.h"
 using namespace std;
 
@@ -34,7 +35,7 @@ void read_directory(const string &name, std::vector<string> *v) {
 // class to hold the histograms until I'm ready to write them
 class HistTool {
 public:
-    HistTool(string, string,string, string, string,std::vector<int>);
+    HistTool(string, string,string, string, string,std::vector<float>);
     //  ~HistTool() { delete ff_weight; }
     ~HistTool() {  }
     void writeHistos();
@@ -65,27 +66,31 @@ public:
     string channel_prefix, tree_name;
     std::vector<string> categories, systematics;
     //    std::vector<float> mvis_bins, njets_bins;
-    std::map<string, std::vector<TH1F *>> hists_1d, FF_systs, qcd_AM;
+    std::map<string, std::vector<TH1F *>> hists_1d;
+    std::map<string, std::vector<TH2F *>>  Histo_2DMatrix;
     std::vector<TH1F *> fakes_1d_norm,  fakes_1d_norm_Up,  fakes_1d_norm_Down , data;
     std::vector<TH1F *> fakes_1d_SS_CR, fakes_1d_SS_CR_Up, fakes_1d_SS_CR_Down;
     std::vector<TH1F *> fakes_1d_OS_CR, fakes_1d_OS_CR_Up, fakes_1d_OS_CR_Down, fakes_1d_OS_CR_data;
     std::vector<TH1F *> fakes_1d_shape, fakes_1d_shape_Up, fakes_1d_shape_Down, fakes_1d_SS_CR_data;
     
     // binning
-    std::vector<int> bins_NN, bins_FAKE;
+//    std::vector<int> bins_NN, bins_FAKE;
+    std::vector<Float_t> bins_NN, bins_FAKE;
+    std::vector<Float_t> bins_genHPt;
 };
 
 // HistTool contructor to create the output file, the qcd histograms with the correct binning
 // and the map from categories to vectors of TH1F*'s. Each TH1F* in the vector corresponds to
 // one file that is being put into that categories directory in the output tempalte
-HistTool::HistTool(string treeName, string channel_prefix, string var, string year, string suffix,std::vector<int> bins)
+HistTool::HistTool(string treeName, string channel_prefix, string var, string year, string suffix,std::vector<float> bins)
 : fout(new TFile(("Output/templates/" + channel_prefix + year + "_" + var+"_" + suffix + ".root").c_str(), "recreate")),
 
 // x-axis
 //bins_NN{0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0}, // This is for 0jet
-bins_NN(bins), // This is for 0jet
-//bins_NN({20,0,200}),
+//bins_NN(bins), // This is for 0jet
+bins_NN({10,0,0.5}),
 bins_FAKE({10,0,300}),
+bins_genHPt({0,300,400,550,800,2000}),
 //bins_FAKE({10,0,1}),
 channel_prefix(channel_prefix),
 tree_name(treeName),
@@ -102,6 +107,7 @@ systematics{
     for (auto cat : categories) {
         // make a 2d template
         hists_1d[cat.c_str()] = std::vector<TH1F *>();
+        Histo_2DMatrix[cat.c_str()] = std::vector<TH2F *>();
         
         if (cat.find("0jet") != string::npos) {
             
@@ -135,6 +141,13 @@ systematics{
         std::cout <<"\t test 1   first directory is "<<it->first <<"\n";
         fout->cd();
     }
+    // make all of the directories for templates
+    for (auto it = Histo_2DMatrix.begin(); it != Histo_2DMatrix.end(); it++) {
+        fout->cd();
+        fout->mkdir((it->first).c_str());
+        std::cout <<"\t test 1   first directory is "<<it->first <<"\n";
+        fout->cd();
+    }
 }
 
 // change to the correct output directory then create a new TH1F that will be filled for the current input file
@@ -148,7 +161,15 @@ void HistTool::initVectors2d(string name) {
             hists_1d.at(key.first.c_str()).push_back(new TH1F(name.c_str(), name.c_str(), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
         }
     }
+    for (auto key : Histo_2DMatrix) {
+        fout->cd(key.first.c_str());
+        if (key.first == tree_name + "_0jet") {
+            Histo_2DMatrix.at(key.first.c_str()).push_back(new TH2F((name+"_2D").c_str(), (name+"_2D").c_str(), bins_genHPt.size() - 1, &bins_genHPt[0], bins_genHPt.size() - 1, &bins_genHPt[0]));
+        }
+    }
 }
+
+
 
 // This is CR to extract OS/SS ratio
 void HistTool::fillQCD_OS_CR(int cat, string name, double var1,  double weight) {
@@ -185,7 +206,7 @@ void HistTool::fillQCD_Norm(int cat, string name, double var1,  double weight, f
         fakes_1d_norm.at(cat)->Fill(var1, 1*OSSS_val);
         fakes_1d_norm_Up.at(cat)->Fill(var1, 1*OSSS_val);
         fakes_1d_norm_Down.at(cat)->Fill(var1, 1*OSSS_val);
-        //    } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
+//    } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
     } else if ( name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
         fakes_1d_norm.at(cat)->Fill(var1, -1*OSSS_val*weight);
         fakes_1d_norm_Up.at(cat)->Fill(var1, -1*OSSS_val*weight*0.9);
@@ -215,7 +236,7 @@ void HistTool::fillQCD_Shape(int cat, string name, double var1,  double weight, 
         fakes_1d_shape.at(cat)->Fill(var1, 1*OSSS_val);
         fakes_1d_shape_Up.at(cat)->Fill(var1, 1*OSSS_val);
         fakes_1d_shape_Down.at(cat)->Fill(var1, 1*OSSS_val);
-        //    } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+//    } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
     } else if ( name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
         
         fakes_1d_shape.at(cat)->Fill(var1, -1*OSSS_val*weight);
@@ -264,10 +285,21 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
             hist->Write();
         }
         float CorrFactor=1;
-        if (channel.find("tt") != string::npos && year.find("2016") != string::npos ) CorrFactor =0.70;
-        if (channel.find("tt") != string::npos && year.find("2017") != string::npos ) CorrFactor =0.95;
-        if (channel.find("tt") != string::npos && year.find("2018") != string::npos ) CorrFactor =0.80;
-        
+        // Updated fake rate
+        if (channel.find("tt") != string::npos && year.find("2016") != string::npos ) CorrFactor =1.14;
+        if (channel.find("tt") != string::npos && year.find("2017") != string::npos ) CorrFactor =0.92;
+        if (channel.find("tt") != string::npos && year.find("2018") != string::npos ) CorrFactor =0.87;
+
+        // fake rate
+//        if (channel.find("tt") != string::npos && year.find("2016") != string::npos ) CorrFactor =0.70;
+//        if (channel.find("tt") != string::npos && year.find("2017") != string::npos ) CorrFactor =0.95;
+//        if (channel.find("tt") != string::npos && year.find("2018") != string::npos ) CorrFactor =0.80;
+
+    // os to ss
+//        if (channel.find("tt") != string::npos && year.find("2016") != string::npos ) CorrFactor =1.30;
+//        if (channel.find("tt") != string::npos && year.find("2017") != string::npos ) CorrFactor =0.98;
+//        if (channel.find("tt") != string::npos && year.find("2018") != string::npos ) CorrFactor =0.90;
+
         auto fake_hist_norm = fakes_1d_norm.at(order);
         auto fake_hist_norm_Up = fakes_1d_norm_Up.at(order);
         auto fake_hist_norm_Down = fakes_1d_norm_Down.at(order);
@@ -323,5 +355,11 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
         }
         
         order++;
+    for (auto cat : Histo_2DMatrix) {
+        fout->cd(cat.first.c_str());
+        for (auto hist : cat.second) {
+            hist->Write();
+        }
+        }
     }
 }
