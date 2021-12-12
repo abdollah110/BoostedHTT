@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
     else (std::cout << "channel is not specificed in the outFile name !\n");
     string newChannelName= channel;
     // get the provided histogram binning
-    std::vector<int> bins;
+    std::vector<float> bins;
     for (auto sbin : sbins) {
         bins.push_back(std::stoi(sbin));
     }
@@ -93,7 +93,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         bool lep2IsoPass,lep2IsoPassV, OS,SS,lep1IsoPass,eleIDMVA, lep2IsoPassT,lep2IsoPassL;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
         float NN_disc,MuMatchedIsolation,EleMatchedIsolation;
-        float BoostedTauRawIso, higgs_pT, higgs_m, m_sv;
+        float BoostedTauRawIso, higgs_pT, higgs_m, m_sv, gen_higgs_pT;
         
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
         tree->SetBranchAddress("lep2Pt",&lep2Pt_);
@@ -118,6 +118,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         tree->SetBranchAddress("m_sv",&m_sv);
         tree->SetBranchAddress("MuMatchedIsolation",&MuMatchedIsolation);
         tree->SetBranchAddress("EleMatchedIsolation",&EleMatchedIsolation);
+        tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
+        
         
         
         // Here we have to call OS/SS method extracter
@@ -145,14 +147,17 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 {"m_sv",m_sv},
                 {"NN_disc",NN_disc},
                 {"MuMatchedIsolation",MuMatchedIsolation},
-                {"EleMatchedIsolation",EleMatchedIsolation}
+                {"EleMatchedIsolation",EleMatchedIsolation},
+                {"gen_higgs_pT",gen_higgs_pT}
                 
             };
             
             // apply tau Id SF
             if (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("H125")!= string::npos || name.find("JJH125")!= string::npos ) weight *= 0.9;
             
-//            if (higgs_pT < 400) continue;
+//            if (m_sv < 50) continue;
+//            if (higgs_pT < 250) continue;
+//            if (tmass > 80) continue;
 //            if (NN_disc < 0.3) continue;
             
             float lep2Ptval=lep2Pt_;
@@ -163,12 +168,11 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             
             if (OS != 0  && lep1IsoPass && lep2IsoPassV) {
 //            if (SS != 0  && lep1IsoPass && lep2IsoPassV) { // Validation
-//            if (SS != 0  && lep1IsoPass && lep2IsoPassL) { // Validation
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
+                Histo_2DMatrix.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
             }
             if (OS != 0 && lep1IsoPass && !lep2IsoPassV ){
 //            if (SS != 0 && lep1IsoPass && !lep2IsoPassV ){ // Validation
-//            if (SS != 0 && lep1IsoPass && !lep2IsoPassL ){ // Validation
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu / (1-frValu));
             }
             if (SS != 0 && !lep2IsoPassV){

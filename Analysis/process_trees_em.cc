@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
 
 
     // get the provided histogram binning
-    std::vector<int> bins;
+    std::vector<float> bins;
     for (auto sbin : sbins) {
         bins.push_back(std::stoi(sbin));
     }
@@ -96,7 +96,7 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
         bool OS,SS,lep1IsoPass,eleIDMVA, lep2IsoPass;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi, lep2Pt_;
         float NN_disc,MuMatchedIsolation,EleMatchedIsolation;
-        float higgs_pT, higgs_m, m_sv;
+        float higgs_pT, higgs_m, m_sv, gen_higgs_pT;
         
         
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
@@ -119,6 +119,7 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
         tree->SetBranchAddress("m_sv",&m_sv);
         tree->SetBranchAddress("MuMatchedIsolation",&MuMatchedIsolation);
         tree->SetBranchAddress("EleMatchedIsolation",&EleMatchedIsolation);
+        tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
         
         // Here we have to call OS/SS method extracter
 //        std::cout<<" tree->GetEntries() is "<<tree->GetEntries()<<"\n";
@@ -146,7 +147,7 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
                 
             };
             
-            if (channel.find("em")!=string::npos  && lep1Pt_ < 20) continue;
+//            if (channel.find("em")!=string::npos  && lep1Pt_ < 20) continue;
             
 //            if (NN_disc < 0.3) continue;
             // The OS/SS is measured in a QCD populated CR and it is 2.21 for 2016 and 2017 and 2.3 for 2018. We will simply us 2.2 for all 3 years
@@ -160,6 +161,7 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
             if (OS != 0  && lep1IsoPass && lep2IsoPass) {
 //            if (OS != 0  && lep1IsoPass ) {
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
+                Histo_2DMatrix.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
             }
 
             if (SS != 0 && lep1IsoPass && lep2IsoPass ){

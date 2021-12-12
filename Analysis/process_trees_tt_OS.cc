@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
     string newChannelName= channel;
     
     // get the provided histogram binning
-    std::vector<float> bins;
+    std::vector<int> bins;
     for (auto sbin : sbins) {
         bins.push_back(std::stoi(sbin));
     }
@@ -63,11 +63,11 @@ int main(int argc, char *argv[]) {
     
     
     // This part is tro derive the OS/SS ratio (one can actually get the 2D pt/eta binned Values as well)
-    //    hists->histoQCD(files, dir, tree_name,  "None");    // fill histograms QCD
+        hists->histoQCD(files, dir, tree_name,  "None");    // fill histograms QCD
     
-    //    std::vector<float>  OSSS= hists->Get_OS_SS_ratio();
-    //    std::cout<<"\n\n\n\n OSSS  "<<OSSS[0]<<"\n";
-    std::vector<float>  OSSS= hists->Get_OS_SS_ratio();
+        std::vector<float>  OSSS= hists->Get_OS_SS_ratio();
+        std::cout<<"\n\n\n\n OSSS  "<<OSSS[0]<<"\n";
+//        std::vector<float>  OSSS= hists->Get_OS_SS_ratio();
     
     
     
@@ -164,12 +164,6 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             if (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("H125")!= string::npos || name.find("JJH125")!= string::npos ) weight *= 0.81;
             
             
-            // Validation cuts relaxed!
-//            if (m_sv < 50) continue;
-//            if (higgs_pT < 100) continue;
-//            if (tmass > 200) continue;
-
-            
             float lep1Ptval=lep1Pt_;
             if (lep1Ptval > 200) lep1Ptval=200;
             float frValu1 = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep1Ptval));
@@ -186,28 +180,33 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             //            ################################################################################
             //            ################    Fill  data, signal & non QCD Bkg
             //            ################################################################################
-            if (OS != 0  && lep1IsoPassV && lep2IsoPassV) { // final analysis
-                hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight); // final analysis
-                Histo_2DMatrix.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
-            }
-            
-            
-//             ======= Validation
-//
-//            if (SS != 0  && lep1IsoPassV && lep2IsoPassV) { // Validation
-//                hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
+//            if (OS != 0  && lep1IsoPassV && lep2IsoPassV) { // final analysis
+//                hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight); // final analysis
+//                Histo_2DMatrix.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
 //            }
+            
+            
+            // ======= Validation
+            
+            if (OS != 0  && (!lep1IsoPassV || !lep2IsoPassV)) { // Validation
+                hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
+            }
             
             
             //            ################################################################################
             //            ################    Estimate QCD Norm
             //            ################################################################################
-            if (OS != 0 && lep1IsoPassV && !lep2IsoPassV ){ // final analysis
-                fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu2 / (1-frValu2));// final analysis
-            }
+////            if (OS != 0 && lep1IsoPassV && !lep2IsoPassV ){ // final analysis
+//            if (SS != 0 && lep1IsoPassV && lep2IsoPassV ){ // final analysis
+////                fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu2 / (1-frValu2));// final analysis
+//                fillQCD_Norm(zeroJet, name, vbf_var1,  weight,OSSS[0] );
+//            }
             
-//             ======= Validation
-            
+            // ======= Validation
+
+            if (SS != 0  && (!lep1IsoPassV || !lep2IsoPassV)) { // Validation
+                fillQCD_Norm(zeroJet, name, vbf_var1,  weight,OSSS[0] );
+}
 //            if (SS != 0 && !lep1IsoPassV && lep2IsoPassV ){ // Validation with lep1
 //                fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu1 / (1-frValu1));
 //            }
@@ -221,12 +220,17 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             //            ################################################################################
             //            ################    Estimate QCD Norm
             //            ################################################################################
-            if (SS != 0 && (!lep1IsoPassV || !lep2IsoPassV )){ // final analysis
-                fillQCD_Shape(zeroJet, name, vbf_var1,  weight, frValu2 / (1-frValu2)); // final analysis
-            }
+//            if (SS != 0 && (!lep1IsoPassV || !lep2IsoPassV )){ // final analysis
+//                fillQCD_Shape(zeroJet, name, vbf_var1,  weight, frValu2 / (1-frValu2)); // final analysis
+//            }
             
             
             // ======= Validation
+                if (SS != 0  ) { // Validation
+                fillQCD_Shape(zeroJet, name, vbf_var1,  weight,OSSS[0] );
+}
+
+
 //            if (SS != 0 && !lep1IsoPassV && lep2IsoPassV ){ // Validation with lep1
 //                fillQCD_Shape(zeroJet, name, vbf_var1,  weight, frValu1 / (1-frValu1));
 //            }
@@ -260,6 +264,47 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             //                fillQCD_Shape(zeroJet, name, vbf_var1,  weight,OSSS[0]);
             //            }
         }
+        delete fin;
+    }
+}
+
+void HistTool::histoQCD( vector<string> files, string dir, string tree_name, string acWeight = "None") {
+    
+    std::cout<< "starting OS/SS calculation .... "<<dir<<"\n";
+    float vbf_var1(0.);
+    for (auto ifile : files) {
+        
+        string name = ifile.substr(0, ifile.find(".")).c_str();
+        if (!(name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZLL" || name == "ZJ" || name == "Data" )) continue;
+        auto fin = new TFile((dir + "/" + ifile).c_str(), "read");
+        auto tree = reinterpret_cast<TTree *>(fin->Get(tree_name.c_str()));
+        
+        float lep1Pt_=-10;
+        float lep2Pt_=-10;
+        bool lep2IsoPassV, OS,SS,lep1IsoPassV;
+        float weight;
+        
+        
+        tree->SetBranchAddress("lep1Pt",&lep1Pt_);
+        tree->SetBranchAddress("lep2Pt",&lep2Pt_);
+        tree->SetBranchAddress("lep1IsoPassV",&lep1IsoPassV);
+        tree->SetBranchAddress("lep2IsoPassV",&lep2IsoPassV);
+        tree->SetBranchAddress("OS",&OS);
+        tree->SetBranchAddress("SS",&SS);
+        tree->SetBranchAddress("evtwt",&weight);
+        
+        for (auto i = 0; i < tree->GetEntries(); i++) {
+            tree->GetEntry(i);
+//            if (OS != 0 && !lep2IsoPass && !lep1IsoPass){
+            if (OS != 0 && (!lep1IsoPassV && !lep2IsoPassV) ){
+                fillQCD_OS_CR(zeroJet, name, lep1Pt_,  weight);
+            }
+//            else if (SS != 0 && !lep2IsoPass && !lep1IsoPass){
+            else if (SS != 0 && (!lep1IsoPassV && !lep2IsoPassV) ){
+                fillQCD_SS_CR(zeroJet, name, lep1Pt_,  weight);
+            }
+        }
+        fin->Close();
         delete fin;
     }
 }
