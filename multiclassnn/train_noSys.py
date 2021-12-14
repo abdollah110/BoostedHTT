@@ -168,15 +168,15 @@ def main(args):
                 
 
 #        discPlot('NN_disc_{}'.format(args.model), model, np.array(train_sig), np.array(train_bkg), np.array(test_sig), np.array(test_bkg))
-#        discPlot('NN_sig_{}_vbf_ztt'.format(args.model), model, np.array(train_sig), np.array(train_ztt), np.array(test_sig), np.array(test_ztt))
-#        discPlot('NN_sig_{}_vbf_tt'.format(args.model), model, np.array(train_sig), np.array(train_tt), np.array(test_sig), np.array(test_tt))
-#        discPlot('NN_sig_{}_ztt_tt'.format(args.model), model, np.array(train_ztt), np.array(train_tt), np.array(test_ztt), np.array(test_tt))
-#        discPlot('NN_bkg_{}_vbf_ztt'.format(args.model), model, np.array(train_sig), np.array(train_ztt), np.array(test_sig), np.array(test_ztt))
-#        discPlot('NN_bkg_{}_vbf_tt'.format(args.model), model, np.array(train_sig), np.array(train_tt), np.array(test_sig), np.array(test_tt))
-#        discPlot('NN_bkg_{}_ztt_tt'.format(args.model), model, np.array(train_ztt), np.array(train_tt), np.array(test_ztt), np.array(test_tt))
-#        discPlot('NN_tt_{}_vbf_ztt'.format(args.model), model, np.array(train_sig), np.array(train_ztt), np.array(test_sig), np.array(test_ztt))
-#        discPlot('NN_tt_{}_vbf_tt'.format(args.model), model, np.array(train_sig), np.array(train_tt), np.array(test_sig), np.array(test_tt))
-#        discPlot('NN_tt_{}_ztt_tt'.format(args.model), model, np.array(train_ztt), np.array(train_tt), np.array(test_ztt), np.array(test_tt))
+        discPlot('NN_sig_{}_vbf_ztt'.format(args.model), model, np.array(train_sig), np.array(train_ztt), np.array(test_sig), np.array(test_ztt))
+        discPlot('NN_sig_{}_vbf_tt'.format(args.model), model, np.array(train_sig), np.array(train_tt), np.array(test_sig), np.array(test_tt))
+        discPlot('NN_sig_{}_ztt_tt'.format(args.model), model, np.array(train_ztt), np.array(train_tt), np.array(test_ztt), np.array(test_tt))
+        discPlot('NN_bkg_{}_vbf_ztt'.format(args.model), model, np.array(train_sig), np.array(train_ztt), np.array(test_sig), np.array(test_ztt))
+        discPlot('NN_bkg_{}_vbf_tt'.format(args.model), model, np.array(train_sig), np.array(train_tt), np.array(test_sig), np.array(test_tt))
+        discPlot('NN_bkg_{}_ztt_tt'.format(args.model), model, np.array(train_ztt), np.array(train_tt), np.array(test_ztt), np.array(test_tt))
+        discPlot('NN_tt_{}_vbf_ztt'.format(args.model), model, np.array(train_sig), np.array(train_ztt), np.array(test_sig), np.array(test_ztt))
+        discPlot('NN_tt_{}_vbf_tt'.format(args.model), model, np.array(train_sig), np.array(train_tt), np.array(test_sig), np.array(test_tt))
+        discPlot('NN_tt_{}_ztt_tt'.format(args.model), model, np.array(train_ztt), np.array(train_tt), np.array(test_ztt), np.array(test_tt))
 
 
 
