@@ -455,7 +455,7 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",8 ,15,0,15);
         
         tmass = TMass_F(LeadTau4Momentum.Pt(), LeadTau4Momentum.Px(), LeadTau4Momentum.Py(),  Met,  Metphi);
-//        if (tmass > 200) continue; //FIXME removed for Validation study
+        if (tmass > 200) continue; //FIXME removed for Validation study
         plotFill("cutFlowTable",9 ,15,0,15);
         
         if (m_sv < 50) continue; //FIXME removed for Validation study
@@ -601,7 +601,9 @@ int main(int argc, char* argv[]) {
         
         // Fill the tree
         outTr->Fill();
-        
+     
+     if (lep1IsoPassV && lep2IsoPassV && m_sv_ > 120 && m_sv_ < 130 && dR_lep_lep > 0.3 && dR_lep_lep < 0.6)
+      std::cout<<"mass= "<<m_sv_<<" Higgs pt="<<higgs.Pt() <<"   Run:Lumi:Eve"<<run<<":"<<lumis<<":"<<event__<<"\n";
     } //End of Tree
     
     
