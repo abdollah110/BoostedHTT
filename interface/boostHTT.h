@@ -24,7 +24,7 @@ using namespace std;
 
    // Declaration of leaf types
    Int_t           run;
-   Long64_t        event;
+   Long64_t        event__;
    Int_t           lumis;
    Bool_t          isData;
    Int_t           year;
@@ -1020,7 +1020,7 @@ TTree *  Xttree( TFile * f_Double, string channel){
 
 
    fChain->SetBranchAddress("run", &run, &b_run);
-   fChain->SetBranchAddress("event", &event, &b_event);
+   fChain->SetBranchAddress("event", &event__, &b_event);
    fChain->SetBranchAddress("lumis", &lumis, &b_lumis);
    fChain->SetBranchAddress("isData", &isData, &b_isData);
    fChain->SetBranchAddress("year", &year, &b_year);
