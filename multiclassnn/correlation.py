@@ -7,7 +7,7 @@ def main(args):
     data = pd.HDFStore(args.input)['df']
     sample = data[(data['sample_names'] == args.process)]
 #    sample = samples[(samples['Pass'] > 0) ]
-    correlations = sample[['lep1Pt','lep2Pt','Met','m_sv', 'LeadJetPt','higgs_m','higgs_pT','st','tmass']].corr(method='pearson') * 100
+    correlations = sample[['lep1Pt','lep2Pt','Met','m_sv', 'LeadJetPt','higgs_m','higgs_pT','st','tmass','MuMatchedIsolation', 'EleMatchedIsolation']].corr(method='pearson') * 100
     ax = sbr.heatmap(correlations, linewidth=0.5, annot=True)
     plt.yticks(rotation=45)
     plt.xticks(rotation=25)
