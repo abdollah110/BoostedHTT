@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#for i in NewV3/postfit_shapes_NewV3_201* ; do python Draw_POSTPREFIT_Boost.py $i test1; done
 import ROOT
 import sys
 import re
@@ -87,22 +88,25 @@ def MakePlot(FileName,categoriy,HistName,Xaxis, Status, Channel, year):
     Data.Rebin(RB_)
     
     ## print Data table for HEPDATA EXO-17-015
-    for bin in range(Data.GetNbinsX()):
-
-        xbin= bin+1
-        LowEdge=int(Data.GetBinLowEdge(xbin))
-        endEdge=int(Data.GetBinLowEdge(xbin)+Data.GetBinWidth(xbin))
-        data_val= int(round(file.Get(categoriy).Get("data_obs").GetBinContent(xbin)))
-        bkg_val=file.Get(categoriy).Get("TotalBkg").GetBinContent(xbin)
-        bkg_val_err=file.Get(categoriy).Get("TotalBkg").GetBinError(xbin)
-#        Signal_val=file.Get(categoriy.replace('postfit','prefit')).Get(sig)
+#    for bin in range(Data.GetNbinsX()):
+#
+#        xbin= bin+1
+#        LowEdge=int(Data.GetBinLowEdge(xbin))
+#        endEdge=int(Data.GetBinLowEdge(xbin)+Data.GetBinWidth(xbin))
+#        data_val= int(round(file.Get(categoriy).Get("data_obs").GetBinContent(xbin)))
+#        bkg_val=file.Get(categoriy).Get("TotalBkg").GetBinContent(xbin)
+#        bkg_val_err=file.Get(categoriy).Get("TotalBkg").GetBinError(xbin)
+#        Signal_val=file.Get(categoriy.replace('postfit','prefit')).Get('ggH')
 #        Signal_val.Scale( 1.391115 * 2)  # CS x BR  1000_400_440  // factor of 2 is added as we consider the full doublet
 #        Signal_val_=Signal_val.GetBinContent(xbin)*1.391115 * 2
-#        print "[(%d, %d), %d, (%0.1f,    %0.1f),%0.1f],"%(LowEdge,endEdge,data_val,bkg_val,bkg_val_err,Signal_val_)
-
+##        print "[(%d, %d), %d, (%0.1f,    %0.1f),%0.1f],"%(LowEdge,endEdge,data_val,bkg_val,bkg_val_err,Signal_val_)
+#
     
     QCD=file.Get(categoriy).Get("QCD")
-    if 'CR_' in categoriy: QCD=file.Get(categoriy).Get("W")
+    if '_em' in FileName:
+        W=file.Get(categoriy).Get("W")
+        QCD.Add(W)
+#    if 'CR_' in categoriy: QCD=file.Get(categoriy).Get("W")
     QCD.Rebin(RB_)
 
 #    W=file.Get(categoriy).Get("W")
@@ -117,22 +121,24 @@ def MakePlot(FileName,categoriy,HistName,Xaxis, Status, Channel, year):
     VV=file.Get(categoriy).Get("VV")
     VV.Rebin(RB_)
 
-    ZTT=file.Get(categoriy).Get("DYJets")
+    ZTT=file.Get(categoriy).Get("ZTT")
     ZTT.Rebin(RB_)
     
-#    Signal=file.Get(categoriy.replace('postfit','prefit')).Get(sig)
-#    Signal.Scale( 50)  # CS x BR  1000_400_440  // factor of 2 is added as we consider the full doublet
-#    Signal.Rebin(RB_)
-#    #    Signal.SetFillStyle(0.)
+    Signal=file.Get(categoriy.replace('postfit','prefit')).Get('ggH')
+    Signal2=file.Get(categoriy.replace('postfit','prefit')).Get('XH')
+    Signal.Add(Signal2)
+    Signal.Scale( 50)  # CS x BR  1000_400_440  // factor of 2 is added as we consider the full doublet
+    Signal.Rebin(RB_)
+    #    Signal.SetFillStyle(0.)
 #    Signal.SetLineStyle(11)
-#    Signal.SetLineWidth(3)
-#    Signal.SetLineColor(4)
-#    Signal.SetMarkerColor(4)
+    Signal.SetLineWidth(3)
+    Signal.SetLineColor(4)
+    Signal.SetMarkerColor(4)
 #    Signal.SetLineStyle(8)
-#
-#    Signal.SetLineColor(ROOT.TColor.GetColor(108, 226, 354))
-#    Signal.SetMarkerColor(ROOT.TColor.GetColor(108, 226, 354))
-#    Signal.SetLineColor(kBlue)
+
+    Signal.SetLineColor(ROOT.TColor.GetColor(108, 226, 354))
+    Signal.SetMarkerColor(ROOT.TColor.GetColor(108, 226, 354))
+    Signal.SetLineColor(2)
     
 
 
@@ -148,20 +154,20 @@ def MakePlot(FileName,categoriy,HistName,Xaxis, Status, Channel, year):
 #                print "sample.GetBinErrorUp( ",ibin," )", sample.GetBinErrorUp(ibin)
 
 
-##### chnage binning content
-#    ALLSample=[Data,QCD,W,TT,ZJ,VV,ZTT]
-#    ALLSample=[Data,QCD,W,TT,VV,ZTT]
-    ALLSample=[Data,QCD,TT,VV,ZTT]
-    for sample in ALLSample:
-        for ibin in range(sample.GetXaxis().GetNbins()):
-#            print ibin+1, sample.GetBinWidth(ibin+1)
-
-            sample.SetBinContent(ibin+1,1.0*sample.GetBinContent(ibin+1)/sample.GetBinWidth(ibin+1))
-            sample.SetBinError(ibin+1,1.0*sample.GetBinError(ibin+1)/sample.GetBinWidth(ibin+1))
-
-            if sample==Data and sample.GetBinContent(ibin+1)==0: #https://twiki.cern.ch/twiki/bin/view/CMS/PoissonErrorBars
-                sample.SetBinError(ibin+1,1.0*1.8/sample.GetBinWidth(ibin+1))
-    
+###### chnage binning content
+##    ALLSample=[Data,QCD,W,TT,ZJ,VV,ZTT]
+##    ALLSample=[Data,QCD,W,TT,VV,ZTT]
+#    ALLSample=[Data,QCD,TT,VV,ZTT]
+#    for sample in ALLSample:
+#        for ibin in range(sample.GetXaxis().GetNbins()):
+##            print ibin+1, sample.GetBinWidth(ibin+1)
+#
+#            sample.SetBinContent(ibin+1,1.0*sample.GetBinContent(ibin+1)/sample.GetBinWidth(ibin+1))
+#            sample.SetBinError(ibin+1,1.0*sample.GetBinError(ibin+1)/sample.GetBinWidth(ibin+1))
+#
+#            if sample==Data and sample.GetBinContent(ibin+1)==0: #https://twiki.cern.ch/twiki/bin/view/CMS/PoissonErrorBars
+#                sample.SetBinError(ibin+1,1.0*1.8/sample.GetBinWidth(ibin+1))
+#
 
     
 
@@ -186,9 +192,9 @@ def MakePlot(FileName,categoriy,HistName,Xaxis, Status, Channel, year):
     ZTT.SetFillColor(ROOT.TColor.GetColor(108, 226, 354))
 
 
-#    for i in range(Data.GetNbinsX()):
-#        if i > 8 : Data.SetBinContent(i+1,0)
-#        if i > 8 : Data.SetBinError(i+1,0)
+    for i in range(Data.GetNbinsX()):
+        if i > 12 : Data.SetBinContent(i+1,0)
+        if i > 12 : Data.SetBinError(i+1,0)
 
 
     ######  Add OverFlow Bin
@@ -263,18 +269,17 @@ def MakePlot(FileName,categoriy,HistName,Xaxis, Status, Channel, year):
     
     if Status == "LOG" :Data.SetMaximum(Data.GetMaximum()*2000); Data.SetMinimum(0.001)
 #    if Status == "LOG" :Data.SetMaximum(999); Data.SetMinimum(0.01)
-    if Status=="Normal": Data.SetMaximum(Data.GetMaximum()*3) ;  Data.SetMinimum(0)
+    if Status=="Normal": Data.SetMaximum(Data.GetMaximum()*2) ;  Data.SetMinimum(0)
 
 
-    Data.GetXaxis().SetRangeUser(0,MaxRange)
+#    Data.GetXaxis().SetRangeUser(0,MaxRange)
     
     Data.SetBinErrorOption(rt.TH1.kPoisson)
     Data.Draw("ex0")
     stack.Draw("histsame")
     errorBand.Draw("e2same")
     Data.Draw("ex0same")
-#    Signal.Draw("histsame")
-#    Signal.Draw("histsame")
+    Signal.Draw("histsame")
 
 
 
@@ -292,7 +297,7 @@ def MakePlot(FileName,categoriy,HistName,Xaxis, Status, Channel, year):
     legende=make_legend()
     legende.AddEntry(Data,"Observed","elp")
 
-#    legende.AddEntry(Signal,sigLeg,"l")
+    legende.AddEntry(Signal,"H (x50)","l")
 #    legende.AddEntry(W,"W+jets","f")
 #    legende.AddEntry(Signal2,sigLeg2,"l")
     legende.AddEntry(TT,"t#bar{t}","f")
@@ -407,7 +412,7 @@ def MakePlot(FileName,categoriy,HistName,Xaxis, Status, Channel, year):
 #    c.Modified()
     h1.GetYaxis().SetRangeUser(.51,1.49)
 #    c.Modified()
-    c.SaveAs("_Finalplot_"+prefix+categoriy+Status+"_CMB_"+Channel+".pdf")
+    c.SaveAs("_Finalplot_"+str(year)+"_"+prefix+categoriy+Status+"_CMB_"+Channel+".pdf")
 
 
     print "Data.Integral()", file.Get(categoriy).Get("data_obs").Integral()
@@ -416,6 +421,18 @@ def MakePlot(FileName,categoriy,HistName,Xaxis, Status, Channel, year):
 
 InputRootfile=sys.argv[1]
 prefix=sys.argv[2]
+channel=''
+if '_mt' in InputRootfile:
+    channel = 'mt'
+if '_et' in InputRootfile:
+    channel = 'et'
+if '_tt' in InputRootfile:
+    channel = 'tt'
+if '_em' in InputRootfile:
+    channel = 'em'
+
+category='H_{}_1_13TeV'.format(channel)
+
 
 FileNamesInfo=[
 #               [InputRootfile,"ch1_postfit","m_{vis} [GeV]","PostFit (DiMu CR)","mm"],
@@ -424,11 +441,11 @@ FileNamesInfo=[
 #               [InputRootfile,"ch1_prefit","m_{vis} [GeV]","PreFit (DiMu CR)","mm"],
 #               [InputRootfile,"ch2_prefit","m_{vis} [GeV]","PreFit (Pass)","mt"],
 
-               [InputRootfile,"CR_postfit","m_{vis} [GeV]","PostFit (DiMu CR)","mm"],
-               [InputRootfile,"pass_postfit","m_{vis} [GeV]","PostFit (Pass)","mt"],
+#               [InputRootfile,"CR_postfit","m_{vis} [GeV]","PostFit (DiMu CR)","mm"],
+               [InputRootfile,category+"_{}".format('postfit'),"NN Output","PostFit",channel],
                
-               [InputRootfile,"CR_prefit","m_{vis} [GeV]","PreFit (DiMu CR)","mm"],
-               [InputRootfile,"pass_prefit","m_{vis} [GeV]","PreFit (Pass)","mt"],
+#               [InputRootfile,"CR_prefit","m_{vis} [GeV]","PreFit (DiMu CR)","mm"],
+               [InputRootfile,category+"_{}".format('prefit'),"NN Output","PreFit",channel],
 
 
 #               [InputRootfile,"ch3_postfit","m_{vis} [GeV]","PostFit (Pass)","et"],
@@ -456,7 +473,7 @@ for i in range(0,len(FileNamesInfo)):
     if '2017' in InputRootfile: year =2017
     if '2018' in InputRootfile: year =2018
 
-
+    print FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year
 #    FileName="ztt_"+ch+"_shapes.root"
     MakePlot(FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year)
 #    MakePlot(FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],FileNamesInfo[i][4],FileNamesInfo[i][5],FileNamesInfo[i][6],FileNamesInfo[i][7],"Normal")

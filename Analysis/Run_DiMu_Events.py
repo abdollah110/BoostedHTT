@@ -72,7 +72,8 @@ def MakeTheHistogram(channel,NormMC,region):
 
 if __name__ == "__main__":
     
-    PlotName=["ZMass","dR","ht","2DZMassPt","ZPt","ZPt_Below","ZPt_OnMass","ZPt_Above"]
+    PlotName=["ZMass","dR","ht","2DZMassPt","ZPt","ZPt_Below","ZPt_OnMass","ZPt_Above","pfMet","pfMetNoRecoil","U1_met","U1_metNoRecoil"]
+
 
     region= [""]
 

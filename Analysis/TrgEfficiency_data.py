@@ -1,11 +1,12 @@
 import os
+import sys
 import ROOT
 from ROOT import *
 import array
 
-#rb_ = array.array("d",[0,100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000])
+rb_ = array.array("d",[0,100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000])
 
-def add_CMS():
+def add_CMS(year):
     lowX=0.21
     lowY=0.80
     lumi  = ROOT.TPaveText(lowX, lowY+0.06, lowX+0.15, lowY+0.16, "NDC")
@@ -15,56 +16,65 @@ def add_CMS():
     lumi.SetFillStyle(    0 )
     lumi.SetTextAlign(   12 )
     lumi.SetTextColor(    1 )
-    lumi.AddText("CMS Internal 2017")
+    lumi.AddText("CMS Internal {}".format(year))
     return lumi
 
 
-#def MakeCompare(root1,hist1,name1, root2,hist2, name2,root3, hist3,name3,Name,Sample):
-def MakeCompare(Input,pro,unc,dir):
+def MakeCompare(root1,hist1,name1, root2,hist2, name2,Sample):
+
+    year=0
+    if '2016' in root1:
+        year = 2016
+    elif '2017' in root1:
+        year = 2017
+    elif '2018' in root1:
+        year = 2018
+    else:
+        print 'which year ???'
+
+    
     ROOT.gStyle.SetFrameLineWidth(3)
     ROOT.gStyle.SetLineWidth(3)
     ROOT.gStyle.SetOptStat(0)
     
     c=ROOT.TCanvas("canvas","",0,0,600,600)
     c.cd()
-    root1=Input
-    hist1='{}/{}_{}Up'.format(dir,pro,unc)
-    hist2='{}/{}'.format(dir,pro)
-    hist3='{}/{}_{}Down'.format(dir,pro,unc)
+    
     
     file1=TFile(root1,"open")
     print "---->,", file1.GetName()
     Histo1=file1.Get(hist1)
-    name1=Histo1.GetName()
 #    Histo1=Histo1_.Rebin(len(rb_)-1,"",rb_)
-    Histo1.SetLineColor(2)
+    Histo1.SetLineColor(4)
     Histo1.SetLineWidth(2)
+    Histo1.SetMarkerSize(1.3)
 #    Histo1.SetMaximum(Histo1.GetMaximum()*200)
-    Histo1.SetMaximum(Histo1.GetMaximum()*2)
-    Histo1.SetMarkerColor(2)
+    
+    Histo1.SetMarkerColor(4)
     Histo1.SetMarkerStyle(20)
     
-    file2=TFile(root1,"open")
+    file2=TFile(root2,"open")
     Histo2=file2.Get(hist2)
-    name2=Histo2.GetName()
 #    Histo2=Histo2_.Rebin(len(rb_)-1,"",rb_)
-    Histo2.SetLineColor(3)
+    Histo2.SetLineColor(2)
     Histo2.SetLineWidth(3)
-    Histo2.SetMarkerColor(3)
+    Histo2.SetMarkerColor(2)
+    Histo2.SetMarkerSize(1.5)
     Histo2.SetMarkerStyle(29)
     
-    file3=TFile(root1,"open")
-    Histo3=file3.Get(hist3)
-    name3=Histo3.GetName()
+    Histo1.SetMaximum(Histo2.GetMaximum()*1.5)
+    
+#    file3=TFile(root3,"open")
+#    Histo3_=file3.Get(hist3)
 #    Histo3=Histo3_.Rebin(len(rb_)-1,"",rb_)
-    Histo3.SetLineColor(4)
-    Histo3.SetLineWidth(4)
-    Histo3.SetMarkerColor(4)
-    Histo3.SetMarkerStyle(24)
+#    Histo3.SetLineColor(4)
+#    Histo3.SetLineWidth(4)
+#    Histo3.SetMarkerColor(4)
+#    Histo3.SetMarkerStyle(24)
     
 
 #    Histo1.SetTitle('')
-#    Histo1.GetXaxis().SetTitle('boson p_{T} (GeV)')
+    Histo1.GetXaxis().SetTitle('boson p_{T} (GeV)')
 #    Histo1.GetXaxis().SetLabelSize(0.04)
 #    Histo1.GetXaxis().SetNdivisions(505)
 #    Histo1.GetXaxis().SetTitleSize(0.05)
@@ -117,10 +127,10 @@ def MakeCompare(Input,pro,unc,dir):
     
     Histo1.Draw()
     Histo2.Draw('same')
-    Histo3.Draw('same')
+#    Histo3.Draw('same')
     
     
-    l2=add_CMS()
+    l2=add_CMS(year)
     l2.Draw()
 
 
@@ -131,22 +141,22 @@ def MakeCompare(Input,pro,unc,dir):
     categ.SetTextSize ( 0.06 )
     categ.SetTextColor(    1 )
 #    if Sample.find('14'): Sample=Sample.replace(14,1200)
-    categ.AddText(dir+'_'+pro+'_'+unc)
+    categ.AddText(Sample)
     categ.Draw()
     
     
     
 
-    leg=ROOT.TLegend(0.2, 0.6, 0.95, 0.82, "", "brNDC")
+    leg=ROOT.TLegend(0.2, 0.6, 0.55, 0.82, "", "brNDC")
     leg.SetLineWidth(1)
     leg.SetLineStyle(0)
     leg.SetFillStyle(0)
     leg.SetTextSize(0.04)
 #    leg.SetBorderSize(0)
     leg.SetTextFont(62)
-    leg.AddEntry(Histo1,name1,'lp')
-    leg.AddEntry(Histo2,name2,'lp')
-    leg.AddEntry(Histo3,name3,'lp')
+    leg.AddEntry(Histo1,name1,'p')
+    leg.AddEntry(Histo2,name2,'p')
+#    leg.AddEntry(Histo3,name3,'lp')
     
     leg.Draw()
     
@@ -170,15 +180,17 @@ def MakeCompare(Input,pro,unc,dir):
     
     
     h1=Histo1.Clone()
-    h1.SetMaximum(1.2)
-    h1.SetMinimum(0.8)
+    maxVal=0.5
+    if 'MET' in Sample:maxVal =0.9
+    h1.SetMaximum(maxVal)
+    h1.SetMinimum(0.0)
     h1.SetMarkerStyle(20)
-    h1.SetMarkerColor(2)
-    h1.GetXaxis().SetTitle('boson p_{T} (GeV)')
+    h1.SetMarkerColor(4)
+#    h1.GetXaxis().SetTitle('boson p_{T} (GeV)')
     
-    h5=Histo3.Clone()
-    h5.SetMarkerStyle(24)
-    h5.SetMarkerColor(4)
+#    h5=Histo3.Clone()
+#    h5.SetMarkerStyle(24)
+#    h5.SetMarkerColor(4)
     
     
     h2=Histo2.Clone()
@@ -188,23 +200,23 @@ def MakeCompare(Input,pro,unc,dir):
     h2.Sumw2()
     
     
-    h5.Sumw2()
+#    h5.Sumw2()
 #    h3.Sumw2()
 
     h1.SetStats(0)
     h2.SetStats(0)
 #    h3.SetStats(0)
-    h5.SetStats(0)
+#    h5.SetStats(0)
     h1.SetTitle("")
     
     h1.Divide(h2)
-    h5.Divide(h2)
+#    h5.Divide(h2)
     
     
     h1.GetXaxis().SetTitle("")
     h1.GetXaxis().SetLabelSize(0.08)
     h1.GetYaxis().SetLabelSize(0.08)
-    h1.GetYaxis().SetTitle("Ratio to  Nominal")
+    h1.GetYaxis().SetTitle("Trg. Eff.")
     h1.GetXaxis().SetNdivisions(505)
     h1.GetYaxis().SetNdivisions(5)
     h1.GetXaxis().SetTitleSize(0.15)
@@ -215,10 +227,10 @@ def MakeCompare(Input,pro,unc,dir):
     h1.GetYaxis().SetLabelSize(0.11)
     h1.GetXaxis().SetTitleFont(42)
     h1.GetYaxis().SetTitleFont(42)
-    h1.GetXaxis().SetTitle('NN Output')
+    h1.GetXaxis().SetTitle('run')
     
     h1.Draw()
-    h5.Draw("same")
+#    h5.Draw("same")
 
 
     c.cd()
@@ -228,34 +240,24 @@ def MakeCompare(Input,pro,unc,dir):
     
     c.Modified()
     
-    year=0
-    if '2016' in Input:
-        year = 2016
-    elif '2017' in Input:
-        year = 2017
-    elif '2018' in Input:
-        year = 2018
-    else:
-        print 'which year ???'
-
     
-    c.SaveAs('Output/plots/ShapeSys/_ShapeSys_Compare_{}_{}_{}_{}.pdf'.format(year,pro,dir,unc))
+    
+    c.SaveAs('_TrgEff_{}_{}.pdf'.format(year,Sample))
 
 
-#'MissingEn_JESUp', 'MissingEn_JESDown', 'MissingEn_UESUp', 'MissingEn_UESDown', 'prefireUp', 'prefireDown','TESUp', 'TESDown','JEnTotUp','JEnTotDown'
+inputfile=sys.argv[1]
+trigger=sys.argv[2]
+triggerName=sys.argv[3]
 
-import sys
-process=['TT','W','ZTT','ggH125','JJH125',]
-#process=['Codex_14']
-#process=['TT','W','SingleTop','VV','ZTT','Codex_14']
-#Unc=['MissingEn_JES','MissingEn_UES','prefire','TES', 'JEnTot']
-Unc=['MissingEn_JES','MissingEn_UES']
+MakeCompare(inputfile, trigger,'After HLT Cut', inputfile, 'RunBeforeTrigger','Before HLT Cut',triggerName)
 
-Input= sys.argv[1]
-#DIR_=['em_0jet','et_0jet','mt_0jet','tt_0jet']
-DIR_=['mt_0jet']
 
-for pro in process:
-    for unc in Unc:
-        for dir in DIR_:
-            MakeCompare(Input,pro,unc,dir)
+
+
+#python TrgEfficiency_data.py newBoost_tt_2016_TrgFix/_nominal/JetHT.root RunHLTJet38 HLT_AK8PFJet360_TrimMass30
+#python TrgEfficiency_data.py newBoost_tt_2017_TrgFix/_nominal/JetHT.root RunHLTJet40 HLT_AK8PFJet400_TrimMass30
+#python TrgEfficiency_data.py newBoost_tt_2018_TrgFix/_nominal/JetHT.root RunHLTJet40 HLT_AK8PFJet400_TrimMass30
+#python TrgEfficiency_data.py newBoost_tt_2016_TrgFix/_nominal/HTMHT.root RunHLTJet39 HLT_PFHT300_PFMET110
+#python TrgEfficiency_data.py newBoost_tt_2017_TrgFix/_nominal/HTMHT.root RunHLTJet39 HLT_PFHT500_PFMET100_PFMHT100_IDTight
+#python TrgEfficiency_data.py newBoost_tt_2018_TrgFix/_nominal/JetHT.root RunHLTJet39 HLT_PFHT500_PFMET100_PFMHT100_IDTight
+

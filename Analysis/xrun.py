@@ -41,26 +41,26 @@ treeName=''
 executable=''
 
 
-if '_em_' in InputFile:
+if 'em_' in InputFile:
     channel = 'em'
     treeName = 'emu_tree'
     executable = 'process_trees_em'
-elif '_me_' in InputFile:
+elif 'me_' in InputFile:
     channel = 'me'
     treeName = 'mue_tree'
     executable = 'process_trees_em'
-elif '_mt_' in InputFile:
+elif 'mt_' in InputFile:
     channel = 'mt'
     treeName = 'mutau_tree'
 #    executable = 'process_trees_lt'
     executable = 'process_trees_lt_fr'
 #    executable = 'process_trees_sf_fr'
-elif '_et_' in InputFile:
+elif 'et_' in InputFile:
     channel = 'et'
     treeName = 'etau_tree'
 #    executable = 'process_trees_lt'
     executable = 'process_trees_lt_fr'
-elif '_tt_' in InputFile:
+elif 'tt_' in InputFile:
     channel = 'tt'
     treeName = 'tautau_tree'
     executable = 'process_trees_tt'
@@ -75,24 +75,24 @@ else:
 
 Variable=[
 #
-            ['lep1Pt',30,0,300],
-            ['lep2Pt',30,0,300],
-            ['tmass',20, 0, 100],
-##            ['ZMass',20, 0, 200],
-            ['higgs_pT',25, 0, 1000],
-            ['higgs_m',20, 0, 400],
-            ['Met', 25, 0, 500],
-            ['vis_mass',15, 0, 150],
-            ['dR_lep_lep', 20,0,1],
-            ['LeadJetPt', 30,0,1500],
-            ['ht', 25,0,2000],
-            ['st', 25,0,2000],
-            ['m_sv', 25,0,250],
-#            ['BoostedTauRawIso', 20,0,1],
+#            ['lep1Pt',30,0,300],
+#            ['lep2Pt',30,0,300],
+#            ['tmass',20, 0, 100],
+###            ['ZMass',20, 0, 200],
+#            ['higgs_pT',25, 0, 1000],
+#            ['higgs_m',20, 0, 400],
+#            ['Met', 25, 0, 500],
+#            ['vis_mass',15, 0, 150],
+#            ['dR_lep_lep', 10,0,1],
+#            ['LeadJetPt', 30,0,1500],
+#            ['ht', 25,0,2000],
+#            ['st', 25,0,2000],
+            ['m_sv', 15,0,300],
+##            ['BoostedTauRawIso', 20,0,1],
             ['NN_disc',20,0,1],
-#            ['nbjet',5,0,5]
-            ['MuMatchedIsolation',20,0,-1,1],
-            ['EleMatchedIsolation',20,0,-1,1],
+##            ['nbjet',5,0,5]
+#            ['MuMatchedIsolation',20,0,-1,1],
+#            ['EleMatchedIsolation',20,0,-1,1],
 ]
 
 PTrange= [

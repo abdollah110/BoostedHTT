@@ -245,8 +245,8 @@ int main(int argc, char* argv[]) {
         // muon pt from 30 to 28
         if (muPt->at(idx_lep) < 28 || fabs(muEta->at(idx_lep)) > 2.4) continue;
                 
-//        bool MuId=( (muIDbit->at(idx_lep) >> 1 & 1)  && fabs(muD0->at(idx_lep)) < 0.045 && fabs(muDz->at(idx_lep)) < 0.2);
-        bool MuId= (muIDbit->at(idx_lep) >> 1 & 1);
+        bool MuId=( (muIDbit->at(idx_lep) >> 1 & 1)  && fabs(muD0->at(idx_lep)) < 0.045 && fabs(muDz->at(idx_lep)) < 0.2);
+//        bool MuId= (muIDbit->at(idx_lep) >> 1 & 1);
         MuIdCorrection = getCorrFactorMuonId(year, isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuId);
         
         if (! MuId) continue;

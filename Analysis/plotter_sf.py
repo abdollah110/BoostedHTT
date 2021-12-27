@@ -17,55 +17,18 @@ style_map_tuple = namedtuple('style_map_tuple', [
 style_map = {
     "data_obs": style_map_tuple(no_color, black, 1, 1, 8),
     "backgrounds": {
-#        "embedded": style_map_tuple(GetColor("#f9cd66"), black, 1, 1, 1),
-        
-#        "jetFakes": style_map_tuple(GetColor("#ffccff"), black, 1, 1, 1),
-        
-        "TT": style_map_tuple(GetColor(208, 376, 124), black, 1, 1, 1),
         "QCD": style_map_tuple(GetColor(408, 106, 154), black, 1, 1, 1),
-#        "ZLL": style_map_tuple(GetColor(150, 132, 232), black, 1, 1, 1),
-        "ZTT": style_map_tuple(GetColor(108, 226, 354), black, 1, 1, 1),
-        },
-    "EWK": {
-        "VV": style_map_tuple(GetColor(200, 282, 232), black, 1, 1, 1),
-#        "W": style_map_tuple(GetColor(200, 282, 232), no_color, 1, 0, 1),
-#        "EWKZ": style_map_tuple(GetColor("#9feff2"), no_color, 1, 0, 1),
-#        "ZJ": style_map_tuple(GetColor(200, 282, 232), no_color, 1, 0, 1),
-    },
-    "signals": {
-        "ggH125": style_map_tuple(no_color, GetColor("#FF0000"), 1, 3, 1),
-#         "MG__GGH2Jets_sm_M125": style_map_tuple(no_color, GetColor("#0000FF"), 1, 3, 1),
-#         "MG__GGH2Jets_pseudoscalar_M125": style_map_tuple(no_color, GetColor("#00AAFF"), 1, 3, 1),
-#        # use JHU for 2018 because MG isn't available
-##        "JHU_GGH2Jets_sm_M125": style_map_tuple(no_color, GetColor("#0000FF"), 1, 3, 1),
-##        "JHU_GGH2Jets_pseudoscalar_M125": style_map_tuple(no_color, GetColor("#00AAFF"), 1, 3, 1),
-#
-#        "VBF125": style_map_tuple(no_color, no_color, 0, 0, 1),  # don't show powheg
-##        "JHU_reweighted_qqH_htt_0PM125": style_map_tuple(no_color, GetColor("#FF0000"), 1, 3, 1),
-##        "JHU_reweighted_qqH_htt_0M125": style_map_tuple(no_color, GetColor("#ff5e00"), 1, 3, 1),
-#        "reweighted_qqH_htt_0PM125_comb": style_map_tuple(no_color, GetColor("#FF0000"), 1, 3, 1),
-#        "reweighted_qqH_htt_0M125_comb": style_map_tuple(no_color, GetColor("#ff5e00"), 1, 3, 1),
-
-    }
-}
-
-style_map_emu = {
-    "data_obs": style_map_tuple(no_color, black, 1, 1, 8),
-    "backgrounds": {
         "TT": style_map_tuple(GetColor(208, 376, 124), black, 1, 1, 1),
-        "QCD": style_map_tuple(GetColor(408, 106, 154), black, 1, 1, 1),
-#        "ZLL": style_map_tuple(GetColor(150, 132, 232), black, 1, 1, 1),
-        "ZTT": style_map_tuple(GetColor(108, 226, 354), black, 1, 1, 1),
+        "DYJets125": style_map_tuple(GetColor(108, 226, 354), black, 1, 1, 1),
         },
     "EWK": {
         "VV": style_map_tuple(GetColor(200, 282, 232), black, 1, 1, 1),
         "W": style_map_tuple(GetColor(200, 282, 232), no_color, 1, 0, 1),
     },
     "signals": {
-        "ggH125": style_map_tuple(no_color, GetColor("#FF0000"), 1, 3, 1),
+        "JJH125": style_map_tuple(no_color, GetColor("#FF0000"), 1, 3, 1),
     }
 }
-
 
 
 def ApplyStyle(ihist, styles):
@@ -130,27 +93,12 @@ def fillLegend(data, backgrounds,backgrounds_EWK, signals, stat):
 
     # data
     leg.AddEntry(data, 'Data', 'lep')
-
-    # signals
-    leg.AddEntry(signals['ggH125'], ' SM Higgs(125)x50', 'l')
-#    leg.AddEntry(signals['MG__GGH2Jets_pseudoscalar_M125'], 'ggH PS Higgs(125)x50', 'l')
-##    leg.AddEntry(signals['JHU_GGH2Jets_sm_M125'], 'ggH SM Higgs(125)x50', 'l')
-##    leg.AddEntry(signals['JHU_GGH2Jets_pseudoscalar_M125'], 'ggH PS Higgs(125)x50', 'l')
-#
-##    leg.AddEntry(signals['JHU_reweighted_qqH_htt_0PM125'], 'VBF SM Higgs(125)x50', 'l')
-##    leg.AddEntry(signals['JHU_reweighted_qqH_htt_0M125'], 'VBF PS Higgs(125)x50', 'l')
-#    leg.AddEntry(signals['reweighted_qqH_htt_0PM125_comb'], 'VBF SM Higgs(125)x50', 'l')
-#    leg.AddEntry(signals['reweighted_qqH_htt_0M125_comb'], 'VBF PS Higgs(125)x50', 'l')
-
-
     # backgrounds
-    leg.AddEntry(backgrounds['ZTT'], 'ZTT', 'f')
+    leg.AddEntry(backgrounds['DYJets125'], 'ZTT', 'f')
 #    leg.AddEntry(backgrounds['ZLL'], 'ZLL', 'f')
-    leg.AddEntry(backgrounds['QCD'], 'Fake bkg', 'f')
+    leg.AddEntry(backgrounds['QCD'], 'QCD', 'f')
     leg.AddEntry(backgrounds['TT'], 'TT', 'f')
     leg.AddEntry(backgrounds_EWK['VV'], 'EWK', 'f')
-#    leg.AddEntry(backgrounds['W'], 'W', 'f')
-#    leg.AddEntry(backgrounds['EWKZ'], 'EWKZ', 'f')
 
     # stat. uncertainty
     leg.AddEntry(stat, 'Uncertainty', 'f')
@@ -206,34 +154,13 @@ def sigmaLines(data):
 
     return line1, line2, line3
 
-def blindData(data, signal, background,var):
-    for ibin in range(data.GetNbinsX()+1):
-        sig = signal.GetBinContent(ibin)
-        bkg = background.GetBinContent(ibin)
-        if bkg > 0 and sig / ROOT.TMath.Sqrt(bkg + pow(0.09*bkg, 2)) >= 0.1:
-            err = data.GetBinError(ibin)
-            data.SetBinContent(ibin, -1)
-            data.SetBinError(ibin, err)
-
-#    if var == 'NN_disc':
-#         middleBin = data.FindBin(0.5)
-#         for ibin in range(middleBin, data.GetNbinsX()+1):
-#             data.SetBinContent(ibin, 0)
-
-    return data
-
 def BuildPlot(args):
-    print "ifile,category,variable ", args.input ,args.category , args.channelName, args.variable
+    print "ifile,category,variable ", args.input ,args.category ,args.variable
     InputFile=args.input.replace('m_sv',args.variable)
     ifile = ROOT.TFile(InputFile)
     category = ifile.Get(args.category)
-    channelName = ifile.Get(args.channelName)
 #    variable = category.Get(args.variable)
     variableX = ifile.Get(args.category)
-    
-    style_Xmap=style_map
-    if 'em' in args.category or 'me' in args.category:
-        style_Xmap=style_map_emu
 
     # start getting histograms
     data_hist = variableX.Get('data_obs').Clone()
@@ -245,15 +172,15 @@ def BuildPlot(args):
     for hkey in variableX.GetListOfKeys():
         hname = hkey.GetName()
         ihist = variableX.Get(hname).Clone()
-        if hname in style_Xmap['EWK']:
-            ihist = ApplyStyle(ihist, style_Xmap['EWK'][hname])
+        if hname in style_map['EWK']:
+            ihist = ApplyStyle(ihist, style_map['EWK'][hname])
             backgrounds_EWK[hname] = ihist
-        if hname in style_Xmap['backgrounds']:
-            ihist = ApplyStyle(ihist, style_Xmap['backgrounds'][hname])
+        if hname in style_map['backgrounds']:
+            ihist = ApplyStyle(ihist, style_map['backgrounds'][hname])
             backgrounds[hname] = ihist
-        elif hname in style_Xmap['signals']:
-            ihist = ApplyStyle(ihist, style_Xmap['signals'][hname])
-            signals[hname] = ihist
+#        elif hname in style_map['signals']:
+#            ihist = ApplyStyle(ihist, style_map['signals'][hname])
+#            signals[hname] = ihist
             
     # now get stat and stack filled
     stat = data_hist.Clone() # sum of all backgrounds
@@ -263,7 +190,7 @@ def BuildPlot(args):
         print "\t\t = ", bkg.GetName(),"  int= ",bkg.Integral()
         stat.Add(bkg)
         stack.Add(bkg)
-    for bkg in sorted(backgrounds.itervalues(), key = lambda hist: hist.Integral()):
+    for bkg in sorted(backgrounds.itervalues(), key = lambda hist: 1./hist.Integral()):
         print "\t\t = ", bkg.GetName(),"  int= ",bkg.Integral()
         stat.Add(bkg)
         stack.Add(bkg)
@@ -275,32 +202,16 @@ def BuildPlot(args):
     
     # format the plots
     can = createCanvas()
-    data_hist = ApplyStyle(data_hist, style_Xmap['data_obs'])
+    data_hist = ApplyStyle(data_hist, style_map['data_obs'])
     stat = formatStat(stat)
     stack.Draw('hist')
     formatStack(stack)
-
-#    combo_signal = signals['H125'].Clone()
-    combo_signal = signals['ggH125'].Clone()
-#    combo_signal = signals['JHU_GGH2Jets_pseudoscalar_M125'].Clone()
-#    combo_signal.Scale(signals['H125'].Integral()/combo_signal.Integral())
-#    combo_signal.Add(signals['ggH125'])
-#    combo_signal.Add(signals['VBF125'])
-    data_hist = blindData(data_hist, combo_signal, stat,args.variable)
 
     # draw the plots
     data_hist.Draw('same lep')
     stat.Draw('same e2')
     print "CheckData= ",data_hist.Integral()
     print "stat= ",stat.Integral()
-    for sig_name, sig_hist in signals.iteritems():
-#        if 'GGH' in sig_name:
-#            sig_hist.Scale(50*signals['ggH125'].Integral()/sig_hist.Integral())
-#        if 'qqH' in sig_name:
-#            sig_hist.Scale(50*signals['VBF125'].Integral()/sig_hist.Integral())
-        sig_hist.Scale(50)
-        sig_hist.Draw('same hist')
-    
 
     legend = fillLegend(data_hist, backgrounds, backgrounds_EWK, signals, stat)
     legend.Draw('same')
@@ -313,8 +224,6 @@ def BuildPlot(args):
     print 'args.category = {} args.year {}'.format(args.category, args.year)
     if 'em_' in args.category:
         lepLabel = "e#mu"
-    elif 'me_' in args.category:
-        lepLabel = "#mu e"
     elif 'mt_' in args.category:
         lepLabel = "#mu#tau_{h}"
     elif 'et_' in args.category:
@@ -329,13 +238,8 @@ def BuildPlot(args):
         lumi = "41.5 fb^{-1}"
     elif args.year == 2018:
         lumi = "59.7 fb^{-1}"
-    elif args.year == 2020:
-        lumi = "137 fb^{-1}"
 
-    if args.year == 2020:
-        ll.DrawLatex(0.15, 0.94, "{}                                   {} (13 TeV)".format(lepLabel, lumi))
-    else:
-        ll.DrawLatex(0.42, 0.94, "{} {}, {} (13 TeV)".format(lepLabel, args.year, lumi))
+    ll.DrawLatex(0.42, 0.94, "{} {}, {} (13 TeV)".format(lepLabel, args.year, lumi))
 
     cms = ROOT.TLatex()
     cms.SetNDC(ROOT.kTRUE)
@@ -364,7 +268,7 @@ def BuildPlot(args):
     lcat.SetNDC(ROOT.kTRUE)
     lcat.SetTextFont(42)
     lcat.SetTextSize(0.06)
-#    lcat.DrawLatex(0.16, 0.68, catName)
+    lcat.DrawLatex(0.16, 0.68, args.input.replace('.root','').replace('Output/sf/','').replace('vis_masslep2Iso',''))
 
     # now work on ratio plot
     can.cd(2)
@@ -389,7 +293,7 @@ def BuildPlot(args):
     line3.Draw()
     
     # save the pdf
-    can.SaveAs('Output/plots/{}_{}_{}_{}.pdf'.format(args.prefix, args.variable, args.channelName, args.year))
+    can.SaveAs('Output/sf/_{}_{}.pdf'.format(args.prefix, args.input.replace('.root','').replace('Output/sf/','')))
 
 
 
