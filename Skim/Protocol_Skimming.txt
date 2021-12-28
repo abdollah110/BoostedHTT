@@ -24,7 +24,7 @@ The last command generates Class.h and Class.cc from TTree: EventTree
 Now all needed is to copy and paste 4 pieces from Class.h in the Skimmer.h
 
  // Declaration of leaf types
- // List of branches
+
  // Set object pointer
  // Set branch addresses and branch pointers
 
@@ -47,3 +47,18 @@ at the end you have to hadd the root files:
 
 1) update the had_skim.py
 2) python had_skim.py
+
+
+#python hadd_skim.py -i Files_mmt_18_v1/InputSample_18_mu.txt  -s /eos/uscms/store/user/abdollah/SkimBoost/mm/v4 -n v1
+#for i in 2016 2017 2018; do for j in et em me mt tt; do python hadd_skim.py -i Files_File_$j\_mc_$i/InputSample_$i\_mc.txt -s /eos/uscms/store/user/abdollah/SkimBoostedH2/$i/$j/v3_fast -n v3-$i$j-Hadd; done ; done
+#for i in 16 17 18; do for j in et em ; do python hadd_skim.py -i Files_$j\_$i\_v3_data/InputSample_$i\_Ele.txt -s /eos/uscms/store/user/abdollah/SkimBoostedH2/20$i/$j/v3_fast -n _data_v3-20$i$j-Hadd; done ; done
+#for i in 16 17 18; do for j in mt me ; do python hadd_skim.py -i Files_$j\_$i\_v3_data/InputSample_$i\_Mu.txt -s /eos/uscms/store/user/abdollah/SkimBoostedH2/20$i/$j/v3_fast -n _data_v3-20$i$j-Hadd; done ; done
+#python hadd_skim.py -i Files_tt_mht_17_v3_data/InputSample_17_HTMHT.txt -s /eos/uscms/store/user/abdollah/SkimBoostedH2/2017/tt/v3_fast -n data_tt_mht_17
+
+
+
+
+#Renamin
+for i in /eos/uscms/store/user/abdollah/SkimBoostedH2/2016/*/v2_fast_Hadd/ ; do sh _rename_2016.sh $i ; done
+for i in /eos/uscms/store/user/abdollah/SkimBoostedH2/2017/*/v2_fast_Hadd/ ; do sh _rename_2017.sh $i ; done
+for i in /eos/uscms/store/user/abdollah/SkimBoostedH2/2018/*/v2_fast_Hadd/ ; do sh _rename_2018.sh $i ; done

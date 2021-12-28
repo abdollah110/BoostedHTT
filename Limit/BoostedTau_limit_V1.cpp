@@ -96,22 +96,26 @@ int main(int argc, char** argv) {
     // Here we will just define two categories for an 8TeV analysis. Each entry in
     // the vector below specifies a bin name and corresponding bin_id.
     
-    VString chns = { "mt","et","em","tt"};
+    VString chns = { "mt","et","em","me","tt"};
+//    VString chns = { "mt","et","em","tt"};
     
     map<string, string> input_folders = {
         {"mt", "."},
         {"et", "."},
         {"em", "."},
+        {"me", "."},
         {"tt", "."}
     };
     
     map<string, VString> bkg_procs;
-    bkg_procs["mt"] = {"W", "QCD", "TT","VV","ZTT"};
-    bkg_procs["et"] = {"W", "QCD", "TT","VV","ZTT"};
-    bkg_procs["em"] = {"W", "TT","VV","ZTT"};
-    bkg_procs["tt"] = {"W", "QCD", "TT","VV","ZTT"};
+    bkg_procs["mt"] = {"QCD", "TT","VV","ZTT"};
+    bkg_procs["et"] = {"QCD", "TT","VV","ZTT"};
+    bkg_procs["em"] = {"QCD","W", "TT","VV","ZTT"};
+    bkg_procs["me"] = {"W", "TT","VV","ZTT"};
+    bkg_procs["tt"] = {"QCD", "TT","VV","ZTT"};
     
-    VString sig_procs = {"JJH"};
+    VString sig_procs = {"ggH","XH"};
+//    VString sig_procs = {"ggH"};
     
     map<string, Categories> cats;
     //cats["et_13TeV"] = {
@@ -128,6 +132,10 @@ int main(int argc, char** argv) {
     };
     cats["em_13TeV"] = {
         {1, "em_0jet"},
+//        {2, "fail"}
+    };
+    cats["me_13TeV"] = {
+        {1, "me_0jet"},
 //        {2, "fail"}
     };
     cats["tt_13TeV"] = {
@@ -152,11 +160,11 @@ int main(int argc, char** argv) {
     //! [part4]
     for (auto chn : chns) {
         cb.AddObservations(
-                           {"*"}, {"JJH"}, {"13TeV"}, {chn}, cats[chn+"_13TeV"]);
+                           {"*"}, {"H"}, {"13TeV"}, {chn}, cats[chn+"_13TeV"]);
         cb.AddProcesses(
-                        {"*"}, {"JJH"}, {"13TeV"}, {chn}, bkg_procs[chn], cats[chn+"_13TeV"], false);
+                        {"*"}, {"H"}, {"13TeV"}, {chn}, bkg_procs[chn], cats[chn+"_13TeV"], false);
         cb.AddProcesses(
-                        masses, sig_procs, {"13TeV"}, {chn}, sig_procs, cats[chn+"_13TeV"], true);
+                        masses, {"H"}, {"13TeV"}, {chn}, sig_procs, cats[chn+"_13TeV"], true);
     }
     
     
@@ -189,30 +197,35 @@ int main(int argc, char** argv) {
         cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}}))
         .AddSyst(cb, "CMS_lumi_$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.024));
         
-    //    cb.cp().bin_id({1}).process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}}))
-    //    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.1/0.9));
-        
-    //    cb.cp().bin_id({2}).process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}}))
-    //    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 0.9/1.1));
-        
-        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}}))
-        .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.05));
+        cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel({"tt"})
+        .AddSyst(cb, "CMS_trg_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.05));
+
+        cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel({"et","mt","tt"})
+        .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.10));
+
+        cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT"}})).channel({"et","em"})
+        .AddSyst(cb, "CMS_eff_e$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
+
+        cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT"}})).channel({"et","em"})
+        .AddSyst(cb, "CMS_trg_e$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
 
 
-        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}}))
+        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"mt","em"})
         .AddSyst(cb, "CMS_eff_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
         
-        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}}))
+        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"mt","em"})
         .AddSyst(cb, "CMS_trg_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
 
-        cb.cp().process({"JJH125"})
+
+
+        cb.cp().process({"ggH125"})
         .AddSyst(cb, "CMS_htt_SignalNorm", "lnN", SystMap<>::init(1.10));
 
         cb.cp().process({"ZTT"})
-        .AddSyst(cb, "CMS_htt_ZTTNorm", "lnN", SystMap<>::init(1.10));
+        .AddSyst(cb, "CMS_htt_ZTTNorm", "lnN", SystMap<>::init(1.05));
         
         cb.cp().process({"TT"})
-        .AddSyst(cb, "CMS_htt_TTNorm", "lnN", SystMap<>::init(1.10));
+        .AddSyst(cb, "CMS_htt_TTNorm", "lnN", SystMap<>::init(1.05));
         
         cb.cp().process({"VV"})
         .AddSyst(cb, "CMS_htt_VVNorm", "lnN", SystMap<>::init(1.10));
@@ -246,6 +259,30 @@ int main(int argc, char** argv) {
 //
 
 
+
+           cb.cp().process({"QCD"})
+            .AddSyst(cb, "shape_", "shape", SystMap<>::init(1.00));
+        
+
+
+    // Shape systematics
+    
+//    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson"}}))
+//    .AddSyst(cb, "met_JES", "shape", SystMap<>::init(1.00));
+//
+//    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"WJets", "ttbar","Diboson"}}))
+//    .AddSyst(cb, "met_UES", "shape", SystMap<>::init(1.00));
+
+    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}}))
+    .AddSyst(cb, "prefire", "shape", SystMap<>::init(1.00));
+
+    cb.cp().process({"TT"})
+    .AddSyst(cb, "ttbarShape_", "shape", SystMap<>::init(1.00));
+
+    cb.cp().process({"ZTT"})
+    .AddSyst(cb, "Z_masspt_", "shape", SystMap<>::init(1.00));
+    
+
     
     cout << ">> Adding systematic uncertainties...\n";
     // ch::AddSystematics_et_mt(cb);
@@ -257,11 +294,11 @@ int main(int argc, char** argv) {
     //! [part7]
     
     cb.cp().backgrounds().ExtractShapes(
-                                        aux_shapes + "/"+inputFile,
+                                        aux_shapes + "/"+prefix+"_"+year+"_"+Var+".root",
                                         "$BIN/$PROCESS",
                                         "$BIN/$PROCESS_$SYSTEMATIC");
     cb.cp().signals().ExtractShapes(
-                                        aux_shapes + "/"+inputFile,
+                                        aux_shapes + "/"+prefix+"_"+year+"_"+Var+".root",
                                     "$BIN/$PROCESS$MASS",
                                     "$BIN/$PROCESS$MASS_$SYSTEMATIC");
     
@@ -306,7 +343,7 @@ int main(int argc, char** argv) {
     << "\n";
     
     
-    string folder = "FinalBoost/"+postfix;
+    string folder = postfix+"/"+year;
     boost::filesystem::create_directories(folder);
     boost::filesystem::create_directories(folder + "/common");
     for (auto m : masses) {
