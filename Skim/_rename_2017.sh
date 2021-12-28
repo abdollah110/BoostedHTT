@@ -10,5 +10,9 @@ mv $dir/VBFHToTauTau_M125.root   $dir/qqH125.root
 mv $dir/WminusHToTauTau_M125.root   $dir/WMinusH125.root
 mv $dir/WplusHToTauTau_M125.root   $dir/WPlusH125.root
 mv $dir/ZHToTauTau_M125.root   $dir/ZH125.root
+mv $dir/ggZHTT_ZLL_M125.root   $dir/ggZHLL125.root
+mv $dir/ggZHTT_ZNuNu_M125.root   $dir/ggZHNuNu125.root
+mv $dir/ggZHTT_ZQQ_M125.root   $dir/ggZHQQ125.root
+mv $dir/ttHToTauTau_M125.root   $dir/toptopH125.root
 echo 'Removing the following files' $dir/*_v1* $dir/*_v2*
 rm $dir/*_v1* $dir/*_v2*
