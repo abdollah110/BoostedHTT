@@ -166,7 +166,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
                                     
             if (fabs(genMuVec[0].Eta()) > 2.4 || fabs(genEleVec[0].Eta() ) > 2.5) continue;
             bool me_loose = genMuVec[0].Pt() < 52 && genMuVec[0].Pt() > 28 && genEleVec[0].Pt() > 10 && genMET > 30 ;
-            bool me_tight tight= genMuVec[0].Pt() >= 52 && genEleVec[0].Pt() > 10;
+            bool me_tight = genMuVec[0].Pt() >= 52 && genEleVec[0].Pt() > 10;
             bool em_loose = genEleVec[0].Pt()< 115 && genEleVec[0].Pt()> 38 && genMuVec[0].Pt()  > 10 && genMET > 30 ;
             bool em_tight = genEleVec[0].Pt()>= 115 && genMuVec[0].Pt()  > 10;
             if ( !me_loose && !me_tight && !em_loose && !em_tight ) continue;
@@ -193,7 +193,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             TLorentzVector VisibleTau = genTauVec[tauCandOrder] - genNuTauVec[fdMatchNu.order];
             
             if (fabs(genMuVec[0].Eta()) > 2.4 || fabs(VisibleTau.Eta()) > 2.3 ) continue;
-            if ( VisibleTau.Pt() < 30 || ) continue;
+            if ( VisibleTau.Pt() < 30 ) continue;
             bool looseMu = genMuVec[0].Pt() > 28 && genMuVec[0].Pt() < 52 && genMET > 30 ;
             bool tightMu = genMuVec[0].Pt() >= 52;
             if (!looseMu && !tightMu) continue;
@@ -221,7 +221,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             
             
             if (fabs(genEleVec[0].Eta()) > 2.5 || fabs(VisibleTau.Eta()) > 2.3 ) continue;
-            if ( VisibleTau.Pt() < 30 || ) continue;
+            if ( VisibleTau.Pt() < 30) continue;
             bool looseEle = genEleVec[0].Pt() > 38 && genEleVec[0].Pt() < 115 && genMET > 30 ;
             bool tightEle = genEleVec[0].Pt() >= 115;
             if (!looseEle && !tightEle) continue;
@@ -252,9 +252,9 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if (Rivet_higgsPt < 250) continue;
             
             
-            TLorentzVector AK8LeadJet= getLeadJet(VisibleTau , genMuVec[0], jentry);
+            TLorentzVector AK8LeadJet= getLeadJet(VisibleTau0 , VisibleTau1, jentry);
             
-            bool tt_ht = AK8LeadJet > 100 ;
+            bool tt_ht = AK8LeadJet.Pt() > 100 ;
             bool tt_met = genHT > 500 && genMET > 120;
             
             if (!tt_ht && !tt_met) continue;
