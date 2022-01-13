@@ -134,7 +134,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         }
         
         if (genTauVec.size() < 2 ) {
-        std:cout<<"There is no pair of genTau in this event and the size of getTauVector is "<<genTauVec.size()<<"\n";
+        std:cout<<"There is no pair of genTau in this event and the size of getTauVector is "<<genTauVec.size()<< "  nu size="<< genNuTauVec.size()<< "\n";
         continue;
         }
         
