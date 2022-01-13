@@ -100,8 +100,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         
         //=========================================================================================================
         
-        TLorentzVector genTau, genMu, genEle, genNuTau, genNuMu, genNuEle;
-        vector<TLorentzVector> genTauVec, genMuVec, genEleVec, genNuTauVec, genNuEleVec, genNuMuVec;
+        TLorentzVector genTau,genTau2, genMu, genEle, genNuTau, genNuMu, genNuEle;
+        vector<TLorentzVector> genTauVec,genTauVec2, genMuVec, genEleVec, genNuTauVec, genNuEleVec, genNuMuVec;
         
         for (int igen=0;igen < nMC; igen++){
             
@@ -126,6 +126,10 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
                 genTau.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
                 genTauVec.push_back(genTau);
             }
+            if ( fabs(mcPID->at(igen)) ==15){
+                genTau2.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+                genTauVec2.push_back(genTau2);
+            }
             if ( fabs(mcPID->at(igen)) ==16 && fabs(mcMomPID->at(igen))==15){
                 genNuTau.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
                 genNuTauVec.push_back(genNuTau);
@@ -134,7 +138,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         }
         
         if (genTauVec.size() < 2 ) {
-        std:cout<<"There is no pair of genTau in this event and the size of getTauVector is "<<genTauVec.size()<< "  nu size="<< genNuTauVec.size()<< "\n";
+        std:cout<<"There is no pair of genTau in this event and the size of getTauVector is "<<genTauVec.size()<< "  nu size="<< genNuTauVec.size()<< "  "<< genTauVec2.size() << "\n";
         continue;
         }
         
