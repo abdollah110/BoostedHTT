@@ -85,7 +85,6 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         if (ientry < 0) break;
         nb = fChain->GetEntry(jentry);   nbytes += nb;
         
-        cout<<"test njet " <<nJet<<" -------\n";
         if (nJet < 1) continue;
         if(jentry % 10000 == 0) cout << "Processed " << jentry << " events out of " <<nentries<<endl;
         
