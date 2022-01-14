@@ -1494,7 +1494,7 @@ FidSelection PassFoducial(){
 
             bool dRcuts=  (genMuVec[0].DeltaR(VisibleTau) < 0.8 && genMuVec[0].DeltaR(VisibleTau) > 0.1) ;
             bool etacuts = (fabs(genMuVec[0].Eta()) < 2.4 && fabs(VisibleTau.Eta()) < 2.3) ;
-            bool tauPtcuts =  VisibleTau.Pt() < 30 ;
+            bool tauPtcuts =  VisibleTau.Pt() > 30 ;
             bool higgsPtCut = Rivet_higgsPt > 250;
             
             bool looseMu = genMuVec[0].Pt() > 28 && genMuVec[0].Pt() < 52 && genMET > 30 ;
@@ -1520,7 +1520,7 @@ FidSelection PassFoducial(){
             
             bool dRcuts=  (genEleVec[0].DeltaR(VisibleTau) < 0.8 && genEleVec[0].DeltaR(VisibleTau) > 0.1) ;
             bool etacuts = (fabs(genEleVec[0].Eta()) < 2.5 && fabs(VisibleTau.Eta()) < 2.3) ;
-            bool tauPtcuts =  VisibleTau.Pt() < 30 ;
+            bool tauPtcuts =  VisibleTau.Pt() > 30 ;
             bool higgsPtCut = Rivet_higgsPt > 250;
 
             bool looseEle = genEleVec[0].Pt() > 38 && genEleVec[0].Pt() < 115 && genMET > 30 ;
