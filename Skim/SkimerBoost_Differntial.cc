@@ -278,7 +278,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             jetpt->Fill(LeadJet.Pt(),LumiWeight * weight_Rivet);
             jetpt_nnlops->Fill(LeadJet.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
             
-            std::cout<<"Channel is tautau: #mu= "<<genMuVec.size() <<"  #ele= "<<genEleVec.size()<<"\n";
+//            std::cout<<"Channel is tautau: #mu= "<<genMuVec.size() <<"  #ele= "<<genEleVec.size()<<"\n";
         }
     }
     
