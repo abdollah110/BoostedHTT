@@ -504,14 +504,14 @@ int main(int argc, char* argv[]) {
         //  fiducial info
         FidSelection fiducial = PassFoducial();
         Chan_emu = fiducial.emu ;
-        Chan_etau = fiducial.mutau ;
-        Chan_mutau = fiducial.etau ;
+        Chan_etau = fiducial.etau ;
+        Chan_mutau = fiducial.mutau ;
         Chan_tautau = fiducial.tautau ;
         Chan_emu_fid = fiducial.emu_fid ;
-        Chan_etau_fid = fiducial.mutau_fid ;
-        Chan_mutau_fid = fiducial.etau_fid ;
+        Chan_etau_fid = fiducial.etau_fid ;
+        Chan_mutau_fid = fiducial.mutau_fid ;
         Chan_tautau_fid = fiducial.tautau_fid ;
-
+        
         // Fill the tree
         outTr->Fill();
         
