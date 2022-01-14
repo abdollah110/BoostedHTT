@@ -47,6 +47,12 @@ public:
     void fillQCD_Shape(int, string, double, double,float);
     void fillQCD_Norm_emu(int, string, double, double,float);
     void fillQCD_Shape_emu(int, string, double, double,float);
+    // 2D test
+    void fillQCD_Norm(int, string, double,double, double,float);
+    void fillQCD_Shape(int, string, double,double, double,float);
+    void fillQCD_Norm_emu(int, string, double,double, double,float);
+    void fillQCD_Shape_emu(int, string, double,double, double,float);
+    
     void fillQCD_OS_CR(int, string, double, double);
     void fillQCD_SS_CR(int, string, double, double);
     std::vector<float>  Get_OS_SS_ratio();
@@ -67,12 +73,13 @@ public:
     std::vector<string> categories, systematics;
     //    std::vector<float> mvis_bins, njets_bins;
     std::map<string, std::vector<TH1F *>> hists_1d;
-    std::map<string, std::vector<TH2F *>>  Histo_2DMatrix;
+    std::map<string, std::vector<TH2F *>> hists_2d, Histo_2DMatrix;
     std::vector<TH1F *> fakes_1d_norm,  fakes_1d_norm_Up,  fakes_1d_norm_Down , data;
+    std::vector<TH2F *> fakes_2d_norm,  fakes_2d_norm_Up,  fakes_2d_norm_Down;
     std::vector<TH1F *> fakes_1d_SS_CR, fakes_1d_SS_CR_Up, fakes_1d_SS_CR_Down;
     std::vector<TH1F *> fakes_1d_OS_CR, fakes_1d_OS_CR_Up, fakes_1d_OS_CR_Down, fakes_1d_OS_CR_data;
     std::vector<TH1F *> fakes_1d_shape, fakes_1d_shape_Up, fakes_1d_shape_Down, fakes_1d_SS_CR_data;
-    
+    std::vector<TH2F *> fakes_2d_shape, fakes_2d_shape_Up, fakes_2d_shape_Down;
     // binning
 //    std::vector<int> bins_NN, bins_FAKE;
     std::vector<Float_t> bins_NN, bins_FAKE;
@@ -87,8 +94,8 @@ HistTool::HistTool(string treeName, string channel_prefix, string var, string ye
 
 // x-axis
 //bins_NN{0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0}, // This is for 0jet
-//bins_NN(bins), // This is for 0jet
-bins_NN({10,0,0.5}),
+bins_NN(bins), // This is for 0jet
+//bins_NN({10,0,0.5}),
 bins_FAKE({10,0,300}),
 bins_genHPt({0,300,400,550,800,2000}),
 //bins_FAKE({10,0,1}),
@@ -107,15 +114,18 @@ systematics{
     for (auto cat : categories) {
         // make a 2d template
         hists_1d[cat.c_str()] = std::vector<TH1F *>();
+        hists_2d[cat.c_str()] = std::vector<TH2F *>();
         Histo_2DMatrix[cat.c_str()] = std::vector<TH2F *>();
         
         if (cat.find("0jet") != string::npos) {
             
             fakes_1d_norm.push_back(new TH1F("fake_0jet", "fake_SS_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
+            fakes_2d_norm.push_back(new TH2F("fake_0jet2", "fake_SS_02", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
             fakes_1d_norm_Up.push_back(new TH1F("fake_0jet_Up", "fake_SS_0_Up_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
             fakes_1d_norm_Down.push_back(new TH1F("fake_0jet_Down", "fake_SS_0_Down_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
             
             fakes_1d_shape.push_back(new TH1F("fake_0jet_shape", "fake_SS_shape_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
+            fakes_2d_shape.push_back(new TH2F("fake_0jet_shape2", "fake_SS_shape_02",  bins_NN.at(0), bins_NN.at(1), bins_NN.at(2), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
             fakes_1d_shape_Up.push_back(new TH1F("fake_0jet_shape_Up", "fake_SS_shape_0_Up_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
             fakes_1d_shape_Down.push_back(new TH1F("fake_0jet_shape_Down", "fake_SS_shape_0_Down_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
             
@@ -141,13 +151,20 @@ systematics{
         std::cout <<"\t test 1   first directory is "<<it->first <<"\n";
         fout->cd();
     }
+    // make all of 2D the directories for templates
+//    for (auto it = hists_2d.begin(); it != hists_2d.end(); it++) {
+//        fout->cd();
+//        fout->mkdir((it->first).c_str());
+//        std::cout <<"\t test 2   first directory is "<<it->first <<"\n";
+//        fout->cd();
+//    }
     // make all of the directories for templates
-    for (auto it = Histo_2DMatrix.begin(); it != Histo_2DMatrix.end(); it++) {
-        fout->cd();
-        fout->mkdir((it->first).c_str());
-        std::cout <<"\t test 1   first directory is "<<it->first <<"\n";
-        fout->cd();
-    }
+//    for (auto it = Histo_2DMatrix.begin(); it != Histo_2DMatrix.end(); it++) {
+//        fout->cd();
+//        fout->mkdir((it->first).c_str());
+//        std::cout <<"\t test 1   first directory is "<<it->first <<"\n";
+//        fout->cd();
+//    }
 }
 
 // change to the correct output directory then create a new TH1F that will be filled for the current input file
@@ -161,6 +178,16 @@ void HistTool::initVectors2d(string name) {
             hists_1d.at(key.first.c_str()).push_back(new TH1F(name.c_str(), name.c_str(), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
         }
     }
+    for (auto key : hists_2d) {
+        fout->cd(key.first.c_str());
+        if (name.find("Data") != string::npos) {
+            name = "data_obs";
+        }
+        if (key.first == tree_name + "_0jet") {
+            hists_2d.at(key.first.c_str()).push_back(new TH2F((name+"_2D__").c_str(), (name+"_2D__").c_str(), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
+        }
+    }
+    cout<<"Hello 1111\n";
     for (auto key : Histo_2DMatrix) {
         fout->cd(key.first.c_str());
         if (key.first == tree_name + "_0jet") {
@@ -213,6 +240,19 @@ void HistTool::fillQCD_Norm(int cat, string name, double var1,  double weight, f
         fakes_1d_norm_Down.at(cat)->Fill(var1, -1*OSSS_val*weight*1.1);
     }
 }
+void HistTool::fillQCD_Norm(int cat, string name, double var1,double var2,  double weight, float OSSS_val) {
+    TH1F *hist;
+    if (name == "Data") {
+        fakes_2d_norm.at(cat)->Fill(var1,var2, 1*OSSS_val);
+//        fakes_2d_norm_Up.at(cat)->Fill(var1,var2, 1*OSSS_val);
+//        fakes_2d_norm_Down.at(cat)->Fill(var1,var2, 1*OSSS_val);
+//    } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
+    } else if ( name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
+        fakes_2d_norm.at(cat)->Fill(var1,var2, -1*OSSS_val*weight);
+//        fakes_2d_norm_Up.at(cat)->Fill(var1,var2, -1*OSSS_val*weight*0.9);
+//        fakes_2d_norm_Down.at(cat)->Fill(var1,var2, -1*OSSS_val*weight*1.1);
+    }
+}
 
 void HistTool::fillQCD_Norm_emu(int cat, string name, double var1,  double weight, float OSSS_val) {
     TH1F *hist;
@@ -225,6 +265,19 @@ void HistTool::fillQCD_Norm_emu(int cat, string name, double var1,  double weigh
         fakes_1d_norm.at(cat)->Fill(var1, -1*OSSS_val*weight);
         fakes_1d_norm_Up.at(cat)->Fill(var1, -1*OSSS_val*weight*0.9);
         fakes_1d_norm_Down.at(cat)->Fill(var1, -1*OSSS_val*weight*1.1);
+    }
+}
+void HistTool::fillQCD_Norm_emu(int cat, string name, double var1,double var2,  double weight, float OSSS_val) {
+    TH1F *hist;
+    if (name == "Data") {
+        fakes_2d_norm.at(cat)->Fill(var1,var2, 1*OSSS_val);
+//        fakes_2d_norm_Up.at(cat)->Fill(var1,var2, 1*OSSS_val);
+//        fakes_2d_norm_Down.at(cat)->Fill(var1,var2, 1*OSSS_val);
+    } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
+        //    } else if ( name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
+        fakes_2d_norm.at(cat)->Fill(var1,var2, -1*OSSS_val*weight);
+//        fakes_2d_norm_Up.at(cat)->Fill(var1,var2, -1*OSSS_val*weight*0.9);
+//        fakes_2d_norm_Down.at(cat)->Fill(var1,var2, -1*OSSS_val*weight*1.1);
     }
 }
 
@@ -244,6 +297,21 @@ void HistTool::fillQCD_Shape(int cat, string name, double var1,  double weight, 
         fakes_1d_shape_Down.at(cat)->Fill(var1, -1*OSSS_val*weight*1.1);
     }
 }
+void HistTool::fillQCD_Shape(int cat, string name, double var1,double var2,  double weight, float OSSS_val) {
+    TH1F *hist;
+    if (name == "Data") {
+        fakes_2d_shape.at(cat)->Fill(var1,var2, 1*OSSS_val);
+//        fakes_2d_shape_Up.at(cat)->Fill(var1,var2, 1*OSSS_val);
+//        fakes_2d_shape_Down.at(cat)->Fill(var1,var2, 1*OSSS_val);
+//    } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+    } else if ( name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+        
+        fakes_2d_shape.at(cat)->Fill(var1,var2, -1*OSSS_val*weight);
+//        fakes_2d_shape_Up.at(cat)->Fill(var1,var2, -1*OSSS_val*weight*0.9);
+//        fakes_2d_shape_Down.at(cat)->Fill(var1,var2, -1*OSSS_val*weight*1.1);
+    }
+}
+
 
 // This is Loose SS region [To get the shape of QCD from SS and loose region]
 void HistTool::fillQCD_Shape_emu(int cat, string name, double var1,  double weight, float OSSS_val) {
@@ -259,6 +327,20 @@ void HistTool::fillQCD_Shape_emu(int cat, string name, double var1,  double weig
                 fakes_1d_shape.at(cat)->Fill(var1, -1*OSSS_val*weight);
                 fakes_1d_shape_Up.at(cat)->Fill(var1, -1*OSSS_val*weight*0.9);
                 fakes_1d_shape_Down.at(cat)->Fill(var1, -1*OSSS_val*weight*1.1);
+    }
+}
+void HistTool::fillQCD_Shape_emu(int cat, string name, double var1,double var2,  double weight, float OSSS_val) {
+    TH1F *hist;
+    if (name == "Data") {
+        fakes_2d_shape.at(cat)->Fill(var1,var2, 1*OSSS_val);
+//        fakes_2d_shape_Up.at(cat)->Fill(var1,var2, 1*OSSS_val);
+//        fakes_2d_shape_Down.at(cat)->Fill(var1,var2, 1*OSSS_val);
+//            } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+            } else if (name == "W" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+        //    } else if ( name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+                fakes_2d_shape.at(cat)->Fill(var1,var2, -1*OSSS_val*weight);
+//                fakes_2d_shape_Up.at(cat)->Fill(var1,var2, -1*OSSS_val*weight*0.9);
+//                fakes_2d_shape_Down.at(cat)->Fill(var1,var2, -1*OSSS_val*weight*1.1);
     }
 }
 
@@ -279,6 +361,7 @@ std::vector<float>  HistTool::Get_OS_SS_ratio(){
 // write output histograms including the QCD histograms after scaling by OS/SS ratio
 void HistTool::writeTemplates(string dir, string channel, string year) {
     auto order(0);
+    auto order2(0);
     for (auto cat : hists_1d) {
         fout->cd(cat.first.c_str());
         for (auto hist : cat.second) {
@@ -301,14 +384,17 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
 //        if (channel.find("tt") != string::npos && year.find("2018") != string::npos ) CorrFactor =0.90;
 
         auto fake_hist_norm = fakes_1d_norm.at(order);
+        auto fake_hist2_norm = fakes_2d_norm.at(order2);
         auto fake_hist_norm_Up = fakes_1d_norm_Up.at(order);
         auto fake_hist_norm_Down = fakes_1d_norm_Down.at(order);
         
         fake_hist_norm->Scale(CorrFactor);
+        fake_hist2_norm->Scale(CorrFactor);
         fake_hist_norm_Up->Scale(CorrFactor);
         fake_hist_norm_Down->Scale(CorrFactor);
         
         auto fake_hist_shape = fakes_1d_shape.at(order);
+        auto fake_hist2_shape = fakes_2d_shape.at(order2);
         auto fake_hist_shape_Up = fakes_1d_shape_Up.at(order);
         auto fake_hist_shape_Down = fakes_1d_shape_Down.at(order);
         
@@ -331,12 +417,27 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
                 fake_hist_shape_Down->SetBinError(i+1, 0.1);
             }
         }
+        //                // ADD protection
+        for (int i = 0 ; i < fake_hist2_shape->GetNbinsX(); i++){
+            for (int j = 0 ; j < fake_hist2_shape->GetNbinsY(); j++){
+                if (fake_hist2_shape->GetBinContent(i+1,j+1) <0 ){
+                    float negBin=fake_hist2_shape->GetBinContent(i+1,j+1);
+                    float totIntegral =fake_hist2_shape->Integral();
+                    fake_hist2_shape->SetBinContent(i+1, j+1,0.0001);
+                    
+                    fake_hist2_shape->SetBinError(i+1,j+1, 0.1);
+                    std::cout<< cat.first.c_str() << "   QCD bin of "<<i <<"  "<< j<<"  ratio bin/TotIntegral"<< negBin/totIntegral <<"\n";
+                }
+            }
+        }
+
         //========================================================================================================
         
         std::cout<<"\n\n Norm QCD is = "<<fake_hist_norm->Integral() <<   "  shape integral is "<< fake_hist_shape->Integral()  <<"\n";
         fake_hist_shape->Scale(fake_hist_norm->Integral()/fake_hist_shape->Integral());
         fake_hist_shape_Up->Scale(fake_hist_norm_Up->Integral()/fake_hist_shape_Up->Integral());
         fake_hist_shape_Down->Scale(fake_hist_norm_Down->Integral()/fake_hist_shape_Down->Integral());
+        fake_hist2_shape->Scale(fake_hist2_norm->Integral()/fake_hist2_shape->Integral());
         
         // Only make QCD for nominal process and not sys Up/Down
         if (dir.find("Up")==string::npos && dir.find("Down")==string::npos){
@@ -346,7 +447,15 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
             fake_hist_shape->Write();
             fake_hist_shape_Up->Write();
             fake_hist_shape_Down->Write();
-            
+
+            fake_hist2_shape->SetName("QCD_2D__");
+//            fake_hist_shape_Up->SetName("QCD_shape_Up");
+//            fake_hist_shape_Down->SetName("QCD_shape_Down");
+            fake_hist2_shape->Write();
+//            fake_hist_shape_Up->Write();
+//            fake_hist_shape_Down->Write();
+
+
             // shape for qcd OS/SS
             fakes_1d_OS_CR.at(0)->Write();
             fakes_1d_SS_CR.at(0)->Write();
@@ -355,11 +464,18 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
         }
         
         order++;
+        order2++;
     for (auto cat : Histo_2DMatrix) {
         fout->cd(cat.first.c_str());
         for (auto hist : cat.second) {
             hist->Write();
         }
         }
+    for (auto cat : hists_2d) {
+        fout->cd(cat.first.c_str());
+        for (auto hist : cat.second) {
+            hist->Write();
+        }
+    }
     }
 }

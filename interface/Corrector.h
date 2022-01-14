@@ -1056,6 +1056,21 @@ float getTriggerWeight(int year, bool isData,  float AK8JetPt , float AK8JetSoft
     return weight;
 }
 
+float getTriggerWeightError(int year, bool isData,  float AK8JetPt , float AK8JetSoftDropMass , TH2F * triggerEff){
+    
+    float weight = 1;
+    if (isData)
+        return 1;
+    else
+    {
+    if (AK8JetPt > 1199)  AK8JetPt= 1199;
+    if (AK8JetSoftDropMass > 299)  AK8JetSoftDropMass= 299;
+        weight = triggerEff->GetBinError(triggerEff->GetXaxis()->FindBin(AK8JetPt), triggerEff->GetYaxis()->FindBin(AK8JetSoftDropMass));
+        return weight;
+    }
+    return weight;
+}
+
 
 float getTriggerWeight(int year, bool isData,  float PFHT, float  PFMET, float MHT , TH2F * triggerEff){
     
@@ -1070,6 +1085,24 @@ float getTriggerWeight(int year, bool isData,  float PFHT, float  PFMET, float M
     if (PFHT > 2000)  PFHT= 2000;
     if (SumMETMHT > 1500)  SumMETMHT= 1500;
         weight = triggerEff->GetBinContent(triggerEff->GetXaxis()->FindBin(PFHT), triggerEff->GetYaxis()->FindBin(SumMETMHT));
+        return weight;
+    }
+    return weight;
+}
+
+float getTriggerWeightError(int year, bool isData,  float PFHT, float  PFMET, float MHT , TH2F * triggerEff){
+    
+    float weight = 1;
+    float SumMETMHT=PFMET+MHT;
+    if (year == 2016) SumMETMHT=PFMET+0;
+    if (isData)
+        return 1;
+    else
+    {
+    
+    if (PFHT > 2000)  PFHT= 2000;
+    if (SumMETMHT > 1500)  SumMETMHT= 1500;
+        weight = triggerEff->GetBinError(triggerEff->GetXaxis()->FindBin(PFHT), triggerEff->GetYaxis()->FindBin(SumMETMHT));
         return weight;
     }
     return weight;
