@@ -76,6 +76,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
     TH1F * higpt_nnlops=new TH1F(("HiggsPt_nnlops"+Sys).c_str(),("HiggsPt"+Sys).c_str(),sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
     TH1F * jetpt=new TH1F(("JetPt"+Sys).c_str(),("JetPt"+Sys).c_str(),sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
     TH1F * jetpt_nnlops=new TH1F(("JetPt_nnlops"+Sys).c_str(),("JetPt"+Sys).c_str(),sizeof(xbin)/sizeof(xbin[0]) - 1, &xbin[0]);
+    TH1F * TauMul=new TH1F("TauMul","TauMul",5,0,5);
     
     event_info event(Sys);
     
@@ -100,6 +101,13 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         
         //=========================================================================================================
         
+//              (ip->pdgId() == 22 && (ip->isPromptFinalState() || ip->isLastCopy())) ||
+//      (status == 1 && abs(ip->pdgId()) == 11 && (ip->isPromptFinalState() || ip->isLastCopy())) ||
+//      (status == 1 && abs(ip->pdgId()) == 13 && (ip->isPromptFinalState() || ip->isLastCopy())) ||
+//      (status == 1 && (abs(ip->pdgId()) == 12 || abs(ip->pdgId()) == 14 || abs(ip->pdgId()) == 16)) ||
+//      (status == 1 && ( abs(ip->pdgId()) >= 11 && abs(ip->pdgId()) <= 16 ) && ip->pt() > 3.0)  ||
+//      (status < 10 && abs(ip->pdgId()) == 15 && ip->pt() > 3.0);
+      
         TLorentzVector genTau,genTau2, genMu, genEle, genNuTau, genNuMu, genNuEle;
         vector<TLorentzVector> genTauVec,genTauVec2, genMuVec, genEleVec, genNuTauVec, genNuEleVec, genNuMuVec;
         
@@ -137,6 +145,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             
         }
         
+        TauMul->Fill(genTauVec.size());
         if (genTauVec.size() < 2 ) {
         std:cout<<"There is no pair of genTau in this event and the size of getTauVector is "<<genTauVec.size()<< "  nu size="<< genNuTauVec.size()<< "  "<< genTauVec2.size() << "\n";
         continue;
@@ -281,6 +290,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
     higpt_nnlops->Write();
     jetpt->Write();
     jetpt_nnlops->Write();
+    TauMul->Write();
 
 //    if (hPU) hPU->Write();
 //    if (hPUTrue) hPUTrue->Write();
