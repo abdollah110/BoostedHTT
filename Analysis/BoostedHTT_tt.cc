@@ -157,6 +157,16 @@ int main(int argc, char* argv[]) {
     bool PassTrigger_21;
     bool PassTrigger_22;
     int nbjet;
+    bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
+
+    outTr->Branch("Chan_emu",&Chan_emu,"Chan_emu/O");
+    outTr->Branch("Chan_etau",&Chan_etau,"Chan_etau/O");
+    outTr->Branch("Chan_mutau",&Chan_mutau,"Chan_mutau/O");
+    outTr->Branch("Chan_tautau",&Chan_tautau,"Chan_tautau/O");
+    outTr->Branch("Chan_emu_fid",&Chan_emu_fid,"Chan_emu_fid/O");
+    outTr->Branch("Chan_etau_fid",&Chan_etau_fid,"Chan_etau_fid/O");
+    outTr->Branch("Chan_mutau_fid",&Chan_mutau_fid,"Chan_mutau_fid/O");
+    outTr->Branch("Chan_tautau_fid",&Chan_tautau_fid,"Chan_tautau_fid/O");
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
     outTr->Branch("zmasspt_weight",&zmasspt_weight,"zmasspt_weight/F");
@@ -323,6 +333,7 @@ int main(int argc, char* argv[]) {
         ht= getHT(JetPtCut, LeadTau4Momentum, SubTau4Momentum,JetSys);
         
         float TriggerWeight = 1;
+        float TriggerWeightError = 1;
         float _cut_AK8Pt_,_cut_AK8Mass_,_cut_PFHT_,_cut_PFMET_,_cut_PFMHT_, _cut_PFMETMHT_, _cut_st_;
         bool _Pass_AK8_Trigger_, _Pass_METHT_Trigger_;
         
@@ -416,10 +427,12 @@ int main(int argc, char* argv[]) {
         if (year==2017){
             if ( (!isData ||  (isData && _Pass_AK8_Trigger_)) &&  AK8Pt > _cut_AK8Pt_ && AK8Mass > _cut_AK8Mass_ && AK8Eta < 2.5){
                 TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT);
+                TriggerWeightError = getTriggerWeightError(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT);
                 passing= true;
             }
             else if ( (!isData ||  (isData && _Pass_METHT_Trigger_)) &&  PFHT > _cut_PFHT_ && PFMET > _cut_PFMET_ && MHT> _cut_PFMHT_ && PFMET+MHT > _cut_PFMETMHT_){
                 TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MET);
+                TriggerWeightError = getTriggerWeightError(year, isData,  PFHT,PFMET,MHT ,triggerEff_MET);
                 passing= true;
             }
             else {
@@ -430,10 +443,12 @@ int main(int argc, char* argv[]) {
             // apply trigger on simulation as well as data
             if ( _Pass_AK8_Trigger_ &&  AK8Pt > _cut_AK8Pt_ && AK8Mass > _cut_AK8Mass_ && AK8Eta < 2.5){
                 TriggerWeight = getTriggerWeight(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT_SF);
+                TriggerWeightError = getTriggerWeightError(year, isData,  AK8Pt , AK8Mass ,triggerEff_HT_SF);
                 passing= true;
             }
             else if (_Pass_METHT_Trigger_ &&  PFHT > _cut_PFHT_ && PFMET > _cut_PFMET_ && MHT> _cut_PFMHT_ && PFMET+MHT > _cut_PFMETMHT_){
                 TriggerWeight = getTriggerWeight(year, isData,  PFHT,PFMET,MHT ,triggerEff_MET_SF);
+                TriggerWeightError = getTriggerWeightError(year, isData,  PFHT,PFMET,MHT ,triggerEff_MET_SF);
                 passing= true;
             }
             else {
@@ -503,6 +518,9 @@ int main(int argc, char* argv[]) {
             if (syst == "prefireUp") {preFireWeight = L1ECALPrefireUp;}
             if (syst == "prefireDown") {preFireWeight = L1ECALPrefireDown;}
             
+            //TriggerWeight uncertainty
+            if (syst == "triggerUp") {TriggerWeight  = TriggerWeight+TriggerWeightError;}
+            if (syst == "triggerDown") {TriggerWeight  = TriggerWeight-TriggerWeightError;}
             
             //  GenInfo
             vector<float>  genInfo=GeneratorInfo();
@@ -598,7 +616,18 @@ int main(int argc, char* argv[]) {
         FullWeight = LumiWeight*LepCorrection * PUWeight * TriggerWeight*zmasspt_weight * preFireWeight * WBosonKFactor * ttbar_rwt* weight_Rivet;
         nbjet=numBJet;
         gen_higgs_pT = GetHiggsPt();
-        
+
+        //  fiducial info
+        FidSelection fiducial = PassFoducial();
+        Chan_emu = fiducial.emu ;
+        Chan_etau = fiducial.mutau ;
+        Chan_mutau = fiducial.etau ;
+        Chan_tautau = fiducial.tautau ;
+        Chan_emu_fid = fiducial.emu_fid ;
+        Chan_etau_fid = fiducial.mutau_fid ;
+        Chan_mutau_fid = fiducial.etau_fid ;
+        Chan_tautau_fid = fiducial.tautau_fid ;
+
         // Fill the tree
         outTr->Fill();
      

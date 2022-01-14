@@ -257,10 +257,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             jetpt_nnlops->Fill(LeadJet.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
             
         }
-        else
-        {
-        
-
+        //tautau
+            else if (genMuVec.size() ==0  && genEleVec.size() ==0 ){
             
             findDr fdMatchNu0 = FindClosetDr(genTauVec[0],genNuTauVec);
             findDr fdMatchNu1 = FindClosetDr(genTauVec[1],genNuTauVec);

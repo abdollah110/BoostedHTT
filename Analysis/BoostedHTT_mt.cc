@@ -154,7 +154,16 @@ int main(int argc, char* argv[]) {
     float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight, gen_higgs_pT;
     float MuMatchedIsolation= -1; float EleMatchedIsolation =-1;
     int nbjet;
-    
+    bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
+
+    outTr->Branch("Chan_emu",&Chan_emu,"Chan_emu/O");
+    outTr->Branch("Chan_etau",&Chan_etau,"Chan_etau/O");
+    outTr->Branch("Chan_mutau",&Chan_mutau,"Chan_mutau/O");
+    outTr->Branch("Chan_tautau",&Chan_tautau,"Chan_tautau/O");
+    outTr->Branch("Chan_emu_fid",&Chan_emu_fid,"Chan_emu_fid/O");
+    outTr->Branch("Chan_etau_fid",&Chan_etau_fid,"Chan_etau_fid/O");
+    outTr->Branch("Chan_mutau_fid",&Chan_mutau_fid,"Chan_mutau_fid/O");
+    outTr->Branch("Chan_tautau_fid",&Chan_tautau_fid,"Chan_tautau_fid/O");    
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
     outTr->Branch("zmasspt_weight",&zmasspt_weight,"zmasspt_weight/F");
@@ -494,7 +503,18 @@ int main(int argc, char* argv[]) {
         FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt* weight_Rivet;
         nbjet=numBJet;
         gen_higgs_pT = GetHiggsPt();
-        
+
+        //  fiducial info
+        FidSelection fiducial = PassFoducial();
+        Chan_emu = fiducial.emu ;
+        Chan_etau = fiducial.mutau ;
+        Chan_mutau = fiducial.etau ;
+        Chan_tautau = fiducial.tautau ;
+        Chan_emu_fid = fiducial.emu_fid ;
+        Chan_etau_fid = fiducial.mutau_fid ;
+        Chan_mutau_fid = fiducial.etau_fid ;
+        Chan_tautau_fid = fiducial.tautau_fid ;
+
         
         // Fill the tree
         outTr->Fill();

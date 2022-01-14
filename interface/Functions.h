@@ -1425,7 +1425,6 @@ FidSelection PassFoducial(){
         TLorentzVector genTau,genTau2, genMu, genEle, genNuTau, genNuMu, genNuEle;
         vector<TLorentzVector> genTauVec,genTauVec2, genMuVec, genEleVec, genNuTauVec, genNuEleVec, genNuMuVec;
         
-        cout<<"\n nMC = "<<nMC <<"\n";
         for (int igen=0;igen < nMC; igen++){
             
             
