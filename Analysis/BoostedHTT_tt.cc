@@ -631,8 +631,8 @@ int main(int argc, char* argv[]) {
         // Fill the tree
         outTr->Fill();
      
-     if (lep1IsoPassV && lep2IsoPassV && m_sv_ > 120 && m_sv_ < 130 && dR_lep_lep > 0.3 && dR_lep_lep < 0.6)
-      std::cout<<"mass= "<<m_sv_<<" Higgs pt="<<higgs.Pt() <<"   Run:Lumi:Eve"<<run<<":"<<lumis<<":"<<event__<<"\n";
+//     if (lep1IsoPassV && lep2IsoPassV && m_sv_ > 120 && m_sv_ < 130 && dR_lep_lep > 0.3 && dR_lep_lep < 0.6)
+//      std::cout<<"mass= "<<m_sv_<<" Higgs pt="<<higgs.Pt() <<"   Run:Lumi:Eve"<<run<<":"<<lumis<<":"<<event__<<"\n";
     } //End of Tree
     
     
