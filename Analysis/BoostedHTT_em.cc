@@ -501,7 +501,7 @@ int main(int argc, char* argv[]) {
         gen_higgs_pT = GetHiggsPt();
     
         //  fiducial info
-        FidSelection fiducial;
+        FidSelection fiducial = PassFoducial();
         Chan_emu = fiducial.emu ;
         Chan_etau = fiducial.mutau ;
         Chan_mutau = fiducial.etau ;
