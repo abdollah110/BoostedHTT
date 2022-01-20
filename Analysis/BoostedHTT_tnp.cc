@@ -102,7 +102,7 @@ int main(int argc, char* argv[]) {
     float MuMass= 0.10565837;
     float eleMass= 0.000511;
     float JetPtCut=30;
-    float BJetPtCut=20;
+    float BJetPtCut=30;
     
     float DeepCSVCut= 1   ;                  //  Tight  https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation94X
     if (year== 2016) DeepCSVCut =     0.8953  ;
@@ -131,7 +131,8 @@ int main(int argc, char* argv[]) {
     float vis_mass=-10;
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
-    bool OS,SS,lep1IsoPass,lep2IsoPass,lep2IsoPassV,lep2IsoPassM,lep2IsoPassT,lep2IsoDeepL,lep2IsoDeepM,lep2IsoDeepT;
+    bool OS,SS,lep1IsoPass,lep2IsoPassL,lep2IsoPassV,lep2IsoPassM,lep2IsoPassT;
+//    ,lep2IsoDeepL,lep2IsoDeepM,lep2IsoDeepT;
     float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight;
     int nbjet;
     
@@ -142,13 +143,13 @@ int main(int argc, char* argv[]) {
     outTr->Branch("OS",&OS,"OS/O");
     outTr->Branch("SS",&SS,"SS/O");
     outTr->Branch("lep1IsoPass",&lep1IsoPass,"lep1IsoPass/O");
-    outTr->Branch("lep2IsoPass",&lep2IsoPass,"lep2IsoPass/O");
+    outTr->Branch("lep2IsoPassL",&lep2IsoPassL,"lep2IsoPassL/O");
     outTr->Branch("lep2IsoPassV",&lep2IsoPassV,"lep2IsoPassV/O");
     outTr->Branch("lep2IsoPassM",&lep2IsoPassM,"lep2IsoPassM/O");
     outTr->Branch("lep2IsoPassT",&lep2IsoPassT,"lep2IsoPassT/O");
-    outTr->Branch("lep2IsoDeepL",&lep2IsoDeepL,"lep2IsoDeepL/O");
-    outTr->Branch("lep2IsoDeepM",&lep2IsoDeepM,"lep2IsoDeepM/O");
-    outTr->Branch("lep2IsoDeepT",&lep2IsoDeepT,"lep2IsoDeepT/O");
+//    outTr->Branch("lep2IsoDeepL",&lep2IsoDeepL,"lep2IsoDeepL/O");
+//    outTr->Branch("lep2IsoDeepM",&lep2IsoDeepM,"lep2IsoDeepM/O");
+//    outTr->Branch("lep2IsoDeepT",&lep2IsoDeepT,"lep2IsoDeepT/O");
     outTr->Branch("vis_mass",&vis_mass,"vis_mass/F");
     outTr->Branch("tmass",&tmass,"tmass/F");
     outTr->Branch("ht",&ht,"ht/F");
@@ -163,7 +164,10 @@ int main(int argc, char* argv[]) {
     outTr->Branch("dR_Z_jet",&dR_Z_jet,"dR_Z_jet/F");
     outTr->Branch("nbjet",&nbjet,"nbjet/I");
     
-    
+    string JetSys="Nominal";
+    if (syst=="JEnTotUp") JetSys="JetTotUp";
+    else if (syst=="JEnTotDown") JetSys="JetTotDown";
+    else std::cout<<"This is nominal Jet\n";
     
     Int_t nentries_wtn = (Int_t) Run_Tree->GetEntries();
     cout<<"nentries_wtn===="<<nentries_wtn<<"\n";
@@ -183,20 +187,30 @@ int main(int argc, char* argv[]) {
         // MET Filters
         // Here we apply MET Filters
         // Here we apply prefire weights
-        
+        if (isData && (metFilters!=0)) continue;
         //=========================================================================================================
         //MET Shape systematics
-        Met=pfMET;
-        Metphi=pfMETPhi;
-        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
-        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
-        if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
-        if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
+//        Met=pfMET;
+//        Metphi=pfMETPhi;
+//        if (syst == "met_JESUp") {Met = met_JESUp; Metphi=metphi_JESUp;}
+//        if (syst == "met_JESDown") {Met = met_JESDown;  Metphi=metphi_JESDown;}
+//        if (syst == "met_UESUp") {Met = met_UESUp;  Metphi=metphi_UESUp;}
+//        if (syst == "met_UESDown") {Met = met_UESDown;  Metphi=metphi_UESDown;}
+//
+//        if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
+//        if (syst == "met_resp_Up") {Met = met_resp_Up; Metphi=metphi_resp_Up;}
+//        if (syst == "met_reso_Down") {Met = met_reso_Down; Metphi=metphi_reso_Down;}
+//        if (syst == "met_resp_Down") {Met = met_resp_Down; Metphi=metphi_resp_Down;}
+//
+        Met=pfMetNoRecoil;
+        Metphi=pfMetPhiNoRecoil;
+        
+        if (syst == "MissingEn_JESUp") {Met = pfMET_T1JESUp; Metphi=pfMETPhi_T1JESUp; m_sv=m_sv_JES_Up ;}
+        if (syst == "MissingEn_JESDown") {Met = pfMET_T1JESDo;  Metphi=pfMETPhi_T1JESDo; m_sv=m_sv_JES_Down ;}
+        if (syst == "MissingEn_UESUp") {Met = pfMET_T1UESUp;  Metphi=pfMETPhi_T1UESUp; m_sv=m_sv_UES_Up ;}
+        if (syst == "MissingEn_UESDown") {Met = pfMET_T1UESDo;  Metphi=pfMETPhi_T1UESDo; m_sv=m_sv_UES_Down ;}
 
-        if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
-        if (syst == "met_resp_Up") {Met = met_resp_Up; Metphi=metphi_resp_Up;}
-        if (syst == "met_reso_Down") {Met = met_reso_Down; Metphi=metphi_reso_Down;}
-        if (syst == "met_resp_Down") {Met = met_resp_Down; Metphi=metphi_resp_Down;}
+
         
         TLorentzVector Mu4Momentum,Tau4Momentum, Z4Momentum, Met4Momentum;
         //=========================================================================================================
@@ -212,7 +226,7 @@ int main(int argc, char* argv[]) {
             IsoLep1Value= ( muPFChIso->at(idx_lep) + muPFNeuIso->at(idx_lep) + muPFPhoIso->at(idx_lep) - 0.5* muPFPUIso->at(idx_lep))/muPt->at(idx_lep);
         
         
-        if (muPt->at(idx_lep) < 30 || fabs(muEta->at(idx_lep)) > 2.4) continue;
+        if (muPt->at(idx_lep) < 28 || fabs(muEta->at(idx_lep)) > 2.4) continue;
         
         plotFill("cutFlowTable",2 ,15,0,15);
         
@@ -223,13 +237,13 @@ int main(int argc, char* argv[]) {
         
         plotFill("cutFlowTable",3 ,15,0,15);
         
-        if (muPt->at(idx_lep) < 55  && HLT_Mu27 && Met > 40 ){
+        if (muPt->at(idx_lep) < 52  && HLT_Mu27 && Met > 30 ){
             selectMuon_1 = true;
             MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg27);
             MuIsoCorrection = getCorrFactorMuonIso(year, isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuIso);
             
         }
-        if (muPt->at(idx_lep) >= 55  && HLT_Mu50 ) {
+        if (muPt->at(idx_lep) >= 52  && HLT_Mu50 ) {
             selectMuon_2 = true;
             MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg50);
         }
@@ -254,8 +268,10 @@ int main(int argc, char* argv[]) {
         Met4Momentum.SetPtEtaPhiM(Met, 0, Metphi, 0);
         Z4Momentum=Tau4Momentum+Mu4Momentum;
         TLorentzVector higgs = Tau4Momentum+Mu4Momentum +Met4Momentum;
-        TLorentzVector LeadJet= getLeadJet(Mu4Momentum, Tau4Momentum);
+        if (nJet < 1 ) continue;
+        TLorentzVector LeadJet= getLeadJet(Mu4Momentum, Tau4Momentum,JetSys);
         
+
         dR_lep_lep= Tau4Momentum.DeltaR(Mu4Momentum);
         if( dR_lep_lep > 0.8 || dR_lep_lep < 0.1) continue;
         plotFill("cutFlowTable",6 ,15,0,15);
@@ -268,17 +284,17 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",8 ,15,0,15);
         
         // BJet veto
-        int numBJet=numBJets(BJetPtCut,DeepCSVCut);
+        int numBJet=numBJets(BJetPtCut,DeepCSVCut,JetSys);
         if (numBJet > 0) continue;
         plotFill("cutFlowTable",9 ,15,0,15);
         
         // HT cut
-        ht= getHT(JetPtCut, Mu4Momentum, Tau4Momentum);
+        ht= getHT(JetPtCut, Mu4Momentum, Tau4Momentum, JetSys);
         if (ht < 200) continue;
         plotFill("cutFlowTable",10 ,15,0,15);
         
         // ST definition
-        st= getST(JetPtCut);
+        st= getST(JetPtCut,JetSys);
         
         //electron veto
         int numele =getNumElectron();
@@ -361,35 +377,6 @@ int main(int argc, char* argv[]) {
                     ttbar_rwt= newTopPtReweight(genInfo[5],genInfo[6],year,"ttbarShape_Down" );
                 }
             }
-            
-            
-//            int leadCSV= leadingCSV();
-//            int subLeadCSV= subLeadingCSV(leadCSV);
-//            
-//            if (year==2016){
-//
-//                bjet_weighter  bj_(2016, medium);
-//                bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV));
-//                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "up");
-//                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "down");
-//
-//            }else if (year==2017){
-//
-//                bjet_weighter  bj_(2017, medium);
-//                bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV));
-//                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "up");
-//                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "down");
-//
-//            }else if (year==2018){
-//
-//                bjet_weighter  bj_(2018, medium);
-//                bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV));
-//                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "up");
-//                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "down");
-//            } else{
-//                throw "wrong year name";
-//            }            
-            
         }
         
         plotFill("bjetsWeightOnMC",bjetsWeightOnMC ,200,0,2);
@@ -411,7 +398,7 @@ int main(int argc, char* argv[]) {
         OS = muCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) < 0;
         SS =  muCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) > 0;
         lep1IsoPass= selectMuon_1? IsoLep1Value < LeptonIsoCut : 1;
-        lep2IsoPass= boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassL= boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
         lep2IsoPassV= boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
         lep2IsoPassM= boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
         lep2IsoPassT= boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
