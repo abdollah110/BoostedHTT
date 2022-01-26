@@ -172,6 +172,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             }
             
         
+        float LeadJetPt= Rivet_j1pt;
         
         //emu
         if (genMuVec.size() ==1  && genEleVec.size() ==1 ) {
@@ -186,12 +187,13 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if ( !me_loose && !me_tight && !em_loose && !em_tight ) continue;
             if (Rivet_higgsPt < 250) continue;
             
-            TLorentzVector LeadJet= getLeadJet(genEleVec[0],genMuVec[0], jentry);
+//            TLorentzVector LeadJet= getLeadJet(genEleVec[0],genMuVec[0], jentry);
+            
 
             higpt->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
             higpt_nnlops->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
-            jetpt->Fill(LeadJet.Pt(),LumiWeight * weight_Rivet);
-            jetpt_nnlops->Fill(LeadJet.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            jetpt->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
+            jetpt_nnlops->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
 
         }
         
@@ -217,13 +219,13 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if (!looseMu && !tightMu) continue;
             if (Rivet_higgsPt < 250) continue;
             
-            TLorentzVector LeadJet= getLeadJet(VisibleTau , genMuVec[0], jentry);
+//            TLorentzVector LeadJet= getLeadJet(VisibleTau , genMuVec[0], jentry);
             
             
             higpt->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
             higpt_nnlops->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
-            jetpt->Fill(LeadJet.Pt(),LumiWeight * weight_Rivet);
-            jetpt_nnlops->Fill(LeadJet.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            jetpt->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
+            jetpt_nnlops->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
         }
         
         //etau
@@ -248,13 +250,13 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if (!looseEle && !tightEle) continue;
             if (Rivet_higgsPt < 250) continue;
             
-            TLorentzVector LeadJet= getLeadJet(VisibleTau , genEleVec[0], jentry);
+//            TLorentzVector LeadJet= getLeadJet(VisibleTau , genEleVec[0], jentry);
 
             
             higpt->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
             higpt_nnlops->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
-            jetpt->Fill(LeadJet.Pt(),LumiWeight * weight_Rivet);
-            jetpt_nnlops->Fill(LeadJet.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            jetpt->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
+            jetpt_nnlops->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             
         }
         //tautau
@@ -281,12 +283,12 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             
             if (!tt_ht && !tt_met) continue;
             
-            TLorentzVector LeadJet= getLeadJet(VisibleTau0 , VisibleTau1, jentry);
+//            TLorentzVector LeadJet= getLeadJet(VisibleTau0 , VisibleTau1, jentry);
             
             higpt->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
             higpt_nnlops->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
-            jetpt->Fill(LeadJet.Pt(),LumiWeight * weight_Rivet);
-            jetpt_nnlops->Fill(LeadJet.Pt(),weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            jetpt->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
+            jetpt_nnlops->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             
 //            std::cout<<"Channel is tautau: #mu= "<<genMuVec.size() <<"  #ele= "<<genEleVec.size()<<"\n";
         }
