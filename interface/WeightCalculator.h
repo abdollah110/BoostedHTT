@@ -29,11 +29,25 @@ float TT_FulLep_BR= 0.1061;
 float TT_SemiLep_BR= 0.4392;
 float TT_Had_BR= 0.4544;
 
+float newLumiRatio2016 = 36330./35925.090;
+
 float getLuminsoity(int year, string channel) {
     if (channel.find("tt") != string::npos){
-    if (year == 2016) return 36330.;
-    else if (year == 2017) return 36700;  //    else if (year == 2017) return 41500.; TrimMass triggers not available in Run2017B (reduced luminosity)
-    else if (year == 2018) return 59830.;
+    if (year == 2016) return 35200 * newLumiRatio2016;
+    else if (year == 2017) return 32700;  //    else if (year == 2017) return 41500.; TrimMass triggers not available in Run2017B (reduced luminosity)
+    else if (year == 2018) return 58983;
+    else return 0;
+    }
+    else if (channel.find("et") != string::npos || channel.find("em") != string::npos){
+    if (year == 2016) return 33938.627 * newLumiRatio2016;
+    else if (year == 2017) return 41145.516;
+    else if (year == 2018) return 53496.401;
+    else return 0;
+    }
+    else if (channel.find("mt") != string::npos || channel.find("me") != string::npos ){
+    if (year == 2016) return 34610.531 * newLumiRatio2016;
+    else if (year == 2017) return 39672.458;  //    else if (year == 2017) return 41500.; TrimMass triggers not available in Run2017B (reduced luminosity)
+    else if (year == 2018) return 57046.368;
     else return 0;
     }
     else{
@@ -42,12 +56,26 @@ float getLuminsoity(int year, string channel) {
     }
 }
 
-float getLuminsoity(int year) {
-    if (year == 2016) return 36330.;
-    else if (year == 2017) return 41480.;
-    else if (year == 2018) return 59830.;
-    else return 0;
-}
+
+//float getLuminsoity(int year, string channel) {
+//    if (channel.find("tt") != string::npos){
+//    if (year == 2016) return 36330.;
+//    else if (year == 2017) return 36700;  //    else if (year == 2017) return 41500.; TrimMass triggers not available in Run2017B (reduced luminosity)
+//    else if (year == 2018) return 59830.;
+//    else return 0;
+//    }
+//    else{
+//    cout<<"channel is not recognized \n";
+//    return 0;
+//    }
+//}
+
+//float getLuminsoity(int year) {
+//    if (year == 2016) return 36330.;
+//    else if (year == 2017) return 41480.;
+//    else if (year == 2018) return 59830.;
+//    else return 0;
+//}
 
 float XSection(std::string OutName) {
 

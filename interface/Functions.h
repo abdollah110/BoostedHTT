@@ -448,7 +448,7 @@ float FuncBosonKFactor(std::string X){
 //
 //        if (tauPt->at(itau) < 20  || fabs(tauEta->at(itau)) > 2.3 ) continue;
 //
-//        bool TauIdIso =  taupfTausDiscriminationByDecayModeFinding->at(itau) > 0.5 && tauByLooseMuonRejection3->at(itau) > 0 && tauByMVA6LooseElectronRejection->at(itau) > 0 && tauByLooseIsolationMVArun2v1DBoldDMwLT->at(itau) > 0;
+//        bool TauIdIso =  taupfTausDiscriminationByDecayModeFinding->at(itau) > 0.5 && tauByLooseMuonRejection3->at(itau) > 0 && tauByMVA6LooseElectronRejection->at(itau) > 0 && tauByLooseIsolationMVArun2v1DBnewDMwLT->at(itau) > 0;
 //
 //        if (!TauIdIso) continue;
 //        numTau++;
@@ -469,7 +469,7 @@ bool MatchedBoostedTauId(TLorentzVector Object4Momentum){
     for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
         BoostTau4Mom.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
         if(BoostTau4Mom.DeltaR(Object4Momentum) < dR_ ){
-            passVLooseIsolation = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau);
+            passVLooseIsolation = boostedTauByVLooseIsolationMVArun2v1DBnewDMwLTNew->at(ibtau);
             dR_=BoostTau4Mom.DeltaR(Object4Momentum);
         }
     }
@@ -484,7 +484,7 @@ float MatchedBoostedTauIsolation(TLorentzVector Object4Momentum){
     for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
         BoostTau4Mom.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
         if(BoostTau4Mom.DeltaR(Object4Momentum) < dR_ ){
-            BoostTauIsoVar = boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau);
+            BoostTauIsoVar = boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(ibtau);
             dR_=BoostTau4Mom.DeltaR(Object4Momentum);
         }
     }
@@ -740,8 +740,8 @@ float compTopPtWeight(float top1Pt, float top2Pt) {
 //        }
 //    }
 //    matcdedRecoTau.push_back(LowestDR);
-//    matcdedRecoTau.push_back(tauByIsolationMVArun2v1DBoldDMwLTraw->at(index));
-//    matcdedRecoTau.push_back(tauByIsolationMVArun2v2DBoldDMwLTraw->at(index));
+//    matcdedRecoTau.push_back(tauByIsolationMVArun2v1DBnewDMwLTraw->at(index));
+//    matcdedRecoTau.push_back(tauByIsolationMVArun2v2DBnewDMwLTraw->at(index));
 //    matcdedRecoTau.push_back(tauPt->at(index));
 //    matcdedRecoTau.push_back(tauEta->at(index));
 //    matcdedRecoTau.push_back(tauCombinedIsolationDeltaBetaCorrRaw3Hits->at(index));
@@ -770,6 +770,25 @@ TLorentzVector getMatchedGenTau(TLorentzVector recoTau){
     }
     return SelectedGenTau;
 }
+
+bool isMatchedToGenTau(TLorentzVector recoTau){
+    
+    bool hasMatchedToGenTau = false;
+    TLorentzVector genTau;
+    TLorentzVector SelectedGenTau;
+    float LowestDR=0.5;
+    for (int igen=0; igen < nMC; igen++){
+        
+        if ( fabs(mcPID->at(igen)) ==15){
+            genTau.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+            float dr_gen_reco= recoTau.DeltaR(genTau);
+            if (dr_gen_reco < LowestDR)
+                hasMatchedToGenTau= true;
+        }
+    }
+    return hasMatchedToGenTau;
+}
+
 
 
 float GetHiggsPt(){
