@@ -398,10 +398,10 @@ int main(int argc, char* argv[]) {
         OS = muCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) < 0;
         SS =  muCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) > 0;
         lep1IsoPass= selectMuon_1? IsoLep1Value < LeptonIsoCut : 1;
-        lep2IsoPassL= boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
-        lep2IsoPassV= boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
-        lep2IsoPassM= boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
-        lep2IsoPassT= boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassL= boostedTauByLooseIsolationMVArun2v1DBnewDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassV= boostedTauByVLooseIsolationMVArun2v1DBnewDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassM= boostedTauByMediumIsolationMVArun2v1DBnewDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassT= boostedTauByTightIsolationMVArun2v1DBnewDMwLTNew->at(idx_tau) > 0.5 ;
 //        lep2IsoDeepL= boostedTaubyLooseDeepTau2017v1VSjet->at(idx_tau) > 0.5 ;
 //        lep2IsoDeepM= boostedTaubyMediumDeepTau2017v1VSjet->at(idx_tau) > 0.5 ;
 //        lep2IsoDeepT= boostedTaubyTightDeepTau2017v1VSjet->at(idx_tau) > 0.5 ;
@@ -410,7 +410,7 @@ int main(int argc, char* argv[]) {
         vis_mass=Z4Momentum.M();
         LeadJetPt = LeadJet.Pt();
         dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
-        BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_tau);
+        BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBnewDMwLTraw->at(idx_tau);
         m_sv_=m_sv;
         //  Weights
         FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt;

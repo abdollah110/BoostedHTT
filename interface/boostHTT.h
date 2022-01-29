@@ -22,9 +22,8 @@ using namespace std;
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
-   // Declaration of leaf types
    Int_t           run;
-   Long64_t        event__;
+   Long64_t        event;
    Int_t           lumis;
    Bool_t          isData;
    Int_t           year;
@@ -62,6 +61,14 @@ using namespace std;
    Float_t         Rivet_stage1_cat_pTjet25GeV;
    Float_t         Rivet_stage1_1_cat_pTjet30GeV;
    Float_t         Rivet_stage1_1_cat_pTjet25GeV;
+   Float_t         Rivet_j1pt;
+   Float_t         Rivet_j1eta;
+   Float_t         Rivet_j1phi;
+   Float_t         Rivet_j1m;
+   Float_t         Rivet_j2pt;
+   Float_t         Rivet_j2eta;
+   Float_t         Rivet_j2phi;
+   Float_t         Rivet_j2m;
    Int_t           nMC;
    vector<int>     *mcPID;
    vector<float>   *mcPt;
@@ -189,19 +196,19 @@ using namespace std;
    vector<float>   *jetRawEn;
    vector<float>   *jetMt;
    vector<float>   *jetArea;
-   vector<float>   *jetLeadTrackPt;
-   vector<float>   *jetLeadTrackEta;
-   vector<float>   *jetLeadTrackPhi;
    vector<float>   *jetCSV2BJetTags;
    vector<float>   *jetDeepCSVTags_b;
    vector<float>   *jetDeepCSVTags_bb;
    vector<float>   *jetDeepCSVTags_c;
    vector<float>   *jetDeepCSVTags_udsg;
+   vector<float>   *jetprobb;
+   vector<float>   *jetprobbb;
+   vector<float>   *jetproblepb;
+   vector<float>   *jetprobc;
+   vector<float>   *jetprobuds;
+   vector<float>   *jetprobg;
    vector<int>     *jetPartonID;
    vector<int>     *jetHadFlvr;
-   vector<float>   *jetP4Smear;
-   vector<float>   *jetP4SmearUp;
-   vector<float>   *jetP4SmearDo;
    vector<bool>    *jetPFLooseId;
    vector<int>     *jetID;
    vector<float>   *jetPUID;
@@ -209,13 +216,6 @@ using namespace std;
    vector<float>   *jetJECUnc;
    vector<float>   *jetTotal;
    vector<ULong64_t> *jetFiredTrgs;
-   vector<float>   *jetCHF;
-   vector<float>   *jetNHF;
-   vector<float>   *jetCEF;
-   vector<float>   *jetNEF;
-   vector<int>     *jetNCH;
-   vector<int>     *jetNNP;
-   vector<float>   *jetMUF;
    Int_t           nBoostedTau;
    Int_t           nBoostedTauOrig;
    vector<bool>    *boostedTaupfTausDiscriminationByDecayModeFinding;
@@ -226,14 +226,20 @@ using namespace std;
    vector<bool>    *boostedTauByTightMuonRejection3;
    vector<float>   *boostedTauCombinedIsolationDeltaBetaCorrRaw3Hits;
    vector<float>   *boostedTauByIsolationMVArun2v1DBoldDMwLTraw;
-   vector<float>   *boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew;
-   vector<bool>    *boostedTauByTightIsolationMVArun2v1DBoldDMwLT;
-   vector<bool>    *boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew;
-   vector<bool>    *boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew;
-   vector<bool>    *boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew;
-   vector<bool>    *boostedTauByVTightIsolationMVArun2v1DBoldDMwLTNew;
    vector<bool>    *boostedTauByLooseIsolationMVArun2v1DBoldDMwLT;
+   vector<bool>    *boostedTauByTightIsolationMVArun2v1DBoldDMwLT;
+   vector<float>   *boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew;
+   vector<bool>    *boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew;
    vector<bool>    *boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew;
+   vector<bool>    *boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew;
+   vector<bool>    *boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew;
+   vector<bool>    *boostedTauByVTightIsolationMVArun2v1DBoldDMwLTNew;
+   vector<float>   *boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew;
+   vector<bool>    *boostedTauByVLooseIsolationMVArun2v1DBnewDMwLTNew;
+   vector<bool>    *boostedTauByLooseIsolationMVArun2v1DBnewDMwLTNew;
+   vector<bool>    *boostedTauByMediumIsolationMVArun2v1DBnewDMwLTNew;
+   vector<bool>    *boostedTauByTightIsolationMVArun2v1DBnewDMwLTNew;
+   vector<bool>    *boostedTauByVTightIsolationMVArun2v1DBnewDMwLTNew;
    vector<float>   *boostedTauEta;
    vector<float>   *boostedTauPhi;
    vector<float>   *boostedTauPt;
@@ -301,11 +307,17 @@ using namespace std;
    vector<float>   *AK8puppiMass;
    vector<float>   *AK8puppiEta;
    vector<float>   *AK8puppiPhi;
+   vector<float>   *AK8puppiTau1;
+   vector<float>   *AK8puppiTau2;
+   vector<float>   *AK8puppiTau3;
+   vector<float>   *ak8PFJetsCHSValueMapPt;
+   vector<float>   *ak8PFJetsCHSValueMapMass;
    vector<float>   *AK8puppiSDL2L3corr;
    vector<float>   *AK8puppiSDMass;
    vector<float>   *AK8puppiSDMassL2L3Corr;
    vector<int>     *AK8JetPartonID;
    vector<int>     *AK8JetHadFlvr;
+   vector<float>   *AK8JetGenJetPt;
    vector<int>     *nAK8SDSJ;
    vector<vector<float> > *AK8SDSJPt;
    vector<vector<float> > *AK8SDSJEta;
@@ -361,6 +373,7 @@ using namespace std;
    Float_t         m_sv_TES_Down;
    Float_t         pt_sv_TES_Down;
       // List of branches
+   // List of branches
    TBranch        *b_run;   //!
    TBranch        *b_event;   //!
    TBranch        *b_lumis;   //!
@@ -400,6 +413,14 @@ using namespace std;
    TBranch        *b_Rivet_stage1_cat_pTjet25GeV;   //!
    TBranch        *b_Rivet_stage1_1_cat_pTjet30GeV;   //!
    TBranch        *b_Rivet_stage1_1_cat_pTjet25GeV;   //!
+   TBranch        *b_Rivet_j1pt;   //!
+   TBranch        *b_Rivet_j1eta;   //!
+   TBranch        *b_Rivet_j1phi;   //!
+   TBranch        *b_Rivet_j1m;   //!
+   TBranch        *b_Rivet_j2pt;   //!
+   TBranch        *b_Rivet_j2eta;   //!
+   TBranch        *b_Rivet_j2phi;   //!
+   TBranch        *b_Rivet_j2m;   //!
    TBranch        *b_nMC;   //!
    TBranch        *b_mcPID;   //!
    TBranch        *b_mcPt;   //!
@@ -527,19 +548,19 @@ using namespace std;
    TBranch        *b_jetRawEn;   //!
    TBranch        *b_jetMt;   //!
    TBranch        *b_jetArea;   //!
-   TBranch        *b_jetLeadTrackPt;   //!
-   TBranch        *b_jetLeadTrackEta;   //!
-   TBranch        *b_jetLeadTrackPhi;   //!
    TBranch        *b_jetCSV2BJetTags;   //!
    TBranch        *b_jetDeepCSVTags_b;   //!
    TBranch        *b_jetDeepCSVTags_bb;   //!
    TBranch        *b_jetDeepCSVTags_c;   //!
    TBranch        *b_jetDeepCSVTags_udsg;   //!
+   TBranch        *b_jetprobb;   //!
+   TBranch        *b_jetprobbb;   //!
+   TBranch        *b_jetproblepb;   //!
+   TBranch        *b_jetprobc;   //!
+   TBranch        *b_jetprobuds;   //!
+   TBranch        *b_jetprobg;   //!
    TBranch        *b_jetPartonID;   //!
    TBranch        *b_jetHadFlvr;   //!
-   TBranch        *b_jetP4Smear;   //!
-   TBranch        *b_jetP4SmearUp;   //!
-   TBranch        *b_jetP4SmearDo;   //!
    TBranch        *b_jetPFLooseId;   //!
    TBranch        *b_jetID;   //!
    TBranch        *b_jetPUID;   //!
@@ -547,13 +568,6 @@ using namespace std;
    TBranch        *b_jetJECUnc;   //!
    TBranch        *b_jetTotal;   //!
    TBranch        *b_jetFiredTrgs;   //!
-   TBranch        *b_jetCHF;   //!
-   TBranch        *b_jetNHF;   //!
-   TBranch        *b_jetCEF;   //!
-   TBranch        *b_jetNEF;   //!
-   TBranch        *b_jetNCH;   //!
-   TBranch        *b_jetNNP;   //!
-   TBranch        *b_jetMUF;   //!
    TBranch        *b_nBoostedTau;   //!
    TBranch        *b_nBoostedTauOrig;   //!
    TBranch        *b_boostedTaupfTausDiscriminationByDecayModeFinding;   //!
@@ -564,14 +578,20 @@ using namespace std;
    TBranch        *b_boostedTauByTightMuonRejection3;   //!
    TBranch        *b_boostedTauCombinedIsolationDeltaBetaCorrRaw3Hits;   //!
    TBranch        *b_boostedTauByIsolationMVArun2v1DBoldDMwLTraw;   //!
-   TBranch        *b_boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew;   //!
-   TBranch        *b_boostedTauByTightIsolationMVArun2v1DBoldDMwLT;   //!
-   TBranch        *b_boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew;   //!
-   TBranch        *b_boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew;   //!
-   TBranch        *b_boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew;   //!
-   TBranch        *b_boostedTauByVTightIsolationMVArun2v1DBoldDMwLTNew;   //!
    TBranch        *b_boostedTauByLooseIsolationMVArun2v1DBoldDMwLT;   //!
+   TBranch        *b_boostedTauByTightIsolationMVArun2v1DBoldDMwLT;   //!
+   TBranch        *b_boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew;   //!
+   TBranch        *b_boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew;   //!
    TBranch        *b_boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew;   //!
+   TBranch        *b_boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew;   //!
+   TBranch        *b_boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew;   //!
+   TBranch        *b_boostedTauByVTightIsolationMVArun2v1DBoldDMwLTNew;   //!
+   TBranch        *b_boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew;   //!
+   TBranch        *b_boostedTauByVLooseIsolationMVArun2v1DBnewDMwLTNew;   //!
+   TBranch        *b_boostedTauByLooseIsolationMVArun2v1DBnewDMwLTNew;   //!
+   TBranch        *b_boostedTauByMediumIsolationMVArun2v1DBnewDMwLTNew;   //!
+   TBranch        *b_boostedTauByTightIsolationMVArun2v1DBnewDMwLTNew;   //!
+   TBranch        *b_boostedTauByVTightIsolationMVArun2v1DBnewDMwLTNew;   //!
    TBranch        *b_boostedTauEta;   //!
    TBranch        *b_boostedTauPhi;   //!
    TBranch        *b_boostedTauPt;   //!
@@ -639,11 +659,17 @@ using namespace std;
    TBranch        *b_AK8puppiMass;   //!
    TBranch        *b_AK8puppiEta;   //!
    TBranch        *b_AK8puppiPhi;   //!
+   TBranch        *b_AK8puppiTau1;   //!
+   TBranch        *b_AK8puppiTau2;   //!
+   TBranch        *b_AK8puppiTau3;   //!
+   TBranch        *b_ak8PFJetsCHSValueMapPt;   //!
+   TBranch        *b_ak8PFJetsCHSValueMapMass;   //!
    TBranch        *b_AK8puppiSDL2L3corr;   //!
    TBranch        *b_AK8puppiSDMass;   //!
    TBranch        *b_AK8puppiSDMassL2L3Corr;   //!
    TBranch        *b_AK8JetPartonID;   //!
    TBranch        *b_AK8JetHadFlvr;   //!
+   TBranch        *b_AK8JetGenJetPt;   //!
    TBranch        *b_nAK8SDSJ;   //!
    TBranch        *b_AK8SDSJPt;   //!
    TBranch        *b_AK8SDSJEta;   //!
@@ -1020,7 +1046,7 @@ TTree *  Xttree( TFile * f_Double, string channel){
 
 
    fChain->SetBranchAddress("run", &run, &b_run);
-   fChain->SetBranchAddress("event", &event__, &b_event);
+   fChain->SetBranchAddress("event", &event, &b_event);
    fChain->SetBranchAddress("lumis", &lumis, &b_lumis);
    fChain->SetBranchAddress("isData", &isData, &b_isData);
    fChain->SetBranchAddress("year", &year, &b_year);
@@ -1058,6 +1084,14 @@ TTree *  Xttree( TFile * f_Double, string channel){
    fChain->SetBranchAddress("Rivet_stage1_cat_pTjet25GeV", &Rivet_stage1_cat_pTjet25GeV, &b_Rivet_stage1_cat_pTjet25GeV);
    fChain->SetBranchAddress("Rivet_stage1_1_cat_pTjet30GeV", &Rivet_stage1_1_cat_pTjet30GeV, &b_Rivet_stage1_1_cat_pTjet30GeV);
    fChain->SetBranchAddress("Rivet_stage1_1_cat_pTjet25GeV", &Rivet_stage1_1_cat_pTjet25GeV, &b_Rivet_stage1_1_cat_pTjet25GeV);
+   fChain->SetBranchAddress("Rivet_j1pt", &Rivet_j1pt, &b_Rivet_j1pt);
+   fChain->SetBranchAddress("Rivet_j1eta", &Rivet_j1eta, &b_Rivet_j1eta);
+   fChain->SetBranchAddress("Rivet_j1phi", &Rivet_j1phi, &b_Rivet_j1phi);
+   fChain->SetBranchAddress("Rivet_j1m", &Rivet_j1m, &b_Rivet_j1m);
+   fChain->SetBranchAddress("Rivet_j2pt", &Rivet_j2pt, &b_Rivet_j2pt);
+   fChain->SetBranchAddress("Rivet_j2eta", &Rivet_j2eta, &b_Rivet_j2eta);
+   fChain->SetBranchAddress("Rivet_j2phi", &Rivet_j2phi, &b_Rivet_j2phi);
+   fChain->SetBranchAddress("Rivet_j2m", &Rivet_j2m, &b_Rivet_j2m);
    fChain->SetBranchAddress("nMC", &nMC, &b_nMC);
    fChain->SetBranchAddress("mcPID", &mcPID, &b_mcPID);
    fChain->SetBranchAddress("mcPt", &mcPt, &b_mcPt);
@@ -1185,19 +1219,19 @@ TTree *  Xttree( TFile * f_Double, string channel){
    fChain->SetBranchAddress("jetRawEn", &jetRawEn, &b_jetRawEn);
    fChain->SetBranchAddress("jetMt", &jetMt, &b_jetMt);
    fChain->SetBranchAddress("jetArea", &jetArea, &b_jetArea);
-   fChain->SetBranchAddress("jetLeadTrackPt", &jetLeadTrackPt, &b_jetLeadTrackPt);
-   fChain->SetBranchAddress("jetLeadTrackEta", &jetLeadTrackEta, &b_jetLeadTrackEta);
-   fChain->SetBranchAddress("jetLeadTrackPhi", &jetLeadTrackPhi, &b_jetLeadTrackPhi);
    fChain->SetBranchAddress("jetCSV2BJetTags", &jetCSV2BJetTags, &b_jetCSV2BJetTags);
    fChain->SetBranchAddress("jetDeepCSVTags_b", &jetDeepCSVTags_b, &b_jetDeepCSVTags_b);
    fChain->SetBranchAddress("jetDeepCSVTags_bb", &jetDeepCSVTags_bb, &b_jetDeepCSVTags_bb);
    fChain->SetBranchAddress("jetDeepCSVTags_c", &jetDeepCSVTags_c, &b_jetDeepCSVTags_c);
    fChain->SetBranchAddress("jetDeepCSVTags_udsg", &jetDeepCSVTags_udsg, &b_jetDeepCSVTags_udsg);
+   fChain->SetBranchAddress("jetprobb", &jetprobb, &b_jetprobb);
+   fChain->SetBranchAddress("jetprobbb", &jetprobbb, &b_jetprobbb);
+   fChain->SetBranchAddress("jetproblepb", &jetproblepb, &b_jetproblepb);
+   fChain->SetBranchAddress("jetprobc", &jetprobc, &b_jetprobc);
+   fChain->SetBranchAddress("jetprobuds", &jetprobuds, &b_jetprobuds);
+   fChain->SetBranchAddress("jetprobg", &jetprobg, &b_jetprobg);
    fChain->SetBranchAddress("jetPartonID", &jetPartonID, &b_jetPartonID);
    fChain->SetBranchAddress("jetHadFlvr", &jetHadFlvr, &b_jetHadFlvr);
-   fChain->SetBranchAddress("jetP4Smear", &jetP4Smear, &b_jetP4Smear);
-   fChain->SetBranchAddress("jetP4SmearUp", &jetP4SmearUp, &b_jetP4SmearUp);
-   fChain->SetBranchAddress("jetP4SmearDo", &jetP4SmearDo, &b_jetP4SmearDo);
    fChain->SetBranchAddress("jetPFLooseId", &jetPFLooseId, &b_jetPFLooseId);
    fChain->SetBranchAddress("jetID", &jetID, &b_jetID);
    fChain->SetBranchAddress("jetPUID", &jetPUID, &b_jetPUID);
@@ -1205,13 +1239,6 @@ TTree *  Xttree( TFile * f_Double, string channel){
    fChain->SetBranchAddress("jetJECUnc", &jetJECUnc, &b_jetJECUnc);
    fChain->SetBranchAddress("jetTotal", &jetTotal, &b_jetTotal);
    fChain->SetBranchAddress("jetFiredTrgs", &jetFiredTrgs, &b_jetFiredTrgs);
-   fChain->SetBranchAddress("jetCHF", &jetCHF, &b_jetCHF);
-   fChain->SetBranchAddress("jetNHF", &jetNHF, &b_jetNHF);
-   fChain->SetBranchAddress("jetCEF", &jetCEF, &b_jetCEF);
-   fChain->SetBranchAddress("jetNEF", &jetNEF, &b_jetNEF);
-   fChain->SetBranchAddress("jetNCH", &jetNCH, &b_jetNCH);
-   fChain->SetBranchAddress("jetNNP", &jetNNP, &b_jetNNP);
-   fChain->SetBranchAddress("jetMUF", &jetMUF, &b_jetMUF);
    fChain->SetBranchAddress("nBoostedTau", &nBoostedTau, &b_nBoostedTau);
    fChain->SetBranchAddress("nBoostedTauOrig", &nBoostedTauOrig, &b_nBoostedTauOrig);
    fChain->SetBranchAddress("boostedTaupfTausDiscriminationByDecayModeFinding", &boostedTaupfTausDiscriminationByDecayModeFinding, &b_boostedTaupfTausDiscriminationByDecayModeFinding);
@@ -1222,14 +1249,20 @@ TTree *  Xttree( TFile * f_Double, string channel){
    fChain->SetBranchAddress("boostedTauByTightMuonRejection3", &boostedTauByTightMuonRejection3, &b_boostedTauByTightMuonRejection3);
    fChain->SetBranchAddress("boostedTauCombinedIsolationDeltaBetaCorrRaw3Hits", &boostedTauCombinedIsolationDeltaBetaCorrRaw3Hits, &b_boostedTauCombinedIsolationDeltaBetaCorrRaw3Hits);
    fChain->SetBranchAddress("boostedTauByIsolationMVArun2v1DBoldDMwLTraw", &boostedTauByIsolationMVArun2v1DBoldDMwLTraw, &b_boostedTauByIsolationMVArun2v1DBoldDMwLTraw);
-   fChain->SetBranchAddress("boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew", &boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew, &b_boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew);
-   fChain->SetBranchAddress("boostedTauByTightIsolationMVArun2v1DBoldDMwLT", &boostedTauByTightIsolationMVArun2v1DBoldDMwLT, &b_boostedTauByTightIsolationMVArun2v1DBoldDMwLT);
-   fChain->SetBranchAddress("boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew", &boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew, &b_boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew);
-   fChain->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew", &boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew, &b_boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew);
-   fChain->SetBranchAddress("boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew", &boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew, &b_boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew);
-   fChain->SetBranchAddress("boostedTauByVTightIsolationMVArun2v1DBoldDMwLTNew", &boostedTauByVTightIsolationMVArun2v1DBoldDMwLTNew, &b_boostedTauByVTightIsolationMVArun2v1DBoldDMwLTNew);
    fChain->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBoldDMwLT", &boostedTauByLooseIsolationMVArun2v1DBoldDMwLT, &b_boostedTauByLooseIsolationMVArun2v1DBoldDMwLT);
+   fChain->SetBranchAddress("boostedTauByTightIsolationMVArun2v1DBoldDMwLT", &boostedTauByTightIsolationMVArun2v1DBoldDMwLT, &b_boostedTauByTightIsolationMVArun2v1DBoldDMwLT);
+   fChain->SetBranchAddress("boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew", &boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew, &b_boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew);
+   fChain->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew", &boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew, &b_boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew);
    fChain->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew", &boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew, &b_boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew);
+   fChain->SetBranchAddress("boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew", &boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew, &b_boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew);
+   fChain->SetBranchAddress("boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew", &boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew, &b_boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew);
+   fChain->SetBranchAddress("boostedTauByVTightIsolationMVArun2v1DBoldDMwLTNew", &boostedTauByVTightIsolationMVArun2v1DBoldDMwLTNew, &b_boostedTauByVTightIsolationMVArun2v1DBoldDMwLTNew);
+   fChain->SetBranchAddress("boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew", &boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew, &b_boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew);
+   fChain->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v1DBnewDMwLTNew", &boostedTauByVLooseIsolationMVArun2v1DBnewDMwLTNew, &b_boostedTauByVLooseIsolationMVArun2v1DBnewDMwLTNew);
+   fChain->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBnewDMwLTNew", &boostedTauByLooseIsolationMVArun2v1DBnewDMwLTNew, &b_boostedTauByLooseIsolationMVArun2v1DBnewDMwLTNew);
+   fChain->SetBranchAddress("boostedTauByMediumIsolationMVArun2v1DBnewDMwLTNew", &boostedTauByMediumIsolationMVArun2v1DBnewDMwLTNew, &b_boostedTauByMediumIsolationMVArun2v1DBnewDMwLTNew);
+   fChain->SetBranchAddress("boostedTauByTightIsolationMVArun2v1DBnewDMwLTNew", &boostedTauByTightIsolationMVArun2v1DBnewDMwLTNew, &b_boostedTauByTightIsolationMVArun2v1DBnewDMwLTNew);
+   fChain->SetBranchAddress("boostedTauByVTightIsolationMVArun2v1DBnewDMwLTNew", &boostedTauByVTightIsolationMVArun2v1DBnewDMwLTNew, &b_boostedTauByVTightIsolationMVArun2v1DBnewDMwLTNew);
    fChain->SetBranchAddress("boostedTauEta", &boostedTauEta, &b_boostedTauEta);
    fChain->SetBranchAddress("boostedTauPhi", &boostedTauPhi, &b_boostedTauPhi);
    fChain->SetBranchAddress("boostedTauPt", &boostedTauPt, &b_boostedTauPt);
@@ -1297,11 +1330,17 @@ TTree *  Xttree( TFile * f_Double, string channel){
    fChain->SetBranchAddress("AK8puppiMass", &AK8puppiMass, &b_AK8puppiMass);
    fChain->SetBranchAddress("AK8puppiEta", &AK8puppiEta, &b_AK8puppiEta);
    fChain->SetBranchAddress("AK8puppiPhi", &AK8puppiPhi, &b_AK8puppiPhi);
+   fChain->SetBranchAddress("AK8puppiTau1", &AK8puppiTau1, &b_AK8puppiTau1);
+   fChain->SetBranchAddress("AK8puppiTau2", &AK8puppiTau2, &b_AK8puppiTau2);
+   fChain->SetBranchAddress("AK8puppiTau3", &AK8puppiTau3, &b_AK8puppiTau3);
+   fChain->SetBranchAddress("ak8PFJetsCHSValueMapPt", &ak8PFJetsCHSValueMapPt, &b_ak8PFJetsCHSValueMapPt);
+   fChain->SetBranchAddress("ak8PFJetsCHSValueMapMass", &ak8PFJetsCHSValueMapMass, &b_ak8PFJetsCHSValueMapMass);
    fChain->SetBranchAddress("AK8puppiSDL2L3corr", &AK8puppiSDL2L3corr, &b_AK8puppiSDL2L3corr);
    fChain->SetBranchAddress("AK8puppiSDMass", &AK8puppiSDMass, &b_AK8puppiSDMass);
    fChain->SetBranchAddress("AK8puppiSDMassL2L3Corr", &AK8puppiSDMassL2L3Corr, &b_AK8puppiSDMassL2L3Corr);
    fChain->SetBranchAddress("AK8JetPartonID", &AK8JetPartonID, &b_AK8JetPartonID);
    fChain->SetBranchAddress("AK8JetHadFlvr", &AK8JetHadFlvr, &b_AK8JetHadFlvr);
+   fChain->SetBranchAddress("AK8JetGenJetPt", &AK8JetGenJetPt, &b_AK8JetGenJetPt);
    fChain->SetBranchAddress("nAK8SDSJ", &nAK8SDSJ, &b_nAK8SDSJ);
    fChain->SetBranchAddress("AK8SDSJPt", &AK8SDSJPt, &b_AK8SDSJPt);
    fChain->SetBranchAddress("AK8SDSJEta", &AK8SDSJEta, &b_AK8SDSJEta);

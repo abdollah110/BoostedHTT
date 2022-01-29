@@ -151,9 +151,10 @@ int main(int argc, char* argv[]) {
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
     bool OS,SS,lep1IsoPass,lep2IsoPassL,lep2IsoPassV,lep2IsoPassM,lep2IsoPassT;
-    float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight, gen_higgs_pT;
+    float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight, gen_higgs_pT, gen_leadjet_pT;
     float MuMatchedIsolation= -1; float EleMatchedIsolation =-1;
     int nbjet;
+    bool isGenTau_;
     bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
 
     outTr->Branch("Chan_emu",&Chan_emu,"Chan_emu/O");
@@ -190,8 +191,10 @@ int main(int argc, char* argv[]) {
     outTr->Branch("dR_Z_jet",&dR_Z_jet,"dR_Z_jet/F");
     outTr->Branch("nbjet",&nbjet,"nbjet/I");
     outTr->Branch("gen_higgs_pT",&gen_higgs_pT,"gen_higgs_pT/F");
+    outTr->Branch("gen_leadjet_pT",&gen_leadjet_pT,"gen_leadjet_pT/F");
     outTr->Branch("MuMatchedIsolation",&MuMatchedIsolation,"MuMatchedIsolation/F");
     outTr->Branch("EleMatchedIsolation",&EleMatchedIsolation,"EleMatchedIsolation/F");
+    outTr->Branch("isGenTau_",&isGenTau_,"isGenTau_/O");
 
     
     string JetSys="Nominal";
@@ -230,8 +233,8 @@ int main(int argc, char* argv[]) {
         if (syst == "MissingEn_UESUp") {Met = pfMET_T1UESUp;  Metphi=pfMETPhi_T1UESUp; m_sv=m_sv_UES_Up ;}
         if (syst == "MissingEn_UESDown") {Met = pfMET_T1UESDo;  Metphi=pfMETPhi_T1UESDo; m_sv=m_sv_UES_Down ;}
 
-        if (syst == "TESUp") {m_sv=m_sv_TES_Up ;}
-        if (syst == "TESDown") {m_sv=m_sv_TES_Down ;}
+//        if (syst == "TESUp") {m_sv=m_sv_TES_Up ;}
+//        if (syst == "TESDown") {m_sv=m_sv_TES_Down ;}
 
 //        if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
 //        if (syst == "met_resp_Up") {Met = met_resp_Up; Metphi=metphi_resp_Up;}
@@ -292,14 +295,15 @@ int main(int argc, char* argv[]) {
         int idx_tau= tauIndex;
         // pt from 30 to 20
         Tau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
-        if (syst == "TESUp") {Tau4Momentum *= 1+0.03 ;}
-        if (syst == "TESDown") {Tau4Momentum *= 1-0.03 ;}
+        bool isGenTau= isMatchedToGenTau(Tau4Momentum);
+        if (syst == "TESUp" && isGenTau) {Tau4Momentum *= 1+0.03 ; m_sv=m_sv_TES_Up ;}
+        if (syst == "TESDown" && isGenTau) {Tau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
 
         if (Tau4Momentum.Pt() <= 30 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_tau) < 0.5 ) continue;
         //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_tau) < 0.5) continue;
         if (boostedTauByLooseMuonRejection3->at(idx_tau) < 0.5) continue;
-        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_tau) < -0.5) continue;
+        if (boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(idx_tau) < -0.5) continue;
 
 
         plotFill("cutFlowTable",5 ,15,0,15);
@@ -359,7 +363,7 @@ int main(int argc, char* argv[]) {
         if (!isData){
             
             // Lumi weight
-            LumiWeight = getLuminsoity(year) * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
+            LumiWeight = getLuminsoity(year,"mt") * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
             
             float PUMC_=HistoPUMC->GetBinContent(puTrue->at(0)+1);
             float PUData_=HistoPUData->GetBinContent(puTrue->at(0)+1);
@@ -488,22 +492,23 @@ int main(int argc, char* argv[]) {
         OS = muCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) < 0;
         SS =  muCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) > 0;
         lep1IsoPass= selectMuon_1? IsoLep1Value < LeptonIsoCut : 1;
-        lep2IsoPassL= boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
-        lep2IsoPassV= boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
-        lep2IsoPassM= boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
-        lep2IsoPassT= boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassL= boostedTauByLooseIsolationMVArun2v1DBnewDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassV= boostedTauByVLooseIsolationMVArun2v1DBnewDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassM= boostedTauByMediumIsolationMVArun2v1DBnewDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassT= boostedTauByTightIsolationMVArun2v1DBnewDMwLTNew->at(idx_tau) > 0.5 ;
         lepPt_=muPt->at(idx_lep);
         taupt_=Tau4Momentum.Pt();
         vis_mass=Z4Momentum.M();
         LeadJetPt = LeadJet.Pt();
         dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
-        BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTraw->at(idx_tau);
+        BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(idx_tau);
         m_sv_=m_sv;
         //  Weights
         FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt* weight_Rivet;
         nbjet=numBJet;
-        gen_higgs_pT = GetHiggsPt();
-
+        gen_higgs_pT = Rivet_higgsPt;
+        gen_leadjet_pT = Rivet_j1pt;
+        isGenTau_=isGenTau;
         //  fiducial info
         FidSelection fiducial = PassFoducial();
         Chan_emu = fiducial.emu ;

@@ -164,7 +164,7 @@ int main(int argc, char* argv[]) {
         
         for (int imu = 0; imu < nMu; ++imu){
             
-            if (muPt->at(imu) <= 30 || fabs(muEta->at(imu)) >= 2.4) continue;
+            if (muPt->at(imu) <= 28 || fabs(muEta->at(imu)) >= 2.4) continue;
             bool MuId=( (muIDbit->at(imu) >> 2 & 1)  && fabs(muD0->at(imu)) < 0.045 && fabs(muDz->at(imu)) < 0.2);
             if (!MuId ) continue;
             
@@ -189,7 +189,7 @@ int main(int argc, char* argv[]) {
                 if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
                 //                    if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
-                if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < -0.5) continue;
+                if (boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(ibtau) < -0.5) continue;
                 if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5) continue;
                 if (boostedTauagainstElectronVLooseMVA62018->at(ibtau) < 0.5) continue;
                 
@@ -264,27 +264,27 @@ int main(int argc, char* argv[]) {
                 plotFill("denum_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                 plotFill("denum_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
                 
-                if (boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
+                if (boostedTauByVLooseIsolationMVArun2v1DBnewDMwLTNew->at(ibtau) > 0.5){
                     plotFill("numVLoose"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                     plotFill("numVLoose_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                     plotFill("numVLoose_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
                     
                 }
                 
-                if (boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
+                if (boostedTauByLooseIsolationMVArun2v1DBnewDMwLTNew->at(ibtau) > 0.5){
                     plotFill("numLoose"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                     plotFill("numLoose_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                     plotFill("numLoose_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
                     
                 }
-                if (boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
+                if (boostedTauByMediumIsolationMVArun2v1DBnewDMwLTNew->at(ibtau) > 0.5){
                     plotFill("numMedium"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                     plotFill("numMedium_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                     plotFill("numMedium_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
                     
                 }
                 
-                if (boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
+                if (boostedTauByTightIsolationMVArun2v1DBnewDMwLTNew->at(ibtau) > 0.5){
                     plotFill("numTight"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                     plotFill("numTight_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                     plotFill("numTight_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);

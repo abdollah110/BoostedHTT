@@ -148,7 +148,7 @@ int main(int argc, char* argv[]) {
     float LeadJetPt = -10;
     float dR_Z_jet=-10;
     bool OS,SS,lep1IsoPass,lep2IsoPass;
-    float tmass,tmass2, ht,st,Met,FullWeight, dR_lep_lep, Metphi, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight, gen_higgs_pT;
+    float tmass,tmass2, ht,st,Met,FullWeight, dR_lep_lep, Metphi, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight, gen_higgs_pT,gen_leadjet_pT;
     float MuMatchedIsolation= -1; float EleMatchedIsolation =-1;
     float IsoLep1Value, IsoLep2Value, D_zeta;
     int nbjet;
@@ -186,6 +186,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("dR_Z_jet",&dR_Z_jet,"dR_Z_jet/F");
     outTr->Branch("nbjet",&nbjet,"nbjet/I");
     outTr->Branch("gen_higgs_pT",&gen_higgs_pT,"gen_higgs_pT/F");
+    outTr->Branch("gen_leadjet_pT",&gen_leadjet_pT,"gen_leadjet_pT/F");
     outTr->Branch("MuMatchedIsolation",&MuMatchedIsolation,"MuMatchedIsolation/F");
     outTr->Branch("EleMatchedIsolation",&EleMatchedIsolation,"EleMatchedIsolation/F");
     outTr->Branch("D_zeta",&D_zeta,"D_zeta/F");
@@ -398,7 +399,7 @@ int main(int argc, char* argv[]) {
         if (!isData){
             
             // Lumi weight
-            LumiWeight = getLuminsoity(year) * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
+            LumiWeight = getLuminsoity(year,"em") * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
 
             float PUMC_=HistoPUMC->GetBinContent(puTrue->at(0)+1);
             float PUData_=HistoPUData->GetBinContent(puTrue->at(0)+1);
@@ -499,7 +500,8 @@ int main(int argc, char* argv[]) {
         m_sv_=m_sv;
         FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt * weight_Rivet;
         nbjet= numBJet;
-        gen_higgs_pT = GetHiggsPt();
+        gen_higgs_pT = Rivet_higgsPt;
+        gen_leadjet_pT = Rivet_j1pt;
     
         //  fiducial info
         FidSelection fiducial = PassFoducial();
