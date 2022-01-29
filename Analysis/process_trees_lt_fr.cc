@@ -92,7 +92,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         float dR_Z_jet=-10;
         bool lep2IsoPass,lep2IsoPassV, OS,SS,lep1IsoPass,eleIDMVA, lep2IsoPassT,lep2IsoPassL;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
-        float NN_disc,MuMatchedIsolation,EleMatchedIsolation;
+        float NN_disc,MuMatchedIsolation,EleMatchedIsolation,NN_disc_ZTT;
         float BoostedTauRawIso, higgs_pT, higgs_m, m_sv, gen_higgs_pT;
         
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
@@ -112,6 +112,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         tree->SetBranchAddress("dR_lep_lep",&dR_lep_lep);
         tree->SetBranchAddress("evtwt",&weight);
         tree->SetBranchAddress("NN_disc",&NN_disc);
+        tree->SetBranchAddress("NN_disc_ZTT",&NN_disc_ZTT);
         tree->SetBranchAddress("BoostedTauRawIso",&BoostedTauRawIso);
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
         tree->SetBranchAddress("higgs_m",&higgs_m);
@@ -146,6 +147,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 {"higgs_m",higgs_m},
                 {"m_sv",m_sv},
                 {"NN_disc",NN_disc},
+                {"NN_disc_ZTT",NN_disc_ZTT},
                 {"MuMatchedIsolation",MuMatchedIsolation},
                 {"EleMatchedIsolation",EleMatchedIsolation},
                 {"gen_higgs_pT",gen_higgs_pT}
@@ -169,14 +171,17 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             if (OS != 0  && lep1IsoPass && lep2IsoPassV) {
 //            if (SS != 0  && lep1IsoPass && lep2IsoPassV) { // Validation
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
+                hists_2d.at(categories.at(zeroJet)).back()->Fill(NN_disc,NN_disc_ZTT, weight);
                 Histo_2DMatrix.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
             }
             if (OS != 0 && lep1IsoPass && !lep2IsoPassV ){
 //            if (SS != 0 && lep1IsoPass && !lep2IsoPassV ){ // Validation
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu / (1-frValu));
+                fillQCD_Norm(zeroJet, name, NN_disc,NN_disc_ZTT,  weight, frValu / (1-frValu));
             }
             if (SS != 0 && !lep2IsoPassV){
                 fillQCD_Shape(zeroJet, name, vbf_var1,  weight, frValu / (1-frValu));
+                fillQCD_Shape(zeroJet, name, NN_disc,NN_disc_ZTT,  weight, frValu / (1-frValu));
             }
         }
         delete fin;

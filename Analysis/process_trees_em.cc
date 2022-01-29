@@ -95,7 +95,7 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
         float dR_Z_jet=-10;
         bool OS,SS,lep1IsoPass,eleIDMVA, lep2IsoPass;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi, lep2Pt_;
-        float NN_disc,MuMatchedIsolation,EleMatchedIsolation;
+        float NN_disc,MuMatchedIsolation,EleMatchedIsolation,NN_disc_ZTT;
         float higgs_pT, higgs_m, m_sv, gen_higgs_pT;
         
         
@@ -114,6 +114,7 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
         tree->SetBranchAddress("dR_lep_lep",&dR_lep_lep);
         tree->SetBranchAddress("evtwt",&weight);
         tree->SetBranchAddress("NN_disc",&NN_disc);
+        tree->SetBranchAddress("NN_disc_ZTT",&NN_disc_ZTT);
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
         tree->SetBranchAddress("higgs_m",&higgs_m);
         tree->SetBranchAddress("m_sv",&m_sv);
@@ -161,17 +162,20 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
             if (OS != 0  && lep1IsoPass && lep2IsoPass) {
 //            if (OS != 0  && lep1IsoPass ) {
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
+                hists_2d.at(categories.at(zeroJet)).back()->Fill(NN_disc,NN_disc_ZTT,  weight);
                 Histo_2DMatrix.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
             }
 
             if (SS != 0 && lep1IsoPass && lep2IsoPass ){
 //            if (SS != 0 && lep1IsoPass  ){
                 fillQCD_Norm_emu(zeroJet, name, vbf_var1,  weight,meausred_OSSS);
+                fillQCD_Norm_emu(zeroJet, name, NN_disc,NN_disc_ZTT,  weight,meausred_OSSS);
             }
 
             if (SS != 0 ){
 //            if (SS != 0 && lep1IsoPass && lep2IsoPass ){
                 fillQCD_Shape_emu(zeroJet, name, vbf_var1,  weight,meausred_OSSS);
+                fillQCD_Shape_emu(zeroJet, name, NN_disc,NN_disc_ZTT,  weight,meausred_OSSS);
             }
         }
         delete fin;

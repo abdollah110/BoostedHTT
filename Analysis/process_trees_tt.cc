@@ -104,7 +104,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         float LeadJetPt = -10;
         bool lep1IsoPassV, lep2IsoPassV ,OS,SS, lep1IsoPassL, lep2IsoPassL;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
-        float NN_disc,MuMatchedIsolation,EleMatchedIsolation;
+        float NN_disc,MuMatchedIsolation,EleMatchedIsolation,NN_disc_ZTT,NN_disc_QCD;
         float higgs_pT, higgs_m, m_sv, gen_higgs_pT;
         
         
@@ -125,6 +125,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         tree->SetBranchAddress("dR_lep_lep",&dR_lep_lep);
         tree->SetBranchAddress("evtwt",&weight);
         tree->SetBranchAddress("NN_disc",&NN_disc);
+        tree->SetBranchAddress("NN_disc_ZTT",&NN_disc_ZTT);
+        tree->SetBranchAddress("NN_disc_QCD",&NN_disc_QCD);
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
         tree->SetBranchAddress("higgs_m",&higgs_m);
         tree->SetBranchAddress("m_sv",&m_sv);
@@ -153,13 +155,15 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 {"higgs_m",higgs_m},
                 {"m_sv",m_sv},
                 {"NN_disc",NN_disc},
+                {"NN_disc_ZTT",NN_disc_ZTT},
+                {"NN_disc_QCD",NN_disc_QCD},
                 {"MuMatchedIsolation",MuMatchedIsolation},
                 {"EleMatchedIsolation",EleMatchedIsolation}
             };
             
             //            if (higgs_pT < 400) continue;
             
-            //            if (NN_disc < 0.3) continue;
+//            if (NN_disc > 0.5) continue;
             // apply tau Id SF
             if (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("H125")!= string::npos || name.find("JJH125")!= string::npos ) weight *= 0.81;
             
@@ -188,6 +192,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             //            ################################################################################
             if (OS != 0  && lep1IsoPassV && lep2IsoPassV) { // final analysis
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight); // final analysis
+                hists_2d.at(categories.at(zeroJet)).back()->Fill(NN_disc,NN_disc_ZTT,  weight);
                 Histo_2DMatrix.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
             }
             
@@ -204,6 +209,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             //            ################################################################################
             if (OS != 0 && lep1IsoPassV && !lep2IsoPassV ){ // final analysis
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu2 / (1-frValu2));// final analysis
+                fillQCD_Norm(zeroJet, name, NN_disc,NN_disc_ZTT,  weight, frValu2 / (1-frValu2));// final analysis
             }
             
 //             ======= Validation
@@ -219,10 +225,12 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
 //            }
             
             //            ################################################################################
-            //            ################    Estimate QCD Norm
+            //            ################    Estimate QCD Shape
             //            ################################################################################
-            if (SS != 0 && (!lep1IsoPassV || !lep2IsoPassV )){ // final analysis
+//            if (SS != 0 && (!lep1IsoPassV || !lep2IsoPassV )){ // final analysis
+            if (SS != 0 && lep1IsoPassV && !lep2IsoPassV ){ // final analysis
                 fillQCD_Shape(zeroJet, name, vbf_var1,  weight, frValu2 / (1-frValu2)); // final analysis
+                fillQCD_Shape(zeroJet, name, NN_disc,NN_disc_ZTT,  weight, frValu2 / (1-frValu2)); // final analysis
             }
             
             
