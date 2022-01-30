@@ -297,7 +297,7 @@ int main(int argc, char* argv[]) {
         
         
         if (LeadTau4Momentum.Pt() <= 30 || fabs(boostedTauEta->at(idx_leadtau)) >= 2.3 ) continue;
-        if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_leadtau) < 0.5 ) continue;
+        if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(idx_leadtau) < 0.5 ) continue;
         if (boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(idx_leadtau) < -0.5) continue;
         if (boostedTauagainstElectronVLooseMVA62018->at(idx_leadtau) < 0.5) continue;
         if (boostedTauByLooseMuonRejection3->at(idx_leadtau) < 0.5) continue;
@@ -312,7 +312,7 @@ int main(int argc, char* argv[]) {
         if (syst == "TESDown" && isGenTauSub) {SubTau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
         
         if (SubTau4Momentum.Pt() <= 30 || fabs(boostedTauEta->at(idx_subleadtau)) >= 2.3 ) continue;
-        if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_subleadtau) < 0.5 ) continue;
+        if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(idx_subleadtau) < 0.5 ) continue;
         if (boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(idx_subleadtau) < -0.5) continue;
         if (boostedTauagainstElectronVLooseMVA62018->at(idx_subleadtau) < 0.5) continue;
         if (boostedTauByLooseMuonRejection3->at(idx_subleadtau) < 0.5) continue;

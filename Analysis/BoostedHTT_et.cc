@@ -285,7 +285,7 @@ int main(int argc, char* argv[]) {
 
 
         if (Tau4Momentum.Pt() <= 30 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
-        if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_tau) < 0.5 ) continue;
+        if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(idx_tau) < 0.5 ) continue;
         //        if (boostedTauagainstElectronTightMVA62018->at(idx_tau) < 0.5) continue;
         if (boostedTauagainstElectronLooseMVA62018->at(idx_tau) < 0.5) continue;
         if (boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(idx_tau) < -0.5) continue;
