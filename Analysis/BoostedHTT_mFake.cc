@@ -116,6 +116,8 @@ int main(int argc, char* argv[]) {
     if (year== 2017) DeepCSVCut =     0.1522   ;
     if (year== 2018) DeepCSVCut =     0.1241    ;
     
+    string JetSys="Nominal";
+    
     Int_t nentries_wtn = (Int_t) Run_Tree->GetEntries();
     cout<<"nentries_wtn===="<<nentries_wtn<<"\n";
     for (Int_t i = 0; i < nentries_wtn; i++) {
@@ -141,7 +143,7 @@ int main(int argc, char* argv[]) {
         float ZBosonMass=genInfo[4];
         
         // BJet veto
-        int numBJet=numBJets(BJetPtCut,DeepCSVCut);
+        int numBJet=numBJets(BJetPtCut,DeepCSVCut,JetSys);
         if (numBJet > 0) continue;
         
         plotFill("cutFlowTable",3 ,15,0,15);
@@ -155,7 +157,7 @@ int main(int argc, char* argv[]) {
         int nummu =getNumMuon();
         if (nummu > 1) continue;
         plotFill("cutFlowTable",5 ,15,0,15);
-        float st= getST(JetPtCut);
+        float st= getST(JetPtCut,JetSys);
         //############################################################################################
         //###########       Loop over MuJet events   #################################################
         //############################################################################################
@@ -216,7 +218,7 @@ int main(int argc, char* argv[]) {
                 if (!isData){
                     
                     // Lumi weight
-                    LumiWeight = getLuminsoity(year) * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
+                    LumiWeight = getLuminsoity(year,"mt") * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
                     
                     float PUMC_=HistoPUMC->GetBinContent(puTrue->at(0)+1);
                     float PUData_=HistoPUData->GetBinContent(puTrue->at(0)+1);
