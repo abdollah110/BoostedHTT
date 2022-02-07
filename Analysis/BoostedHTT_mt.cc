@@ -81,6 +81,11 @@ int main(int argc, char* argv[]) {
     TH2F** HistoMuTrg27=FuncHistMuTrigger_27(year);
     //    TGraphAsymmErrors * HistoMuTrack=FuncHistMuTrack();
     
+    TFile* SF_files = TFile::Open("data/htt_scalefactors_legacy_2018.root", "READ");
+    RooWorkspace *ws_SF = reinterpret_cast<RooWorkspace *>(SF_files->Get("w"));
+    SF_files->Close();
+
+
     //########################################
     // Pileup files
     //########################################
@@ -363,8 +368,91 @@ int main(int argc, char* argv[]) {
         //        }
         
         //=========================================================================================================
-        if (isEmbed)
-            LumiWeight = genWeight;
+        float embedWeight = 1;
+        if (isEmbed){
+        
+        if (genWeight > 1 || genWeight < 0) {
+        LumiWeight=0;
+        }
+        else {
+        LumiWeight = genWeight;
+        }
+            
+
+
+
+            ws_SF->var("t_pt")->setVal(Tau4Momentum.Pt());
+            ws_SF->var("m_pt")->setVal(muPt->at(idx_lep));
+            ws_SF->var("m_eta")->setVal(muEta->at(idx_lep));
+            ws_SF->var("m_iso")->setVal(IsoLep1Value);
+//            ws_SF->var("gt_pt")->setVal(Tau4Momentum.Pt());
+//            ws_SF->var("gt_eta")->setVal(Tau4Momentum.Eta());
+            
+
+      // double muon trigger eff in selection
+      embedWeight *= ws_SF->function("m_sel_trg_ratio")->getVal();
+
+      // muon ID eff in selectionm
+      embedWeight *= ws_SF->function("m_sel_idEmb_ratio")->getVal();
+
+      // muon ID SF
+      embedWeight *= ws_SF->function("m_id_embed_kit_ratio")->getVal();
+
+      // muon iso SF
+      embedWeight *= ws_SF->function("m_iso_binned_embed_kit_ratio")->getVal();
+
+      // apply trigger SF's
+      embedWeight *= ws_SF->function("m_trg24_27_embed_kit_ratio")->getVal();
+
+
+//
+//            evtwt *= ws_SF->function("m_trk_ratio")->getVal();
+//            evtwt *= ws_SF->function("e_trk_embed_ratio")->getVal();
+//            evtwt *= ws_SF->function("e_idiso_ic_embed_ratio")->getVal();
+//            evtwt *= ws_SF->function("m_idiso_ic_embed_ratio")->getVal();
+//
+//            //         scalefactor correcting for the efficiency of the DoubleMuon-HLT during selection
+//            ws_SF->var("gt1_pt")->setVal(muon.getPt());
+//            ws_SF->var("gt1_eta")->setVal(muon.getEta());
+//            ws_SF->var("gt2_pt")->setVal(electron.getPt());
+//            ws_SF->var("gt2_eta")->setVal(electron.getEta());
+//            double trg_ratio_new(ws_SF->function("m_sel_trg_ic_ratio")->getVal());
+//            evtwt *= trg_ratio_new;
+//
+//            //          scalefactor correcting for the efficiency of the DoubleMuon-HLT during selection
+//            ws_SF->var("gt_pt")->setVal(electron.getGenPt());
+//            ws_SF->var("gt_eta")->setVal(electron.getGenEta());
+//            double id_ratio_1_new(ws_SF->function("m_sel_id_ic_ratio")->getVal());
+//            evtwt *= id_ratio_1_new;
+//
+//            //          scalefactor correcting for the efficiency of the muon ID during selection
+//            ws_SF->var("gt_pt")->setVal(muon.getGenPt());
+//            ws_SF->var("gt_eta")->setVal(muon.getGenEta());
+//            double id_ratio_2_new(ws_SF->function("m_sel_id_ic_ratio")->getVal());
+//            evtwt *= id_ratio_2_new;
+//
+//            float probData =ws_SF->function("m_trg_8_ic_data")->getVal()*ws_SF->function("e_trg_23_ic_data")->getVal()*int(triggerMu8E23)+ws_SF->function("m_trg_23_ic_data")->getVal()*ws_SF->function("e_trg_12_ic_data")->getVal()*int(triggerMu23E12)-ws_SF->function("e_trg_23_ic_data")->getVal()*ws_SF->function("m_trg_23_ic_data")->getVal()*int(triggerMu8E23 && triggerMu23E12);
+//
+//            float probEmbedded =ws_SF->function("m_trg_8_ic_embed")->getVal()*ws_SF->function("e_trg_23_ic_embed")->getVal()*int(triggerMu8E23)+ws_SF->function("m_trg_23_ic_embed")->getVal()*ws_SF->function("e_trg_12_ic_embed")->getVal()*int(triggerMu23E12)-ws_SF->function("e_trg_23_ic_embed")->getVal()*ws_SF->function("m_trg_23_ic_embed")->getVal()*int(triggerMu8E23 && triggerMu23E12);
+//
+//            float sf_trg=1.0;
+//            if (probEmbedded==0) sf_trg=1;
+//            else
+//                sf_trg=probData/probEmbedded;
+//
+//            evtwt *=sf_trg;
+//
+//            auto genweight(event.getGenWeight());
+//            if (genweight > 1 || genweight < 0) {
+//                genweight = 0;
+//            }
+//            evtwt *= genweight;
+//
+            
+            
+            
+            
+            }
             
         if (!isData){
             
@@ -510,7 +598,7 @@ int main(int argc, char* argv[]) {
         BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(idx_tau);
         m_sv_=m_sv;
         //  Weights
-        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt* weight_Rivet;
+        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt* weight_Rivet * embedWeight;
         nbjet=numBJet;
         gen_higgs_pT = Rivet_higgsPt;
         gen_leadjet_pT = Rivet_j1pt;

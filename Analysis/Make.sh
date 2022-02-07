@@ -6,12 +6,13 @@ exit 1
 fi
 echo "================================================================"
 
-echo "====> Here are the libraries:" "\n" `root-config --cflags --glibs` -lTMVA "\n"
+echo "====> Here are the libraries:" "\n" `root-config --cflags --glibs` "\n"
 filename=`echo $1 | awk -F"." '{print $1}'`
 exefilename=${filename}.exe
 rm -f $exefilename
 #g++ $1  -o $exefilename `root-config --cflags --glibs ` -lTMVA -lRooFit -lRooFitCore
-g++ $1  -o $exefilename `root-config --cflags --glibs ` 
+g++ $1  -o $exefilename `root-config --cflags --glibs`  -lRooFit -lRooFitCore
+   
 echo ""
 if [ -e $exefilename ]; then
 echo "====> Created exe file : "
