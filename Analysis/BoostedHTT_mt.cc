@@ -28,6 +28,9 @@ int main(int argc, char* argv[]) {
     else cout<<"Which year are you looking for \n\n";
     cout<<"%%%% Note: you are running on  "<< year_str <<"%%%%\n";
     
+    bool isEmbed= false;
+    if (sample.find("Embed") != string::npos) isEmbed= true;
+    
     stringstream yearstream(year_str);
     int year=0;
     yearstream >> year;
@@ -360,6 +363,9 @@ int main(int argc, char* argv[]) {
         //        }
         
         //=========================================================================================================
+        if (isEmbed)
+            LumiWeight = genWeight;
+            
         if (!isData){
             
             // Lumi weight
