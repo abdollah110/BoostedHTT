@@ -26,10 +26,10 @@ int main(int argc, char* argv[]) {
     else if (path.find("2018") != string::npos) year_str = "2018";
     else cout<<"Which year are you looking for \n\n";
     cout<<"%%%% Note: you are running on  "<< year_str <<"%%%%\n";
-
+    
     bool isEmbed= false;
     if (sample.find("Embed") != string::npos) isEmbed= true;
-
+    
     stringstream yearstream(year_str);
     int year=0;
     yearstream >> year;
@@ -71,7 +71,11 @@ int main(int argc, char* argv[]) {
     //########################################
     // Pileup files
     //########################################
-    
+
+    TFile* SF_files = TFile::Open("data/htt_scalefactors_legacy_2018.root", "READ");
+    RooWorkspace *ws_SF = reinterpret_cast<RooWorkspace *>(SF_files->Get("w"));
+    SF_files->Close();
+
     TH1F *  HistoPUData =HistPUData(year_str);
     TH1F * HistoPUMC = new TH1F();
     if (! (fname.find("Data") != string::npos || fname.find("Run") != string::npos ))
@@ -105,11 +109,11 @@ int main(int argc, char* argv[]) {
     TGraph *g_NNLOPS_1jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_powheg_1jet"));
     TGraph *g_NNLOPS_2jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_powheg_2jet"));
     TGraph *g_NNLOPS_3jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_powheg_3jet"));
-//    TGraph *g_NNLOPS_mcatnlo_0jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_0jet"));
-//    TGraph *g_NNLOPS_mcatnlo_1jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_1jet"));
-//    TGraph *g_NNLOPS_mcatnlo_2jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_2jet"));
-//    TGraph *g_NNLOPS_mcatnlo_3jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_3jet"));
-
+    //    TGraph *g_NNLOPS_mcatnlo_0jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_0jet"));
+    //    TGraph *g_NNLOPS_mcatnlo_1jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_1jet"));
+    //    TGraph *g_NNLOPS_mcatnlo_2jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_2jet"));
+    //    TGraph *g_NNLOPS_mcatnlo_3jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_3jet"));
+    
     event_info event(syst);
     
     //###############################################################################################
@@ -162,7 +166,7 @@ int main(int argc, char* argv[]) {
     int nbjet;
     bool isGenTauSub_, isGenTauLead_;
     bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
-
+    
     outTr->Branch("Chan_emu",&Chan_emu,"Chan_emu/O");
     outTr->Branch("Chan_etau",&Chan_etau,"Chan_etau/O");
     outTr->Branch("Chan_mutau",&Chan_mutau,"Chan_mutau/O");
@@ -280,8 +284,8 @@ int main(int argc, char* argv[]) {
         if (syst == "MissingEn_UESUp") {Met = pfMET_T1UESUp;  Metphi=pfMETPhi_T1UESUp; m_sv=m_sv_UES_Up ;}
         if (syst == "MissingEn_UESDown") {Met = pfMET_T1UESDo;  Metphi=pfMETPhi_T1UESDo; m_sv=m_sv_UES_Down ;}
         
-//        if (syst == "TESUp") {m_sv=m_sv_TES_Up ;}
-//        if (syst == "TESDown") {m_sv=m_sv_TES_Down ;}
+        //        if (syst == "TESUp") {m_sv=m_sv_TES_Up ;}
+        //        if (syst == "TESDown") {m_sv=m_sv_TES_Down ;}
         
         //        if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
         //        if (syst == "met_resp_Up") {Met = met_resp_Up; Metphi=metphi_resp_Up;}
@@ -416,7 +420,7 @@ int main(int argc, char* argv[]) {
         
         for (int ijet=0; ijet < nAK8Jet ; ijet ++){
             
-            AK8Pt=AK8JetPt->at(ijet);            
+            AK8Pt=AK8JetPt->at(ijet);
             if (syst=="JEnTotUp") AK8Pt=AK8JetPtTotUncUp->at(ijet);;
             if (syst=="JEnTotDown") AK8Pt=AK8JetPtTotUncDown->at(ijet);;
             
@@ -463,7 +467,7 @@ int main(int argc, char* argv[]) {
             }
         }
         
-//        if (! passing) continue;  FIXME  this is for trigger studies for embedded
+        //        if (! passing) continue;  FIXME  this is for trigger studies for embedded
         
         //=========================================================================================================
         // Event Selection
@@ -477,7 +481,7 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",8 ,15,0,15);
         
         tmass = TMass_F(LeadTau4Momentum.Pt(), LeadTau4Momentum.Px(), LeadTau4Momentum.Py(),  Met,  Metphi);
-//        if (tmass > 200) continue; //FIXME removed for Validation study
+        //        if (tmass > 200) continue; //FIXME removed for Validation study
         plotFill("cutFlowTable",9 ,15,0,15);
         
         if (m_sv < 50) continue; //FIXME removed for Validation study
@@ -506,8 +510,37 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",13 ,15,0,15);
         
         //=========================================================================================================
-        if (isEmbed)
-            LumiWeight = genWeight;
+        float embedWeight = 1;
+        if (isEmbed){
+            
+            if (genWeight > 1 || genWeight < 0) {
+                LumiWeight=0;
+            }
+            else {
+                LumiWeight = genWeight;
+            }
+
+            ws_SF->var("gt1_pt")->setVal(getMatchedGenTau(LeadTau4Momentum).Pt());
+            ws_SF->var("gt1_eta")->setVal(getMatchedGenTau(LeadTau4Momentum).Eta());
+            ws_SF->var("gt2_pt")->setVal(getMatchedGenTau(SubTau4Momentum).Pt());
+            ws_SF->var("gt2_eta")->setVal(getMatchedGenTau(SubTau4Momentum).Eta());
+            embedWeight *=ws_SF->function("m_sel_trg_ratio")->getVal();
+            
+            ws_SF->var("gt_pt")->setVal(getMatchedGenTau(LeadTau4Momentum).Pt());
+            ws_SF->var("gt_eta")->setVal(getMatchedGenTau(LeadTau4Momentum).Eta());
+            embedWeight *=ws_SF->function("m_sel_idEmb_ratio")->getVal();
+            
+            ws_SF->var("gt_pt")->setVal(getMatchedGenTau(SubTau4Momentum).Pt());
+            ws_SF->var("gt_eta")->setVal(getMatchedGenTau(SubTau4Momentum).Eta());
+            embedWeight *=ws_SF->function("m_sel_idEmb_ratio")->getVal();
+            
+            ws_SF->var("t_pt")->setVal(LeadTau4Momentum.Pt());
+            embedWeight *=ws_SF->function("tt_emb_PFTau35OR40_tight_kit_ratio")->getVal();
+                        
+            ws_SF->var("t_pt")->setVal(SubTau4Momentum.Pt());
+            embedWeight *=ws_SF->function("tt_emb_PFTau35OR40_tight_kit_ratio")->getVal();
+            
+        }
         
         if (!isData){
             
@@ -566,11 +599,11 @@ int main(int argc, char* argv[]) {
             }
             
         }
-
+        
         //###############################################################################################
         //  Higgs theory uncertainty
         //###############################################################################################
-            
+        
         if (fname.find("ggH125") != std::string::npos) { // now is used for all of prodiuction mode
             if (Rivet_nJets30 == 0)
                 weight_g_NNLOPS = g_NNLOPS_0jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(125.0)));
@@ -580,7 +613,7 @@ int main(int argc, char* argv[]) {
                 weight_g_NNLOPS = g_NNLOPS_2jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(800.0)));
             if (Rivet_nJets30 >= 3)
                 weight_g_NNLOPS = g_NNLOPS_3jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(925.0)));
-                
+            
             NumV WG1unc;
             WG1unc = qcd_ggF_uncert_2017(Rivet_nJets30, Rivet_higgsPt, Rivet_stage1_cat_pTjet30GeV);
             if (syst.find("THU_ggH") != std::string::npos) {
@@ -591,7 +624,7 @@ int main(int argc, char* argv[]) {
         
         plotFill("weight_g_NNLOPS",weight_g_NNLOPS ,100,0,2);
         plotFill("weight_Rivet",weight_Rivet ,100,0,2);
-
+        
         plotFill("TriggerWeight",TriggerWeight ,100,0,1);
         plotFill("LepCorrection",LepCorrection ,100,0,2);
         plotFill("LumiWeight",LumiWeight ,1000,0,10000);
@@ -600,6 +633,7 @@ int main(int argc, char* argv[]) {
         plotFill("preFireWeight",preFireWeight ,200,0,2);
         plotFill("WBosonKFactor",WBosonKFactor ,200,0,2);
         plotFill("ttbar_rwt",ttbar_rwt ,200,0,2);
+        plotFill("embedWeight",embedWeight ,200,0,2);
         
         //###############################################################################################
         //  tree branches
@@ -622,13 +656,13 @@ int main(int argc, char* argv[]) {
         BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(idx_subleadtau);
         m_sv_=m_sv;
         //  Weights
-        FullWeight = LumiWeight*LepCorrection * PUWeight * TriggerWeight*zmasspt_weight * preFireWeight * WBosonKFactor * ttbar_rwt* weight_Rivet;
+        FullWeight = LumiWeight*LepCorrection * PUWeight * TriggerWeight*zmasspt_weight * preFireWeight * WBosonKFactor * ttbar_rwt* weight_Rivet *embedWeight;
         nbjet=numBJet;
         gen_higgs_pT = Rivet_higgsPt;
         gen_leadjet_pT = Rivet_j1pt;
         isGenTauSub_=isGenTauSub;
         isGenTauLead_=isGenTauLead;
-
+        
         //  fiducial info
         FidSelection fiducial = PassFoducial();
         Chan_emu = fiducial.emu ;
@@ -642,9 +676,9 @@ int main(int argc, char* argv[]) {
         
         // Fill the tree
         outTr->Fill();
-     
-//     if (lep1IsoPassV && lep2IsoPassV && m_sv_ > 120 && m_sv_ < 130 && dR_lep_lep > 0.3 && dR_lep_lep < 0.6)
-//      std::cout<<"mass= "<<m_sv_<<" Higgs pt="<<higgs.Pt() <<"   Run:Lumi:Eve"<<run<<":"<<lumis<<":"<<event__<<"\n";
+        
+        //     if (lep1IsoPassV && lep2IsoPassV && m_sv_ > 120 && m_sv_ < 130 && dR_lep_lep > 0.3 && dR_lep_lep < 0.6)
+        //      std::cout<<"mass= "<<m_sv_<<" Higgs pt="<<higgs.Pt() <<"   Run:Lumi:Eve"<<run<<":"<<lumis<<":"<<event__<<"\n";
     } //End of Tree
     
     

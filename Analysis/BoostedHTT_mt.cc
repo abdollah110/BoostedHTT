@@ -84,8 +84,8 @@ int main(int argc, char* argv[]) {
     TFile* SF_files = TFile::Open("data/htt_scalefactors_legacy_2018.root", "READ");
     RooWorkspace *ws_SF = reinterpret_cast<RooWorkspace *>(SF_files->Get("w"));
     SF_files->Close();
-
-
+    
+    
     //########################################
     // Pileup files
     //########################################
@@ -103,8 +103,8 @@ int main(int argc, char* argv[]) {
     // Z-pT reweighting
     //        TFile *zpt_file = new TFile("data/zpt_weights_2016_BtoH.root");
     TFile *zpt_file = new TFile(("data/zmm_2d"+year_str+".root").c_str());
-    auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("Ratio2D"));    
-
+    auto zpt_hist = reinterpret_cast<TH2F*>(zpt_file->Get("Ratio2D"));
+    
     //########################################
     // Rivet
     //########################################
@@ -113,13 +113,13 @@ int main(int argc, char* argv[]) {
     TGraph *g_NNLOPS_1jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_powheg_1jet"));
     TGraph *g_NNLOPS_2jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_powheg_2jet"));
     TGraph *g_NNLOPS_3jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_powheg_3jet"));
-//    TGraph *g_NNLOPS_mcatnlo_0jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_0jet"));
-//    TGraph *g_NNLOPS_mcatnlo_1jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_1jet"));
-//    TGraph *g_NNLOPS_mcatnlo_2jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_2jet"));
-//    TGraph *g_NNLOPS_mcatnlo_3jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_3jet"));
-
+    //    TGraph *g_NNLOPS_mcatnlo_0jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_0jet"));
+    //    TGraph *g_NNLOPS_mcatnlo_1jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_1jet"));
+    //    TGraph *g_NNLOPS_mcatnlo_2jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_2jet"));
+    //    TGraph *g_NNLOPS_mcatnlo_3jet = reinterpret_cast<TGraph *>(f_NNLOPS->Get("gr_NNLOPSratio_pt_mcatnlo_3jet"));
+    
     event_info event(syst);
-
+    
     //###############################################################################################
     // Parameters
     //###############################################################################################
@@ -135,7 +135,7 @@ int main(int argc, char* argv[]) {
     
     
     float LeptonIsoCut=0.30;
-//    float LeptonIsoCut=0.15;
+    //    float LeptonIsoCut=0.15;
     bool debug= false;
     float MuIdCorrection=1;
     float MuIsoCorrection=1;
@@ -164,7 +164,7 @@ int main(int argc, char* argv[]) {
     int nbjet;
     bool isGenTau_;
     bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
-
+    
     outTr->Branch("Chan_emu",&Chan_emu,"Chan_emu/O");
     outTr->Branch("Chan_etau",&Chan_etau,"Chan_etau/O");
     outTr->Branch("Chan_mutau",&Chan_mutau,"Chan_mutau/O");
@@ -172,7 +172,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("Chan_emu_fid",&Chan_emu_fid,"Chan_emu_fid/O");
     outTr->Branch("Chan_etau_fid",&Chan_etau_fid,"Chan_etau_fid/O");
     outTr->Branch("Chan_mutau_fid",&Chan_mutau_fid,"Chan_mutau_fid/O");
-    outTr->Branch("Chan_tautau_fid",&Chan_tautau_fid,"Chan_tautau_fid/O");    
+    outTr->Branch("Chan_tautau_fid",&Chan_tautau_fid,"Chan_tautau_fid/O");
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
     outTr->Branch("zmasspt_weight",&zmasspt_weight,"zmasspt_weight/F");
@@ -203,7 +203,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("MuMatchedIsolation",&MuMatchedIsolation,"MuMatchedIsolation/F");
     outTr->Branch("EleMatchedIsolation",&EleMatchedIsolation,"EleMatchedIsolation/F");
     outTr->Branch("isGenTau_",&isGenTau_,"isGenTau_/O");
-
+    
     
     string JetSys="Nominal";
     if (syst=="JEnTotUp") JetSys="JetTotUp";
@@ -231,8 +231,8 @@ int main(int argc, char* argv[]) {
         if (isData && (metFilters!=0)) continue;
         //=========================================================================================================
         //MET Shape systematics
-//        Met=pfMET;
-//        Metphi=pfMETPhi;
+        //        Met=pfMET;
+        //        Metphi=pfMETPhi;
         Met=pfMetNoRecoil;
         Metphi=pfMetPhiNoRecoil;
         
@@ -240,14 +240,14 @@ int main(int argc, char* argv[]) {
         if (syst == "MissingEn_JESDown") {Met = pfMET_T1JESDo;  Metphi=pfMETPhi_T1JESDo; m_sv=m_sv_JES_Down ;}
         if (syst == "MissingEn_UESUp") {Met = pfMET_T1UESUp;  Metphi=pfMETPhi_T1UESUp; m_sv=m_sv_UES_Up ;}
         if (syst == "MissingEn_UESDown") {Met = pfMET_T1UESDo;  Metphi=pfMETPhi_T1UESDo; m_sv=m_sv_UES_Down ;}
-
-//        if (syst == "TESUp") {m_sv=m_sv_TES_Up ;}
-//        if (syst == "TESDown") {m_sv=m_sv_TES_Down ;}
-
-//        if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
-//        if (syst == "met_resp_Up") {Met = met_resp_Up; Metphi=metphi_resp_Up;}
-//        if (syst == "met_reso_Down") {Met = met_reso_Down; Metphi=metphi_reso_Down;}
-//        if (syst == "met_resp_Down") {Met = met_resp_Down; Metphi=metphi_resp_Down;}
+        
+        //        if (syst == "TESUp") {m_sv=m_sv_TES_Up ;}
+        //        if (syst == "TESDown") {m_sv=m_sv_TES_Down ;}
+        
+        //        if (syst == "met_reso_Up") {Met = met_reso_Up; Metphi=metphi_reso_Up;}
+        //        if (syst == "met_resp_Up") {Met = met_resp_Up; Metphi=metphi_resp_Up;}
+        //        if (syst == "met_reso_Down") {Met = met_reso_Down; Metphi=metphi_reso_Down;}
+        //        if (syst == "met_resp_Down") {Met = met_resp_Down; Metphi=metphi_resp_Down;}
         
         TLorentzVector Mu4Momentum,Tau4Momentum, Z4Momentum, Met4Momentum;
         //=========================================================================================================
@@ -264,9 +264,9 @@ int main(int argc, char* argv[]) {
         
         // muon pt from 30 to 28
         if (muPt->at(idx_lep) < 28 || fabs(muEta->at(idx_lep)) > 2.4) continue;
-                
+        
         bool MuId=( (muIDbit->at(idx_lep) >> 1 & 1)  && fabs(muD0->at(idx_lep)) < 0.045 && fabs(muDz->at(idx_lep)) < 0.2);
-//        bool MuId= (muIDbit->at(idx_lep) >> 1 & 1);
+        //        bool MuId= (muIDbit->at(idx_lep) >> 1 & 1);
         MuIdCorrection = getCorrFactorMuonId(year, isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuId);
         
         if (! MuId) continue;
@@ -296,7 +296,7 @@ int main(int argc, char* argv[]) {
         bool muonIsoStatu = IsoLep1Value < LeptonIsoCut;
         plotFill("IsoCorrelation",muonIsoStatu, MatchedTauStatus, 2, 0, 2, 2, 0, 2);
         plotFill("cutFlowTable",2 ,15,0,15);
-//        if (!MatchedTauStatus ) continue;
+        //        if (!MatchedTauStatus ) continue;
         MuMatchedIsolation = MatchedBoostedTauIsolation(Mu4Momentum);
         //=========================================================================================================
         // Tau selection
@@ -306,14 +306,14 @@ int main(int argc, char* argv[]) {
         bool isGenTau= isMatchedToGenTau(Tau4Momentum);
         if (syst == "TESUp" && isGenTau) {Tau4Momentum *= 1+0.03 ; m_sv=m_sv_TES_Up ;}
         if (syst == "TESDown" && isGenTau) {Tau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
-
+        
         if (Tau4Momentum.Pt() <= 30 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(idx_tau) < 0.5 ) continue;
         //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_tau) < 0.5) continue;
         if (boostedTauByLooseMuonRejection3->at(idx_tau) < 0.5) continue;
         if (boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(idx_tau) < -0.5) continue;
-
-
+        
+        
         plotFill("cutFlowTable",5 ,15,0,15);
         //=========================================================================================================
         // Event Selection
@@ -352,7 +352,7 @@ int main(int argc, char* argv[]) {
         if (numele > 0) continue;
         plotFill("cutFlowTable",11 ,15,0,15);
         
-//        if (higgs.Pt() < 250) continue;
+        //        if (higgs.Pt() < 250) continue;
         if (higgs.Pt() < 250) continue;
         plotFill("cutFlowTable",12 ,15,0,15);
         
@@ -370,90 +370,46 @@ int main(int argc, char* argv[]) {
         //=========================================================================================================
         float embedWeight = 1;
         if (isEmbed){
-        
-        if (genWeight > 1 || genWeight < 0) {
-        LumiWeight=0;
-        }
-        else {
-        LumiWeight = genWeight;
-        }
             
-
-
+            if (genWeight > 1 || genWeight < 0) {
+                LumiWeight=0;
+            }
+            else {
+                LumiWeight = genWeight;
+            }
 
             ws_SF->var("t_pt")->setVal(Tau4Momentum.Pt());
             ws_SF->var("m_pt")->setVal(muPt->at(idx_lep));
             ws_SF->var("m_eta")->setVal(muEta->at(idx_lep));
             ws_SF->var("m_iso")->setVal(IsoLep1Value);
-//            ws_SF->var("gt_pt")->setVal(Tau4Momentum.Pt());
-//            ws_SF->var("gt_eta")->setVal(Tau4Momentum.Eta());
-            
-
-      // double muon trigger eff in selection
-      embedWeight *= ws_SF->function("m_sel_trg_ratio")->getVal();
-
-      // muon ID eff in selectionm
-      embedWeight *= ws_SF->function("m_sel_idEmb_ratio")->getVal();
-
-      // muon ID SF
-      embedWeight *= ws_SF->function("m_id_embed_kit_ratio")->getVal();
-
-      // muon iso SF
-      embedWeight *= ws_SF->function("m_iso_binned_embed_kit_ratio")->getVal();
-
-      // apply trigger SF's
-      embedWeight *= ws_SF->function("m_trg24_27_embed_kit_ratio")->getVal();
-
-
-//
-//            evtwt *= ws_SF->function("m_trk_ratio")->getVal();
-//            evtwt *= ws_SF->function("e_trk_embed_ratio")->getVal();
-//            evtwt *= ws_SF->function("e_idiso_ic_embed_ratio")->getVal();
-//            evtwt *= ws_SF->function("m_idiso_ic_embed_ratio")->getVal();
-//
-//            //         scalefactor correcting for the efficiency of the DoubleMuon-HLT during selection
-//            ws_SF->var("gt1_pt")->setVal(muon.getPt());
-//            ws_SF->var("gt1_eta")->setVal(muon.getEta());
-//            ws_SF->var("gt2_pt")->setVal(electron.getPt());
-//            ws_SF->var("gt2_eta")->setVal(electron.getEta());
-//            double trg_ratio_new(ws_SF->function("m_sel_trg_ic_ratio")->getVal());
-//            evtwt *= trg_ratio_new;
-//
-//            //          scalefactor correcting for the efficiency of the DoubleMuon-HLT during selection
-//            ws_SF->var("gt_pt")->setVal(electron.getGenPt());
-//            ws_SF->var("gt_eta")->setVal(electron.getGenEta());
-//            double id_ratio_1_new(ws_SF->function("m_sel_id_ic_ratio")->getVal());
-//            evtwt *= id_ratio_1_new;
-//
-//            //          scalefactor correcting for the efficiency of the muon ID during selection
-//            ws_SF->var("gt_pt")->setVal(muon.getGenPt());
-//            ws_SF->var("gt_eta")->setVal(muon.getGenEta());
-//            double id_ratio_2_new(ws_SF->function("m_sel_id_ic_ratio")->getVal());
-//            evtwt *= id_ratio_2_new;
-//
-//            float probData =ws_SF->function("m_trg_8_ic_data")->getVal()*ws_SF->function("e_trg_23_ic_data")->getVal()*int(triggerMu8E23)+ws_SF->function("m_trg_23_ic_data")->getVal()*ws_SF->function("e_trg_12_ic_data")->getVal()*int(triggerMu23E12)-ws_SF->function("e_trg_23_ic_data")->getVal()*ws_SF->function("m_trg_23_ic_data")->getVal()*int(triggerMu8E23 && triggerMu23E12);
-//
-//            float probEmbedded =ws_SF->function("m_trg_8_ic_embed")->getVal()*ws_SF->function("e_trg_23_ic_embed")->getVal()*int(triggerMu8E23)+ws_SF->function("m_trg_23_ic_embed")->getVal()*ws_SF->function("e_trg_12_ic_embed")->getVal()*int(triggerMu23E12)-ws_SF->function("e_trg_23_ic_embed")->getVal()*ws_SF->function("m_trg_23_ic_embed")->getVal()*int(triggerMu8E23 && triggerMu23E12);
-//
-//            float sf_trg=1.0;
-//            if (probEmbedded==0) sf_trg=1;
-//            else
-//                sf_trg=probData/probEmbedded;
-//
-//            evtwt *=sf_trg;
-//
-//            auto genweight(event.getGenWeight());
-//            if (genweight > 1 || genweight < 0) {
-//                genweight = 0;
-//            }
-//            evtwt *= genweight;
-//
+            ws_SF->var("gt1_pt")->setVal(getMatchedGenMu(Mu4Momentum).Pt());
+            ws_SF->var("gt1_eta")->setVal(getMatchedGenMu(Mu4Momentum).Eta());
+            ws_SF->var("gt2_pt")->setVal(getMatchedGenTau(Tau4Momentum).Pt());
+            ws_SF->var("gt2_eta")->setVal(getMatchedGenTau(Tau4Momentum).Eta());
             
             
+            // double muon trigger eff in selection
+            embedWeight *= ws_SF->function("m_sel_trg_ratio")->getVal();
             
+            // muon ID eff in selectionm
+            embedWeight *= ws_SF->function("m_sel_idEmb_ratio")->getVal();
             
+            // muon ID SF
+            embedWeight *= ws_SF->function("m_id_embed_kit_ratio")->getVal();
+            
+          // muon iso SF
+          embedWeight *= ws_SF->function("m_iso_binned_embed_kit_ratio")->getVal(); // sometimes large values
+            
+            // apply trigger SF's
+            embedWeight *= ws_SF->function("m_trg24_27_embed_kit_ratio")->getVal();
+            
+            if (embedWeight > 10){
+                cout<<embedWeight<<"   --> " <<ws_SF->function("m_sel_trg_ratio")->getVal()<< "  "<<  ws_SF->function("m_sel_idEmb_ratio")->getVal() <<"  "<<ws_SF->function("m_id_embed_kit_ratio")->getVal() <<"  " << ws_SF->function("m_iso_binned_embed_kit_ratio")->getVal() <<"  "<< ws_SF->function("m_trg24_27_embed_kit_ratio")->getVal()<<"\n";
+                embedWeight=1;
+                
             }
-            
+        }
+        
         if (!isData){
             
             // Lumi weight
@@ -471,14 +427,14 @@ int main(int argc, char* argv[]) {
             preFireWeight = L1ECALPrefire;
             if (syst == "prefireUp") {preFireWeight = L1ECALPrefireUp;}
             if (syst == "prefireDown") {preFireWeight = L1ECALPrefireDown;}
-
-
+            
+            
             //  GenInfo
             vector<float>  genInfo=GeneratorInfo();
             float WBosonPt=genInfo[1];
             float ZBosonPt=genInfo[3];
             float ZBosonMass=genInfo[4];
-//            std::cout<<genInfo[1] <<" " <<genInfo[2] << " "<< genInfo[5] <<" " <<genInfo[6] <<"\n";
+            //            std::cout<<genInfo[1] <<" " <<genInfo[2] << " "<< genInfo[5] <<" " <<genInfo[6] <<"\n";
             
             if  (name == "ZL" || name == "ZTT" || name == "ZLL") {
                 
@@ -510,39 +466,39 @@ int main(int argc, char* argv[]) {
             }
             
             
-//            int leadCSV= leadingCSV();
-//            int subLeadCSV= subLeadingCSV(leadCSV);
-//            
-//            if (year==2016){
-//
-//                bjet_weighter  bj_(2016, medium);
-//                bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV));
-//                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "up");
-//                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "down");
-//
-//            }else if (year==2017){
-//
-//                bjet_weighter  bj_(2017, medium);
-//                bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV));
-//                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "up");
-//                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "down");
-//
-//            }else if (year==2018){
-//
-//                bjet_weighter  bj_(2018, medium);
-//                bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV));
-//                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "up");
-//                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "down");
-//            } else{
-//                throw "wrong year name";
-//            }            
+            //            int leadCSV= leadingCSV();
+            //            int subLeadCSV= subLeadingCSV(leadCSV);
+            //
+            //            if (year==2016){
+            //
+            //                bjet_weighter  bj_(2016, medium);
+            //                bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV));
+            //                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "up");
+            //                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "down");
+            //
+            //            }else if (year==2017){
+            //
+            //                bjet_weighter  bj_(2017, medium);
+            //                bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV));
+            //                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "up");
+            //                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "down");
+            //
+            //            }else if (year==2018){
+            //
+            //                bjet_weighter  bj_(2018, medium);
+            //                bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV));
+            //                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "up");
+            //                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(jetPt->at(leadCSV), jetHadFlvr->at(leadCSV),jetDeepCSVTags_b->at(leadCSV), jetPt->at(subLeadCSV), jetHadFlvr->at(subLeadCSV),jetDeepCSVTags_b->at(subLeadCSV), "down");
+            //            } else{
+            //                throw "wrong year name";
+            //            }
             
         }
-
+        
         //###############################################################################################
         //  Higgs theory uncertainty
         //###############################################################################################
-            
+        
         if (fname.find("ggH125") != std::string::npos) { // now is used for all of prodiuction mode
             if (Rivet_nJets30 == 0)
                 weight_g_NNLOPS = g_NNLOPS_0jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(125.0)));
@@ -552,7 +508,7 @@ int main(int argc, char* argv[]) {
                 weight_g_NNLOPS = g_NNLOPS_2jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(800.0)));
             if (Rivet_nJets30 >= 3)
                 weight_g_NNLOPS = g_NNLOPS_3jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(925.0)));
-                
+            
             NumV WG1unc;
             WG1unc = qcd_ggF_uncert_2017(Rivet_nJets30, Rivet_higgsPt, Rivet_stage1_cat_pTjet30GeV);
             if (syst.find("THU_ggH") != std::string::npos) {
@@ -564,7 +520,7 @@ int main(int argc, char* argv[]) {
         plotFill("weight_g_NNLOPS",weight_g_NNLOPS ,100,0,2);
         plotFill("weight_Rivet",weight_Rivet ,100,0,2);
         plotFill("embedWeight",embedWeight ,100,0,2);
-
+        
         plotFill("bjetsWeightOnMC",bjetsWeightOnMC ,200,0,2);
         plotFill("LepCorrection",LepCorrection ,100,0,2);
         plotFill("LumiWeight",LumiWeight ,1000,0,10000);
@@ -614,7 +570,7 @@ int main(int argc, char* argv[]) {
         Chan_etau_fid = fiducial.etau_fid ;
         Chan_mutau_fid = fiducial.mutau_fid ;
         Chan_tautau_fid = fiducial.tautau_fid ;
-
+        
         
         // Fill the tree
         outTr->Fill();
@@ -627,14 +583,14 @@ int main(int argc, char* argv[]) {
     map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
     
     for (; iMap1 != jMap1; ++iMap1)
-    nplot1(iMap1->first)->Write();
+        nplot1(iMap1->first)->Write();
     outTr->Write();
     
     map<string, TH2F*>::const_iterator iMap2 = myMap2->begin();
     map<string, TH2F*>::const_iterator jMap2 = myMap2->end();
     
     for (; iMap2 != jMap2; ++iMap2)
-    nplot2(iMap2->first)->Write();
+        nplot2(iMap2->first)->Write();
     
     fout->Close();
 }

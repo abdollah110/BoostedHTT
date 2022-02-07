@@ -74,7 +74,11 @@ int main(int argc, char* argv[]) {
     //########################################
     TH2F** HistoEleId=FuncHistEleId(year);
     //        TH2F** HistoEleTrg=FuncHistEleTrigger(year); // Not available yet
-    
+
+    TFile* SF_files = TFile::Open("data/htt_scalefactors_legacy_2018.root", "READ");
+    RooWorkspace *ws_SF = reinterpret_cast<RooWorkspace *>(SF_files->Get("w"));
+    SF_files->Close();
+
     //########################################
     // Pileup files
     //########################################
@@ -349,9 +353,45 @@ int main(int argc, char* argv[]) {
         //        }
         
         //=========================================================================================================
-        if (isEmbed)
-            LumiWeight = genWeight;
-        
+        float embedWeight = 1;
+        if (isEmbed){
+            
+            if (genWeight > 1 || genWeight < 0) {
+                LumiWeight=0;
+            }
+            else {
+                LumiWeight = genWeight;
+            }
+
+            ws_SF->var("t_pt")->setVal(Tau4Momentum.Pt());
+            ws_SF->var("e_pt")->setVal(elePt->at(idx_lep));
+            ws_SF->var("e_eta")->setVal(eleEta->at(idx_lep));
+            ws_SF->var("e_iso")->setVal(IsoLep1Value);
+            ws_SF->var("gt1_pt")->setVal(getMatchedGenEle(Ele4Momentum).Pt());
+            ws_SF->var("gt1_eta")->setVal(getMatchedGenEle(Ele4Momentum).Eta());
+            ws_SF->var("gt2_pt")->setVal(getMatchedGenTau(Tau4Momentum).Pt());
+            ws_SF->var("gt2_eta")->setVal(getMatchedGenTau(Tau4Momentum).Eta());
+            
+            
+            // double muon trigger eff in selection
+            embedWeight *= ws_SF->function("m_sel_trg_ratio")->getVal();
+            
+            // muon ID eff in selectionm
+            embedWeight *= ws_SF->function("m_sel_idEmb_ratio")->getVal();
+            
+            // muon ID SF
+            embedWeight *= ws_SF->function("m_id_embed_kit_ratio")->getVal();
+            
+          // muon iso SF
+//          embedWeight *= ws_SF->function("e_iso_binned_embed_kit_ratio")->getVal(); // sometimes large values
+            
+            // apply trigger SF's
+            embedWeight *= ws_SF->function("e_trg27_trg32_trg35_embed_kit_ratio")->getVal();
+            
+            if (embedWeight > 10){
+                embedWeight=1;
+            }
+        }
         if (!isData){
             
             // Lumi weight
@@ -460,7 +500,7 @@ int main(int argc, char* argv[]) {
         dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
         BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(idx_tau);
         m_sv_=m_sv;
-        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * preFireWeight * WBosonKFactor * ttbar_rwt* weight_Rivet;
+        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * preFireWeight * WBosonKFactor * ttbar_rwt* weight_Rivet * embedWeight;
         nbjet= numBJet;
         gen_higgs_pT = Rivet_higgsPt;
         gen_leadjet_pT = Rivet_j1pt;
