@@ -563,6 +563,7 @@ int main(int argc, char* argv[]) {
         
         plotFill("weight_g_NNLOPS",weight_g_NNLOPS ,100,0,2);
         plotFill("weight_Rivet",weight_Rivet ,100,0,2);
+        plotFill("embedWeight",embedWeight ,100,0,2);
 
         plotFill("bjetsWeightOnMC",bjetsWeightOnMC ,200,0,2);
         plotFill("LepCorrection",LepCorrection ,100,0,2);
