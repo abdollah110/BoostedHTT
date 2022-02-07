@@ -751,6 +751,48 @@ float compTopPtWeight(float top1Pt, float top2Pt) {
 
 
 
+
+TLorentzVector getMatchedGenEle(TLorentzVector recoEle){
+    
+    TLorentzVector genTau;
+    TLorentzVector SelectedGenEle;
+    float LowestDR=100;
+    for (int igen=0; igen < nMC; igen++){
+        
+        if ( fabs(mcPID->at(igen)) ==11 && fabs(mcMomPID->at(igen)) ==15 ){
+            genTau.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+            float dr_gen_reco= recoEle.DeltaR(genTau);
+            if (dr_gen_reco < LowestDR)  {
+                LowestDR= dr_gen_reco;
+                SelectedGenEle.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+                //                cout<<"\t\t found a match, dR= "<<LowestDR<<"\n";
+            }
+        }
+    }
+    return SelectedGenEle;
+}
+
+
+TLorentzVector getMatchedGenMu(TLorentzVector recoMu){
+    
+    TLorentzVector genTau;
+    TLorentzVector SelectedGenMu;
+    float LowestDR=100;
+    for (int igen=0; igen < nMC; igen++){
+        
+        if ( fabs(mcPID->at(igen)) ==13 && fabs(mcMomPID->at(igen)) ==15 ){
+            genTau.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+            float dr_gen_reco= recoMu.DeltaR(genTau);
+            if (dr_gen_reco < LowestDR)  {
+                LowestDR= dr_gen_reco;
+                SelectedGenMu.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+                //                cout<<"\t\t found a match, dR= "<<LowestDR<<"\n";
+            }
+        }
+    }
+    return SelectedGenMu;
+}
+
 TLorentzVector getMatchedGenTau(TLorentzVector recoTau){
     
     TLorentzVector genTau;

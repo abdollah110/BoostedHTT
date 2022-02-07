@@ -31,37 +31,23 @@ float TT_Had_BR= 0.4544;
 
 float newLumiRatio2016 = 36330./35925.090;
 
-float getLuminsoity(int year, string channel) {
-    if (channel.find("tt") != string::npos){
-    if (year == 2016) return 35200 * newLumiRatio2016;
-    else if (year == 2017) return 32700;  //    else if (year == 2017) return 41500.; TrimMass triggers not available in Run2017B (reduced luminosity)
-    else if (year == 2018) return 58983;
-    else return 0;
-    }
-    else if (channel.find("et") != string::npos || channel.find("em") != string::npos){
-    if (year == 2016) return 33938.627 * newLumiRatio2016;
-    else if (year == 2017) return 41145.516;
-    else if (year == 2018) return 53496.401;
-    else return 0;
-    }
-    else if (channel.find("mt") != string::npos || channel.find("me") != string::npos ){
-    if (year == 2016) return 34610.531 * newLumiRatio2016;
-    else if (year == 2017) return 39672.458;  //    else if (year == 2017) return 41500.; TrimMass triggers not available in Run2017B (reduced luminosity)
-    else if (year == 2018) return 57046.368;
-    else return 0;
-    }
-    else{
-    cout<<"channel is not recognized \n";
-    return 0;
-    }
-}
-
-
 //float getLuminsoity(int year, string channel) {
 //    if (channel.find("tt") != string::npos){
-//    if (year == 2016) return 36330.;
-//    else if (year == 2017) return 36700;  //    else if (year == 2017) return 41500.; TrimMass triggers not available in Run2017B (reduced luminosity)
-//    else if (year == 2018) return 59830.;
+//    if (year == 2016) return 35200 * newLumiRatio2016;
+//    else if (year == 2017) return 32700;  //    else if (year == 2017) return 41500.; TrimMass triggers not available in Run2017B (reduced luminosity)
+//    else if (year == 2018) return 58983;
+//    else return 0;
+//    }
+//    else if (channel.find("et") != string::npos || channel.find("em") != string::npos){
+//    if (year == 2016) return 33938.627 * newLumiRatio2016;
+//    else if (year == 2017) return 41145.516;
+//    else if (year == 2018) return 53496.401;
+//    else return 0;
+//    }
+//    else if (channel.find("mt") != string::npos || channel.find("me") != string::npos ){
+//    if (year == 2016) return 34610.531 * newLumiRatio2016;
+//    else if (year == 2017) return 39672.458;  //    else if (year == 2017) return 41500.; TrimMass triggers not available in Run2017B (reduced luminosity)
+//    else if (year == 2018) return 57046.368;
 //    else return 0;
 //    }
 //    else{
@@ -70,15 +56,32 @@ float getLuminsoity(int year, string channel) {
 //    }
 //}
 
-//float getLuminsoity(int year) {
-//    if (year == 2016) return 36330.;
-//    else if (year == 2017) return 41480.;
-//    else if (year == 2018) return 59830.;
-//    else return 0;
-//}
+
+float getLuminsoity(int year, string channel) {
+    if (channel.find("tt") != string::npos){
+        if (year == 2016) return 36330.;
+        else if (year == 2017) return 36700;  //    else if (year == 2017) return 41500.; TrimMass triggers not available in Run2017B (reduced luminosity)
+        else if (year == 2018) return 59830.;
+        else return 0;
+    }
+    else{
+        if (year == 2016) return 36330.;
+        else if (year == 2017) return 41480.;
+        else if (year == 2018) return 59830.;
+        cout<<"channel is not recognized \n";
+        return 0;
+    }
+}
+
+float getLuminsoity(int year) {
+    if (year == 2016) return 36330.;
+    else if (year == 2017) return 41480.;
+    else if (year == 2018) return 59830.;
+    else return 0;
+}
 
 float XSection(std::string OutName) {
-
+    
     if (OutName.find("Data") != string::npos) return 1;   // As we have large cut at Skim, this one is not
     else if (OutName.find("SingleMuon") != string::npos) return 1;   // As we have large cut at Skim, this one is not
     
@@ -109,7 +112,7 @@ float XSection(std::string OutName) {
     else if (OutName.find("WZTo1L1Nu2Q_amcNLO") != string::npos) return  10.71 ;
     else if (OutName.find("WW1l1nu2q") != string::npos) return  49.997 ;
     else if (OutName.find("WZ1l3nu") != string::npos) return  3.05 ;
-
+    
     // The missing one is WZto4Q
     //else if (OutName.find("ZZ") != string::npos) return  12.14 ;
     //else if (OutName.find("WZ") != string::npos) return  27.57 ;
@@ -136,9 +139,9 @@ float XSection(std::string OutName) {
     else if (OutName.find("TT") != string::npos) return (831.76);
     
     else if (OutName.find("EWK_DYToLL") != string::npos ) return      3.987;
-//    else if (OutName.find("QCD_Pt-20toInf_MuEnrichedPt15") != string::npos) return     720648000  * 0.00042 ;
-//    else if (OutName.find("QCD") != string::npos) return     720648000  * 0.00042 ;
-
+    //    else if (OutName.find("QCD_Pt-20toInf_MuEnrichedPt15") != string::npos) return     720648000  * 0.00042 ;
+    //    else if (OutName.find("QCD") != string::npos) return     720648000  * 0.00042 ;
+    
     else if (OutName.find("QCD_HT300to500") != string::npos) return     347700 ;
     else if (OutName.find("QCD_HT500to700") != string::npos) return     32100 ;
     else if (OutName.find("QCD_HT700to1000") != string::npos) return     6831 ;
@@ -147,42 +150,42 @@ float XSection(std::string OutName) {
     else if (OutName.find("QCD_HT2000toInf") != string::npos) return     25.24 ;
     
     
-///QCD HT200to300 TuneCUETP8M1 13TeV-madgraphMLM-pythia8 1712000
-///QCD HT300to500 TuneCUETP8M1 13TeV-madgraphMLM-pythia8 347700
-///QCD HT500to700 TuneCUETP8M1 13TeV-madgraphMLM-pythia8 32100
-///QCD HT700to1000 TuneCUETP8M1 13TeV-madgraphMLM-pythia8 6831
-///QCD HT1000to1500 TuneCUETP8M1 13TeV-madgraphMLM-pythia8 1207
-///QCD HT1500to2000 TuneCUETP8M1 13TeV-madgraphMLM-pythia8 119.9
-///QCD HT2000toInf TuneCUETP8M1 13TeV-madgraphMLM-pythia8 25.24
-
-
-//-rw------- 1 abdollah us_cms  3057729 May  4 11:11 QCD_HT1000to1500_v1.root
-//-rw------- 1 abdollah us_cms  4837407 May  4 11:11 QCD_HT1000to1500_v2.root
-//-rw------- 1 abdollah us_cms  2777432 May  4 11:11 QCD_HT1500to2000_v1.root
-//-rw------- 1 abdollah us_cms  5883018 May  4 11:11 QCD_HT1500to2000_v2.root
-//-rw------- 1 abdollah us_cms   346285 May  4 11:11 QCD_HT2000toInf_v1.root
-//-rw------- 1 abdollah us_cms  2110665 May  4 11:11 QCD_HT2000toInf_v2.root
-//-rw------- 1 abdollah us_cms 13794874 May  4 11:11 QCD_HT300to500_v1.root
-//-rw------- 1 abdollah us_cms 24423893 May  4 11:12 QCD_HT300to500_v2.root
-//-rw------- 1 abdollah us_cms 11837551 May  4 11:12 QCD_HT500to700_v1.root
-//-rw------- 1 abdollah us_cms 19168537 May  4 11:12 QCD_HT500to700_v2.root
-//
-//hadd $dir/QCD_HT300to500.root $dir/QCD_HT300to500_v*.root
-//hadd $dir/QCD_HT500to700.root $dir/QCD_HT500to700_v*.root
-//hadd $dir/QCD_HT1000to1500.root $dir/QCD_HT1000to1500_v*.root
-//hadd $dir/QCD_HT1500to2000.root $dir/QCD_HT1500to2000_v*.root
-//hadd $dir/QCD_HT2000toInf.root $dir/QCD_HT2000toInf_v*.root
-//rm $dir/*_v1* $dir/*_v2* $dir/*_v3*
-
-
+    ///QCD HT200to300 TuneCUETP8M1 13TeV-madgraphMLM-pythia8 1712000
+    ///QCD HT300to500 TuneCUETP8M1 13TeV-madgraphMLM-pythia8 347700
+    ///QCD HT500to700 TuneCUETP8M1 13TeV-madgraphMLM-pythia8 32100
+    ///QCD HT700to1000 TuneCUETP8M1 13TeV-madgraphMLM-pythia8 6831
+    ///QCD HT1000to1500 TuneCUETP8M1 13TeV-madgraphMLM-pythia8 1207
+    ///QCD HT1500to2000 TuneCUETP8M1 13TeV-madgraphMLM-pythia8 119.9
+    ///QCD HT2000toInf TuneCUETP8M1 13TeV-madgraphMLM-pythia8 25.24
+    
+    
+    //-rw------- 1 abdollah us_cms  3057729 May  4 11:11 QCD_HT1000to1500_v1.root
+    //-rw------- 1 abdollah us_cms  4837407 May  4 11:11 QCD_HT1000to1500_v2.root
+    //-rw------- 1 abdollah us_cms  2777432 May  4 11:11 QCD_HT1500to2000_v1.root
+    //-rw------- 1 abdollah us_cms  5883018 May  4 11:11 QCD_HT1500to2000_v2.root
+    //-rw------- 1 abdollah us_cms   346285 May  4 11:11 QCD_HT2000toInf_v1.root
+    //-rw------- 1 abdollah us_cms  2110665 May  4 11:11 QCD_HT2000toInf_v2.root
+    //-rw------- 1 abdollah us_cms 13794874 May  4 11:11 QCD_HT300to500_v1.root
+    //-rw------- 1 abdollah us_cms 24423893 May  4 11:12 QCD_HT300to500_v2.root
+    //-rw------- 1 abdollah us_cms 11837551 May  4 11:12 QCD_HT500to700_v1.root
+    //-rw------- 1 abdollah us_cms 19168537 May  4 11:12 QCD_HT500to700_v2.root
+    //
+    //hadd $dir/QCD_HT300to500.root $dir/QCD_HT300to500_v*.root
+    //hadd $dir/QCD_HT500to700.root $dir/QCD_HT500to700_v*.root
+    //hadd $dir/QCD_HT1000to1500.root $dir/QCD_HT1000to1500_v*.root
+    //hadd $dir/QCD_HT1500to2000.root $dir/QCD_HT1500to2000_v*.root
+    //hadd $dir/QCD_HT2000toInf.root $dir/QCD_HT2000toInf_v*.root
+    //rm $dir/*_v1* $dir/*_v2* $dir/*_v3*
+    
+    
     //    https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#W_jets
-//    https://cms-gen-dev.cern.ch/xsdb/?searchQuery=DAS=DYJetsToLL_Pt-100To250_TuneCP5_13TeV-amcatnloFXFX-pythia8
+    //    https://cms-gen-dev.cern.ch/xsdb/?searchQuery=DAS=DYJetsToLL_Pt-100To250_TuneCP5_13TeV-amcatnloFXFX-pythia8
     //    else if (OutName.find("WJetsToLNu") != string::npos) return  61526.7   ;
-//    else if (OutName.find("WJetsToLNu_Pt-50To100") != string::npos) return  8053   ;
-//    else if (OutName.find("WJetsToLNu_Pt-100To250") != string::npos) return  676.3   ;
-//    else if (OutName.find("WJetsToLNu_Pt-250To400") != string::npos) return  23.94   ;
-//    else if (OutName.find("WJetsToLNu_Pt-400To600") != string::npos) return  3.031   ;
-//    else if (OutName.find("WJetsToLNu_Pt-600ToInf") != string::npos) return  0.4524   ;
+    //    else if (OutName.find("WJetsToLNu_Pt-50To100") != string::npos) return  8053   ;
+    //    else if (OutName.find("WJetsToLNu_Pt-100To250") != string::npos) return  676.3   ;
+    //    else if (OutName.find("WJetsToLNu_Pt-250To400") != string::npos) return  23.94   ;
+    //    else if (OutName.find("WJetsToLNu_Pt-400To600") != string::npos) return  3.031   ;
+    //    else if (OutName.find("WJetsToLNu_Pt-600ToInf") != string::npos) return  0.4524   ;
     //NNLO
     else if (OutName.find("WJetsToLNu_Pt-0To50") != string::npos) return  57297.39   ;
     else if (OutName.find("WJetsToLNu_Pt-50To100") != string::npos) return  3298.37   ;
@@ -190,31 +193,31 @@ float XSection(std::string OutName) {
     else if (OutName.find("WJetsToLNu_Pt-250To400") != string::npos) return  24.507   ;
     else if (OutName.find("WJetsToLNu_Pt-400To600") != string::npos) return  3.1101   ;
     else if (OutName.find("WJetsToLNu_Pt-600ToInf") != string::npos) return  0.46832   ;
-
+    
     //    else if (OutName.find("DYJetsToLL_M-50") != string::npos) return          5765.4 ;
-//    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  354.3   ; $$$$ Wrong XS
-//    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   83.12 ; $$$$ Wrong XS
-//    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.047 ; $$$$ Wrong XS
-//    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.3921 ; $$$$ Wrong XS
-//    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.03636 ; $$$$ Wrong XS
-//    else if (OutName.find("DYJetsToLL_Pt-0To50") != string::npos) return  106300.0 / 12.8  ;// 12.8 is what I found by looking at the lower tail of the ht distribution between data and MC
-//%%%%%%%%%%%% Wrong XSections %%%%%%%%%%%%
-//    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  407.9   ;
-//    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   96.8 ;
-//    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.774 ;
-//    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.5164 ;
-//    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.04796 ;
-//%%%%%%%%%%%% Updated XSections %%%%%%%%%%%%
-////https://cms.cern.ch/iCMS/jsp/db_notes/noteInfo.jsp?cmsnoteid=CMS%20AN-2018/263  from EXO-19-003 DarkMatter in ZLL
-//
-//    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  354.6 * (1921.8 * 3/5938)    ;
-//    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   83.05 * (1921.8 * 3/5938) ;
-//    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.043 * (1921.8 * 3/5938) ;
-//    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.3921 * (1921.8 * 3/5938) ;
-//    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.03823 * (1921.8 * 3/5938) ;
-
-////from Guillelmo
-////    else if (OutName.find("DYJetsToLL_Zpt-0To50_") != string::npos) return  5695.620764    ;
+    //    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  354.3   ; $$$$ Wrong XS
+    //    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   83.12 ; $$$$ Wrong XS
+    //    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.047 ; $$$$ Wrong XS
+    //    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.3921 ; $$$$ Wrong XS
+    //    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.03636 ; $$$$ Wrong XS
+    //    else if (OutName.find("DYJetsToLL_Pt-0To50") != string::npos) return  106300.0 / 12.8  ;// 12.8 is what I found by looking at the lower tail of the ht distribution between data and MC
+    //%%%%%%%%%%%% Wrong XSections %%%%%%%%%%%%
+    //    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  407.9   ;
+    //    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   96.8 ;
+    //    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.774 ;
+    //    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.5164 ;
+    //    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.04796 ;
+    //%%%%%%%%%%%% Updated XSections %%%%%%%%%%%%
+    ////https://cms.cern.ch/iCMS/jsp/db_notes/noteInfo.jsp?cmsnoteid=CMS%20AN-2018/263  from EXO-19-003 DarkMatter in ZLL
+    //
+    //    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  354.6 * (1921.8 * 3/5938)    ;
+    //    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   83.05 * (1921.8 * 3/5938) ;
+    //    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.043 * (1921.8 * 3/5938) ;
+    //    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.3921 * (1921.8 * 3/5938) ;
+    //    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.03823 * (1921.8 * 3/5938) ;
+    
+    ////from Guillelmo
+    ////    else if (OutName.find("DYJetsToLL_Zpt-0To50_") != string::npos) return  5695.620764    ;
     else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  387.130778   ;
     else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   89.395097 ;
     else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.435181 ;
@@ -222,15 +225,15 @@ float XSection(std::string OutName) {
     else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.043602 ;
     
     
-//    https://indico.cern.ch/event/673253/ NNLO
-//    else if (OutName.find("DYJetsToLL_Zpt-0To50_") != string::npos) return  5352.58    ;
-//    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  363.81   ;
-//    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   84.015 ;
-//    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.2283 ;
-//    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.43604 ;
-//    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.04098 ;
+    //    https://indico.cern.ch/event/673253/ NNLO
+    //    else if (OutName.find("DYJetsToLL_Zpt-0To50_") != string::npos) return  5352.58    ;
+    //    else if (OutName.find("DYJetsToLL_Pt-50To100") != string::npos) return  363.81   ;
+    //    else if (OutName.find("DYJetsToLL_Pt-100To250") != string::npos) return   84.015 ;
+    //    else if (OutName.find("DYJetsToLL_Pt-250To400") != string::npos) return   3.2283 ;
+    //    else if (OutName.find("DYJetsToLL_Pt-400To650") != string::npos) return   0.43604 ;
+    //    else if (OutName.find("DYJetsToLL_Pt-650ToInf") != string::npos) return   0.04098 ;
     
-
+    
     else if (OutName.find("WJetsToLNu_HT-100To200") != string::npos) return 1345* WScaleFactor;
     else if (OutName.find("WJetsToLNu_HT-200To400") != string::npos) return 359.7* WScaleFactor;
     else if (OutName.find("WJetsToLNu_HT-400To600") != string::npos) return 48.91* WScaleFactor;
@@ -238,19 +241,19 @@ float XSection(std::string OutName) {
     else if (OutName.find("WJetsToLNu_HT-800To1200") != string::npos) return 5.501* WScaleFactor;
     else if (OutName.find("WJetsToLNu_HT-1200To2500") != string::npos) return 1.329* WScaleFactor;
     else if (OutName.find("WJetsToLNu_HT-2500ToInf") != string::npos) return 0.03216* WScaleFactor;
-
-
-
+    
+    
+    
     // SM Higgs
     else if (OutName.find("ggH125") != string::npos) return 48.30* 0.0621;
     else if (OutName.find("qqH125") != string::npos) return 3.770 * 0.0621;
     else if (OutName.find("WPlusH125") != string::npos) return 0.8331 * 0.0621;
     else if (OutName.find("WMinusH125") != string::npos) return 0.5272 * 0.0621;
-//    else if (OutName.find("ZH125") != string::npos) return 0.8839 * 0.062;
+    //    else if (OutName.find("ZH125") != string::npos) return 0.8839 * 0.062;
     else if (OutName.find("ZH125") != string::npos) return 0.7544 * 0.0621;
     else if (OutName.find("ggZHLL125") != string::npos) return 0.1223 * 0.062 * 3*0.033658;
     else if (OutName.find("ggZHNuNu125") != string::npos) return 0.1223 * 0.062 * 0.2000;
-    else if (OutName.find("ggZHQQ125") != string::npos) return 0.1223 * 0.062 * 0.6991;    
+    else if (OutName.find("ggZHQQ125") != string::npos) return 0.1223 * 0.062 * 0.6991;
     else if (OutName.find("toptopH125") != string::npos) return 0.5033 * 0.062;
     
     else if (OutName.find("JJH0PMToTauTauPlusTwoJets") != string::npos) return     0.1383997884      ;
