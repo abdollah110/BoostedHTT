@@ -30,6 +30,8 @@ int main(int argc, char* argv[]) {
     int year=0;
     yearstream >> year;
 
+    bool isEmbed= false;
+    if (sample.find("Embed") != string::npos) isEmbed= true;
 
     std::string systname = "";
     if (!syst.empty()) {
