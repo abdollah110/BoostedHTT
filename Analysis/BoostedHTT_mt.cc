@@ -274,14 +274,14 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",3 ,15,0,15);
         
         // muon pt to 55 to 52 and met frm 40 to 30
-        if (muPt->at(idx_lep) < 52  && HLT_Mu27 && Met > 30 ){
+        if (muPt->at(idx_lep) < 52  &&  ((HLT_Mu27 && !isEmbed) || isEmbed )   && Met > 30 ){
             selectMuon_1 = true;
             MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg27);
             MuIsoCorrection = getCorrFactorMuonIso(year, isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuIso);
             
         }
         // muon pt to 55 to 52
-        if (muPt->at(idx_lep) >= 52  && HLT_Mu50 ) {
+        if (muPt->at(idx_lep) >= 52  && ((HLT_Mu50 && !isEmbed) || isEmbed ) ) {
             selectMuon_2 = true;
             MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg50);
         }
