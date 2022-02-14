@@ -207,6 +207,10 @@ int main(int argc, char* argv[]) {
                 float Metphi=pfMETPhi;
                 float tmass = TMass_F(LeadMu4Momentum.Pt(), LeadMu4Momentum.Px(), LeadMu4Momentum.Py(),  Met,  Metphi);
                 float ZMass = (LeadTau4Momentum+LeadMu4Momentum).M();
+                int CombinedDM=0;
+                if (boostedTauDecayMode->at(ibtau) < 3) CombinedDM=1;
+                else if (boostedTauDecayMode->at(ibtau) < 8) CombinedDM=2;
+                else CombinedDM=3;
                 //###############################################################################################
                 //  Weight
                 //###############################################################################################
@@ -265,11 +269,13 @@ int main(int argc, char* argv[]) {
                 plotFill("denum"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                 plotFill("denum_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                 plotFill("denum_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
+                plotFill("denum_DM"+FullStringName,CombinedDM ,4,0,4,FullWeight);
                 
                 if (boostedTauByVLooseIsolationMVArun2v1DBnewDMwLTNew->at(ibtau) > 0.5){
                     plotFill("numVLoose"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                     plotFill("numVLoose_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                     plotFill("numVLoose_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
+                    plotFill("numVLoose_DM"+FullStringName,CombinedDM ,4,0,4,FullWeight);
                     
                 }
                 
@@ -277,12 +283,14 @@ int main(int argc, char* argv[]) {
                     plotFill("numLoose"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                     plotFill("numLoose_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                     plotFill("numLoose_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
+                    plotFill("numLoose_DM"+FullStringName,CombinedDM ,4,0,4,FullWeight);
                     
                 }
                 if (boostedTauByMediumIsolationMVArun2v1DBnewDMwLTNew->at(ibtau) > 0.5){
                     plotFill("numMedium"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                     plotFill("numMedium_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                     plotFill("numMedium_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
+                    plotFill("numMedium_DM"+FullStringName,CombinedDM ,4,0,4,FullWeight);
                     
                 }
                 
@@ -290,6 +298,7 @@ int main(int argc, char* argv[]) {
                     plotFill("numTight"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                     plotFill("numTight_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                     plotFill("numTight_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
+                    plotFill("numTight_DM"+FullStringName,CombinedDM ,4,0,4,FullWeight);
                     
                 }
                 
