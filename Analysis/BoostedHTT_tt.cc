@@ -658,8 +658,8 @@ int main(int argc, char* argv[]) {
         //  Weights
         FullWeight = LumiWeight*LepCorrection * PUWeight * TriggerWeight*zmasspt_weight * preFireWeight * WBosonKFactor * ttbar_rwt* weight_Rivet *embedWeight;
         nbjet=numBJet;
-        gen_higgs_pT = Rivet_higgsPt;
-        gen_leadjet_pT = Rivet_j1pt;
+//        gen_higgs_pT = Rivet_higgsPt;
+//        gen_leadjet_pT = Rivet_j1pt;
         isGenTauSub_=isGenTauSub;
         isGenTauLead_=isGenTauLead;
         
