@@ -304,8 +304,8 @@ int main(int argc, char* argv[]) {
         
         
         if (LeadTau4Momentum.Pt() <= 30 || fabs(boostedTauEta->at(idx_leadtau)) >= 2.3 ) continue;
-        if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(idx_leadtau) < 0.5 ) continue;
-        if (boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(idx_leadtau) < -0.5) continue;
+        if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_leadtau) < 0.5 ) continue;
+        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_leadtau) < -0.5) continue;
         if (boostedTauagainstElectronVLooseMVA62018->at(idx_leadtau) < 0.5) continue;
         if (boostedTauByLooseMuonRejection3->at(idx_leadtau) < 0.5) continue;
         plotFill("cutFlowTable",3 ,15,0,15);
@@ -319,8 +319,8 @@ int main(int argc, char* argv[]) {
         if (syst == "TESDown" && isGenTauSub) {SubTau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
         
         if (SubTau4Momentum.Pt() <= 30 || fabs(boostedTauEta->at(idx_subleadtau)) >= 2.3 ) continue;
-        if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(idx_subleadtau) < 0.5 ) continue;
-        if (boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(idx_subleadtau) < -0.5) continue;
+        if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_subleadtau) < 0.5 ) continue;
+        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_subleadtau) < -0.5) continue;
         if (boostedTauagainstElectronVLooseMVA62018->at(idx_subleadtau) < 0.5) continue;
         if (boostedTauByLooseMuonRejection3->at(idx_subleadtau) < 0.5) continue;
         
@@ -643,17 +643,17 @@ int main(int argc, char* argv[]) {
         higgs_m = higgs.M();
         OS = boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) < 0;
         SS =  boostedTauCharge->at(idx_leadtau) * boostedTauCharge->at(idx_subleadtau) > 0;
-        lep1IsoPassL = boostedTauByLooseIsolationMVArun2v1DBnewDMwLTNew->at(idx_leadtau) > 0.5;
-        lep2IsoPassL = boostedTauByLooseIsolationMVArun2v1DBnewDMwLTNew->at(idx_subleadtau) > 0.5;
-        lep1IsoPassV = boostedTauByVLooseIsolationMVArun2v1DBnewDMwLTNew->at(idx_leadtau) > 0.5;
-        lep2IsoPassV = boostedTauByVLooseIsolationMVArun2v1DBnewDMwLTNew->at(idx_subleadtau) > 0.5;
+        lep1IsoPassL = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
+        lep2IsoPassL = boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
+        lep1IsoPassV = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_leadtau) > 0.5;
+        lep2IsoPassV = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_subleadtau) > 0.5;
         
         lep1Pt_=LeadTau4Momentum.Pt();
         lep2Pt_=SubTau4Momentum.Pt();
         vis_mass=Z4Momentum.M();
         LeadJetPt = LeadJet.Pt();
         dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
-        BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(idx_subleadtau);
+        BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_subleadtau);
         m_sv_=m_sv;
         //  Weights
         FullWeight = LumiWeight*LepCorrection * PUWeight * TriggerWeight*zmasspt_weight * preFireWeight * WBosonKFactor * ttbar_rwt* weight_Rivet *embedWeight;
