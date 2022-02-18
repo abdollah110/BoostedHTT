@@ -1356,6 +1356,7 @@ int ClosestGen(TLorentzVector tauCandidate){
     int closestId=0;
     float delR=100;
     for (int igen=0; igen < nMC; igen++){
+    if (fabs(mcPt->at(igen)) == 22 || fabs(mcPt->at(igen)==23 )) continue ;
         TLorentzVector gen4Mom;
         gen4Mom.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
         if (tauCandidate.DeltaR(gen4Mom) <delR ) {
