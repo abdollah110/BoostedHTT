@@ -1358,6 +1358,7 @@ int ZCategory(TLorentzVector tauCandidate) {
         TLorentzVector gen4Mom;
         gen4Mom.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
         if (tauCandidate.DeltaR(gen4Mom) > 0.2 ) continue;
+        cout<<mcPt->at(igen) <<  "  PID  "<< fabs(mcPID->at(igen)) <<  " flag " <<  mcStatusFlag->at(igen)  <<"  dr= "<<tauCandidate.DeltaR(gen4Mom)<<"\n";
         
         if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 11 && mcStatusFlag->at(igen) >> 9 & 1) return 1;
         if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 13 && mcStatusFlag->at(igen) >> 9 & 1) return 2;
