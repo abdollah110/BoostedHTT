@@ -1377,10 +1377,10 @@ int ZCategory(TLorentzVector tauCandidate) {
     //        if (tauCandidate.DeltaR(gen4Mom) > 0.2 ) continue;
     //        cout<<mcPt->at(igen) <<  "  PID  "<< fabs(mcPID->at(igen)) <<  " flag " <<  mcStatusFlag->at(igen)  <<"  dr= "<<tauCandidate.DeltaR(gen4Mom)<<"\n";
     cout<<fabs(mcPID->at(igen))<< "  genPt= "<<mcPt->at(igen) <<"  reco pt= "<< tauCandidate.Pt()<<"\n";
-    if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 11 && mcStatusFlag->at(igen) >> 9 & 1) return 1;
-    else if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 13 && mcStatusFlag->at(igen) >> 9 & 1) return 2;
-    else if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 11 && mcStatusFlag->at(igen) >> 10 & 1) return 3;
-    else if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 13 && mcStatusFlag->at(igen) >> 10 & 1) return 4;
+    if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 11 && mcStatusFlag->at(igen) >> 1 & 1) return 1;
+    else if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 13 && mcStatusFlag->at(igen) >> 1 & 1) return 2;
+    else if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 11 && mcStatusFlag->at(igen) >> 0 & 1) return 3;
+    else if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 13 && mcStatusFlag->at(igen) >> 0 & 1) return 4;
     else
         
         //    }
