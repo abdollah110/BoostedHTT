@@ -161,7 +161,7 @@ int main(int argc, char* argv[]) {
     bool OS,SS,lep1IsoPass,lep2IsoPassL,lep2IsoPassV,lep2IsoPassM,lep2IsoPassT;
     float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight, gen_higgs_pT, gen_leadjet_pT;
     float MuMatchedIsolation= -1; float EleMatchedIsolation =-1;
-    int nbjet;
+    int nbjet, gen_matched1_, gen_matched2_;
     bool isGenTau_;
     bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
     int boostedTauDecayMode_;
@@ -205,6 +205,8 @@ int main(int argc, char* argv[]) {
     outTr->Branch("EleMatchedIsolation",&EleMatchedIsolation,"EleMatchedIsolation/F");
     outTr->Branch("isGenTau_",&isGenTau_,"isGenTau_/O");
     outTr->Branch("boostedTauDecayMode_",&boostedTauDecayMode_,"boostedTauDecayMode_/I");
+    outTr->Branch("gen_matched1_",&gen_matched1_,"gen_matched1_/I");
+    outTr->Branch("gen_matched2_",&gen_matched2_,"gen_matched2_/I");
     
     
     string JetSys="Nominal";
@@ -313,7 +315,7 @@ int main(int argc, char* argv[]) {
         if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(idx_tau) < 0.5 ) continue;
         //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_tau) < 0.5) continue;
         if (boostedTauByLooseMuonRejection3->at(idx_tau) < 0.5) continue;
-        if (boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(idx_tau) < -0.5) continue;
+        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_tau) < -0.5) continue;
         
         
         plotFill("cutFlowTable",5 ,15,0,15);
@@ -359,15 +361,18 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",12 ,15,0,15);
         
         //=========================================================================================================
-        // Separate Drell-Yan processes
-        //        int Zcateg = ZCategory(Tau4Momentum);
-        //        if (name == "ZLL" && Zcateg > 4) {
-        //            continue;
-        //        } else if ((name == "ZTT") &&Zcateg != 5) {
-        //            continue;
-        //        } else if (name == "ZJ" && Zcateg != 6) {
-        //            continue;
-        //        }
+//         Separate Drell-Yan processes
+        int gen_matched1 = ZCategory(Mu4Momentum);
+        int gen_matched2 = ZCategory(Tau4Momentum);
+
+//                int Zcateg = ZCategory(Tau4Momentum);
+//                if (name == "ZLL" && Zcateg > 4) {
+//                    continue;
+//                } else if ((name == "ZTT") &&Zcateg != 5) {
+//                    continue;
+//                } else if (name == "ZJ" && Zcateg != 6) {
+//                    continue;
+//                }
         
         //=========================================================================================================
         float embedWeight = 1;
@@ -545,16 +550,16 @@ int main(int argc, char* argv[]) {
         OS = muCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) < 0;
         SS =  muCharge->at(idx_lep) * boostedTauCharge->at(idx_tau) > 0;
         lep1IsoPass= selectMuon_1? IsoLep1Value < LeptonIsoCut : 1;
-        lep2IsoPassL= boostedTauByLooseIsolationMVArun2v1DBnewDMwLTNew->at(idx_tau) > 0.5 ;
-        lep2IsoPassV= boostedTauByVLooseIsolationMVArun2v1DBnewDMwLTNew->at(idx_tau) > 0.5 ;
-        lep2IsoPassM= boostedTauByMediumIsolationMVArun2v1DBnewDMwLTNew->at(idx_tau) > 0.5 ;
-        lep2IsoPassT= boostedTauByTightIsolationMVArun2v1DBnewDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassL= boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassV= boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassM= boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
+        lep2IsoPassT= boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew->at(idx_tau) > 0.5 ;
         lepPt_=muPt->at(idx_lep);
         taupt_=Tau4Momentum.Pt();
         vis_mass=Z4Momentum.M();
         LeadJetPt = LeadJet.Pt();
         dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
-        BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(idx_tau);
+        BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_tau);
         m_sv_=m_sv;
         //  Weights
         FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt* weight_Rivet * embedWeight;
@@ -573,6 +578,8 @@ int main(int argc, char* argv[]) {
         Chan_mutau_fid = fiducial.mutau_fid ;
         Chan_tautau_fid = fiducial.tautau_fid ;
         boostedTauDecayMode_=boostedTauDecayMode->at(idx_tau);
+        gen_matched1_=gen_matched1;
+        gen_matched2_=gen_matched2;
         
         
         // Fill the tree

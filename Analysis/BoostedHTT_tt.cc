@@ -163,7 +163,7 @@ int main(int argc, char* argv[]) {
     bool PassTrigger_20;
     bool PassTrigger_21;
     bool PassTrigger_22;
-    int nbjet;
+    int nbjet, gen_matched1_, gen_matched2_;
     bool isGenTauSub_, isGenTauLead_;
     bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
     
@@ -215,6 +215,8 @@ int main(int argc, char* argv[]) {
     outTr->Branch("isGenTauSub_",&isGenTauSub_,"isGenTauSub_/O");
     outTr->Branch("MuMatchedIsolation",&MuMatchedIsolation,"MuMatchedIsolation/F");
     outTr->Branch("EleMatchedIsolation",&EleMatchedIsolation,"EleMatchedIsolation/F");
+    outTr->Branch("gen_matched1_",&gen_matched1_,"gen_matched1_/I");
+    outTr->Branch("gen_matched2_",&gen_matched2_,"gen_matched2_/I");
     
     string JetSys="Nominal";
     if (syst=="JEnTotUp") JetSys="JetTotUp";
@@ -509,6 +511,20 @@ int main(int argc, char* argv[]) {
         if (higgs_pT < 250 ) continue;
         plotFill("cutFlowTable",13 ,15,0,15);
         
+        
+//=========================================================================================================
+        // Separate Drell-Yan processes
+        int gen_matched1 = ZCategory(LeadTau4Momentum);
+        int gen_matched2 = ZCategory(SubTau4Momentum);
+
+
+//        if (name == "ZLL" && Zcateg > 4) {
+//            continue;
+//        } else if ((name == "ZTT") &&Zcateg != 5) {
+//            continue;
+//        } else if (name == "ZJ" && Zcateg != 6) {
+//            continue;
+//        }
         //=========================================================================================================
         float embedWeight = 1;
         if (isEmbed){
@@ -673,6 +689,8 @@ int main(int argc, char* argv[]) {
         Chan_etau_fid = fiducial.etau_fid ;
         Chan_mutau_fid = fiducial.mutau_fid ;
         Chan_tautau_fid = fiducial.tautau_fid ;
+        gen_matched1_=gen_matched1;
+        gen_matched2_=gen_matched2;
         
         // Fill the tree
         outTr->Fill();
