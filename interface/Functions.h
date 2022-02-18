@@ -474,7 +474,7 @@ bool MatchedBoostedTauId(TLorentzVector Object4Momentum){
         }
     }
     return passVLooseIsolation;
-    }
+}
 
 float MatchedBoostedTauIsolation(TLorentzVector Object4Momentum){
     
@@ -489,9 +489,9 @@ float MatchedBoostedTauIsolation(TLorentzVector Object4Momentum){
         }
     }
     return BoostTauIsoVar;
-    }
-    
-    
+}
+
+
 int getNumElectron(){
     
     
@@ -1351,30 +1351,49 @@ float W_PDFAlphaS(float wMass, float sign){
 //
 
 
-
-int ZCategory(TLorentzVector tauCandidate) {
+int ClosestGen(TLorentzVector tauCandidate){
     
+    int closestId=0;
+    float delR=100;
     for (int igen=0; igen < nMC; igen++){
         TLorentzVector gen4Mom;
         gen4Mom.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-        if (tauCandidate.DeltaR(gen4Mom) > 0.2 ) continue;
-        cout<<mcPt->at(igen) <<  "  PID  "<< fabs(mcPID->at(igen)) <<  " flag " <<  mcStatusFlag->at(igen)  <<"  dr= "<<tauCandidate.DeltaR(gen4Mom)<<"\n";
-        
-        if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 11 && mcStatusFlag->at(igen) >> 9 & 1) return 1;
-        if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 13 && mcStatusFlag->at(igen) >> 9 & 1) return 2;
-        if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 11 && mcStatusFlag->at(igen) >> 10 & 1) return 3;
-        if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 13 && mcStatusFlag->at(igen) >> 10 & 1) return 4;
+        if (tauCandidate.DeltaR(gen4Mom) <delR ) {
+            closestId=igen;
+            delR=tauCandidate.DeltaR(gen4Mom);
+        }
     }
-    TLorentzVector genTau;
-    //    for (int i=0; i < numGenTau  ; i++){
-    //        //        cout<<taudaugPt->at(i)<<" "<<taudaugEta->at(i)<<" "<<taudaugPhi->at(i)<<" "<<taudaugMass->at(i)<<"\n";
-    //        //        cout<<taudaugMass->at(i)<<"\n";
-    //        genTau.SetPtEtaPhiM(taudaugPt->at(i),taudaugEta->at(i),taudaugPhi->at(i),taudaugMass->at(i));
-    //        if (tauCandidate.DeltaR(genTau) < 0.2  && taudaugPt->at(i) > 15)
-    //            return 5;
-    //    }
-    //    return 6;
-    return 5;
+    return closestId;
+}
+
+int ZCategory(TLorentzVector tauCandidate) {
+    
+    int igen=ClosestGen(tauCandidate);
+    
+    
+    //    for (int igen=0; igen < nMC; igen++){
+    //        TLorentzVector gen4Mom;
+    //        gen4Mom.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+    //        if (tauCandidate.DeltaR(gen4Mom) > 0.2 ) continue;
+    //        cout<<mcPt->at(igen) <<  "  PID  "<< fabs(mcPID->at(igen)) <<  " flag " <<  mcStatusFlag->at(igen)  <<"  dr= "<<tauCandidate.DeltaR(gen4Mom)<<"\n";
+    cout<<fabs(mcPID->at(igen))<< "  genPt= "<<mcPt->at(igen) <<"  reco pt= "<< tauCandidate.Pt()<<"\n";
+    if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 11 && mcStatusFlag->at(igen) >> 9 & 1) return 1;
+    else if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 13 && mcStatusFlag->at(igen) >> 9 & 1) return 2;
+    else if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 11 && mcStatusFlag->at(igen) >> 10 & 1) return 3;
+    else if (mcPt->at(igen) > 8 && fabs(mcPID->at(igen)) == 13 && mcStatusFlag->at(igen) >> 10 & 1) return 4;
+    else
+        
+        //    }
+        //    TLorentzVector genTau;
+        //    for (int i=0; i < numGenTau  ; i++){
+        //        //        cout<<taudaugPt->at(i)<<" "<<taudaugEta->at(i)<<" "<<taudaugPhi->at(i)<<" "<<taudaugMass->at(i)<<"\n";
+        //        //        cout<<taudaugMass->at(i)<<"\n";
+        //        genTau.SetPtEtaPhiM(taudaugPt->at(i),taudaugEta->at(i),taudaugPhi->at(i),taudaugMass->at(i));
+        //        if (tauCandidate.DeltaR(genTau) < 0.2  && taudaugPt->at(i) > 15)
+        //            return 5;
+        //    }
+        //    return 6;
+        return 5;
 }
 
 //
@@ -1466,7 +1485,7 @@ struct FidSelection{
 };
 
 FidSelection PassFoducial(){
-
+    
     struct FidSelection fid;
     fid.emu = false;
     fid.mutau = false;
@@ -1477,57 +1496,57 @@ FidSelection PassFoducial(){
     fid.etau_fid = false;
     fid.tautau_fid = false;
     
+    
+    TLorentzVector Mu4Momentum,Tau4Momentum, Z4Momentum, Met4Momentum,Ele4Momentum;
+    TLorentzVector LeadTau4Momentum,SubTau4Momentum;
+    
+    //=========================================================================================================
+    Met4Momentum.SetPtEtaPhiM(genMET, 0, genMETPhi, 0);
+    
+    TLorentzVector genTau,genTau2, genMu, genEle, genNuTau, genNuMu, genNuEle;
+    vector<TLorentzVector> genTauVec,genTauVec2, genMuVec, genEleVec, genNuTauVec, genNuEleVec, genNuMuVec;
+    
+    for (int igen=0;igen < nMC; igen++){
         
-        TLorentzVector Mu4Momentum,Tau4Momentum, Z4Momentum, Met4Momentum,Ele4Momentum;
-        TLorentzVector LeadTau4Momentum,SubTau4Momentum;
         
-        //=========================================================================================================
-        Met4Momentum.SetPtEtaPhiM(genMET, 0, genMETPhi, 0);
-      
-        TLorentzVector genTau,genTau2, genMu, genEle, genNuTau, genNuMu, genNuEle;
-        vector<TLorentzVector> genTauVec,genTauVec2, genMuVec, genEleVec, genNuTauVec, genNuEleVec, genNuMuVec;
-        
-        for (int igen=0;igen < nMC; igen++){
-            
-            
-            if ( fabs(mcPID->at(igen)) ==11 && fabs(mcMomPID->at(igen))==15 && fabs(mcGMomPID->at(igen))==25){
-                genEle.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-                genEleVec.push_back(genEle);
-            }
-            if ( fabs(mcPID->at(igen)) ==12 && fabs(mcMomPID->at(igen))==15 && fabs(mcGMomPID->at(igen))==25){
-                genNuEle.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-                genNuEleVec.push_back(genNuEle);
-            }
-            if ( fabs(mcPID->at(igen)) ==13 && fabs(mcMomPID->at(igen))==15 && fabs(mcGMomPID->at(igen))==25){
-                genMu.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-                genMuVec.push_back(genMu);
-            }
-            if ( fabs(mcPID->at(igen)) ==14 && fabs(mcMomPID->at(igen))==15 && fabs(mcGMomPID->at(igen))==25){
-                genNuMu.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-                genNuMuVec.push_back(genNuMu);
-            }
-            if ( fabs(mcPID->at(igen)) ==15 && fabs(mcMomPID->at(igen))==25){
-                genTau.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-                genTauVec.push_back(genTau);
-            }
-            if ( fabs(mcPID->at(igen)) ==15){
-                genTau2.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-                genTauVec2.push_back(genTau2);
-            }
-            if ( fabs(mcPID->at(igen)) ==16 && fabs(mcMomPID->at(igen))==15){
-                genNuTau.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
-                genNuTauVec.push_back(genNuTau);
-            }
-            
+        if ( fabs(mcPID->at(igen)) ==11 && fabs(mcMomPID->at(igen))==15 && fabs(mcGMomPID->at(igen))==25){
+            genEle.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+            genEleVec.push_back(genEle);
+        }
+        if ( fabs(mcPID->at(igen)) ==12 && fabs(mcMomPID->at(igen))==15 && fabs(mcGMomPID->at(igen))==25){
+            genNuEle.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+            genNuEleVec.push_back(genNuEle);
+        }
+        if ( fabs(mcPID->at(igen)) ==13 && fabs(mcMomPID->at(igen))==15 && fabs(mcGMomPID->at(igen))==25){
+            genMu.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+            genMuVec.push_back(genMu);
+        }
+        if ( fabs(mcPID->at(igen)) ==14 && fabs(mcMomPID->at(igen))==15 && fabs(mcGMomPID->at(igen))==25){
+            genNuMu.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+            genNuMuVec.push_back(genNuMu);
+        }
+        if ( fabs(mcPID->at(igen)) ==15 && fabs(mcMomPID->at(igen))==25){
+            genTau.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+            genTauVec.push_back(genTau);
+        }
+        if ( fabs(mcPID->at(igen)) ==15){
+            genTau2.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+            genTauVec2.push_back(genTau2);
+        }
+        if ( fabs(mcPID->at(igen)) ==16 && fabs(mcMomPID->at(igen))==15){
+            genNuTau.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+            genNuTauVec.push_back(genNuTau);
         }
         
-        if (genTauVec.size() > 1 ) {
-                        
+    }
+    
+    if (genTauVec.size() > 1 ) {
+        
         //emu
         if (genMuVec.size() ==1  && genEleVec.size() ==1 ) {
-                      
+            
             fid.emu = true;
-          
+            
             bool dRcuts =  (genMuVec[0].DeltaR(genEleVec[0]) < 0.8 && genMuVec[0].DeltaR(genEleVec[0]) > 0.1) ;
             bool etacuts = (fabs(genMuVec[0].Eta()) < 2.4 && fabs(genEleVec[0].Eta()) < 2.5) ;
             bool higgsPtCut = Rivet_higgsPt > 250;
@@ -1536,7 +1555,7 @@ FidSelection PassFoducial(){
             bool me_tight = genMuVec[0].Pt() >= 52 && genEleVec[0].Pt() > 10;
             bool em_loose = genEleVec[0].Pt()< 115 && genEleVec[0].Pt()> 38 && genMuVec[0].Pt()  > 10 && genMET > 30 ;
             bool em_tight = genEleVec[0].Pt()>= 115 && genMuVec[0].Pt()  > 10;
-        
+            
             
             if ( dRcuts && etacuts && higgsPtCut && (me_loose || me_tight || em_loose || em_tight ))
                 fid.emu_fid = true;
@@ -1545,7 +1564,7 @@ FidSelection PassFoducial(){
         //mutau
         else if (genMuVec.size() ==1 &&  genEleVec.size() ==0 ){
             
-
+            
             fid.mutau = true;
             
             findDr fdMatch0 = FindClosetDr(genTauVec[0],genMuVec);
@@ -1553,7 +1572,7 @@ FidSelection PassFoducial(){
             int tauCandOrder=fdMatch0.dR < fdMatch1.dR ?  1:0;
             findDr fdMatchNu = FindClosetDr(genTauVec[tauCandOrder],genNuTauVec);
             TLorentzVector VisibleTau = genTauVec[tauCandOrder] - genNuTauVec[fdMatchNu.order];
-
+            
             bool dRcuts=  (genMuVec[0].DeltaR(VisibleTau) < 0.8 && genMuVec[0].DeltaR(VisibleTau) > 0.1) ;
             bool etacuts = (fabs(genMuVec[0].Eta()) < 2.4 && fabs(VisibleTau.Eta()) < 2.3) ;
             bool tauPtcuts =  VisibleTau.Pt() > 30 ;
@@ -1564,14 +1583,14 @@ FidSelection PassFoducial(){
             
             if ( dRcuts && etacuts && tauPtcuts && higgsPtCut && (looseMu || tightMu ) )
                 fid.mutau_fid = true;
-
+            
         }
         
         //etau
         else if (genMuVec.size() ==0 &&  genEleVec.size() ==1 ){
-        
-        fid.etau = true;
-
+            
+            fid.etau = true;
+            
             findDr fdMatch0 = FindClosetDr(genTauVec[0],genEleVec);
             findDr fdMatch1 = FindClosetDr(genTauVec[1],genEleVec);
             
@@ -1584,10 +1603,10 @@ FidSelection PassFoducial(){
             bool etacuts = (fabs(genEleVec[0].Eta()) < 2.5 && fabs(VisibleTau.Eta()) < 2.3) ;
             bool tauPtcuts =  VisibleTau.Pt() > 30 ;
             bool higgsPtCut = Rivet_higgsPt > 250;
-
+            
             bool looseEle = genEleVec[0].Pt() > 38 && genEleVec[0].Pt() < 115 && genMET > 30 ;
             bool tightEle = genEleVec[0].Pt() >= 115;
-
+            
             if ( dRcuts && etacuts && tauPtcuts && higgsPtCut && (looseEle || tightEle ) )
                 fid.etau_fid = true;
         }
@@ -1596,24 +1615,24 @@ FidSelection PassFoducial(){
             fid.tautau = true;
             findDr fdMatchNu0 = FindClosetDr(genTauVec[0],genNuTauVec);
             findDr fdMatchNu1 = FindClosetDr(genTauVec[1],genNuTauVec);
-
+            
             TLorentzVector VisibleTau0 = genTauVec[0] - genNuTauVec[fdMatchNu0.order];
             TLorentzVector VisibleTau1 = genTauVec[1] - genNuTauVec[fdMatchNu1.order];
-
+            
             bool dRcuts=  (VisibleTau0.DeltaR(VisibleTau1) < 0.8 && VisibleTau0.DeltaR(VisibleTau1) > 0.1) ;
             bool etacuts = (fabs(VisibleTau0.Eta()) < 2.5 && fabs(VisibleTau1.Eta()) < 2.3) ;
             bool ptcuts = (fabs(VisibleTau0.Pt()) > 30 && fabs(VisibleTau1.Pt()) > 30) ;
             bool higgsPtCut = Rivet_higgsPt > 250;
             
-                        
-//            bool tt_ht = AK8LeadJet.Pt() > 100 ;
-//            bool tt_met = genHT > 500 && genMET > 120;
-
+            
+            //            bool tt_ht = AK8LeadJet.Pt() > 100 ;
+            //            bool tt_met = genHT > 500 && genMET > 120;
+            
             if ( dRcuts && etacuts && ptcuts && higgsPtCut )
                 fid.tautau_fid = true;
         }
-        }
-        return fid;
     }
-    
+    return fid;
+}
+
 #endif
