@@ -400,13 +400,11 @@ int main(int argc, char* argv[]) {
 
 //
 //        int Zcateg = ZCategory(Ele4Momentum);
-//        if (name == "ZLL" && Zcateg > 4) {
-//            continue;
-//        } else if ((name == "ZTT") &&Zcateg != 5) {
-//            continue;
-//        } else if (name == "ZJ" && Zcateg != 6) {
-//            continue;
-//        }
+        if (name == "ZLL" && (gen_matched1 >4 || gen_matched2 >4)) {
+            continue;
+        } else if ((name == "ZTT") && (gen_matched1 <5 && gen_matched2 < 5)) {
+            continue;
+        }
         //=========================================================================================================
 
         float embedWeight = 1;

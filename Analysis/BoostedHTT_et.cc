@@ -349,6 +349,13 @@ int main(int argc, char* argv[]) {
         
         int gen_matched1 = ZCategory(Ele4Momentum);
         int gen_matched2 = ZCategory(Tau4Momentum);
+
+        if (name == "ZLL" && (gen_matched1 >4 || gen_matched2 >4)) {
+            continue;
+        } else if ((name == "ZTT") && (gen_matched1 <5 && gen_matched2 < 5)) {
+            continue;
+        }
+
 //
 //                int Zcateg = ZCategory(Tau4Momentum);
 //                if (name == "ZLL" && Zcateg > 4) {
