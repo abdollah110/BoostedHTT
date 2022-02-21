@@ -115,6 +115,8 @@ for ifile in fileList:
         names = ['JJH']
     elif 'QCD' in sample or 'qcd' in sample:
         names = ['mcQCD']
+    elif 'Embed' in sample:
+        names = ['emb']
     else:
         names = ['VV']
 
