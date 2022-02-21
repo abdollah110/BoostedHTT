@@ -149,7 +149,7 @@ int main(int argc, char* argv[]) {
     bool OS,SS,lep1IsoPass,lep2IsoPassL,lep2IsoPassV;
     float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, nom_zpt_weight, eleIDMVA, gen_higgs_pT,gen_leadjet_pT;
     float MuMatchedIsolation= -1; float EleMatchedIsolation =-1;
-    int nbjet, gen_matched1_, gen_matched2_;
+        int nbjet, gen_matched1_, gen_matched2_,gen_matched1, gen_matched2;
     bool isGenTau_;
     bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
 
