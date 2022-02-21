@@ -373,6 +373,13 @@ int main(int argc, char* argv[]) {
 //                } else if (name == "ZJ" && Zcateg != 6) {
 //                    continue;
 //                }
+        if (name == "ZLL" && (gen_matched1 >4 || gen_matched2 >4)) {
+            continue;
+        } else if ((name == "ZTT") && (gen_matched1 <5 && gen_matched2 < 5)) {
+            continue;
+        } else{
+        cout<< "gen_matched1  && gen_matched2  " << gen_matched1 << gen_matched2  <<"\n";
+        }
         
         //=========================================================================================================
         float embedWeight = 1;
