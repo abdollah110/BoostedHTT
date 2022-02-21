@@ -513,24 +513,6 @@ int main(int argc, char* argv[]) {
         
         
 //=========================================================================================================
-        // Separate Drell-Yan processes
-        int gen_matched1 = ZCategory(LeadTau4Momentum);
-        int gen_matched2 = ZCategory(SubTau4Momentum);
-
-
-        if (name == "ZLL" && (gen_matched1 >4 || gen_matched2 >4)) {
-            continue;
-        } else if ((name == "ZTT") && (gen_matched1 <5 && gen_matched2 < 5)) {
-            continue;
-        }
-
-//        if (name == "ZLL" && Zcateg > 4) {
-//            continue;
-//        } else if ((name == "ZTT") &&Zcateg != 5) {
-//            continue;
-//        } else if (name == "ZJ" && Zcateg != 6) {
-//            continue;
-//        }
         //=========================================================================================================
         float embedWeight = 1;
         if (isEmbed){
@@ -585,7 +567,27 @@ int main(int argc, char* argv[]) {
             //TriggerWeight uncertainty
             if (syst == "trig_ttUp") {TriggerWeight  = TriggerWeight+TriggerWeightError;}
             if (syst == "trig_ttDown") {TriggerWeight  = TriggerWeight-TriggerWeightError;}
-            
+
+        // Separate Drell-Yan processes
+         gen_matched1 = ZCategory(LeadTau4Momentum);
+         gen_matched2 = ZCategory(SubTau4Momentum);
+
+
+        if (name == "ZLL" && (gen_matched1 >4 || gen_matched2 >4)) {
+            continue;
+        } else if ((name == "ZTT") && (gen_matched1 <5 && gen_matched2 < 5)) {
+            continue;
+        }
+
+//        if (name == "ZLL" && Zcateg > 4) {
+//            continue;
+//        } else if ((name == "ZTT") &&Zcateg != 5) {
+//            continue;
+//        } else if (name == "ZJ" && Zcateg != 6) {
+//            continue;
+//        }
+
+
             //  GenInfo
             vector<float>  genInfo=GeneratorInfo();
             float WBosonPt=genInfo[1];

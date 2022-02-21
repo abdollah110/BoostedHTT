@@ -361,28 +361,6 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",12 ,15,0,15);
         
         //=========================================================================================================
-//         Separate Drell-Yan processes
-        int gen_matched1 = ZCategory(Mu4Momentum);
-        int gen_matched2 = ZCategory(Tau4Momentum);
-
-//                int Zcateg = ZCategory(Tau4Momentum);
-//                if (name == "ZLL" && Zcateg > 4) {
-//                    continue;
-//                } else if ((name == "ZTT") &&Zcateg != 5) {
-//                    continue;
-//                } else if (name == "ZJ" && Zcateg != 6) {
-//                    continue;
-//                }
-        if (name == "ZLL" && (gen_matched1 >4 || gen_matched2 >4)) {
-            continue;
-        } else if ((name == "ZTT") && (gen_matched1 <5 && gen_matched2 < 5)) {
-            continue;
-        }
-//        else{
-//        cout<< "gen_matched1  && gen_matched2  " << gen_matched1 << gen_matched2  <<"\n";
-//        }
-        
-        //=========================================================================================================
         float embedWeight = 1;
         if (isEmbed){
             
@@ -443,6 +421,28 @@ int main(int argc, char* argv[]) {
             if (syst == "prefireUp") {preFireWeight = L1ECALPrefireUp;}
             if (syst == "prefireDown") {preFireWeight = L1ECALPrefireDown;}
             
+        //=========================================================================================================
+//         Separate Drell-Yan processes
+         gen_matched1 = ZCategory(Mu4Momentum);
+         gen_matched2 = ZCategory(Tau4Momentum);
+
+//                int Zcateg = ZCategory(Tau4Momentum);
+//                if (name == "ZLL" && Zcateg > 4) {
+//                    continue;
+//                } else if ((name == "ZTT") &&Zcateg != 5) {
+//                    continue;
+//                } else if (name == "ZJ" && Zcateg != 6) {
+//                    continue;
+//                }
+        if (name == "ZLL" && (gen_matched1 >4 || gen_matched2 >4)) {
+            continue;
+        } else if ((name == "ZTT") && (gen_matched1 <5 && gen_matched2 < 5)) {
+            continue;
+        }
+//        else{
+//        cout<< "gen_matched1  && gen_matched2  " << gen_matched1 << gen_matched2  <<"\n";
+//        }
+        
             
             //  GenInfo
             vector<float>  genInfo=GeneratorInfo();

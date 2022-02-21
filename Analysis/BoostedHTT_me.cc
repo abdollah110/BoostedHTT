@@ -389,29 +389,6 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",14 ,15,0,15);
 
 
-
-
-
-        //=========================================================================================================
-        // Separate Drell-Yan processes
-        int gen_matched1 = ZCategory(Mu4Momentum);
-        int gen_matched2 = ZCategory(Ele4Momentum);
-
-
-        if (name == "ZLL" && (gen_matched1 >4 || gen_matched2 >4)) {
-            continue;
-        } else if ((name == "ZTT") && (gen_matched1 <5 && gen_matched2 < 5)) {
-            continue;
-        }
-//
-//        int Zcateg = ZCategory(Ele4Momentum);
-//        if (name == "ZLL" && Zcateg > 4) {
-//            continue;
-//        } else if ((name == "ZTT") &&Zcateg != 5) {
-//            continue;
-//        } else if (name == "ZJ" && Zcateg != 6) {
-//            continue;
-//        }
         //=========================================================================================================
         float embedWeight = 1;
         if (isEmbed){
@@ -478,6 +455,26 @@ int main(int argc, char* argv[]) {
             if (syst == "prefireUp") {preFireWeight = L1ECALPrefireUp;}
             if (syst == "prefireDown") {preFireWeight = L1ECALPrefireDown;}
             
+        //=========================================================================================================
+        // Separate Drell-Yan processes
+         gen_matched1 = ZCategory(Mu4Momentum);
+         gen_matched2 = ZCategory(Ele4Momentum);
+
+
+        if (name == "ZLL" && (gen_matched1 >4 || gen_matched2 >4)) {
+            continue;
+        } else if ((name == "ZTT") && (gen_matched1 <5 && gen_matched2 < 5)) {
+            continue;
+        }
+//
+//        int Zcateg = ZCategory(Ele4Momentum);
+//        if (name == "ZLL" && Zcateg > 4) {
+//            continue;
+//        } else if ((name == "ZTT") &&Zcateg != 5) {
+//            continue;
+//        } else if (name == "ZJ" && Zcateg != 6) {
+//            continue;
+//        }
             
             //  GenInfo
             vector<float>  genInfo=GeneratorInfo();

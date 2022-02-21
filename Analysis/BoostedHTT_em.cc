@@ -394,18 +394,6 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",14 ,15,0,15);
 
         //=========================================================================================================
-        // Separate Drell-Yan processes
-        int gen_matched1 = ZCategory(Ele4Momentum);
-        int gen_matched2 = ZCategory(Mu4Momentum);
-
-//
-//        int Zcateg = ZCategory(Ele4Momentum);
-        if (name == "ZLL" && (gen_matched1 >4 || gen_matched2 >4)) {
-            continue;
-        } else if ((name == "ZTT") && (gen_matched1 <5 && gen_matched2 < 5)) {
-            continue;
-        }
-        //=========================================================================================================
 
         float embedWeight = 1;
         if (isEmbed){
@@ -473,7 +461,20 @@ int main(int argc, char* argv[]) {
             if (syst == "prefireUp") {preFireWeight = L1ECALPrefireUp;}
             if (syst == "prefireDown") {preFireWeight = L1ECALPrefireDown;}
             
-            
+
+        //=========================================================================================================
+        // Separate Drell-Yan processes
+         gen_matched1 = ZCategory(Ele4Momentum);
+         gen_matched2 = ZCategory(Mu4Momentum);
+
+//
+//        int Zcateg = ZCategory(Ele4Momentum);
+        if (name == "ZLL" && (gen_matched1 >4 || gen_matched2 >4)) {
+            continue;
+        } else if ((name == "ZTT") && (gen_matched1 <5 && gen_matched2 < 5)) {
+            continue;
+        }
+
             //  GenInfo
             vector<float>  genInfo=GeneratorInfo();
             float WBosonPt=genInfo[1];
