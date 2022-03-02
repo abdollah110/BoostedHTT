@@ -468,12 +468,12 @@ int main(int argc, char* argv[]) {
          gen_matched2 = ZCategory(Mu4Momentum);
 
 //
-//        int Zcateg = ZCategory(Ele4Momentum);
-        if (name == "ZLL" && (gen_matched1 >4 || gen_matched2 >4)) {
-            continue;
-        } else if ((name == "ZTT") && (gen_matched1 <5 && gen_matched2 < 5)) {
-            continue;
-        }
+////        int Zcateg = ZCategory(Ele4Momentum);
+//        if (name == "ZLL" && (gen_matched1 >4 || gen_matched2 >4)) {
+//            continue;
+//        } else if ((name == "ZTT") && (gen_matched1 <5 && gen_matched2 < 5)) {
+//            continue;
+//        }
 
             //  GenInfo
             vector<float>  genInfo=GeneratorInfo();
