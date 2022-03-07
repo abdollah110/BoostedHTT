@@ -26,7 +26,7 @@ InputFile=options.inputFile
 suffice=options.suffice
 
 
-for ifile in glob('{}/NN_boost_*_FinalNN*'.format(InputFile)):
+for ifile in glob('{}/NN_boost_*V12_newDM*'.format(InputFile)):
 
     print 'ifile is   -- >>>  {}'.format(ifile)
     
@@ -43,23 +43,28 @@ for ifile in glob('{}/NN_boost_*_FinalNN*'.format(InputFile)):
     if '_em_' in ifile:
         channel = 'em'
         treeName = 'emu_tree'
-        executable = 'process_trees_em'
+#        executable = 'process_trees_em'
+        executable = 'process_trees_NN_em'
     elif '_me_' in ifile:
         channel = 'me'
         treeName = 'emu_tree'
-        executable = 'process_trees_em'
+#        executable = 'process_trees_em'
+        executable = 'process_trees_NN_em'
     elif '_mt_' in ifile:
         channel = 'mt'
         treeName = 'mutau_tree'
-        executable = 'process_trees_lt_fr'
+#        executable = 'process_trees_lt_fr'
+        executable = 'process_trees_NN_lt'
     elif '_et_' in ifile:
         channel = 'et'
         treeName = 'etau_tree'
-        executable = 'process_trees_lt_fr'
+#        executable = 'process_trees_lt_fr'
+        executable = 'process_trees_NN_lt'
     elif '_tt_' in ifile:
         channel = 'tt'
         treeName = 'tautau_tree'
-        executable = 'process_trees_tt'
+#        executable = 'process_trees_tt'
+        executable = 'process_trees_NN_tt'
     elif '_mm_' in ifile:
         channel = 'mm'
         treeName = 'mumu_tree'
