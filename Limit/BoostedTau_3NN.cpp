@@ -69,39 +69,93 @@ int main(int argc, char** argv) {
     // Here we will just define two categories for an 8TeV analysis. Each entry in
     // the vector below specifies a bin name and corresponding bin_id.
     
-    //    VString chns = { "mt","et","em","me","tt"};
-    VString chns = { "mt","et","em","tt"};
+    //    VString chns = { "mt_qcd","et","em","me","tt"};
+    VString chns = { "mt_qcd","mt_signal","mt_ztt","et_qcd","et_signal","et_ztt","em_qcd","em_signal","em_ztt","tt_qcd","tt_signal","tt_ztt"};
     
     map<string, string> input_folders = {
-        {"mt", "."},
-        {"et", "."},
-        {"em", "."},
-        {"tt", "."}
+        {"mt_qcd", "."},
+        {"mt_signal", "."},
+        {"mt_ztt", "."},
+        {"et_qcd", "."},
+        {"et_signal", "."},
+        {"et_ztt", "."},
+        {"em_qcd", "."},
+        {"em_signal", "."},
+        {"em_ztt", "."},
+        {"tt_qcd", "."},
+        {"tt_signal", "."},
+        {"tt_ztt", "."},
     };
     
     map<string, VString> bkg_procs;
-    bkg_procs["mt"] = {"QCD", "TT","VV","ZTT"};
-    bkg_procs["et"] = {"QCD", "TT","VV","ZTT"};
-    bkg_procs["em"] = {"QCD","W", "TT","VV","ZTT"};
-    bkg_procs["tt"] = {"QCD", "TT","VV","ZTT"};
-    
+    bkg_procs["mt_qcd"] = {"QCD", "TT","VV","ZTT"};
+    bkg_procs["mt_signal"] = {"QCD", "TT","VV","ZTT"};
+    bkg_procs["mt_ztt"] = {"QCD", "TT","VV","ZTT"};
+    bkg_procs["et_qcd"] = {"QCD", "TT","VV","ZTT"};
+    bkg_procs["et_signal"] = {"QCD", "TT","VV","ZTT"};
+    bkg_procs["et_ztt"] = {"QCD", "TT","VV","ZTT"};
+    bkg_procs["tt_qcd"] = {"QCD", "TT","VV","ZTT"};
+    bkg_procs["tt_signal"] = {"QCD", "TT","VV","ZTT"};
+    bkg_procs["tt_ztt"] = {"QCD", "TT","VV","ZTT"};
+    bkg_procs["em_qcd"] = {"QCD", "TT","VV","ZTT","W"};
+    bkg_procs["em_signal"] = {"QCD", "TT","VV","ZTT","W"};
+    bkg_procs["em_ztt"] = {"QCD", "TT","VV","ZTT","W"};
+
+
     VString sig_procs = {"ggH","XH"};
+    
+    VString mt_cat = {"mt_qcd","mt_signal","mt_ztt"};
+    VString et_cat = {"et_qcd","et_signal","et_ztt"};
+    VString tt_cat = {"tt_qcd","tt_signal","tt_ztt"};
+    VString em_cat = {"em_qcd","em_signal","em_ztt"};
+    
+    
     
     map<string, Categories> cats;
     
-    cats["mt_13TeV"] = {
-        {1, "mt"},
+    cats["mt_qcd_13TeV"] = {
+        {1, "mt_qcd"},
     };
-    cats["et_13TeV"] = {
-        {1, "et"},
+    cats["mt_signal_13TeV"] = {
+        {1, "mt_signal"},
     };
-    cats["em_13TeV"] = {
-        {1, "em"},
+    cats["mt_ztt_13TeV"] = {
+        {1, "mt_ztt"},
     };
-    cats["tt_13TeV"] = {
-        {1, "tt"},
+    cats["et_qcd_13TeV"] = {
+        {1, "et_qcd"},
     };
-    
+    cats["et_signal_13TeV"] = {
+        {1, "et_signal"},
+    };
+    cats["et_ztt_13TeV"] = {
+        {1, "et_ztt"},
+    };
+    cats["tt_qcd_13TeV"] = {
+        {1, "tt_qcd"},
+    };
+    cats["tt_signal_13TeV"] = {
+        {1, "tt_signal"},
+    };
+    cats["tt_ztt_13TeV"] = {
+        {1, "tt_ztt"},
+    };
+    cats["em_qcd_13TeV"] = {
+        {1, "em_qcd"},
+    };
+    cats["em_signal_13TeV"] = {
+        {1, "em_signal"},
+    };
+    cats["em_ztt_13TeV"] = {
+        {1, "em_ztt"},
+    };
+
+
+
+
+
+
+
     
     // ch::Categories is just a typedef of vector<pair<int, string>>
     //! [part1]
@@ -159,30 +213,30 @@ int main(int argc, char** argv) {
     .AddSyst(cb, "CMS_lumi_", "lnN", SystMap<era>::init({"13TeV"}, 1.025));
     
     //        tau
-    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel({"tt"})
+    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat,tt_cat}))
     .AddSyst(cb, "CMS_trg_t", "lnN", SystMap<era>::init({"13TeV"}, 1.10)); // now it is shape-based
     
-    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel({"et","mt","tt"})
+    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat,tt_cat}))
     .AddSyst(cb, "CMS_eff_tboost", "lnN", SystMap<era>::init({"13TeV"}, 1.10));
     
     //         electron
-    cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT"}})).channel({"et","em"})
+    cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT"}})).channel(ch::JoinStr({em_cat,et_cat}))
     .AddSyst(cb, "CMS_eff_e", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
-    
-    cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT"}})).channel({"et","em"})
+
+    cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT"}})).channel(ch::JoinStr({em_cat,et_cat}))
     .AddSyst(cb, "CMS_scale_e", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
-    
-    cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT"}})).channel({"et","em"})
+
+    cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT"}})).channel(ch::JoinStr({em_cat,et_cat}))
     .AddSyst(cb, "CMS_trg_e", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
     
     //      muon
-    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"mt","em"})
+    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({em_cat,mt_cat}))
     .AddSyst(cb, "CMS_eff_m", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
     
-    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"mt","em"})
+    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({em_cat,mt_cat}))
     .AddSyst(cb, "CMS_scale_m", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
     
-    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"mt","em"})
+    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({em_cat,mt_cat}))
     .AddSyst(cb, "CMS_trg_m", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
     
     //      JER
@@ -209,7 +263,7 @@ int main(int argc, char** argv) {
     // Shape systematics
     //####################################################################################
    
-
+//
     cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}}))
     .AddSyst(cb, "CMS_scale_j_"+year, "shape", SystMap<>::init(1.00));
 //
@@ -237,10 +291,10 @@ int main(int argc, char** argv) {
 
     cb.cp().process({"ZTT"})
     .AddSyst(cb, "Z_masspt_"+year, "shape", SystMap<>::init(1.00));
-    
-    //####################################################################################
-    // Theorethical systematics
-    //####################################################################################
+
+    ####################################################################################
+     Theorethical systematics
+    ####################################################################################
 
     cb.cp().process({"ggH"})
     .AddSyst(cb, "THU_ggH_Mu_", "shape", SystMap<>::init(1.00));
@@ -268,7 +322,7 @@ int main(int argc, char** argv) {
 
     cb.cp().process({"ggH"})
     .AddSyst(cb, "THU_ggH_qmtop_", "shape", SystMap<>::init(1.00));
-    
+
     
 //    cout << ">> Adding systematic uncertainties...\n";
     // ch::AddSystematics_et_mt(cb);

@@ -27,20 +27,92 @@ using namespace std;
 
 int main(int argc, char** argv) {
 
+
+
+//    string SM125= "";
+//    string mass = "mA";
+//    string output_folder = "sm_run2";
+//    string input_folder_em="USCMS/";
+//    string input_folder_et="USCMS/";
+//    string input_folder_mt="USCMS/";
+//    string input_folder_tt="USCMS/";
+//    string input_folder_mm="USCMS/";
+//    string input_folder_TT="USCMS/";
+    string postfix="";
+//    string vbfcateStr_tt="tt_vbf_ggHMELA_bin";
+//    string vbfcateStr_mt="mt_vbf_ggHMELA_bin";
+//    string vbfcateStr_et="et_vbf_ggHMELA_bin";
+//    string vbfcateStr_em="em_vbf_ggHMELA_bin";
+//    bool auto_rebin = false;
+//    bool manual_rebin = false;
+//    bool real_data = false;
+//    int control_region = 0;
     string year = "2016";
+    string inputFile="";
     string WP="WP";
     string bin="bin";
     string DIR="DIR";
-
+    
+//    bool check_neg_bins = false;
+//    bool poisson_bbb = false;
+//    bool do_w_weighting = false;
+//    bool mm_fit = false;
+//    bool TT_fit = false;
+//    bool do_jetfakes = true;
+//    bool do_embedded = true;
+//    bool do_shapeSyst = false;
+//    bool do_sync = false;
+//    bool useSingleVBFdir = false;
+//    string do_chn = "tt";
+//    bool is_2017 = false;
+//    bool use_ggHint = false;
+//    string par = "fa3";
     po::variables_map vm;
     po::options_description config("configuration");
     config.add_options()
+//    ("mass,m", po::value<string>(&mass)->default_value(mass))
+//      ("input_folder_em", po::value<string>(&input_folder_em)->default_value("USCMS"))
+//      ("input_folder_et", po::value<string>(&input_folder_et)->default_value("USCMS"))
+//      ("input_folder_mt", po::value<string>(&input_folder_mt)->default_value("USCMS"))
+//      ("input_folder_tt", po::value<string>(&input_folder_tt)->default_value("USCMS"))
+//      ("input_folder_mm", po::value<string>(&input_folder_mm)->default_value("USCMS"))
+//      ("input_folder_TT", po::value<string>(&input_folder_TT)->default_value("USCMS"))
+      ("postfix", po::value<string>(&postfix)->default_value(""))
+//      ("vbfcateStr_tt", po::value<string>(&vbfcateStr_tt)->default_value("tt_vbf_ggHMELA_bin"))
+//      ("vbfcateStr_mt", po::value<string>(&vbfcateStr_mt)->default_value("mt_vbf_ggHMELA_bin"))
+//      ("auto_rebin", po::value<bool>(&auto_rebin)->default_value(false))
+//      ("real_data", po::value<bool>(&real_data)->default_value(false))
+//      ("manual_rebin", po::value<bool>(&manual_rebin)->default_value(false))
+//      ("output_folder", po::value<string>(&output_folder)->default_value("sm_run2"))
+//      ("SM125,h", po::value<string>(&SM125)->default_value(SM125))
+//      ("control_region", po::value<int>(&control_region)->default_value(0))
       ("year", po::value<string>(&year)->default_value("2016"))
-      ("WP", po::value<string>(&WP)->default_value("L"))
-      ("bin", po::value<string>(&bin)->default_value("bin1"))
-      ("DIR", po::value<string>(&DIR)->default_value("./"));
+      ("WP", po::value<string>(&WP)->default_value(""))
+      ("bin", po::value<string>(&bin)->default_value(""))
+      ("inputFile", po::value<string>(&inputFile)->default_value(""))
+      ("DIR", po::value<string>(&DIR)->default_value(""));
+//      ("mm_fit", po::value<bool>(&mm_fit)->default_value(true))
+//      ("TT_fit", po::value<bool>(&TT_fit)->default_value(true))
+//      ("jetfakes", po::value<bool>(&do_jetfakes)->default_value(false))
+//      ("embedded", po::value<bool>(&do_embedded)->default_value(false))
+//      ("shapeSyst", po::value<bool>(&do_shapeSyst)->default_value(false))
+//      ("sync", po::value<bool>(&do_sync)->default_value(false))
+//      ("useSingleVBFdir", po::value<bool>(&useSingleVBFdir)->default_value(false))
+//      ("chn", po::value<string>(&do_chn)->default_value("tt"))
+//      ("par", po::value<string>(&par)->default_value("fa3"))
+//      ("is2017", po::value<bool>(&is_2017)->default_value(false))
+//      ("use_ggHint", po::value<bool>(&use_ggHint)->default_value(false))
+//      ("check_neg_bins", po::value<bool>(&check_neg_bins)->default_value(false))
+//      ("poisson_bbb", po::value<bool>(&poisson_bbb)->default_value(false))
+//      ("w_weighting", po::value<bool>(&do_w_weighting)->default_value(false));
     po::store(po::command_line_parser(argc, argv).options(config).run(), vm);
     po::notify(vm);
+
+
+
+
+
+
 
 
     //! [part1]
@@ -69,14 +141,19 @@ int main(int argc, char** argv) {
     };
     
     map<string, VString> bkg_procs;
-//    bkg_procs["mt"] = {"W", "QCD", "TT","VV"};
-    bkg_procs["mt"] = {"QCD", "TT","VV"};
+//    bkg_procs["mt"] = {"W", "QCD", "TT","VV","ZLL","ZJ"};
+    bkg_procs["mt"] = {"W", "QCD", "TT","VV"};
+//    bkg_procs["mm"] = {"W", "QCD", "TT","VV"};
+//    bkg_procs["mt"] = {"W",  "TT","VV"};
     bkg_procs["mm"] = {"W",  "TT","VV"};
 
 
     VString sig_procs = {"DYJets"};
     
     map<string, Categories> cats;
+    //cats["et_13TeV"] = {
+    //      {1, "EleTau_DiJet"}};
+    
     
     cats["mt_13TeV"] = {
         {1, "mt_0jet"},
@@ -119,7 +196,9 @@ int main(int argc, char** argv) {
     cout << ">> Extracting histograms from input root files...\n";
     for (string era : {"13TeV"}) {
         for (string chn : chns) {
+//            /mt2017_vis_masslep2IsoPassV_bin2.root
             string file = aux_shapes + input_folders[chn] + "/"+chn+year+"_vis_masslep2IsoPass"+WP+"_"+bin+".root";
+//            string file = aux_shapes + input_folders[chn] + "/newtemplate_boostedH_"+chn+"_"+year+"_"+WP+".root";
             if (chn.find("mm") != string::npos ) file = aux_shapes + input_folders[chn] + "/newtemplate_boostedH_"+chn+"_"+year+".root";
             cb.cp().channel({chn}).era({era}).backgrounds().ExtractShapes(
                                                                           file, "$BIN/$PROCESS", "$BIN/$PROCESS_$SYSTEMATIC");
@@ -140,7 +219,8 @@ int main(int argc, char** argv) {
     
     // Norm systematics
     
-
+    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
+    .AddSyst(cb, "CMS_lumi_$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.024));
     
 //    cb.cp().channel({"mt"}).bin_id({1}).process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZLL","ZJ"}}))
 //    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.1/0.9));
@@ -148,26 +228,23 @@ int main(int argc, char** argv) {
 //    cb.cp().channel({"mt"}).bin_id({2}).process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZLL","ZJ"}}))
 //    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 0.9/1.1));
     
-
-    cb.cp().channel({"mt","mm"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
-    .AddSyst(cb, "CMS_lumi_$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.024));
     
-    cb.cp().channel({"mt","mm"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
+    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
     .AddSyst(cb, "CMS_eff_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
     
-    cb.cp().channel({"mt","mm"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
+    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
     .AddSyst(cb, "CMS_trg_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
 
 
-//    cb.cp().channel({"mm"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
-//    .AddSyst(cb, "CMS_lumi_$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.024));
-//
-//
-//    cb.cp().channel({"mm"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
-//    .AddSyst(cb, "CMS_eff_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
-//
-//    cb.cp().channel({"mm"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
-//    .AddSyst(cb, "CMS_trg_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
+    cb.cp().channel({"mm"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
+    .AddSyst(cb, "CMS_lumi_$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.024));
+        
+    
+    cb.cp().channel({"mm"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
+    .AddSyst(cb, "CMS_eff_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
+    
+    cb.cp().channel({"mm"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
+    .AddSyst(cb, "CMS_trg_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
 
 
 
@@ -175,7 +252,7 @@ int main(int argc, char** argv) {
 //    .AddSyst(cb, "CMS_htt_ZTTNorm", "lnN", SystMap<>::init(1.10));
     
     cb.cp().process({"TT"})
-    .AddSyst(cb, "CMS_htt_TTNorm", "lnN", SystMap<>::init(1.05));
+    .AddSyst(cb, "CMS_htt_TTNorm", "lnN", SystMap<>::init(1.10));
     
     cb.cp().process({"VV"})
     .AddSyst(cb, "CMS_htt_VVNorm", "lnN", SystMap<>::init(1.10));
@@ -200,60 +277,33 @@ int main(int argc, char** argv) {
 //
 //    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
 //    .AddSyst(cb, "met_UES", "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
-//    .AddSyst(cb, "met_resp_", "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
-//    .AddSyst(cb, "met_reso_", "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"W", "TT","VV"}}))
-//    .AddSyst(cb, "prefire", "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().channel({"mt"}).process({sig_procs})
-//    .AddSyst(cb, "Z_masspt_", "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().channel({"mt"}).process({"W"})
-//    .AddSyst(cb, "WBosonKFactor", "shape", SystMap<>::init(1.00));
 
-
-//    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"TT","VV"}}))
-//    .AddSyst(cb, "met_JES", "shape", SystMap<>::init(1.00));
-
-    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"TT","VV"}}))
-    .AddSyst(cb, "JEnTot", "shape", SystMap<>::init(1.00));
-
-    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"TT","VV"}}))
-    .AddSyst(cb, "MissingEn_UES", "shape", SystMap<>::init(1.00));
+//    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"ZLL","ZJ"}}))
+//    .AddSyst(cb, "dyShape_", "shape", SystMap<>::init(1.00));
 //
-//    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"TT","VV"}}))
-//    .AddSyst(cb, "met_resp_", "shape", SystMap<>::init(1.00));
+//    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"ZLL","ZJ"}}))
+//    .AddSyst(cb, "zmumuShape_", "shape", SystMap<>::init(1.00));
 //
-//    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"TT","VV"}}))
-//    .AddSyst(cb, "met_reso_", "shape", SystMap<>::init(1.00));
-//
-    cb.cp().channel({"mt"}).process(ch::JoinStr({sig_procs, {"TT","VV"}}))
-    .AddSyst(cb, "prefire", "shape", SystMap<>::init(1.00));
 
-    cb.cp().channel({"mt"}).process({sig_procs})
-    .AddSyst(cb, "Z_masspt_", "shape", SystMap<>::init(1.00));
-
-
-    cb.cp().channel({"mt"}).process({"QCD"})
-    .AddSyst(cb, "shape_", "shape", SystMap<>::init(1.00));
-
-    cb.cp().channel({"mt"}).process({"TT"})
-    .AddSyst(cb, "ttbarShape_", "shape", SystMap<>::init(1.00));
 
     
     cout << ">> Adding systematic uncertainties...\n";
-
-
+    // ch::AddSystematics_et_mt(cb);
+    
+    //cb.cp().process(ch::JoinStr({sig_procs, {"ZTT"}}))
+    //    .AddSyst(cb, "CMS_scale_t_mutau_$ERA", "shape", SystMap<>::init(1.00));
+    //! [part6]
+    
+    //! [part7]
+    
     cb.cp().backgrounds().ExtractShapes(
+//                                        aux_shapes + "/"+inputFile,
                                         aux_shapes + "/mt"+year+"_vis_masslep2IsoPass"+WP+"_"+bin+".root",
+                                        
                                         "$BIN/$PROCESS",
                                         "$BIN/$PROCESS_$SYSTEMATIC");
     cb.cp().signals().ExtractShapes(
+//                                        aux_shapes + "/"+inputFile,
                                         aux_shapes + "/mt"+year+"_vis_masslep2IsoPass"+WP+"_"+bin+".root",
                                     "$BIN/$PROCESS$MASS",
                                     "$BIN/$PROCESS$MASS_$SYSTEMATIC");

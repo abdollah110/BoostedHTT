@@ -215,36 +215,39 @@ int main(int argc, char** argv) {
         // Norm systematics
 
     cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}}))
-    .AddSyst(cb, "CMS_lumi_", "lnN", SystMap<era>::init({"13TeV"}, 1.025));
+    .AddSyst(cb, "CMS_lumi_$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.025));
     
-    //        tau    
+    //        tau
+    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT","OutsideAcceptance"}})).channel({"tt"})
+    .AddSyst(cb, "CMS_trg_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.10));
+    
     cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT","OutsideAcceptance"}})).channel({"et","mt","tt"})
-    .AddSyst(cb, "CMS_eff_tboost", "lnN", SystMap<era>::init({"13TeV"}, 1.10));
+    .AddSyst(cb, "CMS_eff_t$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.10));
     
     //         electron
     cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT","OutsideAcceptance"}})).channel({"et","em"})
-    .AddSyst(cb, "CMS_eff_e", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
+    .AddSyst(cb, "CMS_eff_e$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
     
     cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT","OutsideAcceptance"}})).channel({"et","em"})
-    .AddSyst(cb, "CMS_scale_e", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
+    .AddSyst(cb, "CMS_scale_e$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
     
     cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT","OutsideAcceptance"}})).channel({"et","em"})
-    .AddSyst(cb, "CMS_trg_e", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
+    .AddSyst(cb, "CMS_trg_e$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
     
     //      muon
     cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).channel({"mt","em"})
-    .AddSyst(cb, "CMS_eff_m", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
+    .AddSyst(cb, "CMS_eff_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
     
     cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).channel({"mt","em"})
-    .AddSyst(cb, "CMS_scale_m", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
+    .AddSyst(cb, "CMS_scale_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
     
     cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).channel({"mt","em"})
-    .AddSyst(cb, "CMS_trg_m", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
+    .AddSyst(cb, "CMS_trg_m$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.02));
     
     //      JER
     
     cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}}))
-    .AddSyst(cb, "CMS_JER", "lnN", SystMap<era>::init({"13TeV"}, 1.01));
+    .AddSyst(cb, "CMS_JER$ERA", "lnN", SystMap<era>::init({"13TeV"}, 1.01));
     
     cb.cp().process({"ZTT"})
     .AddSyst(cb, "CMS_htt_ZTTNorm", "lnN", SystMap<>::init(1.03));
@@ -267,38 +270,31 @@ int main(int argc, char** argv) {
     //####################################################################################
     // Shape systematics
     //####################################################################################
-
-
-    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}}))
-    .AddSyst(cb, "CMS_scale_j_"+year, "shape", SystMap<>::init(1.00));
+        
+//    cb.cp().process({ "TT","VV","ZTT","OutsideAcceptance"})
+//    .AddSyst(cb, "JEnTot", "shape", SystMap<>::init(1.00));
+////
+//////    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}}))
+//////    .AddSyst(cb, "MissingEn_JES", "shape", SystMap<>::init(1.00));
+////
+//    cb.cp().process({ "TT","VV","ZTT","OutsideAcceptance"})
+//    .AddSyst(cb, "MissingEn_UES", "shape", SystMap<>::init(1.00));
 //
-////    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}}))
-////    .AddSyst(cb, "MissingEn_JES", "shape", SystMap<>::init(1.00));
+//    cb.cp().process({ "TT","VV","ZTT","OutsideAcceptance"})
+//    .AddSyst(cb, "TES", "shape", SystMap<>::init(1.00));
 //
-    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}}))
-    .AddSyst(cb, "CMS_scale_met_unclustered"+year, "shape", SystMap<>::init(1.00));
-
-    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}}))
-    .AddSyst(cb, "CMS_scale_t_"+year, "shape", SystMap<>::init(1.00));
-
-    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}}))
-    .AddSyst(cb, "CMS_trig_tt"+year, "shape", SystMap<>::init(1.00));
-
-    cb.cp().process({"QCD"})
-    .AddSyst(cb, "shape_"+year, "shape", SystMap<>::init(1.00));
-
-
-    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT","OutsideAcceptance"}}))
-    .AddSyst(cb, "prefiring", "shape", SystMap<>::init(1.00));
-
-    cb.cp().process({"TT"})
-    .AddSyst(cb, "CMS_ttbarShape_", "shape", SystMap<>::init(1.00));
-
-    cb.cp().process({"ZTT"})
-    .AddSyst(cb, "Z_masspt_"+year, "shape", SystMap<>::init(1.00));
-    
-
-    
+//    cb.cp().process({"QCD"})
+//    .AddSyst(cb, "shape_", "shape", SystMap<>::init(1.00));
+//
+//
+//    cb.cp().process({ "TT","VV","ZTT","OutsideAcceptance"})
+//    .AddSyst(cb, "prefire", "shape", SystMap<>::init(1.00));
+//
+//    cb.cp().process({"TT"})
+//    .AddSyst(cb, "ttbarShape_", "shape", SystMap<>::init(1.00));
+//
+//    cb.cp().process({"ZTT"})
+//    .AddSyst(cb, "Z_masspt_", "shape", SystMap<>::init(1.00));
     
     //####################################################################################
     // Theorethical systematics
