@@ -470,7 +470,7 @@ int main(int argc, char* argv[]) {
             }
         }
         
-        //        if (! passing) continue;  FIXME  this is for trigger studies for embedded
+        if (! passing) continue;  //FIXME  this is for trigger studies for embedded
         
         //=========================================================================================================
         // Event Selection
