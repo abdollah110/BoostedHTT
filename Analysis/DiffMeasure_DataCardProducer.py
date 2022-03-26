@@ -48,10 +48,10 @@ Variable=[
 
 PTrange= [
         [0,100000,'_bin0'],
-        [0,300,'_bin1'],
-        [300,400,'_bin2'],
-        [400,550,'_bin3'],
-        [550,800,'_bin4'],
+        [0,350,'_bin1'],
+        [350,450,'_bin2'],
+        [460,600,'_bin3'],
+        [600,800,'_bin4'],
         [800,100000,'_bin5']
 ]
 
@@ -107,7 +107,7 @@ for ifile in glob('{}/NN*'.format(InputFile)):
                     print '\n\n\n\n =====> start making datacard for ', var
 #                    print 'command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} -c higgs_pT -l {} -h {}  '.format(executable, ifile, var[0],var[0],var[1],var[2],var[3],pt[0],pt[1])
 #                    os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c higgs_pT -l {} -h {}  '.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],pt[0],pt[1]))
-                    print 'command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} -c LeadJetPt -l {} -h {}  '.format(executable, ifile, var[0],var[0],var[1],var[2],var[3],pt[0],pt[1])
-                    os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c LeadJetPt -l {} -h {}  '.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],pt[0],pt[1]))
+#                    print 'command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} -c LeadJetPt -l {} -h {}  '.format(executable, ifile, var[0],var[0],var[1],var[2],var[3],pt[0],pt[1])
+                    os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c Rivet_higgsPt -l {} -h {}  '.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],pt[0],pt[1]))
 
                     break

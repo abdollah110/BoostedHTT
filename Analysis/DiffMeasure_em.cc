@@ -99,9 +99,17 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         bool OS,SS,lep1IsoPass,eleIDMVA, lep2IsoPass;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi, lep2Pt_;
         float NN_disc;
-        float higgs_pT, higgs_m, m_sv, gen_higgs_pT;
-        
-        
+        float higgs_pT, higgs_m, m_sv, gen_higgs_pT, Rivet_higgsPt, Rivet_j1pt;
+        bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
+        tree->SetBranchAddress("Chan_emu",&Chan_emu);
+        tree->SetBranchAddress("Chan_etau",&Chan_etau);
+        tree->SetBranchAddress("Chan_mutau",&Chan_mutau);
+        tree->SetBranchAddress("Chan_tautau",&Chan_tautau);
+        tree->SetBranchAddress("Chan_emu_fid",&Chan_emu_fid);
+        tree->SetBranchAddress("Chan_etau_fid",&Chan_etau_fid);
+        tree->SetBranchAddress("Chan_mutau_fid",&Chan_mutau_fid);
+        tree->SetBranchAddress("Chan_tautau_fid",&Chan_tautau_fid);
+
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
         tree->SetBranchAddress("lep2Pt",&lep2Pt_);
         tree->SetBranchAddress("OS",&OS);
@@ -121,7 +129,11 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         tree->SetBranchAddress("higgs_m",&higgs_m);
         tree->SetBranchAddress("m_sv",&m_sv);
         tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
-
+        
+        tree->SetBranchAddress("Rivet_higgsPt",&Rivet_higgsPt);
+        tree->SetBranchAddress("Rivet_j1pt",&Rivet_j1pt);
+        
+        
         
         // Here we have to call OS/SS method extracter
         std::cout<<" tree->GetEntries() is "<<tree->GetEntries()<<"\n";
@@ -144,28 +156,66 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
                 {"higgs_m",higgs_m},
                 {"m_sv",m_sv},
                 {"NN_disc",NN_disc},
-                {"gen_higgs_pT",gen_higgs_pT}
+                {"gen_higgs_pT",gen_higgs_pT},
+                {"Rivet_higgsPt",Rivet_higgsPt},
+                {"Rivet_j1pt",Rivet_j1pt},
+                
             };
-
-//            if (name.find("0_300")!=string::npos &&   ( gen_higgs_pT > 300  || gen_higgs_pT > 300 )) continue ;
-//            if (name.find("300_400")!=string::npos && ( gen_higgs_pT <= 300 || gen_higgs_pT > 400 )) continue ;
-//            if (name.find("400_550")!=string::npos && ( gen_higgs_pT <= 400 || gen_higgs_pT > 550 )) continue ;
-//            if (name.find("550_800")!=string::npos && ( gen_higgs_pT <= 550 || gen_higgs_pT > 800 )) continue ;
-//            if (name.find("GT800")!=string::npos &&   ( gen_higgs_pT <= 800)) continue ;
-
-
-
-            if (name.find("0_300")!=string::npos &&   ( LeadJetPt > 300  || LeadJetPt > 300 )) continue ;
-            if (name.find("300_400")!=string::npos && ( LeadJetPt <= 300 || LeadJetPt > 400 )) continue ;
-            if (name.find("400_550")!=string::npos && ( LeadJetPt <= 400 || LeadJetPt > 550 )) continue ;
-            if (name.find("550_800")!=string::npos && ( LeadJetPt <= 550 || LeadJetPt > 800 )) continue ;
-            if (name.find("GT800")!=string::npos &&   ( LeadJetPt <= 800)) continue ;
-
-
-
+            
             float Var_cut = ObsName[cut_name];
             if (Var_cut < lowVal || Var_cut > highVal ) continue;
+
+            //OutOfAcceptance
+            if (name.find("OutsideAcceptance")!=string::npos){
+            if (Chan_emu_fid) continue;
+            }
+
+            // Higgs pT parameterization
+            if (name.find("0_350")!=string::npos){
+                if ( Var_cut > 350 ) continue ;
+                if (!Chan_emu || !Chan_emu_fid) continue;
+            }
+            if (name.find("350_450")!=string::npos){
+                if ( Var_cut <= 350 || Var_cut > 450 ) continue ;
+                if (!Chan_emu || !Chan_emu_fid) continue;
+            }
+            if (name.find("450_600")!=string::npos){
+                if ( Var_cut <= 450 || Var_cut > 600 ) continue ;
+                if (!Chan_emu || !Chan_emu_fid) continue;
+            }
+            if (name.find("600_800")!=string::npos){
+                if ( Var_cut <= 600 || Var_cut > 800 ) continue ;
+                if (!Chan_emu || !Chan_emu_fid) continue;
+            }
+            if (name.find("GT800")!=string::npos){
+                if ( Var_cut <= 800) continue ;
+                if (!Chan_emu || !Chan_emu_fid) continue;
+            }
             
+//            // Lead jet pT parameterization
+//            if (name.find("0_350")!=string::npos){
+//                if ( Rivet_j1pt > 350 ) continue ;
+//                if (!Chan_emu || !Chan_emu_fid) continue;
+//            }
+//            if (name.find("350_450")!=string::npos){
+//                if ( Rivet_j1pt <= 350 || Rivet_j1pt > 450 ) continue ;
+//                if (!Chan_emu || !Chan_emu_fid) continue;
+//            }
+//            if (name.find("450_600")!=string::npos){
+//                if ( Rivet_j1pt <= 450 || Rivet_j1pt > 600 ) continue ;
+//                if (!Chan_emu || !Chan_emu_fid) continue;
+//            }
+//            if (name.find("600_800")!=string::npos){
+//                if ( Rivet_j1pt <= 600 || Rivet_j1pt > 800 ) continue ;
+//                if (!Chan_emu || !Chan_emu_fid) continue;
+//            }
+//            if (name.find("GT800")!=string::npos){
+//                if ( Rivet_j1pt <= 800) continue ;
+//                if (!Chan_emu || !Chan_emu_fid) continue;
+//            }
+
+
+
 //            if (higgs_pT < 400) continue;
             
 //            if (NN_disc < 0.3) continue;
