@@ -169,8 +169,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             
             bool Chan_ltau, Chan_ltau_fid;
             
-            if (dir.find("_et_") != string::npos ) {Chan_ltau=Chan_etau; Chan_ltau_fid=Chan_etau_fid; }
-            else if (dir.find("_mt_") != string::npos) {Chan_ltau=Chan_mutau; Chan_ltau_fid=Chan_mutau_fid; }
+            if (dir.find("_et") != string::npos ) {Chan_ltau=Chan_etau; Chan_ltau_fid=Chan_etau_fid; }
+            else if (dir.find("_mt") != string::npos) {Chan_ltau=Chan_mutau; Chan_ltau_fid=Chan_mutau_fid; }
             else (std::cout << "channel fiducial is not specificed in the outFile name !\n");
 
             float Var_cut = ObsName[cut_name];
