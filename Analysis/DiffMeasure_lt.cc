@@ -130,10 +130,10 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
         tree->SetBranchAddress("higgs_m",&higgs_m);
         tree->SetBranchAddress("m_sv",&m_sv);
-        tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
+//        tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
         
-        tree->SetBranchAddress("Rivet_higgsPt",&Rivet_higgsPt);
-        tree->SetBranchAddress("Rivet_j1pt",&Rivet_j1pt);
+        tree->SetBranchAddress("gen_higgs_pT",&Rivet_higgsPt);
+        tree->SetBranchAddress("gen_leadjet_pT",&Rivet_j1pt);
         
         // Here we have to call OS/SS method extracter
         std::cout<<" tree->GetEntries() is "<<tree->GetEntries()<<"\n";
