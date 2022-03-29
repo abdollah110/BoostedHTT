@@ -50,13 +50,13 @@ PTrange= [
         [0,100000,'_bin0'],
         [0,350,'_bin1'],
         [350,450,'_bin2'],
-        [460,600,'_bin3'],
+        [450,600,'_bin3'],
         [600,800,'_bin4'],
         [800,100000,'_bin5']
 ]
 
 
-for ifile in glob('{}/NN*'.format(InputFile)):
+for ifile in glob('{}/*'.format(InputFile)):
     sample=ifile.replace(InputFile,'').replace('/','')
     
     print 'starting from {} and the file name is  {}'.format(ifile,sample)
@@ -78,23 +78,23 @@ for ifile in glob('{}/NN*'.format(InputFile)):
     executable=''
 
 
-    if '_em_' in ifile:
+    if '_em' in ifile:
         channel = 'em'
         treeName = 'emu_tree'
         executable = 'DiffMeasure_em'
-    elif '_me_' in ifile:
+    elif '_me' in ifile:
         channel = 'me'
         treeName = 'emu_tree'
         executable = 'DiffMeasure_em'
-    elif '_mt_' in ifile:
+    elif '_mt' in ifile:
         channel = 'mt'
         treeName = 'mutau_tree'
         executable = 'DiffMeasure_lt'
-    elif '_et_' in ifile:
+    elif '_et' in ifile:
         channel = 'et'
         treeName = 'etau_tree'
         executable = 'DiffMeasure_lt'
-    elif '_tt_' in ifile:
+    elif '_tt' in ifile:
         channel = 'tt'
         treeName = 'tautau_tree'
         executable = 'DiffMeasure_tt'

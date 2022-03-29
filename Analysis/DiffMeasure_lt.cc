@@ -36,8 +36,8 @@ int main(int argc, char *argv[]) {
     TH1F * FRhist=(TH1F *) FRFile->Get("numVLoose");
 
     string channel, tree_name;
-    if (dir.find("_et_") != string::npos ) { channel ="et";tree_name="etau_tree";}
-    else if (dir.find("_mt_") != string::npos) { channel ="mt";tree_name="mutau_tree";}
+    if (dir.find("_et") != string::npos ) { channel ="et";tree_name="etau_tree";}
+    else if (dir.find("_mt") != string::npos) { channel ="mt";tree_name="mutau_tree";}
     else (std::cout << "channel is not specificed in the outFile name !\n");
     
     // get the provided histogram binning

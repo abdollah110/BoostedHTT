@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
     TH1F * FRhist=(TH1F *) FRFile->Get("numVLoose");
 
     string channel, tree_name;
-    if (dir.find("tt_") != string::npos) {channel ="tt";tree_name="tautau_tree";}
+    if (dir.find("_tt") != string::npos) {channel ="tt";tree_name="tautau_tree";}
     else (std::cout << "channel is not specificed in the outFile name !\n");
 
 
