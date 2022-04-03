@@ -62,7 +62,6 @@ int main(int argc, char *argv[]) {
     // This part is tro derive the OS/SS ratio (one can actually get the 2D pt/eta binned Values as well)
 //    hists->histoQCD(files, dir, tree_name,  "None");    // fill histograms QCD
     std::vector<float>  OSSS= hists->Get_OS_SS_ratio();
-    std::cout<<"\n\n\n\n OSSS  "<<OSSS[0]<<"\n";
     
     hists->histoLoop(year, files, dir, FRhist,tree_name,var_name,OSSS,cut_name, lowVal, highVal,"");    // fill histograms
     
