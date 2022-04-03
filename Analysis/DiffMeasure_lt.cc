@@ -173,14 +173,18 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             else if (dir.find("_mt") != string::npos) {Chan_ltau=Chan_mutau; Chan_ltau_fid=Chan_mutau_fid; }
             else (std::cout << "channel fiducial is not specificed in the outFile name !\n");
 
-            float Var_cut = ObsName[cut_name];
-            if (Var_cut < lowVal || Var_cut > highVal ) continue;
+            std::string reco_name="LeadJetPt";
+            if (cut_name.find("Rivet_higgsPt") !=string::npos) reco_name="higgs_pT";
+            float Var_reco = ObsName[reco_name];
+            if (Var_reco < lowVal || Var_reco > highVal ) continue;
 
             //OutOfAcceptance
             if (name.find("OutsideAcceptance")!=string::npos){
             if (Chan_ltau_fid) continue;
             }
 
+            float Var_cut = ObsName[cut_name];
+            
             // Higgs pT parameterization
             if (name.find("0_350")!=string::npos){
                 if ( Var_cut > 350 ) continue ;

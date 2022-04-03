@@ -164,20 +164,24 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 {"higgs_m",higgs_m},
                 {"m_sv",m_sv},
                 {"NN_disc",NN_disc},
+//                {"gen_higgs_pT",gen_higgs_pT},
                 {"gen_higgs_pT",gen_higgs_pT},
-                {"Rivet_higgsPt",Rivet_higgsPt},
                 {"Rivet_j1pt",Rivet_j1pt},
                 
             };
             
-            float Var_cut = ObsName[cut_name];
-            if (Var_cut < lowVal || Var_cut > highVal ) continue;
+            std::string reco_name="LeadJetPt";
+            if (cut_name.find("Rivet_higgsPt") !=string::npos) reco_name="higgs_pT";
+            float Var_reco = ObsName[reco_name];
+            if (Var_reco < lowVal || Var_reco > highVal ) continue;
 
             //OutOfAcceptance
             if (name.find("OutsideAcceptance")!=string::npos){
             if (Chan_tautau_fid) continue;
             }
 
+            float Var_cut = ObsName[cut_name];
+            
             // Higgs pT parameterization
             if (name.find("0_350")!=string::npos){
                 if ( Var_cut > 350 ) continue ;
