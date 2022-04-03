@@ -108,6 +108,6 @@ for ifile in glob('{}/*'.format(InputFile)):
 #                    print 'command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} -c higgs_pT -l {} -h {}  '.format(executable, ifile, var[0],var[0],var[1],var[2],var[3],pt[0],pt[1])
 #                    os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c higgs_pT -l {} -h {}  '.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],pt[0],pt[1]))
 #                    print 'command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} -c LeadJetPt -l {} -h {}  '.format(executable, ifile, var[0],var[0],var[1],var[2],var[3],pt[0],pt[1])
-                    os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c Rivet_higgsPt -l {} -h {}  '.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],pt[0],pt[1]))
+                    os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c gen_higgs_pT -l {} -h {}  '.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],pt[0],pt[1]))
 
                     break

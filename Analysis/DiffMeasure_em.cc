@@ -99,7 +99,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         bool OS,SS,lep1IsoPass,eleIDMVA, lep2IsoPass;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi, lep2Pt_;
         float NN_disc;
-        float higgs_pT, higgs_m, m_sv, gen_higgs_pT, Rivet_higgsPt, Rivet_j1pt;
+        float higgs_pT, higgs_m, m_sv, gen_higgs_pT, gen_leadjet_pT;
         bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
         tree->SetBranchAddress("Chan_emu",&Chan_emu);
         tree->SetBranchAddress("Chan_etau",&Chan_etau);
@@ -128,10 +128,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
         tree->SetBranchAddress("higgs_m",&higgs_m);
         tree->SetBranchAddress("m_sv",&m_sv);
-//        tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
-        
-        tree->SetBranchAddress("gen_higgs_pT",&Rivet_higgsPt);
-        tree->SetBranchAddress("gen_leadjet_pT",&Rivet_j1pt);
+        tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
+        tree->SetBranchAddress("gen_leadjet_pT",&gen_leadjet_pT);
         
         
         
@@ -157,13 +155,14 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
                 {"m_sv",m_sv},
                 {"NN_disc",NN_disc},
                 {"gen_higgs_pT",gen_higgs_pT},
-                {"Rivet_higgsPt",Rivet_higgsPt},
-                {"Rivet_j1pt",Rivet_j1pt},
+                {"gen_higgs_pT",gen_higgs_pT},
+                {"gen_leadjet_pT",gen_leadjet_pT},
                 
             };
             std::string reco_name="LeadJetPt";
-            if (cut_name.find("Rivet_higgsPt") !=string::npos) reco_name="higgs_pT";
+            if (cut_name.find("gen_higgs_pT") !=string::npos) reco_name="higgs_pT";
             float Var_reco = ObsName[reco_name];
+            cout<<reco_name <<"   float "<<Var_reco << " low "<<lowVal<<" high "<< highVal <<"\n";
             if (Var_reco < lowVal || Var_reco > highVal ) continue;
             
             //OutOfAcceptance
@@ -172,6 +171,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
             }
             
             float Var_cut = ObsName[cut_name];
+            cout<<Var_cut<<" Var_cut \n";
             
             // Higgs pT parameterization
             if (name.find("0_350")!=string::npos){
@@ -197,23 +197,23 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
             
 //            // Lead jet pT parameterization
 //            if (name.find("0_350")!=string::npos){
-//                if ( Rivet_j1pt > 350 ) continue ;
+//                if ( gen_leadjet_pT > 350 ) continue ;
 //                if (!Chan_emu || !Chan_emu_fid) continue;
 //            }
 //            if (name.find("350_450")!=string::npos){
-//                if ( Rivet_j1pt <= 350 || Rivet_j1pt > 450 ) continue ;
+//                if ( gen_leadjet_pT <= 350 || gen_leadjet_pT > 450 ) continue ;
 //                if (!Chan_emu || !Chan_emu_fid) continue;
 //            }
 //            if (name.find("450_600")!=string::npos){
-//                if ( Rivet_j1pt <= 450 || Rivet_j1pt > 600 ) continue ;
+//                if ( gen_leadjet_pT <= 450 || gen_leadjet_pT > 600 ) continue ;
 //                if (!Chan_emu || !Chan_emu_fid) continue;
 //            }
 //            if (name.find("600_800")!=string::npos){
-//                if ( Rivet_j1pt <= 600 || Rivet_j1pt > 800 ) continue ;
+//                if ( gen_leadjet_pT <= 600 || gen_leadjet_pT > 800 ) continue ;
 //                if (!Chan_emu || !Chan_emu_fid) continue;
 //            }
 //            if (name.find("GT800")!=string::npos){
-//                if ( Rivet_j1pt <= 800) continue ;
+//                if ( gen_leadjet_pT <= 800) continue ;
 //                if (!Chan_emu || !Chan_emu_fid) continue;
 //            }
 
