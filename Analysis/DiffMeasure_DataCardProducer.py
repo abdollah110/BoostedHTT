@@ -19,12 +19,18 @@ parser.add_option('--Observable', '-o', action='store',
                     help='The observable variable'
                 )
 
+parser.add_option('--DiffVariable', '-v', action='store',
+                    default=False, dest='Var',
+                    help='The differential variable'
+                )
+
 
 
 (options, args) = parser.parse_args()
 InputFile=options.inputFile
 prefix=options.prefix
 Observable=options.Obs
+DiffVariable=options.Var
 
 
 
@@ -108,6 +114,7 @@ for ifile in glob('{}/*'.format(InputFile)):
 #                    print 'command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} -c higgs_pT -l {} -h {}  '.format(executable, ifile, var[0],var[0],var[1],var[2],var[3],pt[0],pt[1])
 #                    os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c higgs_pT -l {} -h {}  '.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],pt[0],pt[1]))
 #                    print 'command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} -c LeadJetPt -l {} -h {}  '.format(executable, ifile, var[0],var[0],var[1],var[2],var[3],pt[0],pt[1])
-                    os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c gen_higgs_pT -l {} -h {}  '.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],pt[0],pt[1]))
+#                    os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c gen_higgs_pT -l {} -h {}  '.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],pt[0],pt[1]))
+                    os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c {} -l {} -h {}  '.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],DiffVariable, pt[0],pt[1]))
 
                     break
