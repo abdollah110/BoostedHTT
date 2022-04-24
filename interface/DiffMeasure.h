@@ -246,25 +246,23 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
         
         //========================================================================================================
         //                // ADD protection
-        //                for (int i = 0 ; i < fake_hist_shape->GetNbinsX(); i++){
-        //                    for (int j = 0 ; j < fake_hist_shape->GetNbinsY(); j++){
-        //                        if (fake_hist_shape->GetBinContent(i+1,j+1) <0 ){
-        //                            float negBin=fake_hist_shape->GetBinContent(i+1,j+1);
-        //                            float totIntegral =fake_hist_shape->Integral();
-        //                            fake_hist_shape->SetBinContent(i+1,j+1, 0.0001);
-        //                            fake_hist_shape->SetBinError(i+1,j+1, 0.0001);
-        //                            std::cout<< cat.first.c_str() << "   QCD bin of "<<i <<"  " <<j<< "  ratio bin/TotIntegral"<< negBin/totIntegral <<"\n";
-        //                        }
-        //                        if (fake_hist_shape_Up->GetBinContent(i+1,j+1) <0 ){
-        //                            fake_hist_shape_Up->SetBinContent(i+1,j+1, 0.0001);
-        //                            fake_hist_shape_Up->SetBinError(i+1,j+1, 0.0001);
-        //                        }
-        //                        if (fake_hist_shape_Down->GetBinContent(i+1,j+1) <0 ){
-        //                            fake_hist_shape_Down->SetBinContent(i+1,j+1, 0.0001);
-        //                            fake_hist_shape_Down->SetBinError(i+1,j+1, 0.0001);
-        //                        }
-        //                    }
-        //                }
+        for (int i = 0 ; i < fake_hist_shape->GetNbinsX(); i++){
+            if (fake_hist_shape->GetBinContent(i+1) <0 ){
+                float negBin=fake_hist_shape->GetBinContent(i+1);
+                float totIntegral =fake_hist_shape->Integral();
+                fake_hist_shape->SetBinContent(i+1, 0.0001);
+                fake_hist_shape->SetBinError(i+1, 0.1);
+                std::cout<< cat.first.c_str() << "   QCD bin of "<<i <<"  ratio bin/TotIntegral"<< negBin/totIntegral <<"\n";
+            }
+            if (fake_hist_shape_Up->GetBinContent(i+1) <0 ){
+                fake_hist_shape_Up->SetBinContent(i+1, 0.0001);
+                fake_hist_shape_Up->SetBinError(i+1, 0.1);
+            }
+            if (fake_hist_shape_Down->GetBinContent(i+1) <0 ){
+                fake_hist_shape_Down->SetBinContent(i+1, 0.0001);
+                fake_hist_shape_Down->SetBinError(i+1, 0.1);
+            }
+        }
         //========================================================================================================
         
         if (dir.find("Up")==string::npos && dir.find("Down")==string::npos){
