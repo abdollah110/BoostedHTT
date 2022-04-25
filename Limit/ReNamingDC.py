@@ -108,7 +108,14 @@ for k1 in dirList: # loop over categories
         h2 = histo.ReadObj()
         h3=h2.Clone()
         histo_name=h2.GetName()
-        if h3.Integral() != (h3.GetName().replace('Up','Down')).Integral() : print '=========>>>>   zero integral     <<<<<========== ', h3.GetName()
+        
+        
+        downName=h3.GetName().replace('Up','Down')
+        for down in histoList:
+            if down.GetName() !=downName : continue            
+            print '=========>>>>   zero integral     <<<<<========== ', h3.GetName(),down.GetName(), h3.integral(), down.Integral()
+
+
         if (h2.GetName()==name_last):
             continue
         name_last=histo_name
