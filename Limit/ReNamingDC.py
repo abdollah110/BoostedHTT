@@ -108,6 +108,7 @@ for k1 in dirList: # loop over categories
         h2 = histo.ReadObj()
         h3=h2.Clone()
         histo_name=h2.GetName()
+        if h3.integral()==0 : print '=========>>>>   zero integral     <<<<<========== ', h3.GetName()
         if (h2.GetName()==name_last):
             continue
         name_last=histo_name
