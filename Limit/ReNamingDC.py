@@ -110,7 +110,7 @@ for k1 in dirList: # loop over categories
         histo_name=h2.GetName()
         print  h3.integral(), h3.GetName()
         
-        if h3.integral() != h3.replace('Up','Down').integral() : print '=========>>>>   zero integral     <<<<<========== ', h3.GetName()
+        if h3.Integral() != h3.replace('Up','Down').Integral() : print '=========>>>>   zero integral     <<<<<========== ', h3.GetName()
         if (h2.GetName()==name_last):
             continue
         name_last=histo_name
