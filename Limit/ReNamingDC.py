@@ -129,6 +129,19 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('CMS_ttbarShape_2017','CMS_ttbarShape_')
         histo_name=histo_name.replace('CMS_ttbarShape_2018','CMS_ttbarShape_')
         
+        histo_name=histo_name.replace('Up125','Up')
+        histo_name=histo_name.replace('Down125','Down')
+        
+        histo_name=histo_name.replace('_0_350_','_0_350125_')
+        histo_name=histo_name.replace('_350_450_','_350_450125_')
+        histo_name=histo_name.replace('_450_600_','_450_600125_')
+        histo_name=histo_name.replace('_600_800_','_600_800125_')
+        histo_name=histo_name.replace('_GT800_','_GT800125_')
+        
+        
+#        histo_name=histo_name.replace('2016','2020')
+#        histo_name=histo_name.replace('2017','2020')
+#        histo_name=histo_name.replace('2018','2020')
 
         ofile.cd(Updatednom)
         h3.Write(histo_name)
