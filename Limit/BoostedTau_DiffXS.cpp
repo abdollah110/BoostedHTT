@@ -278,10 +278,10 @@ int main(int argc, char** argv) {
     cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}}))
     .AddSyst(cb, "CMS_scale_met_unclustered"+year, "shape", SystMap<>::init(1.00));
 
-    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}}))
+    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).channel({"et","mt","tt"})
     .AddSyst(cb, "CMS_scale_t_"+year, "shape", SystMap<>::init(1.00));
 
-    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}}))
+    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).channel({"tt"})
     .AddSyst(cb, "CMS_trig_tt"+year, "shape", SystMap<>::init(1.00));
 
     cb.cp().process({"QCD"})
@@ -289,7 +289,7 @@ int main(int argc, char** argv) {
 
 
     cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT","OutsideAcceptance"}}))
-    .AddSyst(cb, "prefiring", "shape", SystMap<>::init(1.00));
+    .AddSyst(cb, "CMS_prefiring", "shape", SystMap<>::init(1.00));
 
     cb.cp().process({"TT"})
     .AddSyst(cb, "CMS_ttbarShape_", "shape", SystMap<>::init(1.00));
@@ -304,32 +304,32 @@ int main(int argc, char** argv) {
     // Theorethical systematics
     //####################################################################################
 
-//    cb.cp().process({"ggH"})
-//    .AddSyst(cb, "THU_ggH_Mu_", "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process({"ggH"})
-//    .AddSyst(cb, "THU_ggH_Res_", "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process({"ggH"})
-//    .AddSyst(cb, "THU_ggH_Mig01_", "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process({"ggH"})
-//    .AddSyst(cb, "THU_ggH_Mig12_", "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process({"ggH"})
-//    .AddSyst(cb, "THU_ggH_VBF2j_", "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process({"ggH"})
-//    .AddSyst(cb, "THU_ggH_VBF3j_", "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process({"ggH"})
-//    .AddSyst(cb, "THU_ggH_PT60_", "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process({"ggH"})
-//    .AddSyst(cb, "THU_ggH_PT120_", "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process({"ggH"})
-//    .AddSyst(cb, "THU_ggH_qmtop_", "shape", SystMap<>::init(1.00));
+    cb.cp().process({"ggH"})
+    .AddSyst(cb, "THU_ggH_Mu_", "shape", SystMap<>::init(1.00));
+
+    cb.cp().process({"ggH"})
+    .AddSyst(cb, "THU_ggH_Res_", "shape", SystMap<>::init(1.00));
+
+    cb.cp().process({"ggH"})
+    .AddSyst(cb, "THU_ggH_Mig01_", "shape", SystMap<>::init(1.00));
+
+    cb.cp().process({"ggH"})
+    .AddSyst(cb, "THU_ggH_Mig12_", "shape", SystMap<>::init(1.00));
+
+    cb.cp().process({"ggH"})
+    .AddSyst(cb, "THU_ggH_VBF2j_", "shape", SystMap<>::init(1.00));
+
+    cb.cp().process({"ggH"})
+    .AddSyst(cb, "THU_ggH_VBF3j_", "shape", SystMap<>::init(1.00));
+
+    cb.cp().process({"ggH"})
+    .AddSyst(cb, "THU_ggH_PT60_", "shape", SystMap<>::init(1.00));
+
+    cb.cp().process({"ggH"})
+    .AddSyst(cb, "THU_ggH_PT120_", "shape", SystMap<>::init(1.00));
+
+    cb.cp().process({"ggH"})
+    .AddSyst(cb, "THU_ggH_qmtop_", "shape", SystMap<>::init(1.00));
 //
     
 //    cout << ">> Adding systematic uncertainties...\n";
