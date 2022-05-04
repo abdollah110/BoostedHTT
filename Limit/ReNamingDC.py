@@ -128,6 +128,28 @@ for k1 in dirList: # loop over categories
                 replacement=down.ReadObj()
                 h3=replacement
                 print 'new integral is ', h3.Integral()
+
+
+
+        if h3.Integral()>0 and h3.Integral() < 0.000001 :
+        
+            downName=''
+            if 'Up' in h3.GetName(): downName=h3.GetName().replace('Up','Down')
+            if 'Down' in h3.GetName(): downName=h3.GetName().replace('Down','Up')
+            
+            for down in histoList:
+    #            if 'Up' not in h3.GetName() or 'Down' not in h3.GetName() : continue
+                if down.GetName() !=downName : continue
+                if h3.Integral()< 0.000001 and down.ReadObj().Integral() < 0.000001: continue
+                if h3.Integral()> 0.000001 and down.ReadObj().Integral() > 0.000001: continue
+                print '========88888888=>>>>   small integral     <<<<<=====88888888===== ', h3.GetName(),down.GetName(), h3.Integral(), down.ReadObj().Integral()
+                replacement=down.ReadObj()
+                h3=replacement
+                print 'new integral is ', h3.Integral()
+
+
+
+
 ####################################################################################
 
 
