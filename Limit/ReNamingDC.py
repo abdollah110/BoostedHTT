@@ -167,7 +167,7 @@ for k1 in dirList: # loop over categories
 #        histo_name=histo_name.replace('2017','2020')
 #        histo_name=histo_name.replace('2018','2020')
 
-        h3.rebin(2)
+        h3.Rebin(2)
         
         ofile.cd(Updatednom)
         h3.Write(histo_name)
