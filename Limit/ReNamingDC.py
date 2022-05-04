@@ -132,7 +132,7 @@ for k1 in dirList: # loop over categories
 
 
         if h3.Integral()>0 and h3.Integral() < 0.000001 :
-        
+            print '========88888888=>>>>   small integral     <<<<<=====88888888===== ', h3.Integral()
             downName=''
             if 'Up' in h3.GetName(): downName=h3.GetName().replace('Up','Down')
             if 'Down' in h3.GetName(): downName=h3.GetName().replace('Down','Up')
