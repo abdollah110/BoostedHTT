@@ -109,11 +109,26 @@ for k1 in dirList: # loop over categories
         h3=h2.Clone()
         histo_name=h2.GetName()
         
+#        NonZeroIntegralHist=h2.Clone()
+####################################################################################
+############        Here we fix the issue with shape uncertainty up and down once one is zero and the other is non-zero, as this causes an issue in the fit
+####################################################################################
+        if h3.Integral()==0:
         
-        downName=h3.GetName().replace('Up','Down')
-        for down in histoList:
-            if down.GetName() !=downName : continue            
-            print '=========>>>>   zero integral     <<<<<========== ', h3.GetName(),down.GetName(), h3.integral(), down.Integral()
+            downName=''
+            if 'Up' in h3.GetName(): downName=h3.GetName().replace('Up','Down')
+            if 'Down' in h3.GetName(): downName=h3.GetName().replace('Down','Up')
+            
+            for down in histoList:
+    #            if 'Up' not in h3.GetName() or 'Down' not in h3.GetName() : continue
+                if down.GetName() !=downName : continue
+                if h3.Integral()==0 and down.ReadObj().Integral() ==0: continue
+                if h3.Integral()!=0 and down.ReadObj().Integral() !=0: continue
+                print '=========>>>>   zero integral     <<<<<========== ', h3.GetName(),down.GetName(), h3.Integral(), down.ReadObj().Integral()
+                replacement=down.ReadObj()
+                h3=replacement
+                print 'new integral is ', h3.Integral()
+####################################################################################
 
 
         if (h2.GetName()==name_last):
@@ -124,6 +139,7 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('JEnTot','CMS_scale_j_')
         histo_name=histo_name.replace('MissingEn_UES','CMS_scale_met_unclustered')
         histo_name=histo_name.replace('ttbarShape','CMS_ttbarShape')
+        histo_name=histo_name.replace('trig_tt','CMS_trig_tt')
 
 
         if 'THU' not in histo_name: histo_name=histo_name.replace('Up',str(year)+'Up')
@@ -151,5 +167,7 @@ for k1 in dirList: # loop over categories
 #        histo_name=histo_name.replace('2017','2020')
 #        histo_name=histo_name.replace('2018','2020')
 
+        h3.rebin(2)
+        
         ofile.cd(Updatednom)
         h3.Write(histo_name)
