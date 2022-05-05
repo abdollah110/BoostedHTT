@@ -62,13 +62,6 @@ for k1 in dirList: # loop over categories
 
     h1 = k1.ReadObj()
     nom=k1.GetName()
-#    ofile.mkdir(nom.replace('_0jet',''))
-    Updatednom=nom.replace('_0jet','')
-    ofile.mkdir(Updatednom)
-    h1.cd()
-    histoList = gDirectory.GetListOfKeys()
-    name_last=""
-    N_histo=0
 
     channel=''
     treeName=''
@@ -103,6 +96,25 @@ for k1 in dirList: # loop over categories
 
     print 'year is {} and channel is {}'.format(year,channel)
 
+    
+
+#    ofile.mkdir(nom.replace('_0jet',''))
+    Updatednom=nom.replace('_0jet','')
+    
+    if '_1_' in Updatednom: Updatednom='Htt_PTH_0_350_cat{}{}'.format(year,channel)
+    if '_2_' in Updatednom: Updatednom='Htt_PTH_350_450_cat{}{}'.format(year,channel)
+    if '_3_' in Updatednom: Updatednom='Htt_PTH_450_600_cat{}{}'.format(year,channel)
+    if '_4_' in Updatednom: Updatednom='Htt_PTH_600_800_cat{}{}'.format(year,channel)
+    if '_5_' in Updatednom: Updatednom='Htt_PTH_GT800_cat{}{}'.format(year,channel)
+    
+    ofile.mkdir(Updatednom)
+    h1.cd()
+    histoList = gDirectory.GetListOfKeys()
+    name_last=""
+    N_histo=0
+
+
+
     for histo in histoList:
         h1.cd()
         h2 = histo.ReadObj()
@@ -131,7 +143,7 @@ for k1 in dirList: # loop over categories
 
 
 
-        if h3.Integral()>0 and h3.Integral() < 0.000001 :
+        elif h3.Integral() < 0.000001 :
             print '========88888888=>>>>   small integral     <<<<<=====88888888===== ', h3.Integral()
             downName=''
             if 'Up' in h3.GetName(): downName=h3.GetName().replace('Up','Down')
