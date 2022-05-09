@@ -172,8 +172,10 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('TES','CMS_scale_t_')
         histo_name=histo_name.replace('JEnTot','CMS_scale_j_')
         histo_name=histo_name.replace('MissingEn_UES','CMS_scale_met_unclustered')
-        histo_name=histo_name.replace('ttbarShape','CMS_ttbarShape')
+        histo_name=histo_name.replace('ttbarShape_','CMS_ttbarShape')
         histo_name=histo_name.replace('trig_tt','CMS_trig_tt')
+        histo_name=histo_name.replace('CMS_JER','CMS_res_j')
+        histo_name=histo_name.replace('shape_','CMS_QCD_bkg_modeling')
 
 
         if 'THU' not in histo_name: histo_name=histo_name.replace('Up',str(year)+'Up')
@@ -197,11 +199,14 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('_GT800_','_GT800125_')
         
         
+        
+        
+        
 #        histo_name=histo_name.replace('2016','2020')
 #        histo_name=histo_name.replace('2017','2020')
 #        histo_name=histo_name.replace('2018','2020')
 
-        h3.Rebin(2)
+#        h3.Rebin(2)
         
         ofile.cd(Updatednom)
         h3.Write(histo_name)
