@@ -254,7 +254,7 @@ int main(int argc, char* argv[]) {
         //        if (syst == "met_reso_Down") {Met = met_reso_Down; Metphi=metphi_reso_Down;}
         //        if (syst == "met_resp_Down") {Met = met_resp_Down; Metphi=metphi_resp_Down;}
         
-        TLorentzVector Mu4Momentum,Tau4Momentum, Z4Momentum, Met4Momentum;
+        TLorentzVector Mu4Momentum,Tau4Momentum, Z4Momentum, Met4Momentum, Tau4MomentumNominal;
         //=========================================================================================================
         // Muon selection
         int idx_lep= lepIndex;
@@ -308,10 +308,36 @@ int main(int argc, char* argv[]) {
         int idx_tau= tauIndex;
         // pt from 30 to 20
         Tau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
+        Tau4MomentumNominal.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
+        
         bool isGenTau= isMatchedToGenTau(Tau4Momentum);
         if (syst == "TESUp" && isGenTau) {Tau4Momentum *= 1+0.03 ; m_sv=m_sv_TES_Up ;}
         if (syst == "TESDown" && isGenTau) {Tau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
-        
+
+        if (syst == "TESUp_1prong" && isGenTau && boostedTauDecayMode->at(idx_tau)==0) {Tau4Momentum *= 1+0.03 ; m_sv=m_sv_TES_Up ;}
+        if (syst == "TESDown_1prong" && isGenTau && boostedTauDecayMode->at(idx_tau)==0) {Tau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
+        if (syst == "TESUp_1prong1pizero" && isGenTau && boostedTauDecayMode->at(idx_tau)==1) {Tau4Momentum *= 1+0.03 ; m_sv=m_sv_TES_Up ;}
+        if (syst == "TESDown_1prongpizero" && isGenTau && boostedTauDecayMode->at(idx_tau)==1) {Tau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
+        if (syst == "TESUp_3prong" && isGenTau && boostedTauDecayMode->at(idx_tau)==10) {Tau4Momentum *= 1+0.03 ; m_sv=m_sv_TES_Up ;}
+        if (syst == "TESDown_3prong" && isGenTau && boostedTauDecayMode->at(idx_tau)==10) {Tau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
+
+
+
+                                
+        if ((syst == "TESUp_1prong" || syst == "TESDown_1prong" ||  syst == "TESUp_1prong1pizero"   ||  syst == "TESDown_1prongpizero" || syst == "TESUp_3prong" || syst == "TESDown_3prong")  && isGenTau) {
+        float MET_x = Met * TMath::Cos(Metphi) - (Tau4MomentumNominal.Px()- Tau4Momentum.Px()) ;
+        float MET_y = Met * TMath::Sin(Metphi) - (Tau4MomentumNominal.Py()- Tau4Momentum.Py()) ;
+
+        Met = sqrt (pow(MET_x,2)+ pow(MET_y,2));
+        Metphi = atan(MET_y / MET_x);
+        if (Metphi > (TMath::Pi() / 2)) Metphi += TMath::Pi();
+        if (Metphi < (-TMath::Pi() / 2)) Metphi -= TMath::Pi();
+        }
+
+
+
+
+
         if (Tau4Momentum.Pt() <= 30 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_tau) < 0.5 ) continue;
         //        if (boostedTauagainstElectronVLooseMVA62018->at(idx_tau) < 0.5) continue;
