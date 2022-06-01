@@ -45,27 +45,27 @@ for ifile in glob('{}/*'.format(InputFile)):
     executable=''
     treeName=''
     
-    if '_em_' in ifile:
+    if '_em' in ifile:
         channel = 'em'
         treeName = 'emu_tree'
 #        executable = 'process_trees_em'
         executable = 'process_trees_NN_em'
-    elif '_me_' in ifile:
+    elif '_me' in ifile:
         channel = 'me'
         treeName = 'emu_tree'
 #        executable = 'process_trees_em'
         executable = 'process_trees_NN_em'
-    elif '_mt_' in ifile:
+    elif '_mt' in ifile:
         channel = 'mt'
         treeName = 'mutau_tree'
 #        executable = 'process_trees_lt_fr'
         executable = 'process_trees_NN_lt'
-    elif '_et_' in ifile:
+    elif '_et' in ifile:
         channel = 'et'
         treeName = 'etau_tree'
 #        executable = 'process_trees_lt_fr'
         executable = 'process_trees_NN_lt'
-    elif '_tt_' in ifile:
+    elif '_tt' in ifile:
         channel = 'tt'
         treeName = 'tautau_tree'
 #        executable = 'process_trees_tt'
