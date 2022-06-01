@@ -79,6 +79,8 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
     initVectors1dFake("nominal");
     initVectors1dFake("up");
     initVectors1dFake("down");
+    initVectors1dFake("frup");
+    initVectors1dFake("frdown");
 
 
     for (auto ifile : files) {

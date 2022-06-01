@@ -88,6 +88,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
     initVectors1dFake("nominal");
     initVectors1dFake("up");
     initVectors1dFake("down");
+    initVectors1dFake("frup");
+    initVectors1dFake("frdown");
 
 
     for (auto ifile : files) {
