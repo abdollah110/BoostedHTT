@@ -42,6 +42,9 @@ for ifile in glob('{}/*'.format(InputFile)):
         print 'which year ???'
 
     channel=''
+    executable=''
+    treeName=''
+    
     if '_em_' in ifile:
         channel = 'em'
         treeName = 'emu_tree'
