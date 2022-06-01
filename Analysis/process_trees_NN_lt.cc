@@ -171,6 +171,9 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             if (lep2Ptval > 200) lep2Ptval=200;
             
             float frValu = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
+            float frValuErr = FRhist->GetBinError(FRhist->GetXaxis()->FindBin(lep2Ptval));
+            float frValuUncUp=frValu+frValuErr;
+            float frValuUncDown=frValu-frValuErr;
 //            vbf_var1 =ObsName[var_name];
             
             
@@ -194,10 +197,14 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 // qcd norm
                 if (OS != 0 && lep1IsoPass && !lep2IsoPassV ){
                     fillQCD_Norm(i, name, NN_out_vec[i],  weight, frValu / (1-frValu));
+                    fillQCD_Norm_fr_up(i, name, NN_out_vec[i],  weight, frValuUncUp / (1-frValuUncUp));
+                    fillQCD_Norm_fr_down(i, name, NN_out_vec[i],  weight, frValuUncDown / (1-frValuUncDown));
                 }
                 // qcd shape
                 if (SS != 0 && !lep2IsoPassV){
                     fillQCD_Shape(i, name, NN_out_vec[i],  weight, frValu / (1-frValu));
+                    fillQCD_Shape_fr_up(i, name, NN_out_vec[i],  weight, frValuUncUp / (1-frValuUncUp));
+                    fillQCD_Shape_fr_down(i, name, NN_out_vec[i],  weight, frValuUncDown / (1-frValuUncDown));
                 }
             }
             NN_out_vec.clear();
