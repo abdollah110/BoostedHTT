@@ -372,6 +372,44 @@ int main(int argc, char* argv[]) {
         if (numBJet > 0) continue;
         plotFill("cutFlowTable",10 ,15,0,15);
         
+        
+//        float bjetsWeightOnMC=1;
+//                // for bjets 25 GeV
+//        if (isData ) {
+//            if (year==2016){
+//                if ((myBjets[0].getPt() > 0 && myBjets[0].getCSV() > 0.2217 ) || (myBjets[1].getPt() > 0  && myBjets[1].getCSV() > 0.2217 )) continue;
+//            }
+//            else if (year==2017 || year==2018 ){
+//                if ((myBjets[0].getPt() > 0 && myBjets[0].getCSV() > 0.1241 ) || (myBjets[1].getPt() > 0  && myBjets[1].getCSV() > 0.1241 )) continue;
+//            }
+//        }
+//
+//
+//            if (year==2016){
+//
+//                bjet_weighter  bj_(2016, loose);
+//                bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV());
+//                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV(), "up");
+//                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV(), "down");
+//
+//            }else if (year==2017){
+//
+//                bjet_weighter  bj_(2017, loose);
+//                bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV());
+//                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV(), "up");
+//                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV(), "down");
+//
+//            }else if (year==2018){
+//
+//                bjet_weighter  bj_(2018, loose);
+//                bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV());
+//                if (syst == "bscale_up") bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV(), "up");
+//                if (syst == "bscale_down") bjetsWeightOnMC= bj_.find_weight(myBjets[0].getPt(), myBjets[0].getFlavor(),myBjets[0].getCSV(), myBjets[1].getPt(), myBjets[1].getFlavor(),myBjets[1].getCSV(), "down");
+//            } else{
+//                throw "wrong year name";
+//            }
+
+
         // HT cut
         ht= getHT(JetPtCut, Mu4Momentum, Ele4Momentum,JetSys);
         if (ht < 200) continue;

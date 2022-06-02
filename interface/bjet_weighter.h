@@ -1,3 +1,4 @@
+// Copyright [2020] Tyler Mitchell
 
 #ifndef INCLUDE_BJET_WEIGHTER_H_
 #define INCLUDE_BJET_WEIGHTER_H_
@@ -21,7 +22,7 @@
     ##################################################################
   */
 
-enum bveto_wp { loose, medium, tight };
+enum bveto_wp { loose, medium };
 
 class bjet_weighter {
    private:
@@ -29,15 +30,11 @@ class bjet_weighter {
     double current_wp;
     double loose_wp_2016, loose_wp_2018;
     double medium_wp_2016, medium_wp_2018;
-    double tight_wp_2016, tight_wp_2018;
     double get_sf(double, double, std::string);
     double get_loose_sf_2016(double, double, std::string);
     double get_loose_sf_2018(double, double, std::string);
     double get_medium_sf_2016(double, double, std::string);
     double get_medium_sf_2018(double, double, std::string);
-    double get_tight_sf_2016(double, double, std::string);
-    double get_tight_sf_2018(double, double, std::string);
-
 
    public:
     bjet_weighter(int _year, int _wp);

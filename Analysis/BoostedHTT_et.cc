@@ -297,21 +297,24 @@ int main(int argc, char* argv[]) {
         if (syst == "TESUp_1prong" && isGenTau && boostedTauDecayMode->at(idx_tau)==0) {Tau4Momentum *= 1+0.03 ; m_sv=m_sv_TES_Up ;}
         if (syst == "TESDown_1prong" && isGenTau && boostedTauDecayMode->at(idx_tau)==0) {Tau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
         if (syst == "TESUp_1prong1pizero" && isGenTau && boostedTauDecayMode->at(idx_tau)==1) {Tau4Momentum *= 1+0.03 ; m_sv=m_sv_TES_Up ;}
-        if (syst == "TESDown_1prongpizero" && isGenTau && boostedTauDecayMode->at(idx_tau)==1) {Tau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
+        if (syst == "TESDown_1prong1pizero" && isGenTau && boostedTauDecayMode->at(idx_tau)==1) {Tau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
         if (syst == "TESUp_3prong" && isGenTau && boostedTauDecayMode->at(idx_tau)==10) {Tau4Momentum *= 1+0.03 ; m_sv=m_sv_TES_Up ;}
         if (syst == "TESDown_3prong" && isGenTau && boostedTauDecayMode->at(idx_tau)==10) {Tau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
 
 
 
                                 
-        if ((syst == "TESUp_1prong" || syst == "TESDown_1prong" ||  syst == "TESUp_1prong1pizero"   ||  syst == "TESDown_1prongpizero" || syst == "TESUp_3prong" || syst == "TESDown_3prong")  && isGenTau) {
+        if ((syst == "TESUp_1prong" || syst == "TESDown_1prong" ||  syst == "TESUp_1prong1pizero"   ||  syst == "TESDown_1prong1pizero" || syst == "TESUp_3prong" || syst == "TESDown_3prong")  && isGenTau) {
         float MET_x = Met * TMath::Cos(Metphi) - (Tau4MomentumNominal.Px()- Tau4Momentum.Px()) ;
         float MET_y = Met * TMath::Sin(Metphi) - (Tau4MomentumNominal.Py()- Tau4Momentum.Py()) ;
 
         Met = sqrt (pow(MET_x,2)+ pow(MET_y,2));
         Metphi = atan(MET_y / MET_x);
-        if (Metphi > (TMath::Pi() / 2)) Metphi += TMath::Pi();
-        if (Metphi < (-TMath::Pi() / 2)) Metphi -= TMath::Pi();
+//        if (Metphi > (TMath::Pi() / 2)) Metphi += TMath::Pi();
+//        if (Metphi < (-TMath::Pi() / 2)) Metphi -= TMath::Pi();
+        if (MET_x < 0 && MET_y < 0) Metphi -= TMath::Pi();
+        if (MET_x < 0 && MET_y > 0) Metphi += TMath::Pi();
+        
         }
 
 

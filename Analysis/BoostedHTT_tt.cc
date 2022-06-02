@@ -308,21 +308,24 @@ int main(int argc, char* argv[]) {
         if (syst == "TESUp_1prong" && isGenTauLead && boostedTauDecayMode->at(idx_leadtau)==0) {LeadTau4Momentum *= 1+0.03 ; m_sv=m_sv_TES_Up ;}
         if (syst == "TESDown_1prong" && isGenTauLead && boostedTauDecayMode->at(idx_leadtau)==0) {LeadTau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
         if (syst == "TESUp_1prong1pizero" && isGenTauLead && boostedTauDecayMode->at(idx_leadtau)==1) {LeadTau4Momentum *= 1+0.03 ; m_sv=m_sv_TES_Up ;}
-        if (syst == "TESDown_1prongpizero" && isGenTauLead && boostedTauDecayMode->at(idx_leadtau)==1) {LeadTau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
+        if (syst == "TESDown_1prong1pizero" && isGenTauLead && boostedTauDecayMode->at(idx_leadtau)==1) {LeadTau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
         if (syst == "TESUp_3prong" && isGenTauLead && boostedTauDecayMode->at(idx_leadtau)==10) {LeadTau4Momentum *= 1+0.03 ; m_sv=m_sv_TES_Up ;}
         if (syst == "TESDown_3prong" && isGenTauLead && boostedTauDecayMode->at(idx_leadtau)==10) {LeadTau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
 
 
 
                                 
-        if ((syst == "TESUp_1prong" || syst == "TESDown_1prong" ||  syst == "TESUp_1prong1pizero"   ||  syst == "TESDown_1prongpizero" || syst == "TESUp_3prong" || syst == "TESDown_3prong")  && isGenTauLead) {
+        if ((syst == "TESUp_1prong" || syst == "TESDown_1prong" ||  syst == "TESUp_1prong1pizero"   ||  syst == "TESDown_1prong1pizero" || syst == "TESUp_3prong" || syst == "TESDown_3prong")  && isGenTauLead) {
         float MET_x = Met * TMath::Cos(Metphi) - (Tau4MomentumNominal.Px()- LeadTau4Momentum.Px()) ;
         float MET_y = Met * TMath::Sin(Metphi) - (Tau4MomentumNominal.Py()- LeadTau4Momentum.Py()) ;
 
         Met = sqrt (pow(MET_x,2)+ pow(MET_y,2));
         Metphi = atan(MET_y / MET_x);
-        if (Metphi > (TMath::Pi() / 2)) Metphi += TMath::Pi();
-        if (Metphi < (-TMath::Pi() / 2)) Metphi -= TMath::Pi();
+//        if (Metphi > (TMath::Pi() / 2)) Metphi += TMath::Pi();
+//        if (Metphi < (-TMath::Pi() / 2)) Metphi -= TMath::Pi();
+        if (MET_x < 0 && MET_y < 0) Metphi -= TMath::Pi();
+        if (MET_x < 0 && MET_y > 0) Metphi += TMath::Pi();
+        
         }
 
         Tau4MomentumNominal = LeadTau4Momentum;
@@ -345,21 +348,24 @@ int main(int argc, char* argv[]) {
         if (syst == "TESUp_1prong" && isGenTauSub && boostedTauDecayMode->at(idx_subleadtau)==0) {SubTau4Momentum *= 1+0.03 ; m_sv=m_sv_TES_Up ;}
         if (syst == "TESDown_1prong" && isGenTauSub && boostedTauDecayMode->at(idx_subleadtau)==0) {SubTau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
         if (syst == "TESUp_1prong1pizero" && isGenTauSub && boostedTauDecayMode->at(idx_subleadtau)==1) {SubTau4Momentum *= 1+0.03 ; m_sv=m_sv_TES_Up ;}
-        if (syst == "TESDown_1prongpizero" && isGenTauSub && boostedTauDecayMode->at(idx_subleadtau)==1) {SubTau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
+        if (syst == "TESDown_1prong1pizero" && isGenTauSub && boostedTauDecayMode->at(idx_subleadtau)==1) {SubTau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
         if (syst == "TESUp_3prong" && isGenTauSub && boostedTauDecayMode->at(idx_subleadtau)==10) {SubTau4Momentum *= 1+0.03 ; m_sv=m_sv_TES_Up ;}
         if (syst == "TESDown_3prong" && isGenTauSub && boostedTauDecayMode->at(idx_subleadtau)==10) {SubTau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
 
 
 
                                 
-        if ((syst == "TESUp_1prong" || syst == "TESDown_1prong" ||  syst == "TESUp_1prong1pizero"   ||  syst == "TESDown_1prongpizero" || syst == "TESUp_3prong" || syst == "TESDown_3prong")  && isGenTauSub) {
+        if ((syst == "TESUp_1prong" || syst == "TESDown_1prong" ||  syst == "TESUp_1prong1pizero"   ||  syst == "TESDown_1prong1pizero" || syst == "TESUp_3prong" || syst == "TESDown_3prong")  && isGenTauSub) {
          float MET_x = Met * TMath::Cos(Metphi) - (Tau4MomentumNominal.Px()- SubTau4Momentum.Px()) ;
          float MET_y = Met * TMath::Sin(Metphi) - (Tau4MomentumNominal.Py()- SubTau4Momentum.Py()) ;
 
         Met = sqrt (pow(MET_x,2)+ pow(MET_y,2));
         Metphi = atan(MET_y / MET_x);
-        if (Metphi > (TMath::Pi() / 2)) Metphi += TMath::Pi();
-        if (Metphi < (-TMath::Pi() / 2)) Metphi -= TMath::Pi();
+//        if (Metphi > (TMath::Pi() / 2)) Metphi += TMath::Pi();
+//        if (Metphi < (-TMath::Pi() / 2)) Metphi -= TMath::Pi();
+        if (MET_x < 0 && MET_y < 0) Metphi -= TMath::Pi();
+        if (MET_x < 0 && MET_y > 0) Metphi += TMath::Pi();
+
         }
 
 
