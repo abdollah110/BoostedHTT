@@ -170,12 +170,12 @@ for k1 in dirList: # loop over categories
         name_last=histo_name
 #        if 'reweighted_ggH' in histo_name:
 #        histo_name=histo_name.replace('TES','CMS_scale_t_')
-        histo_name=histo_name.replace('TESDown_1prong1pizero','CMS_scale_t_1prong1pizero'+str(year)+Down)
-        histo_name=histo_name.replace('TESDown_1prong','CMS_scale_t_1prong'+str(year)+Down)
-        histo_name=histo_name.replace('TESDown_3prong','CMS_scale_t_3prong'+str(year)+Down)
-        histo_name=histo_name.replace('TESUp_1prong1pizero','CMS_scale_t_1prong1pizero'+str(year)+Up)
-        histo_name=histo_name.replace('TESUp_1prong','CMS_scale_t_1prong'+str(year)+Up)
-        histo_name=histo_name.replace('TESUp_3prong','CMS_scale_t_3prong'+str(year)+Up)
+        histo_name=histo_name.replace('TESDown_1prong1pizero','CMS_scale_t_1prong1pizero'+str(year)+'Down')
+        histo_name=histo_name.replace('TESDown_1prong','CMS_scale_t_1prong'+str(year)+'Down')
+        histo_name=histo_name.replace('TESDown_3prong','CMS_scale_t_3prong'+str(year)+'Down')
+        histo_name=histo_name.replace('TESUp_1prong1pizero','CMS_scale_t_1prong1pizero'+str(year)+'Up')
+        histo_name=histo_name.replace('TESUp_1prong','CMS_scale_t_1prong'+str(year)+'Up')
+        histo_name=histo_name.replace('TESUp_3prong','CMS_scale_t_3prong'+str(year)+'Up')
         histo_name=histo_name.replace('JEnTot','CMS_scale_j_')
         histo_name=histo_name.replace('MissingEn_UES','CMS_scale_met_unclustered')
         histo_name=histo_name.replace('ttbarShape_','CMS_ttbarShape')
