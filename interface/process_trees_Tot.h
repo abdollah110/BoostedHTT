@@ -187,10 +187,8 @@ void HistTool::initVectors2d(string name) {
             hists_2d.at(key.first.c_str()).push_back(new TH2F((name+"_2D__").c_str(), (name+"_2D__").c_str(), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
         }
     }
-    cout<<"Hello 1111\n";
     for (auto key : Histo_2DMatrix) {
         fout->cd(key.first.c_str());
-        cout<<"Hello 1112   \n";
         if (key.first == tree_name + "_0jet") {
             Histo_2DMatrix.at(key.first.c_str()).push_back(new TH2F((name+"_2D").c_str(), (name+"_2D").c_str(), bins_genHPt.size() - 1, &bins_genHPt[0], bins_genHPt.size() - 1, &bins_genHPt[0]));
         }
