@@ -152,19 +152,19 @@ systematics{
         fout->cd();
     }
     // make all of 2D the directories for templates
-//    for (auto it = hists_2d.begin(); it != hists_2d.end(); it++) {
-//        fout->cd();
-//        fout->mkdir((it->first).c_str());
-//        std::cout <<"\t test 2   first directory is "<<it->first <<"\n";
-//        fout->cd();
-//    }
+    for (auto it = hists_2d.begin(); it != hists_2d.end(); it++) {
+        fout->cd();
+        fout->mkdir((it->first).c_str());
+        std::cout <<"\t test 2   first directory is "<<it->first <<"\n";
+        fout->cd();
+    }
     // make all of the directories for templates
-//    for (auto it = Histo_2DMatrix.begin(); it != Histo_2DMatrix.end(); it++) {
-//        fout->cd();
-//        fout->mkdir((it->first).c_str());
-//        std::cout <<"\t test 1   first directory is "<<it->first <<"\n";
-//        fout->cd();
-//    }
+    for (auto it = Histo_2DMatrix.begin(); it != Histo_2DMatrix.end(); it++) {
+        fout->cd();
+        fout->mkdir((it->first).c_str());
+        std::cout <<"\t test 1   first directory is "<<it->first <<"\n";
+        fout->cd();
+    }
 }
 
 // change to the correct output directory then create a new TH1F that will be filled for the current input file
@@ -190,6 +190,7 @@ void HistTool::initVectors2d(string name) {
     cout<<"Hello 1111\n";
     for (auto key : Histo_2DMatrix) {
         fout->cd(key.first.c_str());
+        cout<<"Hello 1112   \n";
         if (key.first == tree_name + "_0jet") {
             Histo_2DMatrix.at(key.first.c_str()).push_back(new TH2F((name+"_2D").c_str(), (name+"_2D").c_str(), bins_genHPt.size() - 1, &bins_genHPt[0], bins_genHPt.size() - 1, &bins_genHPt[0]));
         }

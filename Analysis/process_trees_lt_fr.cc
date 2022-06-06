@@ -121,13 +121,13 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         tree->SetBranchAddress("EleMatchedIsolation",&EleMatchedIsolation);
         tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
         
-        
+        cout<<"hello 22\n";
         
         // Here we have to call OS/SS method extracter
         std::cout<<" tree->GetEntries() is "<<tree->GetEntries()<<"\n";
         for (auto i = 0; i < tree->GetEntries(); i++) {
             tree->GetEntry(i);
-            
+            cout<<"hello 33\n";
             std::map<std::string, float>  ObsName {
                 {"lep1Pt",lep1Pt_},
                 {"lep2Pt",lep2Pt_},
@@ -161,7 +161,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
 //            if (higgs_pT < 250) continue;
 //            if (tmass > 80) continue;
 //            if (NN_disc < 0.3) continue;
-            
+            cout<<"hello 44\n";
             float lep2Ptval=lep2Pt_;
             if (lep2Ptval > 200) lep2Ptval=200;
             
