@@ -171,17 +171,17 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             if (OS != 0  && lep1IsoPass && lep2IsoPassV) {
 //            if (SS != 0  && lep1IsoPass && lep2IsoPassV) { // Validation
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
-                hists_2d.at(categories.at(zeroJet)).back()->Fill(NN_disc,NN_disc_ZTT, weight);
-                Histo_2DMatrix.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
+//                hists_2d.at(categories.at(zeroJet)).back()->Fill(NN_disc,NN_disc_ZTT, weight);
+//                Histo_2DMatrix.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
             }
             if (OS != 0 && lep1IsoPass && !lep2IsoPassV ){
 //            if (SS != 0 && lep1IsoPass && !lep2IsoPassV ){ // Validation
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu / (1-frValu));
-                fillQCD_Norm(zeroJet, name, NN_disc,NN_disc_ZTT,  weight, frValu / (1-frValu));
+//                fillQCD_Norm(zeroJet, name, NN_disc,NN_disc_ZTT,  weight, frValu / (1-frValu));
             }
             if (SS != 0 && !lep2IsoPassV){
                 fillQCD_Shape(zeroJet, name, vbf_var1,  weight, frValu / (1-frValu));
-                fillQCD_Shape(zeroJet, name, NN_disc,NN_disc_ZTT,  weight, frValu / (1-frValu));
+//                fillQCD_Shape(zeroJet, name, NN_disc,NN_disc_ZTT,  weight, frValu / (1-frValu));
             }
         }
         delete fin;
