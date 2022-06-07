@@ -30,8 +30,8 @@ int main(int argc, char *argv[]) {
 
     string channel, tree_name, newChannelName;
     
-    if (dir.find("_em_") != string::npos) { channel ="em"; newChannelName="em"; tree_name="emu_tree";}
-    else if (dir.find("_me_") != string::npos ) { channel ="me"; newChannelName="em"; tree_name="emu_tree";}
+    if (dir.find("_em") != string::npos) { channel ="em"; newChannelName="em"; tree_name="emu_tree";}
+    else if (dir.find("_me") != string::npos ) { channel ="me"; newChannelName="em"; tree_name="emu_tree";}
     else (std::cout << "channel is not specificed in the outFile name !\n");
 
 
