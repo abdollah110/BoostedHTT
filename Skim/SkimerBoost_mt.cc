@@ -114,7 +114,7 @@ void SkimerBoost::Loop(TString OutputFile)
                 if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
                 if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5) continue;
-                if (boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(ibtau) < -0.5) continue;
+                if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < -0.5) continue;
                 hcount->Fill(5);
                 BoostTau4Mom.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
                 
