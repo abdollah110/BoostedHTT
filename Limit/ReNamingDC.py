@@ -192,9 +192,9 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('prefire2017','CMS_prefiring')
         histo_name=histo_name.replace('prefire2018','CMS_prefiring')
         
-        histo_name=histo_name.replace('CMS_ttbarShape2016','CMS_ttbarShape')
-        histo_name=histo_name.replace('CMS_ttbarShape2017','CMS_ttbarShape')
-        histo_name=histo_name.replace('CMS_ttbarShape2018','CMS_ttbarShape')
+#        histo_name=histo_name.replace('CMS_ttbarShape2016','CMS_ttbarShape')
+#        histo_name=histo_name.replace('CMS_ttbarShape2017','CMS_ttbarShape')
+#        histo_name=histo_name.replace('CMS_ttbarShape2018','CMS_ttbarShape')
         
         histo_name=histo_name.replace('Up125','Up')
         histo_name=histo_name.replace('Down125','Down')
