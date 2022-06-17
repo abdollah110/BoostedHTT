@@ -175,6 +175,9 @@ int main(int argc, char* argv[]) {
     outTr->Branch("Chan_tautau_fid",&Chan_tautau_fid,"Chan_tautau_fid/O");
     
     outTr->Branch("evtwt",&FullWeight,"evtwt/F");
+    outTr->Branch("pdfWeight", &pdfWeight);
+    outTr->Branch("pdfSystWeight", &pdfSystWeight);
+    outTr->Branch("pdf", &pdf);
     outTr->Branch("zmasspt_weight",&zmasspt_weight,"zmasspt_weight/F");
     outTr->Branch("lep1Pt",&lepPt_,"lep1Pt/F");
     outTr->Branch("lep2Pt",&elept_,"lep2Pt/F");

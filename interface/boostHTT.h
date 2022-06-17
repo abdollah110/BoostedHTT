@@ -39,6 +39,9 @@ using namespace std;
    ULong64_t       HLTJet;
    ULong64_t       HLTEleMuXIsPrescaled;
    ULong64_t       HLTJetIsPrescaled;
+   vector<float>   *pdf;
+   Float_t         pdfWeight;
+   vector<float>   *pdfSystWeight;   
    Float_t         processID;
    Float_t         genWeight;
    Float_t         genHT;
@@ -392,6 +395,9 @@ using namespace std;
    TBranch        *b_HLTEleMuXIsPrescaled;   //!
    TBranch        *b_HLTJetIsPrescaled;   //!
    TBranch        *b_processID;   //!
+   TBranch        *b_pdf;   //!
+   TBranch        *b_pdfWeight;   //!
+   TBranch        *b_pdfSystWeight;   //!
    TBranch        *b_genWeight;   //!
    TBranch        *b_genHT;   //!
    TBranch        *b_nPUInfo;   //!
@@ -1063,6 +1069,9 @@ TTree *  Xttree( TFile * f_Double, string channel){
    fChain->SetBranchAddress("HLTEleMuXIsPrescaled", &HLTEleMuXIsPrescaled, &b_HLTEleMuXIsPrescaled);
    fChain->SetBranchAddress("HLTJetIsPrescaled", &HLTJetIsPrescaled, &b_HLTJetIsPrescaled);
    fChain->SetBranchAddress("processID", &processID, &b_processID);
+   fChain->SetBranchAddress("pdf", &pdf, &b_pdf);
+   fChain->SetBranchAddress("pdfWeight", &pdfWeight, &b_pdfWeight);
+   fChain->SetBranchAddress("pdfSystWeight", &pdfSystWeight, &b_pdfSystWeight);
    fChain->SetBranchAddress("genWeight", &genWeight, &b_genWeight);
    fChain->SetBranchAddress("genHT", &genHT, &b_genHT);
    fChain->SetBranchAddress("nPUInfo", &nPUInfo, &b_nPUInfo);
