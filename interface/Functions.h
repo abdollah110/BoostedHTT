@@ -36,6 +36,7 @@
 #include "../interface/makeHisto.h"
 #include "../interface/event_info.h"
 #include "../interface/ComputeWG1Unc.h"
+#include "../interface/bjet_weighter.h"
 
 
 float MuMass= 0.10565837;
@@ -469,7 +470,8 @@ bool MatchedBoostedTauId(TLorentzVector Object4Momentum){
     for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
         BoostTau4Mom.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
         if(BoostTau4Mom.DeltaR(Object4Momentum) < dR_ ){
-            passVLooseIsolation = boostedTauByVLooseIsolationMVArun2v1DBnewDMwLTNew->at(ibtau);
+//            passVLooseIsolation = boostedTauByVLooseIsolationMVArun2v1DBnewDMwLTNew->at(ibtau);
+            passVLooseIsolation = boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau);
             dR_=BoostTau4Mom.DeltaR(Object4Momentum);
         }
     }
@@ -484,7 +486,8 @@ float MatchedBoostedTauIsolation(TLorentzVector Object4Momentum){
     for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
         BoostTau4Mom.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
         if(BoostTau4Mom.DeltaR(Object4Momentum) < dR_ ){
-            BoostTauIsoVar = boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(ibtau);
+//            BoostTauIsoVar = boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(ibtau);
+            BoostTauIsoVar = boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau);
             dR_=BoostTau4Mom.DeltaR(Object4Momentum);
         }
     }
