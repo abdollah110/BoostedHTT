@@ -58,16 +58,26 @@ else:
     fileList = [ifile for ifile in glob(options.path+'/*') if '.root' in ifile]
 
 
-def getSystematics(name):
+def getSystematics(name,year,channel):
   systs = ['']
   
    
   if name != 'data_obs' or name != 'QCD':
      systs += [
-              'MissingEn_UESUp', 'MissingEn_UESDown', 'prefireUp', 'prefireDown','TESUp_1prong', 'TESDown_1prong', 'TESUp_1prong1pizero','TESDown_1prong1pizero','TESUp_3prong','TESDown_3prong',    'JEnTotUp','JEnTotDown', 'trig_ttUp','trig_ttDown'
-#             'met_reso_Up', 'met_resp_Up','met_reso_Down', 'met_resp_Down', 'MissingEn_JESUp', 'MissingEn_JESDown',
+              'MissingEn_UESUp', 'MissingEn_UESDown','JEnTotUp','JEnTotDown'
               ]
-              
+  if year==2016 or year ==2017:
+     systs += [
+               'prefireUp', 'prefireDown'
+              ]
+  if channel=='mt' or channel=='et' or channel=='tt':
+     systs += [
+              'TESUp_1prong', 'TESDown_1prong', 'TESUp_1prong1pizero','TESDown_1prong1pizero','TESUp_3prong','TESDown_3prong'
+              ]
+  if channel=='tt':
+     systs += [
+               'trig_ttUp','trig_ttDown'
+              ]
   if name == 'TT':
     systs += ['ttbarShape_Up', 'ttbarShape_Down']
 
@@ -95,9 +105,11 @@ for ifile in fileList:
     if 'DYJets' in sample:
 #        names = ['ZLL', 'ZTT']
 #        names = ['ZLL', 'ZTT','ZJ']
-        names = ['ZTT']
+#        names = ['ZTT']
+        continue
     elif 'TT' in sample:
-        names = ['TT']
+#        names = ['TT']
+        continue
     elif 'WJets' in sample or 'EWK' in sample:
         names = ['W']
     elif 'data' in sample.lower() or 'run' in sample.lower():
@@ -130,10 +142,46 @@ for ifile in fileList:
     except:
         pass
 
+    channelName=''
+    year=0
+    
+    if '2016' in tosample:
+        year = 2016
+    elif '2017' in tosample:
+        year = 2017
+    elif '2018' in tosample:
+        year = 2018
+    elif '2020' in tosample:
+        year = 2020
+    else:
+        print 'which year ???'
+
+
+    if 'em' in options.exe or '_em' in options.exe:
+        channel = 'em'
+        channelName='em'
+    elif 'me2' in options.exe or    '_me' in options.exe:
+        channel = 'me'
+        channelName='me'
+        treeName = 'mue_tree'
+    elif 'mt2' in options.exe or '_mt' in options.exe:
+        channel = 'mt'
+        channelName='mt'
+        treeName = 'mutau_tree'
+    elif 'et2' in options.exe  or  '_et' in options.exe:
+        channel = 'et'
+        channelName='et'
+    elif 'tt2' in options.exe  or  '_tt' in options.exe:
+        channel = 'tt'
+        channelName='tt'
+    else:
+        print 'which channel ???'
+
+
 
     if options.syst and not 'data' in sample.lower() and not 'run' in sample.lower() and not 'qcd' in sample.lower():
         for name in names:
-            for isyst in getSystematics(name):
+            for isyst in getSystematics(name,year,channel):
                 #AM
                 try:
                     makedirs('Output/trees/{}'.format(options.output_dir+'/_'+isyst))
