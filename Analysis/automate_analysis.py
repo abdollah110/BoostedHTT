@@ -105,11 +105,11 @@ for ifile in fileList:
     if 'DYJets' in sample:
 #        names = ['ZLL', 'ZTT']
 #        names = ['ZLL', 'ZTT','ZJ']
-#        names = ['ZTT']
-        continue
+        names = ['ZTT']
+#        continue
     elif 'TT' in sample:
-#        names = ['TT']
-        continue
+        names = ['TT']
+#        continue
     elif 'WJets' in sample or 'EWK' in sample:
         names = ['W']
     elif 'data' in sample.lower() or 'run' in sample.lower():
