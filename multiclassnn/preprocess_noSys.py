@@ -154,3 +154,27 @@ if __name__ == "__main__":
                         default='store.h5', help='name of output file')
 
     main(parser.parse_args())
+
+
+
+for ch in et mt tt
+do
+python preprocess_noSys.py -i  ../Analysis/Output/trees/Sum_${ch}_V15   -o checkTTOnly_${ch}
+python train_noSys.py --signal JJH125 --background ZTT --background2 TT --input datasets/checkTTOnly_${ch}.h5 --model checkTTOnly_${ch}
+for year in 2016 2017 2018
+do
+python preprocess_noSys.py -i  ../Analysis/Output/trees/boost_${ch}_${year}_V15_TES/NN_nominal    -o checkTTOnly_${ch}_${year}
+python classify_noSys.py -i datasets/checkTTOnly_${ch}_{year}.h5 -m models/checkTTOnly_${ch}.hdf5 --dir ../Analysis/Output/trees/boost_${ch}_${year}_V15_TES/NN_nominal  --output-dir Test_checkTTOnly_${ch}_${year}
+done
+done
+
+
+
+
+input=$1
+Name=$2
+Tree=$3
+
+python preprocess.py -i  ${input}  -o testData_${Name}
+python train.py --signal JJH125 --background ZTT --input datasets/testData_${Name}.h5 --model outputModel_${Name}
+python classify.py --treename ${Tree} --input-vbf datasets/testData_${Name}.h5  --model-vbf models/outputModel_${Name}.hdf5   --dir ${input}  --output-dir ${Name}_NN

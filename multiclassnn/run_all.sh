@@ -3,7 +3,7 @@ Name=$2
 Tree=$3
 
 python preprocess.py -i  ${input}  -o testData_${Name}
-python train.py --signal JJH125 --background ZTT --input datasets/testData_${Name}.h5 --model outputModel_${Name}
+python train.py --signal JJH125 --background NonDY --background2 ZTT --input datasets/testData_${Name}.h5 --model outputModel_${Name}
 python classify.py --treename ${Tree} --input-vbf datasets/testData_${Name}.h5  --model-vbf models/outputModel_${Name}.hdf5   --dir ${input}  --output-dir ${Name}_NN
 
 

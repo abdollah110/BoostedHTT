@@ -81,11 +81,11 @@ echo "  nominal preprocess and trainings are " NominalPreprocess NominalTraining
 python preprocess.py -i  ${inputdir}  -o testData_${Name}
 
 #if [[ ${inputdir} == *"_em_"* ]]; then
-#  python train.py --signal JJH125 --ZTT ZTT --QCD NonDY --input datasets/testData_${Name}.h5 --model outputModel_${Name}
+#  python train.py --signal JJH125 --background NonDY --background2 ZTT --input datasets/testData_${Name}.h5 --model outputModel_${Name}
 #else
-#  python train.py --signal JJH125 --ZTT ZTT --QCD NonDY --input datasets/testData_${Name}.h5 --model outputModel_${Name}
+#  python train.py --signal JJH125 --background NonDY --background2 ZTT --input datasets/testData_${Name}.h5 --model outputModel_${Name}
 #fi
-#python train.py --signal JJH125 --background ZTT --input datasets/testData_${Name}.h5 --model outputModel_${Name}
+#python train.py --signal JJH125 --background NonDY --background2 ZTT --input datasets/testData_${Name}.h5 --model outputModel_${Name}
 #python classify.py  --input-boost datasets/testData_${Name}.h5  --model-boost models/outputModel_${Name}.hdf5   --dir ${inputdir}  --output-dir ${Name}_NN
 
 python classify.py --input-boost datasets/testData_${Name}.h5 --model-boost ${NominalTraining} --dir ${inputdir} --output-dir ${Name}_NN -s 1 --nominal_input ${NominalPreprocess}

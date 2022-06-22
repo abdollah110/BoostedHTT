@@ -48,8 +48,8 @@ def main(args):
     boost_processes = training_processes
 
     print 'No. Signal Events:     {}'.format(len(boost_processes[boost_processes['sample_names'] == args.signal]))
-    print 'No. ZTT Events: {}'.format(len(boost_processes[boost_processes['sample_names'] == args.background]))
-    print 'No. QCD Events: {}'.format(len(boost_processes[boost_processes['sample_names'] == args.background2]))
+    print 'No. nonDY Events: {}'.format(len(boost_processes[boost_processes['sample_names'] == args.background]))
+    print 'No. ZTT Events: {}'.format(len(boost_processes[boost_processes['sample_names'] == args.background2]))
 
     etau   = boost_processes[(boost_processes['lepton'] == 'et')]
     mutau  = boost_processes[(boost_processes['lepton'] == 'mt')]
@@ -189,7 +189,7 @@ if __name__ == "__main__":
     parser.add_argument('--model', '-m', action='store', dest='model', default='testModel', help='name of the model to train')
     parser.add_argument('--input', '-i', action='store', dest='input', default='test', help='full name of input file')
     parser.add_argument('--signal', '-s', action='store', dest='signal', default='VBF125.root', help='name of signal file')
-    parser.add_argument('--background', '-b', action='store', dest='background', default='TT.root', help='name of background file')
+    parser.add_argument('--background', '-b', action='store', dest='background', default='nonDY.root', help='name of background file')
     parser.add_argument('--background2', '-b2', action='store', dest='background2', default='ZTT.root', help='name of background file')
 #    parser.add_argument('--ZTT', '-b', action='store', dest='ZTT', default='ZTT.root', help='name of ZTT file')
 #    parser.add_argument('--QCD', '-q', action='store', dest='QCD', default='QCD.root', help='name of QCD file')
