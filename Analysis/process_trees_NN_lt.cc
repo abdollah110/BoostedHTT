@@ -36,6 +36,9 @@ int main(int argc, char *argv[]) {
     else if (dir.find("_mt") != string::npos) { channel ="mt";tree_name="mutau_tree";}
     else (std::cout << "channel is not specificed in the outFile name !\n");
     string newChannelName= channel;
+    
+    myMap1 = new std::map<std::string, TH1F*>();
+    
     // get the provided histogram binning
     std::vector<float> bins;
     for (auto sbin : sbins) {
@@ -61,6 +64,12 @@ int main(int argc, char *argv[]) {
     
     hists->histoLoop(year, files, dir, FRhist,tree_name,var_name,OSSS,"");    // fill histograms
     hists->writeTemplates(dir,channel,year);  // write histograms to file
+    // histograms for pdf and scale
+    map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
+    map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
+    for (; iMap1 != jMap1; ++iMap1)
+        nplot1(iMap1->first)->Write();
+    //
     hists->fout->Close();
     
     std::cout << "Template created.\n Timing Info: \n\t CPU Time: " << watch.CpuTime() << "\n\tReal Time: " << watch.RealTime() << std::endl;
@@ -100,6 +109,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
         float NN_disc,MuMatchedIsolation,EleMatchedIsolation,NN_disc_ZTT, NN_disc_QCD;
         float BoostedTauRawIso, higgs_pT, higgs_m, m_sv, gen_higgs_pT;
+        Float_t         pdfWeight;
+        vector<float>   *pdfSystWeight;
         
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
         tree->SetBranchAddress("lep2Pt",&lep2Pt_);
@@ -127,6 +138,10 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         tree->SetBranchAddress("MuMatchedIsolation",&MuMatchedIsolation);
         tree->SetBranchAddress("EleMatchedIsolation",&EleMatchedIsolation);
         tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
+        tree->SetBranchAddress("pdfWeight", &pdfWeight);
+        tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
+
+        int nbin[3]={14,3,3};
         
         
         
@@ -201,6 +216,13 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                     fillQCD_Norm(i, name, NN_out_vec[i],  weight, frValu / (1-frValu));
                     fillQCD_Norm_fr_up(i, name, NN_out_vec[i],  weight, frValuUncUp / (1-frValuUncUp));
                     fillQCD_Norm_fr_down(i, name, NN_out_vec[i],  weight, frValuUncDown / (1-frValuUncDown));
+                    
+                // pdf scale and uncertainties
+                for (int j =0; j < pdfSystWeight->size(); j++){
+                float newWeight= pdfSystWeight->at(j)/pdfWeight;
+                plotFill(name+"___"+categories.at(i)+std::to_string(j),NN_out_vec[i] ,nbin[i],0.3,1,weight*newWeight);
+                }
+    
                 }
                 // qcd shape
                 if (SS != 0 && !lep2IsoPassV){
