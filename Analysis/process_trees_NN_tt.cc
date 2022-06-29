@@ -123,7 +123,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         float NN_disc,MuMatchedIsolation,EleMatchedIsolation,NN_disc_ZTT,NN_disc_QCD;
         float higgs_pT, higgs_m, m_sv, gen_higgs_pT;
        Float_t         pdfWeight;
-       vector<float>   *pdfSystWeight;
+//       vector<float>   *pdfSystWeight;
         
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
         tree->SetBranchAddress("lep2Pt",&lep2Pt_);
@@ -150,7 +150,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         tree->SetBranchAddress("MuMatchedIsolation",&MuMatchedIsolation);
         tree->SetBranchAddress("EleMatchedIsolation",&EleMatchedIsolation);
         tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
-        tree->SetBranchAddress("pdfWeight", &pdfWeight);
+//        tree->SetBranchAddress("pdfWeight", &pdfWeight);
 //        tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
 
         int nbin[3]={14,3,3};
