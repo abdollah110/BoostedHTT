@@ -211,13 +211,13 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 if (OS != 0  && lep1IsoPass && lep2IsoPassV) {
                     hists_1d.at(categories.at(i)).back()->Fill(NN_out_vec[i],  weight);
                     
-                                    // pdf scale and uncertainties
-                if (name.find("TT") != string::npos && name.find("_") == string::npos ){
-                for (int j =0; j < pdfSystWeight->size(); j++){
-                float newWeight= pdfSystWeight->at(j)/pdfWeight;
-                plotFill(name+"___"+categories.at(i)+std::to_string(j),NN_out_vec[i] ,nbin[i],0.3,1,weight*newWeight);
-                }
-                }
+//                                    // pdf scale and uncertainties
+//                if (name.find("TT") != string::npos && name.find("_") == string::npos ){
+//                for (int j =0; j < pdfSystWeight->size(); j++){
+//                float newWeight= pdfSystWeight->at(j)/pdfWeight;
+////                plotFill(name+"___"+categories.at(i)+std::to_string(j),NN_out_vec[i] ,nbin[i],0.3,1,weight*newWeight);
+//                }
+//                }
                     
                 }
                 // qcd norm
