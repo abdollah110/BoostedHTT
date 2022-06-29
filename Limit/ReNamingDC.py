@@ -183,10 +183,12 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('CMS_JER','CMS_res_j')
         histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling')
         histo_name=histo_name.replace('fakerateYEAR_','CMS_QCD_bkg_fakerate')
+        histo_name=histo_name.replace('scaleUp','QCDScaleUp')
+        histo_name=histo_name.replace('scaleDown','QCDScaleDown')
 
 
-        if 'THU' not in histo_name: histo_name=histo_name.replace('Up',str(year)+'Up')
-        if 'THU' not in histo_name: histo_name=histo_name.replace('Down',str(year)+'Down')
+        if 'THU' not in histo_name and 'pdf' not in histo_name and 'QCDScale' not in histo_name: histo_name=histo_name.replace('Up',str(year)+'Up')
+        if 'THU' not in histo_name and 'pdf' not in histo_name and 'QCDScale' not in histo_name: histo_name=histo_name.replace('Down',str(year)+'Down')
 
         histo_name=histo_name.replace('prefire2016','CMS_prefiring')
         histo_name=histo_name.replace('prefire2017','CMS_prefiring')
