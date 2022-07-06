@@ -535,10 +535,10 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",8 ,15,0,15);
         
         tmass = TMass_F(LeadTau4Momentum.Pt(), LeadTau4Momentum.Px(), LeadTau4Momentum.Py(),  Met,  Metphi);
-//        if (tmass > 200) continue; //FIXME removed for Validation study
+//        if (tmass > 200) continue; //FIXME removed for Validation study This cut is no longer need
         plotFill("cutFlowTable",9 ,15,0,15);
         
-        if (m_sv < 50) continue; //FIXME removed for Validation study
+//        if (m_sv < 50) continue; //FIXME removed for Validation study
         plotFill("cutFlowTable",10 ,15,0,15);
         
         // BJet veto
@@ -560,7 +560,7 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",12 ,15,0,15);
         
         higgs_pT = higgs.Pt();
-        if (higgs_pT < 250 ) continue;
+//        if (higgs_pT < 250 ) continue;
         plotFill("cutFlowTable",13 ,15,0,15);
         
         
