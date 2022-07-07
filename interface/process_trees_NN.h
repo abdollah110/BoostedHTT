@@ -105,7 +105,8 @@ HistTool::HistTool(string treeName, string channel_prefix, string var, string ye
 //bins_NN{0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0}, // This is for 0jet
 //bins_NN(bins), // This is for 0jet
 bins_NN({14,0.3,1}),
-bins_NN_bkg({3,0.3,1}),
+//bins_NN_bkg({3,0.3,1}),
+bins_NN_bkg({1,0.3,1}),
 bins_FAKE({10,0,300}),
 bins_genHPt({0,300,400,550,800,2000}),
 //bins_FAKE({10,0,1}),
@@ -425,9 +426,9 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
         }
         float CorrFactor=1;
         // Updated fake rate
-        if (channel.find("tt") != string::npos && year.find("2016") != string::npos ) CorrFactor =1.14;
-        if (channel.find("tt") != string::npos && year.find("2017") != string::npos ) CorrFactor =0.92;
-        if (channel.find("tt") != string::npos && year.find("2018") != string::npos ) CorrFactor =0.87;
+//        if (channel.find("tt") != string::npos && year.find("2016") != string::npos ) CorrFactor =1.14;
+//        if (channel.find("tt") != string::npos && year.find("2017") != string::npos ) CorrFactor =0.92;
+//        if (channel.find("tt") != string::npos && year.find("2018") != string::npos ) CorrFactor =0.87;
 
         // fake rate
 //        if (channel.find("tt") != string::npos && year.find("2016") != string::npos ) CorrFactor =0.70;

@@ -153,7 +153,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
 //        tree->SetBranchAddress("pdfWeight", &pdfWeight);
 //        tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
 
-        int nbin[3]={14,3,3};
+//        int nbin[3]={14,3,3};
+        int nbin[3]={14,1,1};
         
         // Here we have to call OS/SS method extracter
         std::cout<<" tree->GetEntries() is "<<tree->GetEntries()<<"\n";
