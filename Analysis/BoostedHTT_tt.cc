@@ -299,11 +299,12 @@ int main(int argc, char* argv[]) {
         //        if (syst == "met_resp_Down") {Met = met_resp_Down; Metphi=metphi_resp_Down;}
         
         
-        TLorentzVector LeadTau4Momentum,SubTau4Momentum, Z4Momentum, Met4Momentum, Tau4MomentumNominal;
+        TLorentzVector LeadTau4Momentum,SubTau4Momentum, Z4Momentum, Met4Momentum, LeadTau4MomentumNominal, SubTau4MomentumNominal;
         //=========================================================================================================
         // Lead tau selection
         int idx_leadtau= leadtauIndex;
         LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_leadtau),boostedTauEta->at(idx_leadtau),boostedTauPhi->at(idx_leadtau),boostedTauMass->at(idx_leadtau));
+        LeadTau4MomentumNominal = LeadTau4Momentum;
         bool isGenTauLead= isMatchedToGenTau(LeadTau4Momentum);
         if (syst == "TESUp" && isGenTauLead) {LeadTau4Momentum *= 1+0.03 ; m_sv=m_sv_TES_Up ;}
         if (syst == "TESDown" && isGenTauLead) {LeadTau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
@@ -319,8 +320,8 @@ int main(int argc, char* argv[]) {
 
                                 
         if ((syst == "TESUp_1prong" || syst == "TESDown_1prong" ||  syst == "TESUp_1prong1pizero"   ||  syst == "TESDown_1prong1pizero" || syst == "TESUp_3prong" || syst == "TESDown_3prong")  && isGenTauLead) {
-        float MET_x = Met * TMath::Cos(Metphi) - (Tau4MomentumNominal.Px()- LeadTau4Momentum.Px()) ;
-        float MET_y = Met * TMath::Sin(Metphi) - (Tau4MomentumNominal.Py()- LeadTau4Momentum.Py()) ;
+        float MET_x = Met * TMath::Cos(Metphi) - (LeadTau4MomentumNominal.Px()- LeadTau4Momentum.Px()) ;
+        float MET_y = Met * TMath::Sin(Metphi) - (LeadTau4MomentumNominal.Py()- LeadTau4Momentum.Py()) ;
 
         Met = sqrt (pow(MET_x,2)+ pow(MET_y,2));
         Metphi = atan(MET_y / MET_x);
@@ -330,8 +331,6 @@ int main(int argc, char* argv[]) {
         if (MET_x < 0 && MET_y > 0) Metphi += TMath::Pi();
         
         }
-
-        Tau4MomentumNominal = LeadTau4Momentum;
         
         if (LeadTau4Momentum.Pt() <= 30 || fabs(boostedTauEta->at(idx_leadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_leadtau) < 0.5 ) continue;
@@ -344,6 +343,7 @@ int main(int argc, char* argv[]) {
         // sublead Tau selection
         int idx_subleadtau= subtauIndex;
         SubTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_subleadtau),boostedTauEta->at(idx_subleadtau),boostedTauPhi->at(idx_subleadtau),boostedTauMass->at(idx_subleadtau));
+        SubTau4MomentumNominal = SubTau4Momentum;
         bool isGenTauSub= isMatchedToGenTau(SubTau4Momentum);
         if (syst == "TESUp" && isGenTauSub) {SubTau4Momentum *= 1+0.03 ; m_sv=m_sv_TES_Up ;}
         if (syst == "TESDown" && isGenTauSub) {SubTau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
@@ -359,8 +359,8 @@ int main(int argc, char* argv[]) {
 
                                 
         if ((syst == "TESUp_1prong" || syst == "TESDown_1prong" ||  syst == "TESUp_1prong1pizero"   ||  syst == "TESDown_1prong1pizero" || syst == "TESUp_3prong" || syst == "TESDown_3prong")  && isGenTauSub) {
-         float MET_x = Met * TMath::Cos(Metphi) - (Tau4MomentumNominal.Px()- SubTau4Momentum.Px()) ;
-         float MET_y = Met * TMath::Sin(Metphi) - (Tau4MomentumNominal.Py()- SubTau4Momentum.Py()) ;
+         float MET_x = Met * TMath::Cos(Metphi) - (SubTau4MomentumNominal.Px()- SubTau4Momentum.Px()) ;
+         float MET_y = Met * TMath::Sin(Metphi) - (SubTau4MomentumNominal.Py()- SubTau4Momentum.Py()) ;
 
         Met = sqrt (pow(MET_x,2)+ pow(MET_y,2));
         Metphi = atan(MET_y / MET_x);
@@ -538,7 +538,7 @@ int main(int argc, char* argv[]) {
 //        if (tmass > 200) continue; //FIXME removed for Validation study This cut is no longer need
         plotFill("cutFlowTable",9 ,15,0,15);
         
-//        if (m_sv < 50) continue; //FIXME removed for Validation study
+        if (m_sv < 50) continue; //FIXME removed for Validation study
         plotFill("cutFlowTable",10 ,15,0,15);
         
         // BJet veto
@@ -560,7 +560,7 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",12 ,15,0,15);
         
         higgs_pT = higgs.Pt();
-//        if (higgs_pT < 250 ) continue;
+        if (higgs_pT < 250 ) continue; //FIXME removed for Validation study
         plotFill("cutFlowTable",13 ,15,0,15);
         
         

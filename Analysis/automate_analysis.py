@@ -62,32 +62,32 @@ def getSystematics(name,year,channel):
   systs = ['']
   
    
-  if name != 'data_obs' or name != 'QCD':
-     systs += [
-              'MissingEn_UESUp', 'MissingEn_UESDown','JEnTotUp','JEnTotDown'
-              ]
-  if year==2016 or year ==2017:
-     systs += [
-               'prefireUp', 'prefireDown'
-              ]
+#  if name != 'data_obs' or name != 'QCD':
+#     systs += [
+#              'MissingEn_UESUp', 'MissingEn_UESDown','JEnTotUp','JEnTotDown'
+#              ]
+#  if year==2016 or year ==2017:
+#     systs += [
+#               'prefireUp', 'prefireDown'
+#              ]
   if channel=='mt' or channel=='et' or channel=='tt':
      systs += [
               'TESUp_1prong', 'TESDown_1prong', 'TESUp_1prong1pizero','TESDown_1prong1pizero','TESUp_3prong','TESDown_3prong'
               ]
-  if channel=='tt':
-     systs += [
-               'trig_ttUp','trig_ttDown'
-              ]
-  if name == 'TT':
-    systs += ['ttbarShape_Up', 'ttbarShape_Down']
-
-  if name == 'ZLL' or name == 'ZTT' or name == 'ZJ':
-    systs += ['Z_masspt_Up', 'Z_masspt_Down']
-
-  if name == 'ggH125':
-    systs +=["THU_ggH_Mu_Up","THU_ggH_Res_Up","THU_ggH_Mig01_Up","THU_ggH_Mig12_Up","THU_ggH_VBF2j_Up","THU_ggH_VBF3j_Up","THU_ggH_PT60_Up","THU_ggH_PT120_Up","THU_ggH_qmtop_Up","THU_ggH_Mu_Down","THU_ggH_Res_Down","THU_ggH_Mig01_Down","THU_ggH_Mig12_Down","THU_ggH_VBF2j_Down","THU_ggH_VBF3j_Down","THU_ggH_PT60_Down","THU_ggH_PT120_Down","THU_ggH_qmtop_Down"]
-
-
+#  if channel=='tt':
+#     systs += [
+#               'trig_ttUp','trig_ttDown'
+#              ]
+#  if name == 'TT':
+#    systs += ['ttbarShape_Up', 'ttbarShape_Down']
+#
+#  if name == 'ZLL' or name == 'ZTT' or name == 'ZJ':
+#    systs += ['Z_masspt_Up', 'Z_masspt_Down']
+#
+#  if name == 'ggH125':
+#    systs +=["THU_ggH_Mu_Up","THU_ggH_Res_Up","THU_ggH_Mig01_Up","THU_ggH_Mig12_Up","THU_ggH_VBF2j_Up","THU_ggH_VBF3j_Up","THU_ggH_PT60_Up","THU_ggH_PT120_Up","THU_ggH_qmtop_Up","THU_ggH_Mu_Down","THU_ggH_Res_Down","THU_ggH_Mig01_Down","THU_ggH_Mig12_Down","THU_ggH_VBF2j_Down","THU_ggH_VBF3j_Down","THU_ggH_PT60_Down","THU_ggH_PT120_Down","THU_ggH_qmtop_Down"]
+#
+#
 
 
 #  if name == 'W':
