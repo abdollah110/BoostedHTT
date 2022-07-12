@@ -96,7 +96,8 @@ for k1 in dirList: # loop over categories
 
     print 'year is {} and channel is {}'.format(year,channel)
 
-    
+    categ=nom.replace(channel+'_','').replace('nal','')
+    print 'categ is', categ
 
 #    ofile.mkdir(nom.replace('_0jet',''))
     Updatednom=nom.replace('_0jet','')
@@ -168,7 +169,11 @@ for k1 in dirList: # loop over categories
         if (h2.GetName()==name_last):
             continue
         name_last=histo_name
-#        if 'reweighted_ggH' in histo_name:
+
+#        %%%%%%%%%%%%%%%%%%
+#           Tau energy scale
+#        %%%%%%%%%%%%%%%%%%
+
 #        histo_name=histo_name.replace('TES','CMS_scale_t_')
         histo_name=histo_name.replace('TESDown_1prong1pizero','CMS_scale_t_1prong1pizeroDown')
         histo_name=histo_name.replace('TESDown_1prong','CMS_scale_t_1prongDown')
@@ -176,19 +181,63 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('TESUp_1prong1pizero','CMS_scale_t_1prong1pizeroUp')
         histo_name=histo_name.replace('TESUp_1prong','CMS_scale_t_1prongUp')
         histo_name=histo_name.replace('TESUp_3prong','CMS_scale_t_3prongUp')
+
+        if channel=='et' :
+            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_et')
+            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_etU')
+            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_etD')
+            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_et')
+        if channel=='mt' :
+            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_mt')
+            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_mtU')
+            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_mtD')
+            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_mt')
+        if channel=='tt' :
+            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_tt')
+            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_ttU')
+            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_ttD')
+            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_tt')
+
+
+
+
         histo_name=histo_name.replace('JEnTot','CMS_scale_j_')
         histo_name=histo_name.replace('MissingEn_UES','CMS_scale_met_unclustered')
         histo_name=histo_name.replace('ttbarShape_','CMS_ttbarShape')
         histo_name=histo_name.replace('trig_tt','CMS_trig_tt')
         histo_name=histo_name.replace('CMS_JER','CMS_res_j')
-        histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling')
+#        histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling')
         histo_name=histo_name.replace('fakerateYEAR_','CMS_QCD_bkg_fakerate')
         histo_name=histo_name.replace('scaleUp','QCDScaleUp')
         histo_name=histo_name.replace('scaleDown','QCDScaleDown')
 
 
+
+
+        if channel=='em' or channel=='me': histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling_em_cat{}'.format(categ))
+        if channel=='et' : histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling_et_cat{}'.format(categ))
+        if channel=='mt':  histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling_mt_cat{}'.format(categ))
+        if channel=='tt'                 : histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling_tt_cat{}'.format(categ))
+
         if 'THU' not in histo_name and 'pdf' not in histo_name and 'QCDScale' not in histo_name: histo_name=histo_name.replace('Up',str(year)+'Up')
         if 'THU' not in histo_name and 'pdf' not in histo_name and 'QCDScale' not in histo_name: histo_name=histo_name.replace('Down',str(year)+'Down')
+        
+        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_pdf','TT_TTpdf'+str(year))
+        histo_name=histo_name.replace('ZTT_pdf','ZTT_ZTTpdf'+str(year))
+        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_QCDScale','TT_TTQCDScale'+str(year))
+        histo_name=histo_name.replace('ZTT_QCDScale','ZTT_ZTTQCDScale'+str(year))
+#
+#
+#        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_TTpdf2017','TT_TTpdf20172018')
+#        histo_name=histo_name.replace('ZTT_ZTTpdf2017','ZTT_ZTTpdf20172018')
+#        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_TTpdf2018','TT_TTpdf20172018')
+#        histo_name=histo_name.replace('ZTT_ZTTpdf2018','ZTT_ZTTpdf20172018')
+#
+#        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_TTQCDScale2017','TT_TTQCDScale20172018')
+#        histo_name=histo_name.replace('ZTT_ZTTQCDScale2017','ZTT_ZTTQCDScale20172018')
+#        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_TTQCDScale2018','TT_TTQCDScale20172018')
+#        histo_name=histo_name.replace('ZTT_ZTTQCDScale2018','ZTT_ZTTQCDScale20172018')
+
 
         histo_name=histo_name.replace('prefire2016','CMS_prefiring')
         histo_name=histo_name.replace('prefire2017','CMS_prefiring')
