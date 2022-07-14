@@ -182,23 +182,42 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('TESUp_1prong','CMS_scale_t_1prongUp')
         histo_name=histo_name.replace('TESUp_3prong','CMS_scale_t_3prongUp')
 
-        if channel=='et' :
-            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_et')
-            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_etU')
-            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_etD')
-            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_et')
-        if channel=='mt' :
-            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_mt')
-            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_mtU')
-            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_mtD')
-            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_mt')
-        if channel=='tt' :
-            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_tt')
-            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_ttU')
-            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_ttD')
-            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_tt')
+#        if channel=='et' :
+#            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_et')
+#            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_etU')
+#            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_etD')
+#            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_et')
+#        if channel=='mt' :
+#            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_mt')
+#            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_mtU')
+#            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_mtD')
+#            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_mt')
+#        if channel=='tt' :
+#            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_tt')
+#            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_ttU')
+#            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_ttD')
+#            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_tt')
 
 
+#        if categ=='sig' :
+        histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_{}'.format(categ))
+        histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_{}U'.format(categ))
+        histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_{}D'.format(categ))
+        histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_{}'.format(categ))
+#        if categ=='ztt' :
+#            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_mt')
+#            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_mtU')
+#            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_mtD')
+#            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_mt')
+#        if categ=='qcd' :
+#            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_tt')
+#            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_ttU')
+#            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_ttD')
+#            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_tt')
+
+
+
+#CMS_scale_t_1prong1pizero_ztt
 
 
         histo_name=histo_name.replace('JEnTot','CMS_scale_j_')
