@@ -38,8 +38,6 @@ int main(int argc, char *argv[]) {
     else (std::cout << "channel is not specificed in the outFile name !\n");
     string newChannelName= channel;
     
-    myMap1 = new std::map<std::string, TH1F*>();
-    
     // get the provided histogram binning
     std::vector<float> bins;
     for (auto sbin : sbins) {
@@ -75,12 +73,6 @@ int main(int argc, char *argv[]) {
     
     hists->histoLoop(year, files, dir, FRhist,tree_name,var_name,OSSS,"");    // fill histograms
     hists->writeTemplates(dir,channel,year);  // write histograms to file
-    // save histograms for pdf and scale uncertainties
-    map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
-    map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
-    for (; iMap1 != jMap1; ++iMap1)
-        nplot1(iMap1->first)->Write();
-    //
     hists->fout->Close();
     
     std::cout << "Template created.\n Timing Info: \n\t CPU Time: " << watch.CpuTime() << "\n\tReal Time: " << watch.RealTime() << std::endl;
@@ -122,8 +114,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
         float NN_disc,MuMatchedIsolation,EleMatchedIsolation,NN_disc_ZTT,NN_disc_QCD;
         float higgs_pT, higgs_m, m_sv, gen_higgs_pT;
-       Float_t         pdfWeight;
-       vector<float>   *pdfSystWeight;
+        
         
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
         tree->SetBranchAddress("lep2Pt",&lep2Pt_);
@@ -150,11 +141,6 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         tree->SetBranchAddress("MuMatchedIsolation",&MuMatchedIsolation);
         tree->SetBranchAddress("EleMatchedIsolation",&EleMatchedIsolation);
         tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
-        tree->SetBranchAddress("pdfWeight", &pdfWeight);
-        tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
-
-//        int nbin[3]={14,3,3};
-        int nbin[3]={14,1,1};
         
         // Here we have to call OS/SS method extracter
         std::cout<<" tree->GetEntries() is "<<tree->GetEntries()<<"\n";
@@ -298,35 +284,15 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             vector<float > NN_out_vec;
             NN_out_vec.clear();
             
-//            NN_out_vec.push_back((NN_disc > NN_disc_ZTT && NN_disc > NN_disc_QCD )? NN_disc : -1);
-//            NN_out_vec.push_back((NN_disc_ZTT > NN_disc && NN_disc_ZTT > NN_disc_QCD )? NN_disc_ZTT : -1);
-//            NN_out_vec.push_back((NN_disc_QCD > NN_disc_ZTT && NN_disc_QCD > NN_disc )? NN_disc_QCD : -1);
-
-            NN_out_vec.push_back(NN_disc);
-            NN_out_vec.push_back(NN_disc_ZTT);
-            NN_out_vec.push_back(NN_disc_QCD);
+            NN_out_vec.push_back((NN_disc > NN_disc_ZTT && NN_disc > NN_disc_QCD )? NN_disc : -1);
+            NN_out_vec.push_back((NN_disc_ZTT > NN_disc && NN_disc_ZTT > NN_disc_QCD )? NN_disc_ZTT : -1);
+            NN_out_vec.push_back((NN_disc_QCD > NN_disc_ZTT && NN_disc_QCD > NN_disc )? NN_disc_QCD : -1);
 
 
             for (int i =0; i < 3 ;i++) {
             if (NN_out_vec[i] < 0 )continue;
             if (OS != 0  && lep1IsoPassV && lep2IsoPassV) { // final analysis
                 hists_1d.at(categories.at(i)).back()->Fill(NN_out_vec[i],  weight);
-                plotFill(name+"_HiggsPt_"+categories.at(i),higgs_pT,20,200,1000,weight);
-                plotFill(name+"_m_sv_"+categories.at(i),m_sv,20,0,400,weight);
-                plotFill(name+"_Met_"+categories.at(i),Met,20,0,400,weight);
-                plotFill(name+"_NN_disc_"+categories.at(i),NN_disc,20,0,1,weight);
-                plotFill(name+"_LeadTauPt_"+categories.at(i),lep1Pt_,20,0,400,weight);
-                plotFill(name+"_SubLeadTauPt_"+categories.at(i),lep2Pt_,20,0,400,weight);
-                
-//            // pdf scale and uncertainties
-//            if (name.find("TT") != string::npos && name.find("_") == string::npos ){
-//            for (int j =0; j < pdfSystWeight->size(); j++){
-//            float newWeight= pdfSystWeight->at(j)/pdfWeight;
-//            if (pdfWeight==0) cout << "pdfWeight   is zero "<<pdfWeight<<"\n";
-//            plotFill(name+"___"+categories.at(i)+std::to_string(j),NN_out_vec[i] ,nbin[i],0.3,1,weight*newWeight);
-//    
-//    }
-//}
             }
 //            qcd norm
             if (OS != 0 && lep1IsoPassV && !lep2IsoPassV ){ // final analysis qcd

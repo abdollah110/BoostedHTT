@@ -113,7 +113,7 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
         float NN_disc,MuMatchedIsolation,EleMatchedIsolation,NN_disc_ZTT,NN_disc_QCD;
         float higgs_pT, higgs_m, m_sv, gen_higgs_pT;
         Float_t         pdfWeight;
-//        vector<float>   *pdfSystWeight;
+        vector<float>   *pdfSystWeight;
         
         
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
@@ -140,8 +140,8 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
         tree->SetBranchAddress("EleMatchedIsolation",&EleMatchedIsolation);
         tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
         
-//        tree->SetBranchAddress("pdfWeight", &pdfWeight);
-//        tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
+        tree->SetBranchAddress("pdfWeight", &pdfWeight);
+        tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
 
 //        int nbin[3]={14,3,3};
         int nbin[3]={14,1,1};
@@ -190,10 +190,14 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
             vector<float > NN_out_vec;
             NN_out_vec.clear();
             
-            NN_out_vec.push_back((NN_disc > NN_disc_ZTT && NN_disc > NN_disc_QCD )? NN_disc : -1);
-            NN_out_vec.push_back((NN_disc_ZTT > NN_disc && NN_disc_ZTT > NN_disc_QCD )? NN_disc_ZTT : -1);
-            NN_out_vec.push_back((NN_disc_QCD > NN_disc_ZTT && NN_disc_QCD > NN_disc )? NN_disc_QCD : -1);
+//            NN_out_vec.push_back((NN_disc > NN_disc_ZTT && NN_disc > NN_disc_QCD )? NN_disc : -1);
+//            NN_out_vec.push_back((NN_disc_ZTT > NN_disc && NN_disc_ZTT > NN_disc_QCD )? NN_disc_ZTT : -1);
+//            NN_out_vec.push_back((NN_disc_QCD > NN_disc_ZTT && NN_disc_QCD > NN_disc )? NN_disc_QCD : -1);
             
+            NN_out_vec.push_back(NN_disc);
+            NN_out_vec.push_back(NN_disc_ZTT);
+            NN_out_vec.push_back(NN_disc_QCD);
+
             
             
             for (int i =0; i < 3 ;i++) {
@@ -203,13 +207,21 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
                 if (OS != 0  && lep1IsoPass && lep2IsoPass) {
                     hists_1d.at(categories.at(i)).back()->Fill(NN_out_vec[i],  weight);
                     
+                plotFill(name+"_HiggsPt_"+categories.at(i),higgs_pT,20,200,1000,weight);
+                plotFill(name+"_m_sv_"+categories.at(i),m_sv,20,0,400,weight);
+                plotFill(name+"_Met_"+categories.at(i),Met,20,0,400,weight);
+                plotFill(name+"_NN_disc_"+categories.at(i),NN_disc,20,0,1,weight);
+                plotFill(name+"_LeadTauPt_"+categories.at(i),lep1Pt_,20,0,400,weight);
+                plotFill(name+"_SubLeadTauPt_"+categories.at(i),lep2Pt_,20,0,400,weight);
+                    
+                    
 //                // pdf scale and uncertainties
-//                if (name.find("TT") != string::npos && name.find("_") == string::npos ){
-//                for (int j =0; j < pdfSystWeight->size(); j++){
-//                float newWeight= pdfSystWeight->at(j)/pdfWeight;
-////                plotFill(name+"___"+categories.at(i)+std::to_string(j),NN_out_vec[i] ,nbin[i],0.3,1,weight*newWeight);
-//                }
-//                    }
+                if (name.find("TT") != string::npos && name.find("_") == string::npos ){
+                for (int j =0; j < pdfSystWeight->size(); j++){
+                float newWeight= pdfSystWeight->at(j)/pdfWeight;
+                plotFill(name+"___"+categories.at(i)+std::to_string(j),NN_out_vec[i] ,nbin[i],0.3,1,weight*newWeight);
+                }
+                    }
                 }
                 // qcd norm
                 if (SS != 0 && lep1IsoPass && lep2IsoPass ){
