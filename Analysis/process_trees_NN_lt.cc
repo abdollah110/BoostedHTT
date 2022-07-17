@@ -138,8 +138,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         tree->SetBranchAddress("MuMatchedIsolation",&MuMatchedIsolation);
         tree->SetBranchAddress("EleMatchedIsolation",&EleMatchedIsolation);
         tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
-        tree->SetBranchAddress("pdfWeight", &pdfWeight);
-        tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
+//        tree->SetBranchAddress("pdfWeight", &pdfWeight);
+//        tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
 
 //        int nbin[3]={14,3,3};
         int nbin[3]={14,1,1};
@@ -223,13 +223,13 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 plotFill(name+"_SubLeadTauPt_"+categories.at(i),lep2Pt_,20,0,400,weight);
                     
                     
-//                                    // pdf scale and uncertainties
-                if (name.find("TT") != string::npos && name.find("_") == string::npos ){
-                for (int j =0; j < pdfSystWeight->size(); j++){
-                float newWeight= pdfSystWeight->at(j)/pdfWeight;
-                plotFill(name+"___"+categories.at(i)+std::to_string(j),NN_out_vec[i] ,nbin[i],0.3,1,weight*newWeight);
-                }
-                }
+////                                    // pdf scale and uncertainties
+//                if (name.find("TT") != string::npos && name.find("_") == string::npos ){
+//                for (int j =0; j < pdfSystWeight->size(); j++){
+//                float newWeight= pdfSystWeight->at(j)/pdfWeight;
+//                plotFill(name+"___"+categories.at(i)+std::to_string(j),NN_out_vec[i] ,nbin[i],0.3,1,weight*newWeight);
+//                }
+//                }
                     
                 }
                 // qcd norm
