@@ -104,9 +104,11 @@ HistTool::HistTool(string treeName, string channel_prefix, string var, string ye
 // x-axis
 //bins_NN{0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0}, // This is for 0jet
 //bins_NN(bins), // This is for 0jet
-bins_NN({14,0.3,1}),
+//bins_NN({14,0.3,1}),
+bins_NN({20,0,1}),
 //bins_NN_bkg({3,0.3,1}),
-bins_NN_bkg({1,0.3,1}),
+//bins_NN_bkg({1,0.3,1}),
+bins_NN_bkg({20,0,1}),
 bins_FAKE({10,0,300}),
 bins_genHPt({0,300,400,550,800,2000}),
 //bins_FAKE({10,0,1}),
