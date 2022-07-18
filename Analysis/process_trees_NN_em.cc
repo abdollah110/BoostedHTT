@@ -20,6 +20,7 @@ int main(int argc, char *argv[]) {
     string suffix = parser.Option("--suf");
     std::string var_name = parser.Option("-v");
     std::vector<std::string> sbins = parser.MultiOption("-b", 3);
+    bool runPDF = parser.Flag("-p");
     
     
     string year;
@@ -34,7 +35,7 @@ int main(int argc, char *argv[]) {
     else if (dir.find("_me") != string::npos ) { channel ="me"; newChannelName="em"; tree_name="emu_tree";}
     else (std::cout << "channel is not specificed in the outFile name !\n");
     
-    myMap1 = new std::map<std::string, TH1F*>();
+    myMap1 = new std::unordered_map<std::string, TH1F*>();
     
     // get the provided histogram binning
     std::vector<float> bins;
@@ -60,11 +61,11 @@ int main(int argc, char *argv[]) {
     std::vector<float>  OSSS= hists->Get_OS_SS_ratio();
     std::cout<<"\n======== OSSS  "<<OSSS[0]<<"   ========\n\n";
     
-    hists->histoLoop(channel,year, files, dir, tree_name,var_name,OSSS,"");    // fill histograms
+    hists->histoLoop(channel,year, files, dir, tree_name,var_name,OSSS,runPDF,"");    // fill histograms
     hists->writeTemplates(dir,channel,year);  // write histograms to file
     // histograms for pdf and scale
-    map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
-    map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
+    unordered_map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
+    unordered_map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
     for (; iMap1 != jMap1; ++iMap1)
         nplot1(iMap1->first)->Write();
     //
@@ -76,7 +77,7 @@ int main(int argc, char *argv[]) {
 }
 //           void histoLoop(std::string year  ,std::vector<std::string>, std::string, std::string, std::string,std::vector<float>, std::string, std::string);
 //void HistTool::histoLoop(std::string year , vector<string> files, string dir, string tree_name , string var_name, vector<float> OSSS, string acWeight = "None", string Sys = "") {
-void HistTool::histoLoop(std::string channel ,std::string year , vector<string> files, string dir, string tree_name , string var_name, vector<float> OSSS, string Sys = "") {
+void HistTool::histoLoop(std::string channel ,std::string year , vector<string> files, string dir, string tree_name , string var_name, vector<float> OSSS, bool runPDF,string Sys = "") {
     
     
     std::cout<< "starting .... "<<dir<<"\n";
@@ -140,17 +141,23 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
         tree->SetBranchAddress("EleMatchedIsolation",&EleMatchedIsolation);
         tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
         
-        //        tree->SetBranchAddress("pdfWeight", &pdfWeight);
-        //        tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
+        if (runPDF){
+                tree->SetBranchAddress("pdfWeight", &pdfWeight);
+                tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
+                }
         
         //        int nbin[3]={14,3,3};
-        int nbin[3]={14,1,1};
+//        int nbin[3]={14,1,1};
+        int nbin[3]={20,20,20};
+        float lowBin=0;
+        float highBin=1;
         
         
         // Here we have to call OS/SS method extracter
         //        std::cout<<" tree->GetEntries() is "<<tree->GetEntries()<<"\n";
         for (auto i = 0; i < tree->GetEntries(); i++) {
             tree->GetEntry(i);
+            if (runPDF) {if (i % 10 == 0) fprintf(stdout, "\r  Processed events: %8d of %8d ", i, tree->GetEntries());}
             
             std::map<std::string, float>  ObsName {
                 {"lep1Pt",lep1Pt_},
@@ -215,13 +222,15 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
                     plotFill(name+"_SubLeadTauPt_"+categories.at(i),lep2Pt_,20,0,400,weight);
                     
                     
+                    if (runPDF){
                     //                // pdf scale and uncertainties
-//                    if (name.find("TT") != string::npos && name.find("_") == string::npos ){
-//                        for (int j =0; j < pdfSystWeight->size(); j++){
-//                            float newWeight= pdfSystWeight->at(j)/pdfWeight;
-//                            plotFill(name+"___"+categories.at(i)+std::to_string(j),NN_out_vec[i] ,nbin[i],0.3,1,weight*newWeight);
-//                        }
-//                    }
+                    if (name.find("TT") != string::npos && name.find("_") == string::npos ){
+                        for (int j =0; j < pdfSystWeight->size(); j++){
+                            float newWeight= pdfSystWeight->at(j)/pdfWeight;
+                            plotFill(name+"___"+categories.at(i)+std::to_string(j),NN_out_vec[i] ,nbin[i],lowBin,highBin,weight*newWeight);
+                            }
+                        }
+                    }
                     
                     
                 }
