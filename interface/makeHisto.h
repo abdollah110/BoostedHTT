@@ -28,10 +28,12 @@
 #include "TMath.h" //M_PI is in TMath
 #include "TRandom3.h"
 using namespace std;
+#include <unordered_map>
 
+// changeing map to unordered_map increase speed by a factor of ~ 4
 //****************************************************
-map<string, TH1F*>* myMap1;
-map<string, TH2F*>* myMap2;
+unordered_map<string, TH1F*>* myMap1;
+unordered_map<string, TH2F*>* myMap2;
 //**********************************************
 
 TH1F* nplot1(string name) {
