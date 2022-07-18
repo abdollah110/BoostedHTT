@@ -234,8 +234,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                     if (runPDF){
                         //                                    // pdf scale and uncertainties
                         if (name.find("TT") != string::npos && name.find("_") == string::npos ){
-//                            for (int j =0; j < pdfSystWeight->size(); j++){
-                            for (int j =0; j < 100; j++){
+                            for (int j =0; j < pdfSystWeight->size(); j++){
+//                            for (int j =0; j < 100; j++){
                                 float newWeight= pdfSystWeight->at(j)/pdfWeight;
                                 plotFill(name+"___"+categories.at(i)+std::to_string(j),NN_out_vec[i] ,nbin[i],lowBin,highBin,weight*newWeight);
                             }
