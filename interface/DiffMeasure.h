@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include "makeHisto.h"
 
 // ROOT includes
 #include "TFile.h"
@@ -49,11 +50,11 @@ public:
     std::vector<float>  Get_OS_SS_ratio();
     
     //  void convertDataToFake(Categories, string, double, double, double, double, double, double);  // 2d    
-    void histoLoop(string year  ,std::vector<string>, string, TH1F *, string, string,std::vector<float>,  string);
-    void histoLoop(string year  ,std::vector<string>, string, TH1F *, string, string,std::vector<float>,string, float, float,  string);
+    void histoLoop(string year  ,std::vector<string>, string, TH1F *, string, string,std::vector<float>, bool, string);
+    void histoLoop(string year  ,std::vector<string>, string, TH1F *, string, string,std::vector<float>,string, float, float, bool, string);
 //    void histoLoop(string year  ,std::vector<string>, string, TH1F *, string, string, string);
-    void histoLoop(string year  ,std::vector<string>, string, string, string,std::vector<float>, string); //for emu
-    void histoLoop(string year  ,std::vector<string>, string, string, string,std::vector<float>,string, float, float, string); //for emu
+    void histoLoop(string year  ,std::vector<string>, string, string, string,std::vector<float>, bool, string); //for emu
+    void histoLoop(string year  ,std::vector<string>, string, string, string,std::vector<float>,string, float, float,bool, string); //for emu
 
     
     void histoQCD(std::vector<string>, string, string, string);

@@ -24,6 +24,7 @@ int main(int argc, char *argv[]) {
     float lowVal= std::stoi(parser.Option("-l"));
     float highVal= std::stoi(parser.Option("-h"));
     std::vector<std::string> sbins = parser.MultiOption("-b", 3);
+    bool runPDF = parser.Flag("-p");
     
     
     string year;
@@ -37,6 +38,7 @@ int main(int argc, char *argv[]) {
     else if (dir.find("_me") != string::npos ) { channel ="me";tree_name="emu_tree";}
     else (std::cout << "channel is not specificed in the outFile name !\n");
 
+    myMap1 = new std::unordered_map<std::string, TH1F*>();
 
     // get the provided histogram binning
     std::vector<int> bins;
@@ -62,8 +64,14 @@ int main(int argc, char *argv[]) {
     std::vector<float>  OSSS= hists->Get_OS_SS_ratio();
     std::cout<<"\n\n\n\n OSSS  "<<OSSS[0]<<"\n";
     
-    hists->histoLoop(year, files, dir, tree_name,var_name,OSSS,cut_name, lowVal, highVal,"");    // fill histograms
+    hists->histoLoop(year, files, dir, tree_name,var_name,OSSS,cut_name, lowVal, highVal,runPDF,"");    // fill histograms
     hists->writeTemplates(dir,channel,year);  // write histograms to file
+    // histograms for pdf and scale
+    unordered_map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
+    unordered_map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
+    for (; iMap1 != jMap1; ++iMap1)
+        nplot1(iMap1->first)->Write();
+    //    
     hists->fout->Close();
     
     std::cout << "Template created.\n Timing Info: \n\t CPU Time: " << watch.CpuTime() << "\n\tReal Time: " << watch.RealTime() << std::endl;
@@ -72,7 +80,7 @@ int main(int argc, char *argv[]) {
 }
 //           void histoLoop(std::string year  ,std::vector<std::string>, std::string, std::string, std::string,std::vector<float>, std::string, std::string);
 //void HistTool::histoLoop(std::string year , vector<string> files, string dir, string tree_name , string var_name, vector<float> OSSS, string acWeight = "None", string Sys = "") {
-void HistTool::histoLoop(std::string year , vector<string> files, string dir, string tree_name , string var_name, vector<float> OSSS, string cut_name, float lowVal, float highVal ,string Sys = "") {
+void HistTool::histoLoop(std::string year , vector<string> files, string dir, string tree_name , string var_name, vector<float> OSSS, string cut_name, float lowVal, float highVal ,bool runPDF, string Sys = "") {
 
     
     std::cout<< "starting .... "<<dir<<"\n";
@@ -101,6 +109,10 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         float NN_disc;
         float higgs_pT, higgs_m, m_sv, gen_higgs_pT, gen_leadjet_pT;
         bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
+        Float_t         pdfWeight;
+        vector<float>   *pdfSystWeight;
+
+
         tree->SetBranchAddress("Chan_emu",&Chan_emu);
         tree->SetBranchAddress("Chan_etau",&Chan_etau);
         tree->SetBranchAddress("Chan_mutau",&Chan_mutau);
@@ -130,6 +142,10 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         tree->SetBranchAddress("m_sv",&m_sv);
         tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
         tree->SetBranchAddress("gen_leadjet_pT",&gen_leadjet_pT);
+        if (runPDF){
+                tree->SetBranchAddress("pdfWeight", &pdfWeight);
+                tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
+                }
         
         
         
@@ -235,6 +251,15 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
             if (OS != 0  && lep1IsoPass && lep2IsoPass) {
 //            if (OS != 0  && lep1IsoPass ) {
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
+                    if (runPDF){
+                        // pdf scale and uncertainties
+                        if (name.find("TT") != string::npos && name.find("_") == string::npos ){
+                            for (int j =0; j < pdfSystWeight->size(); j++){
+                                float newWeight= pdfSystWeight->at(j)/pdfWeight;
+                                plotFill(name+"___"+categories.at(zeroJet)+std::to_string(j),vbf_var1 , bins_NN.at(0), bins_NN.at(1), bins_NN.at(2) ,weight*newWeight);
+                            }
+                        }
+                    }                
             }
 
             if (SS != 0 && lep1IsoPass && lep2IsoPass ){
