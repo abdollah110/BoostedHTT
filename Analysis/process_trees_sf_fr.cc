@@ -20,8 +20,8 @@ int main(int argc, char *argv[]) {
     string dir = parser.Option("-d");
     std::string var_name = parser.Option("-v");
     std::string cut_name = parser.Option("-c");
-    float lowVal= std::stoi(parser.Option("-l"));
-    float highVal= std::stoi(parser.Option("-h"));
+    float lowVal= std::stof(parser.Option("-l"));
+    float highVal= std::stof(parser.Option("-h"));
     std::string bin_name = parser.Option("-n");
     std::string workingPoint = parser.Option("-w");
     std::vector<std::string> sbins = parser.MultiOption("-b", 3);
