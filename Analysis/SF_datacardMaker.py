@@ -1,8 +1,8 @@
 #./process_trees_sf_fr -d newboost_mt_2018_SF_sys --suf sys_v1 -v vis_mass -b 30 0 150 -c lep2IsoPassL -l 0 -h 1000 -n test -w Loose
 import os
 from optparse import OptionParser
-import colorama
-from colorama import Fore, Back, Style
+#import colorama
+#from colorama import Fore, Back, Style
 
 
 parser = OptionParser(description='script to make the template and run plot')
@@ -112,5 +112,6 @@ for var in Variable:
     for pt in PTrange:
         for wp in WPs:
             print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
-            print(Back.GREEN + 'start making datacard for {} in pt range {} and WP is {} \n'.format(var, pt, wp[0]))
+#            print(Back.GREEN + 'start making datacard for {} in pt range {} and WP is {} \n'.format(var, pt, wp[0]))
+            print( 'start making datacard for {} in pt range {} and WP is {} \n'.format(var, pt, wp[0]))
             os.system('./process_trees_sf_fr -d {}  --suf {} -v {} -b {} {} {} -c {} -w {} -l {} -h {} -n {}'.format( InputFile,suffice, var[0],var[1],var[2],var[3], wp[0], wp[1],pt[0],pt[1],pt[2]))
