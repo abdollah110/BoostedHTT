@@ -162,8 +162,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir,TH1
             
             if (higgs_pT < 200) continue;
             if (vis_mass < 20) continue;
-            if (lep2Pt_ < lowVal || lep2Pt_ > highVal ) continue;
-//            if (dR_lep_lep < lowVal || dR_lep_lep > highVal ) continue;
+//            if (lep2Pt_ < lowVal || lep2Pt_ > highVal ) continue;
+            if (dR_lep_lep < lowVal || dR_lep_lep > highVal ) continue;
             
             float lep2Ptval=lep2Pt_;
             if (lep2Ptval > 200) lep2Ptval=200;
