@@ -9,7 +9,7 @@ parser.add_option('--input', '-i', action='store',
                     help='Location of input file'
                 )
 
-parser.add_option('--prefix', '-p', action='store',
+parser.add_option('--prefix', '-s', action='store',
                     default=False, dest='prefix',
                     help='prefix'
                 )
@@ -24,6 +24,11 @@ parser.add_option('--DiffVariable', '-v', action='store',
                     help='The differential variable'
                 )
 
+parser.add_option('--RunPdf', '-p', action='store',
+                    default=False, dest='PDF',
+                    help='Run PDF & QCD scale or not'
+                )
+
 
 
 (options, args) = parser.parse_args()
@@ -31,6 +36,7 @@ InputFile=options.inputFile
 prefix=options.prefix
 Observable=options.Obs
 DiffVariable=options.Var
+RunPdf=options.PDF
 
 
 
@@ -62,59 +68,65 @@ PTrange= [
 ]
 
 
-for ifile in glob('{}/*'.format(InputFile)):
-    sample=ifile.replace(InputFile,'').replace('/','')
+#for ifile in glob('{}/*'.format(InputFile)):
+ifile=InputFile
+sample=ifile.replace(InputFile,'').replace('/','')
+
+print 'starting from {} and the file name is  {}'.format(ifile,sample)
+
     
-    print 'starting from {} and the file name is  {}'.format(ifile,sample)
     
-        
-        
-    year=0
-    if '2016' in ifile:
-        year = 2016
-    elif '2017' in ifile:
-        year = 2017
-    elif '2018' in ifile:
-        year = 2018
-    else:
-        print 'which year ???'
+year=0
+if '2016' in ifile:
+    year = 2016
+elif '2017' in ifile:
+    year = 2017
+elif '2018' in ifile:
+    year = 2018
+else:
+    print 'which year ???'
 
-    channel=''
-    treeName=''
-    executable=''
+channel=''
+treeName=''
+executable=''
 
 
-    if '_em' in ifile:
-        channel = 'em'
-        treeName = 'emu_tree'
-        executable = 'DiffMeasure_em'
-    elif '_me' in ifile:
-        channel = 'me'
-        treeName = 'emu_tree'
-        executable = 'DiffMeasure_em'
-    elif '_mt' in ifile:
-        channel = 'mt'
-        treeName = 'mutau_tree'
-        executable = 'DiffMeasure_lt'
-    elif '_et' in ifile:
-        channel = 'et'
-        treeName = 'etau_tree'
-        executable = 'DiffMeasure_lt'
-    elif '_tt' in ifile:
-        channel = 'tt'
-        treeName = 'tautau_tree'
-        executable = 'DiffMeasure_tt'
-    else:
-        print 'which channel ???'
-                    
-    for pt in PTrange:
-            for var in Variable:
-                if Observable==var[0]:
-                    print '\n\n\n\n =====> start making datacard for ', var
+if '_em' in ifile:
+    channel = 'em'
+    treeName = 'emu_tree'
+    executable = 'DiffMeasure_em'
+elif '_me' in ifile:
+    channel = 'me'
+    treeName = 'emu_tree'
+    executable = 'DiffMeasure_em'
+elif '_mt' in ifile:
+    channel = 'mt'
+    treeName = 'mutau_tree'
+    executable = 'DiffMeasure_lt'
+elif '_et' in ifile:
+    channel = 'et'
+    treeName = 'etau_tree'
+    executable = 'DiffMeasure_lt'
+elif '_tt' in ifile:
+    channel = 'tt'
+    treeName = 'tautau_tree'
+    executable = 'DiffMeasure_tt'
+else:
+    print 'which channel ???'
+                
+for pt in PTrange:
+        for var in Variable:
+            if Observable==var[0]:
+                print '\n\n\n\n =====> start making datacard for ', var
 #                    print 'command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} -c higgs_pT -l {} -h {}  '.format(executable, ifile, var[0],var[0],var[1],var[2],var[3],pt[0],pt[1])
 #                    os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c higgs_pT -l {} -h {}  '.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],pt[0],pt[1]))
 #                    print 'command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} -c LeadJetPt -l {} -h {}  '.format(executable, ifile, var[0],var[0],var[1],var[2],var[3],pt[0],pt[1])
 #                    os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c gen_higgs_pT -l {} -h {}  '.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],pt[0],pt[1]))
+                if not RunPdf:
                     os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c {} -l {} -h {}  '.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],DiffVariable, pt[0],pt[1]))
+                else:
+                    print './{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c {} -l {} -h {}  -p'.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],DiffVariable, pt[0],pt[1])
 
-                    break
+                    os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c {} -l {} -h {}  -p'.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],DiffVariable, pt[0],pt[1]))
+
+                break

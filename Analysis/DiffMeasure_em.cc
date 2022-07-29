@@ -33,10 +33,15 @@ int main(int argc, char *argv[]) {
     else if (dir.find("2018") != string::npos) year ="2018";
     else (std::cout << "Year is not specificed in the outFile name !\n");
 
-    string channel, tree_name;
-    if (dir.find("_em") != string::npos) { channel ="em"; tree_name="emu_tree";}
-    else if (dir.find("_me") != string::npos ) { channel ="me";tree_name="emu_tree";}
+    string channel, tree_name, newChannelName;
+    if (dir.find("_em") != string::npos) { channel ="em"; newChannelName="em"; tree_name="emu_tree";}
+    else if (dir.find("_me") != string::npos ) { channel ="me"; newChannelName="em"; tree_name="emu_tree";}
     else (std::cout << "channel is not specificed in the outFile name !\n");
+
+//    string channel, tree_name;
+//    if (dir.find("_em") != string::npos) { channel ="em"; tree_name="emu_tree";}
+//    else if (dir.find("_me") != string::npos ) { channel ="me";tree_name="emu_tree";}
+//    else (std::cout << "channel is not specificed in the outFile name !\n");
 
     myMap1 = new std::unordered_map<std::string, TH1F*>();
 
@@ -57,7 +62,7 @@ int main(int argc, char *argv[]) {
     vector<string> files;
     read_directory(dir, &files);
     // initialize histogram holder
-    auto hists = new HistTool(channel, var_name, year, suffix,binName, bins);
+    auto hists = new HistTool(newChannelName, var_name, year, suffix,binName, bins);
     // This part is tro derive the OS/SS ratio (one can actually get the 2D pt/eta binned Values as well)
 //    hists->histoQCD(files,var_name,  dir, tree_name,  "None");    // fill histograms QCD
     hists->histoQCD(files,var_name,  dir, tree_name);    // fill histograms QCD
@@ -170,7 +175,6 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
                 {"higgs_m",higgs_m},
                 {"m_sv",m_sv},
                 {"NN_disc",NN_disc},
-                {"gen_higgs_pT",gen_higgs_pT},
                 {"gen_higgs_pT",gen_higgs_pT},
                 {"gen_leadjet_pT",gen_leadjet_pT},
                 
