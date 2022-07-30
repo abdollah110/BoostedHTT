@@ -32,25 +32,20 @@ int main(int argc, char *argv[]) {
     else if (dir.find("2017") != string::npos ) year ="2017";
     else if (dir.find("2018") != string::npos) year ="2018";
     else (std::cout << "Year is not specificed in the outFile name !\n");
-
+    
     string channel, tree_name, newChannelName;
     if (dir.find("_em") != string::npos) { channel ="em"; newChannelName="em"; tree_name="emu_tree";}
     else if (dir.find("_me") != string::npos ) { channel ="me"; newChannelName="em"; tree_name="emu_tree";}
     else (std::cout << "channel is not specificed in the outFile name !\n");
-
-//    string channel, tree_name;
-//    if (dir.find("_em") != string::npos) { channel ="em"; tree_name="emu_tree";}
-//    else if (dir.find("_me") != string::npos ) { channel ="me";tree_name="emu_tree";}
-//    else (std::cout << "channel is not specificed in the outFile name !\n");
-
+    
     myMap1 = new std::unordered_map<std::string, TH1F*>();
-
+    
     // get the provided histogram binning
     std::vector<int> bins;
     for (auto sbin : sbins) {
         bins.push_back(std::stoi(sbin));
     }
-        
+    
     
     // get input file directory
     if (dir.empty()) {
@@ -62,12 +57,13 @@ int main(int argc, char *argv[]) {
     vector<string> files;
     read_directory(dir, &files);
     // initialize histogram holder
-    auto hists = new HistTool(newChannelName, var_name, year, suffix,binName, bins);
+    
+    auto hists = new HistTool(newChannelName, channel, var_name, year, suffix, binName,bins);
+    
     // This part is tro derive the OS/SS ratio (one can actually get the 2D pt/eta binned Values as well)
-//    hists->histoQCD(files,var_name,  dir, tree_name,  "None");    // fill histograms QCD
+    //    hists->histoQCD(files,var_name,  dir, tree_name,  "None");    // fill histograms QCD
     hists->histoQCD(files,var_name,  dir, tree_name);    // fill histograms QCD
     std::vector<float>  OSSS= hists->Get_OS_SS_ratio();
-    std::cout<<"\n\n\n\n OSSS  "<<OSSS[0]<<"\n";
     
     hists->histoLoop(year, files, dir, tree_name,var_name,OSSS,cut_name, lowVal, highVal,runPDF,"");    // fill histograms
     hists->writeTemplates(dir,channel,year);  // write histograms to file
@@ -76,17 +72,15 @@ int main(int argc, char *argv[]) {
     unordered_map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
     for (; iMap1 != jMap1; ++iMap1)
         nplot1(iMap1->first)->Write();
-    //    
+    //
     hists->fout->Close();
     
     std::cout << "Template created.\n Timing Info: \n\t CPU Time: " << watch.CpuTime() << "\n\tReal Time: " << watch.RealTime() << std::endl;
     
     //  delete hists->ff_weight;
 }
-//           void histoLoop(std::string year  ,std::vector<std::string>, std::string, std::string, std::string,std::vector<float>, std::string, std::string);
-//void HistTool::histoLoop(std::string year , vector<string> files, string dir, string tree_name , string var_name, vector<float> OSSS, string acWeight = "None", string Sys = "") {
 void HistTool::histoLoop(std::string year , vector<string> files, string dir, string tree_name , string var_name, vector<float> OSSS, string cut_name, float lowVal, float highVal ,bool runPDF, string Sys = "") {
-
+    
     
     std::cout<< "starting .... "<<dir<<"\n";
     
@@ -116,8 +110,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
         Float_t         pdfWeight;
         vector<float>   *pdfSystWeight;
-
-
+        
+        
         tree->SetBranchAddress("Chan_emu",&Chan_emu);
         tree->SetBranchAddress("Chan_etau",&Chan_etau);
         tree->SetBranchAddress("Chan_mutau",&Chan_mutau);
@@ -126,7 +120,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         tree->SetBranchAddress("Chan_etau_fid",&Chan_etau_fid);
         tree->SetBranchAddress("Chan_mutau_fid",&Chan_mutau_fid);
         tree->SetBranchAddress("Chan_tautau_fid",&Chan_tautau_fid);
-
+        
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
         tree->SetBranchAddress("lep2Pt",&lep2Pt_);
         tree->SetBranchAddress("OS",&OS);
@@ -148,17 +142,14 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
         tree->SetBranchAddress("gen_leadjet_pT",&gen_leadjet_pT);
         if (runPDF){
-                tree->SetBranchAddress("pdfWeight", &pdfWeight);
-                tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
-                }
-        
-        
+            tree->SetBranchAddress("pdfWeight", &pdfWeight);
+            tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
+        }
         
         // Here we have to call OS/SS method extracter
         std::cout<<" tree->GetEntries() is "<<tree->GetEntries()<<"\n";
         for (auto i = 0; i < tree->GetEntries(); i++) {
             tree->GetEntry(i);
-            
             std::map<std::string, float>  ObsName {
                 {"lep1Pt",lep1Pt_},
                 {"lep2Pt",lep2Pt_},
@@ -186,7 +177,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
             
             //OutOfAcceptance
             if (name.find("OutsideAcceptance")!=string::npos){
-            if (Chan_emu_fid) continue;
+                if (Chan_emu_fid) continue;
             }
             
             float Var_cut = ObsName[cut_name];
@@ -204,44 +195,20 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
                 if ( Var_cut <= 450 || Var_cut > 600 ) continue ;
                 if (!Chan_emu || !Chan_emu_fid) continue;
             }
-            if (name.find("600_800")!=string::npos){
-                if ( Var_cut <= 600 || Var_cut > 800 ) continue ;
-                if (!Chan_emu || !Chan_emu_fid) continue;
-            }
-            if (name.find("GT800")!=string::npos){
-                if ( Var_cut <= 800) continue ;
+            //            if (name.find("600_800")!=string::npos){
+            //                if ( Var_cut <= 600 || Var_cut > 800 ) continue ;
+            //                if (!Chan_emu || !Chan_emu_fid) continue;
+            //            }
+            if (name.find("GT600")!=string::npos){
+                if ( Var_cut <= 600) continue ;
                 if (!Chan_emu || !Chan_emu_fid) continue;
             }
             
-//            // Lead jet pT parameterization
-//            if (name.find("0_350")!=string::npos){
-//                if ( gen_leadjet_pT > 350 ) continue ;
-//                if (!Chan_emu || !Chan_emu_fid) continue;
-//            }
-//            if (name.find("350_450")!=string::npos){
-//                if ( gen_leadjet_pT <= 350 || gen_leadjet_pT > 450 ) continue ;
-//                if (!Chan_emu || !Chan_emu_fid) continue;
-//            }
-//            if (name.find("450_600")!=string::npos){
-//                if ( gen_leadjet_pT <= 450 || gen_leadjet_pT > 600 ) continue ;
-//                if (!Chan_emu || !Chan_emu_fid) continue;
-//            }
-//            if (name.find("600_800")!=string::npos){
-//                if ( gen_leadjet_pT <= 600 || gen_leadjet_pT > 800 ) continue ;
-//                if (!Chan_emu || !Chan_emu_fid) continue;
-//            }
-//            if (name.find("GT800")!=string::npos){
-//                if ( gen_leadjet_pT <= 800) continue ;
-//                if (!Chan_emu || !Chan_emu_fid) continue;
-//            }
-
-
-
-//            if (higgs_pT < 400) continue;
             
-//            if (NN_disc < 0.3) continue;
+            
+            //            if (NN_disc < 0.3) continue;
             // The OS/SS is measured in a QCD populated CR and it is 2.21 for 2016 and 2017 and 2.3 for 2018. We will simply us 2.2 for all 3 years
-
+            
             float meausred_OSSS = 2.2;
             if (year.find("2016") != string::npos ) meausred_OSSS=1.81;
             else if (year.find("2017") != string::npos ) meausred_OSSS=2.06;
@@ -249,30 +216,29 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
             
             
             
-            
             vbf_var1 =ObsName[var_name];
-
+            
             if (OS != 0  && lep1IsoPass && lep2IsoPass) {
-//            if (OS != 0  && lep1IsoPass ) {
+                //            if (OS != 0  && lep1IsoPass ) {
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
-                    if (runPDF){
-                        // pdf scale and uncertainties
-                        if (name.find("TT") != string::npos && name.find("_") == string::npos ){
-                            for (int j =0; j < pdfSystWeight->size(); j++){
-                                float newWeight= pdfSystWeight->at(j)/pdfWeight;
-                                plotFill(name+"___"+categories.at(zeroJet)+std::to_string(j),vbf_var1 , bins_NN.at(0), bins_NN.at(1), bins_NN.at(2) ,weight*newWeight);
-                            }
+                if (runPDF){
+                    // pdf scale and uncertainties
+                    if (name.find("TT") != string::npos && name.find("_") == string::npos ){
+                        for (int j =0; j < pdfSystWeight->size(); j++){
+                            float newWeight= pdfSystWeight->at(j)/pdfWeight;
+                            plotFill(name+"___"+categories.at(zeroJet)+std::to_string(j),vbf_var1 , bins_NN.at(0), bins_NN.at(1), bins_NN.at(2) ,weight*newWeight);
                         }
-                    }                
+                    }
+                }
             }
-
+            
             if (SS != 0 && lep1IsoPass && lep2IsoPass ){
-//            if (SS != 0 && lep1IsoPass  ){
+                //            if (SS != 0 && lep1IsoPass  ){
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight,meausred_OSSS);
             }
-
+            
             if (SS != 0 ){
-//            if (SS != 0 && lep1IsoPass && lep2IsoPass){
+                //            if (SS != 0 && lep1IsoPass && lep2IsoPass){
                 fillQCD_Shape(zeroJet, name, vbf_var1,  weight,meausred_OSSS);
             }
         }
@@ -284,23 +250,23 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
 
 //hists->histoQCD(files,var_name,  dir, tree_name);    // fill histograms QCD
 void HistTool::histoQCD( vector<string> files, string var_name , string dir, string tree_name) {
-
-
+    
+    
     std::cout<< "starting OS/SS calculation .... "<<dir<<"\n";
     float vbf_var1(0.);
     for (auto ifile : files) {
-
+        
         string name = ifile.substr(0, ifile.find(".")).c_str();
         if (!(name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "ZLL" || name == "ZJ" || name == "Data" )) continue;
         auto fin = new TFile((dir + "/" + ifile).c_str(), "read");
         auto tree = reinterpret_cast<TTree *>(fin->Get(tree_name.c_str()));
-
+        
         float lep1Pt_=-10;
         float lepPt2_=-10;
-         bool OS,SS,lep1IsoPass,lep2IsoPass;
-         float weight;
-
-
+        bool OS,SS,lep1IsoPass,lep2IsoPass;
+        float weight;
+        
+        
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
         tree->SetBranchAddress("lep2Pt",&lepPt2_);
         tree->SetBranchAddress("OS",&OS);
@@ -308,21 +274,21 @@ void HistTool::histoQCD( vector<string> files, string var_name , string dir, str
         tree->SetBranchAddress("lep1IsoPass",&lep1IsoPass);
         tree->SetBranchAddress("lep2IsoPass",&lep2IsoPass);
         tree->SetBranchAddress("evtwt",&weight);
-
+        
         for (auto i = 0; i < tree->GetEntries(); i++) {
             tree->GetEntry(i);
-
-//            if (OS != 0 && !Pass && !lep1IsoPass){
-                if (OS != 0 &&  !lep2IsoPass){
-//            if (OS != 0 &&  !lep1IsoPass){
-//            if (OS != 0 ){
+            
+            //            if (OS != 0 && !Pass && !lep1IsoPass){
+            if (OS != 0 &&  !lep2IsoPass){
+                //            if (OS != 0 &&  !lep1IsoPass){
+                //            if (OS != 0 ){
                 fillQCD_OS_CR(zeroJet, name, lep1Pt_,  weight);
             }
-//            else if (SS != 0 && !Pass && !lep1IsoPass){
+            //            else if (SS != 0 && !Pass && !lep1IsoPass){
             else if (SS != 0 &&  !lep2IsoPass){
-//            else if (SS != 0  && !lep1IsoPass){
-//            else if (SS != 0 ){
-//            std::cout<<"\t "<<name<< " "<<lep1Pt_<<"  " << weight<<"\n";
+                //            else if (SS != 0  && !lep1IsoPass){
+                //            else if (SS != 0 ){
+                //            std::cout<<"\t "<<name<< " "<<lep1Pt_<<"  " << weight<<"\n";
                 fillQCD_SS_CR(zeroJet, name, lep1Pt_,  weight);
             }
         }

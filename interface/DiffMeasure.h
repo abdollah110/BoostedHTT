@@ -35,7 +35,7 @@ void read_directory(const string &name, std::vector<string> *v) {
 // class to hold the histograms until I'm ready to write them
 class HistTool {
 public:
-    HistTool(string,string, string, string,string,std::vector<int>);
+    HistTool(string,string, string, string, string,string,std::vector<int>);
     //  ~HistTool() { delete ff_weight; }
     ~HistTool() {  }
     void writeHistos();
@@ -49,12 +49,9 @@ public:
     void fillQCD_SS_CR(int, string, double, double);
     std::vector<float>  Get_OS_SS_ratio();
     
-    //  void convertDataToFake(Categories, string, double, double, double, double, double, double);  // 2d    
-    void histoLoop(string year  ,std::vector<string>, string, TH1F *, string, string,std::vector<float>, bool, string);
-    void histoLoop(string year  ,std::vector<string>, string, TH1F *, string, string,std::vector<float>,string, float, float, bool, string);
-//    void histoLoop(string year  ,std::vector<string>, string, TH1F *, string, string, string);
-    void histoLoop(string year  ,std::vector<string>, string, string, string,std::vector<float>, bool, string); //for emu
-    void histoLoop(string year  ,std::vector<string>, string, string, string,std::vector<float>,string, float, float,bool, string); //for emu
+    //  void convertDataToFake(Categories, string, double, double, double, double, double, double);  // 2d
+    void histoLoop(string ,std::vector<string>, string, TH1F *, string, string,std::vector<float>,string, float, float, bool, string); // for lt and tt
+    void histoLoop(string ,std::vector<string>, string,string, string,std::vector<float>,string, float, float, bool, string); //for emu
 
     
     void histoQCD(std::vector<string>, string, string, string);
@@ -64,7 +61,7 @@ public:
     bool doNN, old_selection;
     TFile *fout;
     //  FakeFactor *ff_weight;
-    string channel_prefix, channel_bin, suffix;
+    string channel_prefix, treeName, channel_bin, suffix;
     std::vector<string> categories, systematics;
     //    std::vector<float> mvis_bins, njets_bins;
     std::map<string, std::vector<TH1F *>> hists_1d, FF_systs, qcd_AM;
@@ -81,16 +78,19 @@ public:
 // HistTool contructor to create the output file, the qcd histograms with the correct binning
 // and the map from categories to vectors of TH1F*'s. Each TH1F* in the vector corresponds to
 // one file that is being put into that categories directory in the output tempalte
-HistTool::HistTool(string channel_prefix, string var, string year, string suffix, string channel_bin,std::vector<int> bins)
+//HistTool::HistTool(string treeName,  string var, string year, string suffix,std::vector<float> bins)
+HistTool::HistTool(string treeName_, string channel_prefix, string var, string year, string suffix, string channel_bin,std::vector<int> bins)
 : fout(new TFile(("Output/templates/" + channel_prefix + year + "_" + var+"_" +suffix+"_"+ channel_bin + ".root").c_str(), "recreate")),
 
 // x-axis
 bins_NN(bins),
 bins_FAKE({20,0,2000}),
 channel_prefix(channel_prefix),
+treeName(treeName_),
 channel_bin(channel_bin),
 categories{
-    channel_prefix + channel_bin,
+    treeName + channel_bin,
+//    channel_prefix + channel_bin,
     //    channel_prefix + "_boosted",
     //    channel_prefix + "_vbf",
 },
@@ -139,7 +139,7 @@ void HistTool::initVectors2d(string name) {
         if (name.find("Data") != string::npos) {
             name = "data_obs";
         }
-        if (key.first == channel_prefix + channel_bin) {
+        if (key.first == treeName + channel_bin) {
             hists_1d.at(key.first.c_str()).push_back(new TH1F(name.c_str(), name.c_str(), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
         }
     }
