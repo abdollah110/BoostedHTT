@@ -26,21 +26,34 @@ n = 3
 m = 1
 x, x_ ,dx,dx_= array( 'd' ), array( 'd' ),array( 'd' ), array( 'd' )
 
+## This is for SF v.s. pt
+#x_.append(118)
+#x.append(40)
+#x.append(75)
+#x.append(150)
+#
+#dx_.append(85)
+#dx.append(10)
+#dx.append(25)
+#dx.append(50)
 
-x_.append(118)
-x.append(40)
-x.append(75)
-x.append(150)
+# This is for SF v.s. dR
+x_.append(0.45)
+x.append(0.3)
+x.append(0.575)
+x.append(0.725)
 
-dx_.append(85)
-dx.append(10)
-dx.append(25)
-dx.append(50)
+dx_.append(0.35)
+dx.append(0.2)
+dx.append(0.075)
+dx.append(0.075)
+
+
 y_val=0
 
 Years=['2016','2017','2018']
-#WPs=['V','L','M','T']
-WPs=['V','M','T']
+WPs=['V','L','M','T']
+#WPs=['V','M','T']
 Bins=['bin0','bin1','bin2','bin3']
 
 for year in Years:
@@ -60,6 +73,7 @@ for year in Years:
                 print y_val
                 for i in tr1:
                     if round(i.quantileExpected,2) == 0.16:
+#                    if round(i.quantileExpected,2) == 0.84:
                         dy_.append(round(-i.limit+y_val,2))
             else:
 
@@ -72,6 +86,7 @@ for year in Years:
                 print y_val
                 for i in tr1:
                     if round(i.quantileExpected,2) == 0.16:
+#                    if round(i.quantileExpected,2) == 0.84:
                         dy.append(round(-i.limit+y_val,2))
         
 
@@ -87,7 +102,8 @@ for year in Years:
         gr_tot.GetYaxis().SetTitleSize(0.05)
         gr_tot.GetXaxis().SetTitleSize(0.04)
         gr_tot.GetYaxis().SetRangeUser(0,1.5 )
-        gr_tot.GetXaxis().SetRangeUser(0,200 )
+#        gr_tot.GetXaxis().SetRangeUser(0,200 )
+        gr_tot.GetXaxis().SetRangeUser(0,1 )
         gr_tot.Draw( 'AeP' )
 
 

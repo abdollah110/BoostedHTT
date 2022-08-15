@@ -107,9 +107,9 @@ for k1 in dirList: # loop over categories
     if '_bin1' in Updatednom: Updatednom='Htt_PTH_0_350_cat{}{}'.format(year,channel)
     if '_bin2' in Updatednom: Updatednom='Htt_PTH_350_450_cat{}{}'.format(year,channel)
     if '_bin3' in Updatednom: Updatednom='Htt_PTH_450_600_cat{}{}'.format(year,channel)
-    if '_bin4' in Updatednom: Updatednom='Htt_PTH_600_800_cat{}{}'.format(year,channel)
-    if '_bin5' in Updatednom: Updatednom='Htt_PTH_GT800_cat{}{}'.format(year,channel)
-    
+#    if '_bin4' in Updatednom: Updatednom='Htt_PTH_600_800_cat{}{}'.format(year,channel)
+    if '_bin4' in Updatednom: Updatednom='Htt_PTH_GT600_cat{}{}'.format(year,channel)
+
     ofile.mkdir(Updatednom)
     h1.cd()
     histoList = gDirectory.GetListOfKeys()
@@ -134,6 +134,48 @@ for k1 in dirList: # loop over categories
         histo_name=h2.GetName()
         
 #        NonZeroIntegralHist=h2.Clone()
+
+
+####################################################################################
+############        Check whether both up/down are present
+####################################################################################
+#        TestdownName=''
+#        DownExist=False
+#        if 'Up' in h3.GetName(): TestdownName=h3.GetName().replace('Up','Down')
+#        for down in histoList:
+#            if down.GetName() !=TestdownName : continue
+#            print  '======= ', h3.GetName(),TestdownName
+#            DownExist=True
+#        if  DownExist:
+#            print '\n\n\n\n Down Does not exist  %%%%%%%%%', TestdownName
+
+        TestupName='XXXXXXX'
+        UpExist=True
+        if 'Down' in h3.GetName():
+            UpExist=False
+            TestupName=h3.GetName().replace('Down','Up')
+            for up in histoList:
+                if up.GetName() ==TestupName:
+                    UpExist=True
+                    break
+            if not UpExist:
+                print '\n\n\n\n %%%%%%%%% {} Does not exist  %%%%%%%%%\n\n\n\n '.format(TestupName)
+                
+                
+
+        TestdownName='XXXXXXX'
+        DownExist=True
+        if 'Up' in h3.GetName():
+            DownExist=False
+            TestdownName=h3.GetName().replace('Up','Down')
+            for down in histoList:
+                if down.GetName() ==TestdownName:
+                    DownExist=True
+                    break
+            if not DownExist:
+                print '\n\n\n\n %%%%%%%%% {} Does not exist  %%%%%%%%%\n\n\n\n '.format(TestdownName)
+        
+
 ####################################################################################
 ############        Here we fix the issue with shape uncertainty up and down once one is zero and the other is non-zero, as this causes an issue in the fit
 ####################################################################################
@@ -256,18 +298,18 @@ for k1 in dirList: # loop over categories
 
 
 
-        if channel=='em' or channel=='me': histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling_em_cat{}'.format(categ))
-        if channel=='et' : histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling_et_cat{}'.format(categ))
-        if channel=='mt':  histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling_mt_cat{}'.format(categ))
-        if channel=='tt'                 : histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling_tt_cat{}'.format(categ))
+        if channel=='em' or channel=='me': histo_name=histo_name.replace('shape_','CMS_QCD_bkg_modeling_em')
+        if channel=='et':  histo_name=histo_name.replace('shape_','CMS_QCD_bkg_modeling_et')
+        if channel=='mt':  histo_name=histo_name.replace('shape_','CMS_QCD_bkg_modeling_mt')
+        if channel=='tt':  histo_name=histo_name.replace('shape_','CMS_QCD_bkg_modeling_tt')
 
         if 'THU' not in histo_name and 'pdf' not in histo_name and 'QCDScale' not in histo_name: histo_name=histo_name.replace('Up',str(year)+'Up')
         if 'THU' not in histo_name and 'pdf' not in histo_name and 'QCDScale' not in histo_name: histo_name=histo_name.replace('Down',str(year)+'Down')
         
         if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_pdf','TT_TTpdf'+str(year))
         histo_name=histo_name.replace('ZTT_pdf','ZTT_ZTTpdf'+str(year))
-        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_QCDScale','TT_TTQCDScale_cat{}'.format(categ)+str(year))
-        histo_name=histo_name.replace('ZTT_QCDScale','ZTT_ZTTQCDScale_cat{}'.format(categ)+str(year))
+        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_QCDScale','TT_TTQCDScale'+str(year))
+        histo_name=histo_name.replace('ZTT_QCDScale','ZTT_ZTTQCDScale'+str(year))
 #
 #
 #        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_TTpdf2017','TT_TTpdf20172018')
@@ -292,11 +334,13 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('Up125','Up')
         histo_name=histo_name.replace('Down125','Down')
         
-        histo_name=histo_name.replace('_0_350_','_0_350125_')
-        histo_name=histo_name.replace('_350_450_','_350_450125_')
-        histo_name=histo_name.replace('_450_600_','_450_600125_')
-        histo_name=histo_name.replace('_600_800_','_600_800125_')
-        histo_name=histo_name.replace('_GT800_','_GT800125_')
+        histo_name=histo_name.replace('_0_350','_0_350125')
+        histo_name=histo_name.replace('_350_450','_350_450125')
+        histo_name=histo_name.replace('_450_600','_450_600125')
+        histo_name=histo_name.replace('_GT600','_GT600125')
+        
+        histo_name=histo_name.replace('XH125','XH')
+        histo_name=histo_name.replace('ggH125','ggH')
         
         
         
@@ -309,4 +353,7 @@ for k1 in dirList: # loop over categories
 #        h3.Rebin(2)
         
         ofile.cd(Updatednom)
+        h3.SetTitle(histo_name)
         h3.Write(histo_name)
+        if not UpExist: h3.Write(histo_name.replace('Down','Up'))
+        if not DownExist: h3.Write(histo_name.replace('Up','Down'))

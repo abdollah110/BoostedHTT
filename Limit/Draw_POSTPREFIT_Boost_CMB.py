@@ -18,7 +18,8 @@ def add_lumi(year):
     lumi.SetTextSize(0.06)
     lumi.SetTextFont (   42 )
     if year==2016:
-        lumi.AddText("36.3 fb^{-1} (13 TeV)")
+#        lumi.AddText("36.3 fb^{-1} (13 TeV)")
+        lumi.AddText("138 fb^{-1} (13 TeV)")
     elif year==2017:
         lumi.AddText("41.5 fb^{-1} (13 TeV)")
     elif year==2018:
@@ -87,7 +88,11 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
 #    categories=["MuTau_DiJet","MuTau_JetBJet"]
 #    ncat=
 
-    Data=file.Get(categoriy).Get("data_obs")
+    Data=file.Get(categoriy[0]).Get("data_obs")
+    Data1=file.Get(categoriy[1]).Get("data_obs")
+    Data2=file.Get(categoriy[2]).Get("data_obs")
+    Data.Add(Data1)
+    Data.Add(Data2)
     Data.Rebin(RB_)
     
     ## print Data table for HEPDATA EXO-17-015
@@ -105,9 +110,17 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
 ##        print "[(%d, %d), %d, (%0.1f,    %0.1f),%0.1f],"%(LowEdge,endEdge,data_val,bkg_val,bkg_val_err,Signal_val_)
 #
     
-    QCD=file.Get(categoriy).Get("QCD")
+    QCD=file.Get(categoriy[0]).Get("QCD")
+    QCD1=file.Get(categoriy[1]).Get("QCD")
+    QCD2=file.Get(categoriy[2]).Get("QCD")
+    QCD.Add(QCD1)
+    QCD.Add(QCD2)
     if '_em' in FileName:
-        W=file.Get(categoriy).Get("W")
+        W=file.Get(categoriy[0]).Get("W")
+        W1=file.Get(categoriy[1]).Get("W")
+        W2=file.Get(categoriy[2]).Get("W")
+        W.Add(W1)
+        W.Add(W2)
         QCD.Add(W)
 #    if 'CR_' in categoriy: QCD=file.Get(categoriy).Get("W")
     QCD.Rebin(RB_)
@@ -115,24 +128,54 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
 #    W=file.Get(categoriy).Get("W")
 #    W.Rebin(RB_)
 
-    TT=file.Get(categoriy).Get("TT")
-    if not TT: TT=file.Get(categoriy).Get("VV"); TT.Scale(0.001)
+    TT=file.Get(categoriy[1]).Get("TT")
+    TT1=file.Get(categoriy[0]).Get("TT")
+    TT2=file.Get(categoriy[2]).Get("TT")
+    if TT1: TT.Add(TT1)
+    TT.Add(TT2)
     TT.Rebin(RB_)
 
 #    ZJ=file.Get(categoriy).Get("ZJ")
 #    ZJ.Rebin(RB_)
     
-    VV=file.Get(categoriy).Get("VV")
+    VV=file.Get(categoriy[0]).Get("VV")
+    VV1=file.Get(categoriy[1]).Get("VV")
+    VV2=file.Get(categoriy[2]).Get("VV")
+    VV.Add(VV1)
+    VV.Add(VV2)
     VV.Rebin(RB_)
 
-    ZTT=file.Get(categoriy).Get("ZTT")
+    ZTT=file.Get(categoriy[0]).Get("ZTT")
+    ZTT1=file.Get(categoriy[1]).Get("ZTT")
+    ZTT2=file.Get(categoriy[2]).Get("ZTT")
+    ZTT.Add(ZTT1)
+    ZTT.Add(ZTT2)
     ZTT.Rebin(RB_)
+    
+    
+    signame_ggh=''
+    signame_xh=''
+    if cat=='bin1': signame_ggh='ggH_PTH_0_350'; signame_xh='XH_PTH_0_350';
+    elif cat=='bin2': signame_ggh='ggH_PTH_350_450'; signame_xh='XH_PTH_350_450';
+    elif cat=='bin3': signame_ggh='ggH_PTH_450_600'; signame_xh='XH_PTH_450_600';
+    elif cat=='bin4': signame_ggh='ggH_PTH_GT600'; signame_xh='XH_PTH_GT600';
+    
+
+
     
 #    Signal=file.Get(categoriy.replace('postfit','prefit')).Get('ggH')
 #    Signal2=file.Get(categoriy.replace('postfit','prefit')).Get('XH')
-    Signal=file.Get(categoriy.replace('postfit','prefit')).Get('ggH_PTH_450_600')
-    Signal2=file.Get(categoriy.replace('postfit','prefit')).Get('XH_PTH_450_600')
+    Signal=file.Get(categoriy[0].replace('postfit','prefit')).Get(signame_ggh)
+    Signal1=file.Get(categoriy[1].replace('postfit','prefit')).Get(signame_ggh)
+    Signal2=file.Get(categoriy[2].replace('postfit','prefit')).Get(signame_ggh)
+    Signal.Add(Signal1)
     Signal.Add(Signal2)
+    Signal_XH=file.Get(categoriy[0].replace('postfit','prefit')).Get(signame_xh)
+    Signal_XH1=file.Get(categoriy[1].replace('postfit','prefit')).Get(signame_xh)
+    Signal_XH2=file.Get(categoriy[2].replace('postfit','prefit')).Get(signame_xh)
+    Signal_XH.Add(Signal_XH1)
+    Signal_XH.Add(Signal_XH2)
+    Signal.Add(Signal_XH)
     Signal.Scale( 20)  # CS x BR  1000_400_440  // factor of 2 is added as we consider the full doublet
     Signal.Rebin(RB_)
     #    Signal.SetFillStyle(0.)
@@ -333,7 +376,8 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
     categ.SetTextColor(    1 )
     categ.SetTextFont (   61 )
     #       if i==1 or i==3:
-    categ.AddText(PreOrPost+" "+Channel+" "+str(year)+" "+cat)
+#    categ.AddText(PreOrPost+" "+Channel+" "+str(year)+" "+cat)
+    categ.AddText(PreOrPost+" "+Channel+" "+" "+cat)
     #       else :
     #        categ.AddText("SS")
     categ.Draw()
@@ -408,7 +452,8 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
 
 
     h1.Draw("e2")
-    h3.Draw("Ex0psame")
+#    h3.Draw("Ex0psame0")
+    h3.Draw("E0Expsame")
 
 
 #    c.cd()
@@ -419,8 +464,8 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
 #    c.Modified()
     h1.GetYaxis().SetRangeUser(.01,1.99)
 #    c.Modified()
-    c.SaveAs("_Finalplot_"+str(year)+"_"+prefix+categoriy+Status+"_CMB_"+Channel+"_"+cat+".pdf")
-    print "Data.Integral()", file.Get(categoriy).Get("data_obs").Integral()
+    c.SaveAs("_Finalplot_"+str(year)+"_"+prefix+categoriy[0]+Status+"_CMB_"+Channel+"_"+cat+".pdf")
+    print "Data.Integral()", file.Get(categoriy[0]).Get("data_obs").Integral()
 
 
 
@@ -565,9 +610,12 @@ elif 'diff' in TypeRun:
 #
 
 
-    for i in range(1,49):
+#    for i in range(1,49):
+    for i in range(1,17):
 #    for i in range(1,5):
         category='ch{}'.format(str(i))
+        category2='ch{}'.format(str(i+16))
+        category3='ch{}'.format(str(i+32))
         
         year_=(i-1)/16
         chCat=(i-1)%16
@@ -611,8 +659,8 @@ elif 'diff' in TypeRun:
 
 
         FileNamesInfo=[
-                       [InputRootfile,category+"_{}".format('postfit'),xAxis,"PostFit",ch],
-                       [InputRootfile,category+"_{}".format('prefit'),xAxis,"PreFit",ch],
+                       [InputRootfile,[category+"_{}".format('postfit'),category2+"_{}".format('postfit'),category3+"_{}".format('postfit')],xAxis,"PostFit",ch],
+                       [InputRootfile,[category+"_{}".format('prefit'), category2+"_{}".format('prefit'), category3+"_{}".format('prefit')] ,xAxis,"PreFit",ch],
                        ]
 
         for i in range(0,len(FileNamesInfo)):
