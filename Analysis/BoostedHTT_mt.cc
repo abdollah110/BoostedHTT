@@ -373,10 +373,10 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",6 ,15,0,15);
         
         tmass = TMass_F(Mu4Momentum.Pt(), Mu4Momentum.Px(), Mu4Momentum.Py(),  Met,  Metphi);
-//        if (tmass > 80) continue; FIX ME for Validation
+        if (tmass > 80) continue; // FIX ME for Validation
         plotFill("cutFlowTable",7 ,15,0,15);
         
-//        if (m_sv < 50) continue; FIX ME for Validation
+        if (m_sv < 50) continue; //FIX ME for Validation
         plotFill("cutFlowTable",8 ,15,0,15);
         
         // BJet veto
@@ -397,8 +397,7 @@ int main(int argc, char* argv[]) {
         if (numele > 0) continue;
         plotFill("cutFlowTable",11 ,15,0,15);
         
-        //        if (higgs.Pt() < 250) continue;
-//        if (higgs.Pt() < 250) continue; FIX ME for Validation
+        if (higgs.Pt() < 250) continue; //FIX ME for Validation
         plotFill("cutFlowTable",12 ,15,0,15);
         
         //=========================================================================================================
