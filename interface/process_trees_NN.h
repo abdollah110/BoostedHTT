@@ -64,8 +64,8 @@ public:
     std::vector<float>  Get_OS_SS_ratio();
     
     //  void convertDataToFake(Categories, string, double, double, double, double, double, double);  // 2d
-    void histoLoop(string year  ,std::vector<string>, string, TH1F *, string, string,std::vector<float>, bool, string);
-    void histoLoop(string year  ,std::vector<string>, string, TH1F *, string, string,std::vector<float>,string, float, float, bool, string);
+    void histoLoop(string  ,std::vector<string>, string, TH1F *, string, string,std::vector<float>, bool, string);
+    void histoLoop(string  ,std::vector<string>, string, TH1F *, string, string,std::vector<float>,string, float, float, bool, string);
     //    void histoLoop(string year  ,std::vector<string>, string, TH1F *, string, string, string);
     void histoLoop(string channel, string year  ,std::vector<string>, string, string, string,std::vector<float>, bool,string); //for emu
     void histoLoop(string, string   ,std::vector<string>, string, string, string,std::vector<float>,string, float, float, bool,string); //for emu
@@ -104,11 +104,12 @@ HistTool::HistTool(string treeName, string channel_prefix, string var, string ye
 // x-axis
 //bins_NN{0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0}, // This is for 0jet
 //bins_NN(bins), // This is for 0jet
-//bins_NN({14,0.3,1}),
-bins_NN({20,0,1}),
+bins_NN({13,0.35,1}),
+//bins_NN({20,0,1}),
 //bins_NN_bkg({3,0.3,1}),
-//bins_NN_bkg({1,0.3,1}),
-bins_NN_bkg({20,0,1}),
+bins_NN_bkg({1,0.35,1}),
+//bins_NN_bkg(bins),
+//bins_NN_bkg({20,0,1}),
 bins_FAKE({10,0,300}),
 bins_genHPt({0,300,400,550,800,2000}),
 //bins_FAKE({10,0,1}),

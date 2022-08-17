@@ -61,6 +61,7 @@ int main(int argc, char *argv[]) {
     std::vector<float>  OSSS= hists->Get_OS_SS_ratio();
     std::cout<<"\n======== OSSS  "<<OSSS[0]<<"   ========\n\n";
     
+//    hists->histoLoop(year, files, dir, tree_name,var_name,OSSS,runPDF,"");    // fill histograms
     hists->histoLoop(channel,year, files, dir, tree_name,var_name,OSSS,runPDF,"");    // fill histograms
     hists->writeTemplates(dir,channel,year);  // write histograms to file
     // histograms for pdf and scale
@@ -75,8 +76,6 @@ int main(int argc, char *argv[]) {
     
     //  delete hists->ff_weight;
 }
-//           void histoLoop(std::string year  ,std::vector<std::string>, std::string, std::string, std::string,std::vector<float>, std::string, std::string);
-//void HistTool::histoLoop(std::string year , vector<string> files, string dir, string tree_name , string var_name, vector<float> OSSS, string acWeight = "None", string Sys = "") {
 void HistTool::histoLoop(std::string channel ,std::string year , vector<string> files, string dir, string tree_name , string var_name, vector<float> OSSS, bool runPDF,string Sys = "") {
     
     
@@ -147,9 +146,10 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
                 }
         
         //        int nbin[3]={14,3,3};
-//        int nbin[3]={14,1,1};
-        int nbin[3]={20,20,20};
-        float lowBin=0;
+        int nbin[3]={13,1,1};
+//        int nbin[3]={20,20,20};
+//        float lowBin=0;
+        float lowBin=0.35;
         float highBin=1;
         
         
@@ -157,7 +157,7 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
         //        std::cout<<" tree->GetEntries() is "<<tree->GetEntries()<<"\n";
         for (auto i = 0; i < tree->GetEntries(); i++) {
             tree->GetEntry(i);
-            if (runPDF) {if (i % 10 == 0) fprintf(stdout, "\r  Processed events: %8d of %8d ", i, tree->GetEntries());}
+            if (runPDF) {if (i % 1000 == 0) fprintf(stdout, "\r  Processed events: %8d of %8lld ", i, tree->GetEntries());}
             
             std::map<std::string, float>  ObsName {
                 {"lep1Pt",lep1Pt_},
@@ -180,6 +180,9 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
                 
             };
             
+            if (dR_lep_lep > 0.5) continue;
+            
+            
             //            if (channel.find("em")!=string::npos  && lep1Pt_ < 20) continue;
             
             //            if (NN_disc < 0.3) continue;
@@ -197,13 +200,13 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
             vector<float > NN_out_vec;
             NN_out_vec.clear();
             
-            //            NN_out_vec.push_back((NN_disc > NN_disc_ZTT && NN_disc > NN_disc_QCD )? NN_disc : -1);
-            //            NN_out_vec.push_back((NN_disc_ZTT > NN_disc && NN_disc_ZTT > NN_disc_QCD )? NN_disc_ZTT : -1);
-            //            NN_out_vec.push_back((NN_disc_QCD > NN_disc_ZTT && NN_disc_QCD > NN_disc )? NN_disc_QCD : -1);
+            NN_out_vec.push_back((NN_disc > NN_disc_ZTT && NN_disc > NN_disc_QCD )? NN_disc : -1);
+            NN_out_vec.push_back((NN_disc_ZTT > NN_disc && NN_disc_ZTT > NN_disc_QCD )? NN_disc_ZTT : -1);
+            NN_out_vec.push_back((NN_disc_QCD > NN_disc_ZTT && NN_disc_QCD > NN_disc )? NN_disc_QCD : -1);
             
-            NN_out_vec.push_back(NN_disc);
-            NN_out_vec.push_back(NN_disc_ZTT);
-            NN_out_vec.push_back(NN_disc_QCD);
+//            NN_out_vec.push_back(NN_disc);
+//            NN_out_vec.push_back(NN_disc_ZTT);
+//            NN_out_vec.push_back(NN_disc_QCD);
             
             
             
@@ -220,6 +223,8 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
                     plotFill(name+"_NN_disc_"+categories.at(i),NN_disc,20,0,1,weight);
                     plotFill(name+"_LeadTauPt_"+categories.at(i),lep1Pt_,20,0,400,weight);
                     plotFill(name+"_SubLeadTauPt_"+categories.at(i),lep2Pt_,20,0,400,weight);
+                    plotFill(name+"_vis_mass_"+categories.at(i),vis_mass,20,0,200,weight);
+                    
                     
                     
                     if (runPDF){

@@ -126,7 +126,11 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         float higgs_pT, higgs_m, m_sv, gen_higgs_pT;
         Float_t         pdfWeight;
         vector<float>   *pdfSystWeight;
+        bool isGenTauSub_, isGenTauLead_;
         
+        
+        tree->SetBranchAddress("isGenTauLead_",&isGenTauLead_);
+        tree->SetBranchAddress("isGenTauSub_",&isGenTauSub_);        
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
         tree->SetBranchAddress("lep2Pt",&lep2Pt_);
         tree->SetBranchAddress("lep1IsoPassV",&lep1IsoPassV);
@@ -158,9 +162,10 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         }
         
         //        int nbin[3]={14,3,3};
-        //        int nbin[3]={14,1,1};
-        int nbin[3]={20,20,20};
-        float lowBin=0;
+        int nbin[3]={13,1,1};
+//        int nbin[3]={20,20,20};
+//        float lowBin=0;
+        float lowBin=0.35;
         float highBin=1;
         
         
@@ -168,7 +173,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         std::cout<<" tree->GetEntries() is "<<tree->GetEntries()<<"\n";
         for (auto i = 0; i < tree->GetEntries(); i++) {
             tree->GetEntry(i);
-            if (runPDF) {if (i % 10 == 0) fprintf(stdout, "\r  Processed events: %8d of %8d ", i, tree->GetEntries());}
+            if (runPDF) {if (i % 10 == 0) fprintf(stdout, "\r  Processed events: %8d of %8lld ", i, tree->GetEntries());}
             
             std::map<std::string, float>  ObsName {
                 {"lep1Pt",lep1Pt_},
@@ -192,12 +197,18 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 {"EleMatchedIsolation",EleMatchedIsolation}
             };
             
+            if (dR_lep_lep > 0.5) continue;
+            
             //            if (higgs_pT < 400) continue;
             
             //            if (NN_disc > 0.5) continue;
+
             // apply tau Id SF
-            if (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("H125")!= string::npos || name.find("JJH125")!= string::npos ) weight *= 0.81;
-            
+            if (isGenTauLead_ && (  name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.9;
+            if (isGenTauSub_ && ( name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos ))
+                weight *= 0.9;
+
+
             
             // Validation cuts relaxed!
             //            if (m_sv < 50) continue;
@@ -307,13 +318,13 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             vector<float > NN_out_vec;
             NN_out_vec.clear();
             
-            //            NN_out_vec.push_back((NN_disc > NN_disc_ZTT && NN_disc > NN_disc_QCD )? NN_disc : -1);
-            //            NN_out_vec.push_back((NN_disc_ZTT > NN_disc && NN_disc_ZTT > NN_disc_QCD )? NN_disc_ZTT : -1);
-            //            NN_out_vec.push_back((NN_disc_QCD > NN_disc_ZTT && NN_disc_QCD > NN_disc )? NN_disc_QCD : -1);
+            NN_out_vec.push_back((NN_disc > NN_disc_ZTT && NN_disc > NN_disc_QCD )? NN_disc : -1);
+            NN_out_vec.push_back((NN_disc_ZTT > NN_disc && NN_disc_ZTT > NN_disc_QCD )? NN_disc_ZTT : -1);
+            NN_out_vec.push_back((NN_disc_QCD > NN_disc_ZTT && NN_disc_QCD > NN_disc )? NN_disc_QCD : -1);
             
-            NN_out_vec.push_back(NN_disc);
-            NN_out_vec.push_back(NN_disc_ZTT);
-            NN_out_vec.push_back(NN_disc_QCD);
+//            NN_out_vec.push_back(NN_disc);
+//            NN_out_vec.push_back(NN_disc_ZTT);
+//            NN_out_vec.push_back(NN_disc_QCD);
             
             
             for (int i =0; i < 3 ;i++) {
