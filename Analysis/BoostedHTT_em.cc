@@ -62,8 +62,8 @@ int main(int argc, char* argv[]) {
     TH1F * HistoTot = (TH1F*) InputFile->Get("hcount");
     auto fout = new TFile(filename.c_str(), "RECREATE");
     
-    myMap1 = new std::map<std::string, TH1F*>();
-    myMap2 = new map<string, TH2F*>();
+    myMap1 = new std::unordered_map<std::string, TH1F*>();
+//    myMap2 = new map<string, TH2F*>();
     
     TTree * outTr=  new TTree("emu_tree","emu_tree");
     
@@ -625,15 +625,15 @@ int main(int argc, char* argv[]) {
     
     
     fout->cd();
-    map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
-    map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
+    unordered_map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
+    unordered_map<string, TH1F*>::const_iterator jMap1 = myMap1->end();
     
     for (; iMap1 != jMap1; ++iMap1)
         nplot1(iMap1->first)->Write();
     outTr->Write();
     
-    map<string, TH2F*>::const_iterator iMap2 = myMap2->begin();
-    map<string, TH2F*>::const_iterator jMap2 = myMap2->end();
+    unordered_map<string, TH2F*>::const_iterator iMap2 = myMap2->begin();
+    unordered_map<string, TH2F*>::const_iterator jMap2 = myMap2->end();
     
     for (; iMap2 != jMap2; ++iMap2)
         nplot2(iMap2->first)->Write();
