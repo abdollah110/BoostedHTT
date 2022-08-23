@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
     auto fout = new TFile(filename.c_str(), "RECREATE");
     
     myMap1 = new std::unordered_map<std::string, TH1F*>();
-//    myMap2 = new unordered_map<string, TH2F*>();
+    myMap2 = new unordered_map<string, TH2F*>();
     
 //    TTree * outTr=  new TTree("mue_tree","mue_tree"); // Now change to emu to be able to combine before training NN
     TTree * outTr=  new TTree("emu_tree","emu_tree");
