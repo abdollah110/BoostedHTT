@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
     auto fout = new TFile(filename.c_str(), "RECREATE");
     
     myMap1 = new std::unordered_map<std::string, TH1F*>();
-    myMap2 = new map<string, TH2F*>();
+    myMap2 = new unordered_map<string, TH2F*>();
     
     TTree * outTr=  new TTree("tautau_tree","tautau_tree");
     
