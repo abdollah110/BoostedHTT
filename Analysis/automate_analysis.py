@@ -137,10 +137,6 @@ for ifile in fileList:
     callstring = './{} -p {} -s {} -d {} '.format(options.exe, tosample, sample, options.output_dir)
 
 
-
-#     FIXME   FIX ME  (only for signal)
-    if '125' not in sample: continue
-
     try:
         makedirs('Output/trees/{}'.format(options.output_dir))
     except:
