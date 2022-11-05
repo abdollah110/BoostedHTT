@@ -26,39 +26,40 @@ ggHName=''
 XHName=''
 for ifile in glob('{}/*root'.format(InputFile)):
 
-#    if 'ggH125' in ifile:
-#        ggHName=ifile.replace(InputFile,'')
-#        print ifile
-#
-#        newName=ifile.replace('ggH125','ggH_PTH_0_350').replace(".root","125.root")
-#        os.system("cp {} {}".format(ifile, newName))
-#        newName=ifile.replace('ggH125','ggH_PTH_350_450').replace(".root","125.root")
-#        os.system("cp {} {}".format(ifile, newName))
-#        newName=ifile.replace('ggH125','ggH_PTH_450_600').replace(".root","125.root")
-#        os.system("cp {} {}".format(ifile, newName))
-#        newName=ifile.replace('ggH125','ggH_PTH_600_800').replace(".root","125.root")
-#        os.system("cp {} {}".format(ifile, newName))
-#        newName=ifile.replace('ggH125','ggH_PTH_GT800').replace(".root","125.root")
-#        os.system("cp {} {}".format(ifile, newName))
+    if 'ggH125' in ifile:
+        ggHName=ifile.replace(InputFile,'')
+        print ifile
 
-#    if 'XH125' in ifile:
-#        XHName=ifile.replace(InputFile,'')
-#        print ifile
-#
-#        newName=ifile.replace('XH125','XH_PTH_0_350').replace(".root","125.root")
-#        os.system("cp {} {}".format(ifile, newName))
-#        newName=ifile.replace('XH125','XH_PTH_350_450').replace(".root","125.root")
-#        os.system("cp {} {}".format(ifile, newName))
-#        newName=ifile.replace('XH125','XH_PTH_450_600').replace(".root","125.root")
-#        os.system("cp {} {}".format(ifile, newName))
-#        newName=ifile.replace('XH125','XH_PTH_600_800').replace(".root","125.root")
-#        os.system("cp {} {}".format(ifile, newName))
-#        newName=ifile.replace('XH125','XH_PTH_GT800').replace(".root","125.root")
-#        os.system("cp {} {}".format(ifile, newName))
+        newName=ifile.replace('ggH125','ggH_PTH_0_350').replace(".root","125.root")
+        os.system("cp {} {}".format(ifile, newName))
+        newName=ifile.replace('ggH125','ggH_PTH_350_450').replace(".root","125.root")
+        os.system("cp {} {}".format(ifile, newName))
+        newName=ifile.replace('ggH125','ggH_PTH_450_600').replace(".root","125.root")
+        os.system("cp {} {}".format(ifile, newName))
+        newName=ifile.replace('ggH125','ggH_PTH_600_800').replace(".root","125.root")
+        os.system("cp {} {}".format(ifile, newName))
+        newName=ifile.replace('ggH125','ggH_PTH_GT800').replace(".root","125.root")
+        os.system("cp {} {}".format(ifile, newName))
+
+    if 'XH125' in ifile:
+        XHName=ifile.replace(InputFile,'')
+        print ifile
+
+        newName=ifile.replace('XH125','XH_PTH_0_350').replace(".root","125.root")
+        os.system("cp {} {}".format(ifile, newName))
+        newName=ifile.replace('XH125','XH_PTH_350_450').replace(".root","125.root")
+        os.system("cp {} {}".format(ifile, newName))
+        newName=ifile.replace('XH125','XH_PTH_450_600').replace(".root","125.root")
+        os.system("cp {} {}".format(ifile, newName))
+        newName=ifile.replace('XH125','XH_PTH_600_800').replace(".root","125.root")
+        os.system("cp {} {}".format(ifile, newName))
+        newName=ifile.replace('XH125','XH_PTH_GT800').replace(".root","125.root")
+        os.system("cp {} {}".format(ifile, newName))
         
     if 'JJH125' in ifile:
         JJHName=ifile.replace(InputFile,'')
         print ifile
+        
         newName=ifile.replace('JJH125','JJH_PTH_0_350').replace(".root","125.root")
         os.system("cp {} {}".format(ifile, newName))
         newName=ifile.replace('JJH125','JJH_PTH_350_450').replace(".root","125.root")
@@ -71,6 +72,6 @@ for ifile in glob('{}/*root'.format(InputFile)):
         os.system("cp {} {}".format(ifile, newName))
 
 
-#OutSide=ggHName.replace('ggH125','OutsideAcceptance').replace("125.root",".root")
-#os.system('hadd -f {}/{} {}/{} {}/{}'.format(InputFile, OutSide,InputFile, ggHName, InputFile,XHName))
+    OutSide=ggHName.replace('ggH125','OutsideAcceptance').replace("125.root",".root")
+    os.system('hadd -f {}/{} {}/{} {}/{}'.format(InputFile, OutSide,InputFile, ggHName, InputFile,XHName))
         

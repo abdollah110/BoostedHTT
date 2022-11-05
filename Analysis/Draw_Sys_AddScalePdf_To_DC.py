@@ -20,7 +20,7 @@ parser.add_option('--sys', '-s', action='store',
 
 
 
-DataCardRootFiles = [ifile for ifile in glob(options.current_DC+'/*singleBin.root') if '.root' in ifile]
+DataCardRootFiles = [ifile for ifile in glob(options.current_DC+'/*.root') if '.root' in ifile and 'pdfscaleOut' not in ifile]
 SysRootFiles = [ifile for ifile in glob(options.current_sys+'/*pdfscale.root') if '.root' in ifile]
 
 for inFile in DataCardRootFiles:
@@ -28,7 +28,7 @@ for inFile in DataCardRootFiles:
     print 'starting ---->>   ', inFile
     
     File=TFile(inFile,'R')
-    File.Cp("Out/"+File.GetName().replace('.root','_')+"pdfscaleOut.root")
+    File.Cp(File.GetName().replace('.root','_')+"pdfscaleOut.root")
     
     channel=''
     channelName=''

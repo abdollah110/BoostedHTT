@@ -108,8 +108,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         float NN_disc;
         float higgs_pT, higgs_m, m_sv, gen_higgs_pT, gen_leadjet_pT;
         bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
-        Float_t         pdfWeight;
-        vector<float>   *pdfSystWeight;
+        Float_t         pdfWeight=0;
+        vector<double>   *pdfSystWeight=0;
         
         
         tree->SetBranchAddress("Chan_emu",&Chan_emu);
@@ -170,8 +170,14 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
                 {"gen_leadjet_pT",gen_leadjet_pT},
                 
             };
+            
+            //            FIXME  this cut is for running the analysis in dr< 0.5
+//            if (dR_lep_lep > 0.5) continue;
+
+
             std::string reco_name="LeadJetPt";
             if (cut_name.find("gen_higgs_pT") !=string::npos) reco_name="higgs_pT";
+            if (cut_name.find("gen_leadjet_pT") !=string::npos) reco_name="LeadJetPt";
             float Var_reco = ObsName[reco_name];
             if (Var_reco < lowVal || Var_reco > highVal ) continue;
             
@@ -191,6 +197,11 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
                 if ( Var_cut <= 350 || Var_cut > 450 ) continue ;
                 if (!Chan_emu || !Chan_emu_fid) continue;
             }
+            // Higgs pT parameterization
+//            if (name.find("0_450")!=string::npos){
+//                if ( Var_cut <= 0 || Var_cut > 450 ) continue ;
+//                if (!Chan_emu || !Chan_emu_fid) continue;
+//            }
             if (name.find("450_600")!=string::npos){
                 if ( Var_cut <= 450 || Var_cut > 600 ) continue ;
                 if (!Chan_emu || !Chan_emu_fid) continue;

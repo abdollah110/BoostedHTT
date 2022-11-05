@@ -43,7 +43,7 @@ parser.add_option('--path', '-p', action='store',
 
 
 
-InputRootFiles = [ifile for ifile in glob(options.path+'/*') if '.root' in ifile]
+InputRootFiles = [ifile for ifile in glob(options.path+'/*') if '.root' in ifile and 'pdfscale' not in ifile]
 
 for inFile in InputRootFiles:
 
@@ -109,6 +109,7 @@ for inFile in InputRootFiles:
         categories=['_ztt','_qcd','_signal']
         for cat in categories:
             HisMean=File.Get('{}{}/{}'.format(channel,cat,pro))
+            print 'histo is ', '{}{}/{}'.format(channel,cat,pro)
             histPdfUp=TH1F("pdfUp"+cat,"pdfUp"+cat,HisMean.GetNbinsX(),lowBin , highBin)
             histPdfDown=TH1F("pdfDown"+cat,"pdfDown"+cat,HisMean.GetNbinsX(),lowBin , highBin)
             for ibin in range(0,HisMean.GetNbinsX()):

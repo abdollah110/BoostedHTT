@@ -108,8 +108,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         float NN_disc;
         float higgs_pT, higgs_m, m_sv, gen_higgs_pT, gen_leadjet_pT;
         bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
-        Float_t         pdfWeight;
-        vector<float>   *pdfSystWeight;
+        Float_t         pdfWeight=0;
+        vector<double>   *pdfSystWeight=0;
         bool isGenTauSub_, isGenTauLead_;
         
         tree->SetBranchAddress("Chan_emu",&Chan_emu);
@@ -177,8 +177,12 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 
             };
             
+            //            FIXME  this cut is for running the analysis in dr< 0.5
+//            if (dR_lep_lep > 0.5) continue;
+
             std::string reco_name="LeadJetPt";
             if (cut_name.find("gen_higgs_pT") !=string::npos) reco_name="higgs_pT";
+            if (cut_name.find("gen_leadjet_pT") !=string::npos) reco_name="LeadJetPt";
             float Var_reco = ObsName[reco_name];
             if (Var_reco < lowVal || Var_reco > highVal ) continue;
             
@@ -198,14 +202,15 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 if ( Var_cut <= 350 || Var_cut > 450 ) continue ;
                 if (!Chan_tautau || !Chan_tautau_fid) continue;
             }
+            // Higgs pT parameterization
+//            if (name.find("0_450")!=string::npos){
+//                if ( Var_cut <= 0 || Var_cut > 450 ) continue ;
+//                if (!Chan_tautau || !Chan_tautau_fid) continue;
+//            }
             if (name.find("450_600")!=string::npos){
                 if ( Var_cut <= 450 || Var_cut > 600 ) continue ;
                 if (!Chan_tautau || !Chan_tautau_fid) continue;
             }
-            //            if (name.find("600_800")!=string::npos){
-            //                if ( Var_cut <= 600 || Var_cut > 800 ) continue ;
-            //                if (!Chan_tautau || !Chan_tautau_fid) continue;
-            //            }
             if (name.find("GT600")!=string::npos){
                 if ( Var_cut <= 600) continue ;
                 if (!Chan_tautau || !Chan_tautau_fid) continue;
@@ -215,10 +220,23 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             if (isGenTauLead_ && (  name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos || name.find("JJH125")!= string::npos )) weight *= 0.9;
             if (isGenTauSub_ && ( name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos || name.find("JJH125")!= string::npos )) weight *= 0.9;
             
+//             correction based on the lead lep pt
+            float lep1CorWeight=1;
+            if (name.find("Data")== string::npos && year =="2016"){
+                if (lep1Pt_ < 200) lep1CorWeight=2.1+ (-0.00824)*lep1Pt_;
+                else (lep1CorWeight=0.566);
+                //                if (lep2Pt_ < 200) lep1CorWeight *= 1.11691+ (-0.00223)*lep2Pt_;
+                //                else (lep1CorWeight=1.11691+ (-0.00223)*200);
+            }
+            weight *=lep1CorWeight;  // FIXME Removed to see the effects
             
             float lep2Ptval=lep2Pt_;
             if (lep2Ptval > 200) lep2Ptval=200;
             float frValu2 = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
+            float frValuErr = FRhist->GetBinError(FRhist->GetXaxis()->FindBin(lep2Ptval));
+            float frValuUncUp=frValu2+frValuErr;
+            float frValuUncDown=frValu2-frValuErr;
+            
             
             //            float lep1Ptval=lep1Pt_;
             //            if (lep1Ptval > 200) lep1Ptval=200;
@@ -244,17 +262,24 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                     }
                 }
             }
-            if (OS != 0 && !lep1IsoPassV && lep2IsoPassV ){
+//            if (OS != 0 && !lep1IsoPassV && lep2IsoPassV ){
+            if (OS != 0 && lep1IsoPassV && !lep2IsoPassV ){
                 //            if (OS != 0 && !lep1IsoPassL && lep2IsoPassL ){
                 //            if (SS != 0 && lep1IsoPassV && !lep2IsoPassV ){ // Validation
                 //            if (SS != 0 && !lep1IsoPassV && !lep2IsoPassV ){ // Validation
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu2 / (1-frValu2));
+                fillQCD_Norm_fr_up(zeroJet, name, vbf_var1,  weight, frValuUncUp / (1-frValuUncUp));
+                fillQCD_Norm_fr_down(zeroJet, name, vbf_var1,  weight, frValuUncDown / (1-frValuUncDown));
+                
                 //                fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu*frValu2 / (1-frValu*frValu2));
             }
             //            if (SS != 0 && !lep2IsoPassV){
             //            if (SS != 0 && !lep2IsoPassV){
             if (SS != 0 && (!lep1IsoPassV || !lep2IsoPassV )){
                 fillQCD_Shape(zeroJet, name, vbf_var1,  weight, frValu2 / (1-frValu2));
+                fillQCD_Shape_fr_up(zeroJet, name, vbf_var1,  weight, frValuUncUp / (1-frValuUncUp));
+                fillQCD_Shape_fr_down(zeroJet, name, vbf_var1,  weight, frValuUncDown / (1-frValuUncDown));
+                
             }
             //            if (OS != 0  && lep1IsoPass && lep2IsoPass) {
             //                hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);

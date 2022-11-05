@@ -20,7 +20,7 @@ parser.add_option('--sys', '-s', action='store',
 
 
 
-DataCardRootFiles = [ifile for ifile in glob(options.current_DC+'/*.root') if '.root' in ifile and 'pdfscaleOut' not in ifile]
+DataCardRootFiles = [ifile for ifile in glob(options.current_DC+'/*.root') if '.root' in ifile and 'pdfscaleOut.root' not in ifile]
 SysRootFiles = [ifile for ifile in glob(options.current_sys+'/*pdfscale.root') if '.root' in ifile]
 
 for inFile in DataCardRootFiles:
@@ -48,25 +48,26 @@ for inFile in DataCardRootFiles:
 
 
     if '_em' in inFile or 'em2' in inFile:
-        channelName = 'em'
+        channelName = 'em2'
         channel = 'em'
     elif '_me' in inFile or    'me2' in inFile:
-        channelName = 'me'
+        channelName = 'me2'
         channel = 'em'
     elif '_mt' in inFile or 'mt2' in inFile:
-        channelName = 'mt'
+        channelName = 'mt2'
         channel = 'mt'
     elif '_et' in inFile  or  'et2' in inFile:
-        channelName = 'et'
+#    elif 'et2' in inFile:
+        channelName = 'et2'
         channel = 'et'
     elif '_tt' in inFile  or  'tt2' in inFile:
-        channelName = 'tt'
+        channelName = 'tt2'
         channel = 'tt'
     else:
-        print 'which channel ???'
-    print "the found channel is {}".format(channel)
+        print 'which channel ???', inFile
+    print "the found channel is {} in ".format(channel,inFile)
 
-
+#Output/templates/Diff_DC_lead_jet_pt_Sys_v1/me2018_NN_disc_Unblind_v1_lead_jet_pT_sys__bin3_pdfscale.root
     cat=''
     if 'bin0' in inFile: cat = '_bin0'
     elif 'bin1' in inFile: cat = '_bin1'
@@ -97,8 +98,7 @@ for inFile in DataCardRootFiles:
         SysName=sysFile.rpartition('/')[-1]
         
         print 'Sys file name is ',SysName
-        print '\t\t sys file is ', sysFile
-    
+        
         if channelName not in SysName or str(year) not in SysName or cat not in sysFile: continue
         
 #        for cat in categories:
@@ -127,3 +127,4 @@ for inFile in DataCardRootFiles:
             
 #        newFile.Close()
         File.Close()
+        break

@@ -47,23 +47,23 @@ treeName=''
 executable=''
 
 
-if 'em' in InputFile:
+if '_em' in InputFile:
     channel = 'em'
     treeName = 'emu_tree'
     executable = 'process_trees_em'
-elif 'me' in InputFile:
+elif '_me' in InputFile:
     channel = 'me'
     treeName = 'mue_tree'
     executable = 'process_trees_em'
-elif 'mt_' in InputFile:
+elif '_mt' in InputFile:
     channel = 'mt'
     treeName = 'mutau_tree'
     executable = 'process_trees_lt_fr'
-elif 'et_' in InputFile:
+elif '_et' in InputFile:
     channel = 'et'
     treeName = 'etau_tree'
     executable = 'process_trees_lt_fr'
-elif 'tt' in InputFile:
+elif '_tt' in InputFile:
     channel = 'tt'
     treeName = 'tautau_tree'
     executable = 'process_trees_tt'
@@ -78,24 +78,24 @@ print channel, treeName, executable
 
 Variable=[
 
-            ['lep1Pt',20,0,400],
-            ['lep2Pt',20,0,400],
-            ['tmass',20, 0, 100],
-###            ['ZMass',20, 0, 200],
-            ['higgs_pT',25, 0, 1000],
-            ['higgs_m',20, 0, 400],
-            ['Met', 25, 0, 500],
-            ['vis_mass',15, 0, 150],
-            ['dR_lep_lep', 10,0,1],
-            ['LeadJetPt', 30,0,1500],
-            ['ht', 25,0,2000],
-            ['st', 25,0,2000],
-            ['m_sv', 25,0,250],
-            ['NN_disc',20,0,1],
-            ['NN_disc_ZTT',20,0,1],
+#            ['lep1Pt',20,0,400],
+#            ['lep2Pt',20,0,400],
+#            ['tmass',20, 0, 100],
+####            ['ZMass',20, 0, 200],
+#            ['higgs_pT',25, 0, 1000],
+#            ['higgs_m',20, 0, 400],
+#            ['Met', 25, 0, 500],
+#            ['vis_mass',15, 0, 150],
+#            ['dR_lep_lep', 10,0,1],
+#            ['LeadJetPt', 30,0,1500],
+#            ['ht', 25,0,2000],
+#            ['st', 25,0,2000],
+#            ['m_sv', 25,0,250],
+#            ['NN_disc',20,0,1],
+#            ['NN_disc_ZTT',20,0,1],
             ['NN_disc_QCD',20,0,1],
-            ['MuMatchedIsolation',20,0,-1,1],
-            ['EleMatchedIsolation',20,0,-1,1],
+#            ['MuMatchedIsolation',20,0,-1,1],
+#            ['EleMatchedIsolation',20,0,-1,1],
 ]
 
 PTrange= [

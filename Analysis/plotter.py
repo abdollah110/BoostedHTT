@@ -159,8 +159,8 @@ def fillLegend(data, backgrounds,backgrounds_EWK, signals, stat):
 
 def formatPull(pull, title):
     pull.SetTitle('')
-    pull.SetMaximum(1.5)
-    pull.SetMinimum(0.5)
+    pull.SetMaximum(1.99)
+    pull.SetMinimum(0.01)
     pull.GetXaxis().SetTitle(title)
     pull.SetMarkerStyle(21)
     pull.GetXaxis().SetTitleSize(0.18)
@@ -206,19 +206,19 @@ def sigmaLines(data):
 
     return line1, line2, line3
 
-def blindData(data, signal, background,var):
+def blindData(data, signal, background,var,cat):
     for ibin in range(data.GetNbinsX()+1):
         sig = signal.GetBinContent(ibin)
         bkg = background.GetBinContent(ibin)
-        if bkg > 0 and sig / ROOT.TMath.Sqrt(bkg + pow(0.09*bkg, 2)) >= 0.1:
+        if bkg > 0 and sig / ROOT.TMath.Sqrt(bkg + pow(0.09*bkg, 2)) >= 0.9:
             err = data.GetBinError(ibin)
             data.SetBinContent(ibin, -1)
             data.SetBinError(ibin, err)
 
-#    if var == 'NN_disc':
-#         middleBin = data.FindBin(0.5)
-#         for ibin in range(middleBin, data.GetNbinsX()+1):
-#             data.SetBinContent(ibin, 0)
+    if var == 'NN_disc' and 'signal' in cat:
+         middleBin = data.FindBin(0.7)
+         for ibin in range(middleBin, data.GetNbinsX()+1):
+             data.SetBinContent(ibin, 0)
 
     return data
 
@@ -286,7 +286,7 @@ def BuildPlot(args):
 #    combo_signal.Scale(signals['H125'].Integral()/combo_signal.Integral())
 #    combo_signal.Add(signals['ggH125'])
 #    combo_signal.Add(signals['VBF125'])
-    data_hist = blindData(data_hist, combo_signal, stat,args.variable)
+#    data_hist = blindData(data_hist, combo_signal, stat,args.variable,args.category)
 
     # draw the plots
     data_hist.Draw('same lep')
@@ -311,6 +311,7 @@ def BuildPlot(args):
     ll.SetTextSize(0.06)
     ll.SetTextFont(42)
     print 'args.category = {} args.year {}'.format(args.category, args.year)
+    lepLabel = "e#mu"
     if 'em_' in args.category:
         lepLabel = "e#mu"
     elif 'me_' in args.category:
@@ -321,6 +322,8 @@ def BuildPlot(args):
         lepLabel = "e#tau_{h}"
     elif 'tt_' in args.category:
         lepLabel = "#tau_{h}#tau_{h}"
+    else:
+        print 'which channel'
         
     lumi='XXX'
     if args.year == 2016:
@@ -382,6 +385,9 @@ def BuildPlot(args):
     # rat_unc.SetFillColor(ROOT.kGray)
     rat_unc.Draw('same e2')
     ratio.Draw('same lep')
+#    ratio.Fit("pol0","","",200,400)
+#    ratio.Fit("pol1","","",20,200)
+    
 
     line1, line2, line3 = sigmaLines(data_hist)
     line1.Draw()
@@ -389,7 +395,7 @@ def BuildPlot(args):
     line3.Draw()
     
     # save the pdf
-    can.SaveAs('Output/plots/{}_{}_{}_{}.pdf'.format(args.prefix, args.variable, args.channelName, args.year))
+    can.SaveAs('Output/plots/{}_{}_{}_{}.pdf'.format(args.prefix, args.variable, args.category,args.year))
 
 
 

@@ -110,8 +110,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
         float NN_disc,MuMatchedIsolation,EleMatchedIsolation,NN_disc_ZTT, NN_disc_QCD;
         float BoostedTauRawIso, higgs_pT, higgs_m, m_sv, gen_higgs_pT;
-        Float_t         pdfWeight=0;
-        vector<double>   *pdfSystWeight=0;
+        Float_t         pdfWeight;
+        vector<float>   *pdfSystWeight;
         bool isGenTau_;
         
         tree->SetBranchAddress("isGenTau_",&isGenTau_);
@@ -266,3 +266,4 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         delete fin;
     }
 }
+

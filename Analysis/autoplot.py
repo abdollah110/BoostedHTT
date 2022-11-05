@@ -1,29 +1,32 @@
+# To plots the distributions
+#
 import plotter
 
 
 plots = [
-#    ('NN_disc', 'D_{NN}', 3),
+    ('NN_disc', 'D_{NN}', 5),
+    ('NN_disc_ZTT', 'D_{NN} (ZTT)', 3),
+    ('NN_disc_QCD', 'D_{NN} (QCD)', 3),
     ('m_sv', 'm_{#tau#tau}', 3.0),
-#    ('Met', 'Missing E_{T}', 3.0),
-#    ('ht', 'ht', 3.0),
+    ('Met', 'Missing E_{T}', 3.0),
+    ('ht', 'ht', 3.0),
     ('higgs_pT', 'Higgs p_{T}', 3.0),
-#    ('higgs_m', 'Higgs mass', 3.0),
+    ('higgs_m', 'Higgs mass', 3.0),
     ('tmass', 'm_{T}', 3.0),
-#    ('vis_mass', 'm_{Visible}', 3.0),
-#    ('lep1Pt', '1st lepton pT', 3.0),
-#    ('lep2Pt', '2nd lepton pT', 3.0),
+    ('vis_mass', 'm_{Visible}', 3.0),
+    ('lep1Pt', '1st lepton pT', 3.0),
+    ('lep2Pt', '2nd lepton pT', 3.0),
     ('dR_lep_lep', 'dR_{#tau #tau}', 3.0),
-#    ('LeadJetPt', 'LeadJetPt', 3.0),
-#    ('st', 'st', 3.0),
-#    ('MuMatchedIsolation', 'BoostedTauRawIso matched to muon', 3.0),
-#    ('EleMatchedIsolation', 'BoostedTauRawIso matched to ele', 3.0),    
+    ('LeadJetPt', 'LeadJetPt', 3.0),
+    ('st', 'st', 3.0),
+    ('MuMatchedIsolation', 'BoostedTauRawIso matched to muon', 3.0),
+    ('EleMatchedIsolation', 'BoostedTauRawIso matched to ele', 3.0),
 ####    ('ZMass', 'ZMass', 3.0),
-#    ('BoostedTauRawIso', 'BoostedTauRawIso', 5.0),
-##    ('nbjet', 'nbjet', 3.0),
-##
 ]
 
 categories = ['_0jet']
+#categories = ['_ztt']
+#categories = ['_qcd','_signal','_ztt']
 
 class PlotArgs():
     def __init__(self, input, year, category,channelName, variable, label, prefix, scale):
@@ -39,13 +42,10 @@ class PlotArgs():
 def main(args):
     for plot in plots:
         for category in categories:
-#            if ('D0' in plot[0] or 'VBF_MELA' in plot[0] or 'NN' in plot[0] or 'MELA' in plot[0] or 'mjj' in plot[0] or 'dEtajj' in plot[0] or 'Q2V' in plot[0] or 'Phi' in plot[0] or 'costheta' in plot[0]) and not 'vbf' in category:
-#                continue
 
             InputFile=args.input
             channel=''
             channelName=''
-    #        treeName=''
             year=0
             
             if '2016' in InputFile:

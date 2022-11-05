@@ -124,8 +124,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
         float NN_disc,MuMatchedIsolation,EleMatchedIsolation,NN_disc_ZTT,NN_disc_QCD;
         float higgs_pT, higgs_m, m_sv, gen_higgs_pT;
-        Float_t         pdfWeight;
-        vector<float>   *pdfSystWeight;
+        Float_t         pdfWeight=0;
+        vector<double>   *pdfSystWeight=0;
         bool isGenTauSub_, isGenTauLead_;
         
         
@@ -197,7 +197,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 {"EleMatchedIsolation",EleMatchedIsolation}
             };
             
-            if (dR_lep_lep > 0.5) continue;
+//            if (dR_lep_lep > 0.5) continue;
             
             //            if (higgs_pT < 400) continue;
             
@@ -359,7 +359,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                     fillQCD_Norm_fr_down(i, name, NN_out_vec[i],  weight, frValuUncDown / (1-frValuUncDown));
                 }
                 //            qcd shape
-                if (SS != 0 && lep1IsoPassV && !lep2IsoPassV ){ // final analysis
+//                if (SS != 0 && lep1IsoPassV && !lep2IsoPassV ){ // final analysis
+                if (SS != 0 && !lep2IsoPassV ){ // final analysis
                     fillQCD_Shape(i, name, NN_out_vec[i],  weight, frValu2 / (1-frValu2));
                     fillQCD_Shape_fr_up(i, name, NN_out_vec[i],  weight, frValuUncUp / (1-frValuUncUp));
                     fillQCD_Shape_fr_down(i, name, NN_out_vec[i],  weight, frValuUncDown / (1-frValuUncDown));

@@ -112,8 +112,8 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi, lep2Pt_;
         float NN_disc,MuMatchedIsolation,EleMatchedIsolation,NN_disc_ZTT,NN_disc_QCD;
         float higgs_pT, higgs_m, m_sv, gen_higgs_pT;
-        Float_t         pdfWeight;
-        vector<float>   *pdfSystWeight;
+        Float_t         pdfWeight=0;
+        vector<double>   *pdfSystWeight=0;
         
         
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
@@ -180,6 +180,7 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
                 
             };
             
+//            FIXME  this cut is for running the analysis in dr< 0.5
             if (dR_lep_lep > 0.5) continue;
             
             

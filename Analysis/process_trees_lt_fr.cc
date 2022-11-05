@@ -92,7 +92,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         float dR_Z_jet=-10;
         bool lep2IsoPass,lep2IsoPassV, OS,SS,lep1IsoPass,eleIDMVA, lep2IsoPassT,lep2IsoPassL;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
-        float NN_disc,MuMatchedIsolation,EleMatchedIsolation,NN_disc_ZTT;
+        float NN_disc,MuMatchedIsolation,EleMatchedIsolation,NN_disc_ZTT,NN_disc_QCD;
         float BoostedTauRawIso, higgs_pT, higgs_m, m_sv, gen_higgs_pT;
         
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
@@ -113,6 +113,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         tree->SetBranchAddress("evtwt",&weight);
         tree->SetBranchAddress("NN_disc",&NN_disc);
         tree->SetBranchAddress("NN_disc_ZTT",&NN_disc_ZTT);
+        tree->SetBranchAddress("NN_disc_QCD",&NN_disc_QCD);
         tree->SetBranchAddress("BoostedTauRawIso",&BoostedTauRawIso);
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
         tree->SetBranchAddress("higgs_m",&higgs_m);
@@ -145,6 +146,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 {"m_sv",m_sv},
                 {"NN_disc",NN_disc},
                 {"NN_disc_ZTT",NN_disc_ZTT},
+                {"NN_disc_QCD",NN_disc_QCD},
                 {"MuMatchedIsolation",MuMatchedIsolation},
                 {"EleMatchedIsolation",EleMatchedIsolation},
                 {"gen_higgs_pT",gen_higgs_pT}

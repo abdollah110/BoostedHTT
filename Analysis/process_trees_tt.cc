@@ -106,8 +106,10 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
         float NN_disc,MuMatchedIsolation,EleMatchedIsolation,NN_disc_ZTT,NN_disc_QCD;
         float higgs_pT, higgs_m, m_sv, gen_higgs_pT;
-        
-        
+        bool isGenTauSub_, isGenTauLead_;
+
+        tree->SetBranchAddress("isGenTauLead_",&isGenTauLead_);
+        tree->SetBranchAddress("isGenTauSub_",&isGenTauSub_);
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
         tree->SetBranchAddress("lep2Pt",&lep2Pt_);
         tree->SetBranchAddress("lep1IsoPassV",&lep1IsoPassV);
@@ -161,12 +163,16 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 {"EleMatchedIsolation",EleMatchedIsolation}
             };
             
-            //            if (higgs_pT < 400) continue;
+//            if (LeadJetPt > 350) continue;
             
-//            if (NN_disc > 0.5) continue;
+//            if (NN_disc > 0.5) continue; // FIXME to derive the SF for tau
             // apply tau Id SF
-            if (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("H125")!= string::npos || name.find("JJH125")!= string::npos ) weight *= 0.81;
-            
+//            if (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("H125")!= string::npos || name.find("JJH125")!= string::npos ) weight *= 0.81;
+
+            // apply tau Id SF
+            if (isGenTauLead_ && (  name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos || name.find("JJH125")!= string::npos )) weight *= 0.9;
+            if (isGenTauSub_ && ( name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos || name.find("JJH125")!= string::npos )) weight *= 0.9;
+
             
             // Validation cuts relaxed!
 //            if (m_sv < 50) continue;
@@ -182,23 +188,64 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             float lep2Ptval=lep2Pt_;
             if (lep2Ptval > 200) lep2Ptval=200;
             float frValu2 = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
-            
+
+//p0                        =     0.566429   +/-   0.0729392
+//
+//****************************************
+//Minimizer is Linear / Migrad
+//Chi2                      =      11.4832
+//NDf                       =            7
+//p0                        =      2.09128   +/-   0.223334
+//p1                        =  -0.00823976   +/-   0.00166197
+
+//p0                        =     0.585434   +/-   0.371824
+//
+//****************************************
+//****************************************
+//Minimizer is Linear / Migrad
+//Chi2                      =     0.961271
+//NDf                       =            3
+//p0                        =     0.585434   +/-   0.371824
+//
+//****************************************
+//Minimizer is Linear / Migrad
+//Chi2                      =      5.11415
+//NDf                       =            7
+//p0                        =      1.11691   +/-   0.118326
+//p1                        =  -0.00223231   +/-   0.00156051
+
+
+            float lep1CorWeight=1;
+             if (name.find("Data")== string::npos && year =="2016"){
+                if (lep1Pt_ < 200) lep1CorWeight=2.1+ (-0.00824)*lep1Pt_;
+                else (lep1CorWeight=0.566);
+//                if (lep2Pt_ < 200) lep1CorWeight *= 1.11691+ (-0.00223)*lep2Pt_;
+//                else (lep1CorWeight=1.11691+ (-0.00223)*200);
+                }
+                
+
+
+//                        if (higgs_pT > 350) continue;
             
             vbf_var1 =ObsName[var_name];
+            
+
             
             
             //            ################################################################################
             //            ################    Fill  data, signal & non QCD Bkg
             //            ################################################################################
             if (OS != 0  && lep1IsoPassV && lep2IsoPassV) { // final analysis
-                hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight); // final analysis
-                hists_2d.at(categories.at(zeroJet)).back()->Fill(NN_disc,NN_disc_ZTT,  weight);
-                Histo_2DMatrix.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
+//            if (OS != 0  && lep1IsoPassV) { // final analysis
+                hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight*lep1CorWeight); // final analysis
+                hists_2d.at(categories.at(zeroJet)).back()->Fill(lep2IsoPassV,higgs_pT,  weight);
+//                hists_2d.at(categories.at(zeroJet)).back()->Fill(NN_disc,NN_disc_ZTT,  weight);
+//                Histo_2DMatrix.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
             }
             
             
 //             ======= Validation
-//
+
 //            if (SS != 0  && lep1IsoPassV && lep2IsoPassV) { // Validation
 //                hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
 //            }
@@ -208,8 +255,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             //            ################    Estimate QCD Norm
             //            ################################################################################
             if (OS != 0 && lep1IsoPassV && !lep2IsoPassV ){ // final analysis
-                fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu2 / (1-frValu2));// final analysis
-                fillQCD_Norm(zeroJet, name, NN_disc,NN_disc_ZTT,  weight, frValu2 / (1-frValu2));// final analysis
+                fillQCD_Norm(zeroJet, name, vbf_var1,  weight*lep1CorWeight, frValu2 / (1-frValu2));// final analysis
+//                fillQCD_Norm(zeroJet, name, NN_disc,NN_disc_ZTT,  weight, frValu2 / (1-frValu2));// final analysis
             }
             
 //             ======= Validation
@@ -227,10 +274,10 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             //            ################################################################################
             //            ################    Estimate QCD Shape
             //            ################################################################################
-//            if (SS != 0 && (!lep1IsoPassV || !lep2IsoPassV )){ // final analysis
-            if (SS != 0 && lep1IsoPassV && !lep2IsoPassV ){ // final analysis
-                fillQCD_Shape(zeroJet, name, vbf_var1,  weight, frValu2 / (1-frValu2)); // final analysis
-                fillQCD_Shape(zeroJet, name, NN_disc,NN_disc_ZTT,  weight, frValu2 / (1-frValu2)); // final analysis
+            if (SS != 0 && (!lep1IsoPassV || !lep2IsoPassV )){ // final analysis
+//            if (SS != 0 && lep1IsoPassV && !lep2IsoPassV ){ // final analysis
+                fillQCD_Shape(zeroJet, name, vbf_var1,  weight*lep1CorWeight, frValu2 / (1-frValu2)); // final analysis
+//                fillQCD_Shape(zeroJet, name, NN_disc,NN_disc_ZTT,  weight, frValu2 / (1-frValu2)); // final analysis
             }
             
             
