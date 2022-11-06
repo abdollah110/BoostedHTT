@@ -269,7 +269,8 @@ int main(int argc, char* argv[]) {
         if (elePt->at(idx_lep) < 38 || fabs(eleEta->at(idx_lep)) > 2.5) continue;
         plotFill("cutFlowTable",3 ,15,0,15);
         // met from 40 to 30
-        if (elePt->at(idx_lep) < 120  && HLT_Ele35 && Met > 30 ){
+//        if (elePt->at(idx_lep) < 120  && HLT_Ele35 && Met > 30 ){ // FIXME   for checking MB comment why dR drops at zero
+        if (elePt->at(idx_lep) < 120  && HLT_Ele115 && Met > 30 ){
             selectElectron_1 = true;
         }
         if (elePt->at(idx_lep) >= 120  && HLT_Ele115 ) {
