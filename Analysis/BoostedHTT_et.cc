@@ -344,10 +344,10 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",6 ,15,0,15);
         
         tmass = TMass_F(Ele4Momentum.Pt(), Ele4Momentum.Px(), Ele4Momentum.Py(),  Met,  Metphi);
-        if (tmass > 80) continue;   //FIXME  for validation
+//        if (tmass > 80) continue;   //FIXME  for validation
         plotFill("cutFlowTable",7 ,15,0,15);
         
-        if (m_sv < 50) continue;  // FIX ME for Validation
+//        if (m_sv < 50) continue;  // FIX ME for Validation
         plotFill("cutFlowTable",8 ,15,0,15);
         
         // BJet veto
@@ -368,7 +368,7 @@ int main(int argc, char* argv[]) {
         if (numMu > 0) continue;
         plotFill("cutFlowTable",11 ,15,0,15);
         
-        if (higgs.Pt() < 250) continue;  //FIXME for validation
+//        if (higgs.Pt() < 250) continue;  //FIXME for validation
         plotFill("cutFlowTable",12 ,15,0,15);
         
 
