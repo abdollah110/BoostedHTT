@@ -328,7 +328,6 @@ int main(int argc, char* argv[]) {
     
     for (; iMap1 != jMap1; ++iMap1)
     nplot1(iMap1->first)->Write();
-    outTr->Write();
     
     unordered_map<string, TH2F*>::const_iterator iMap2 = myMap2->begin();
     unordered_map<string, TH2F*>::const_iterator jMap2 = myMap2->end();
