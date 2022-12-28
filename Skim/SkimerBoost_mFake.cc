@@ -70,8 +70,7 @@ void SkimerBoost::Loop(TString OutputFile)
             for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                 if (boostedTauPt->at(ibtau) < tauPt_cut || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
-//                if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
-                if (boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(ibtau) < -0.5) continue;
+                if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < -0.5) continue;
                 if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5 ) continue;
                 
                 LeadTau4Momentum.SetPtEtaPhiM(boostedTauPt->at(ibtau),boostedTauEta->at(ibtau),boostedTauPhi->at(ibtau),boostedTauMass->at(ibtau));
