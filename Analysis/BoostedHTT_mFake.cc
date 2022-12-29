@@ -271,7 +271,7 @@ int main(int argc, char* argv[]) {
                 //###############################################################################################
                 
                 std::string FullStringName = "";
-                
+                cout<<"Hi 7 \n";
                 plotFill("denum"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                 plotFill("denum_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                 plotFill("denum_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
@@ -290,7 +290,7 @@ int main(int argc, char* argv[]) {
                     plotFill("numLoose_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                     plotFill("numLoose_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
                     plotFill("numLoose_DM"+FullStringName,CombinedDM ,4,0,4,FullWeight);
-                    
+                    cout<<"Hi 8 \n";
                 }
                 if (boostedTauByMediumIsolationMVArun2v1DBnewDMwLTNew->at(ibtau) > 0.5){
                     plotFill("numMedium"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
@@ -316,7 +316,7 @@ int main(int argc, char* argv[]) {
                 
                 
             }//boostedTau loop
-            
+            cout<<"Hi 9 \n";
         } // leading muon
         //###############################################################################################
         //  Doing EleTau Analysis
@@ -332,7 +332,7 @@ int main(int argc, char* argv[]) {
     
     for (; iMap1 != jMap1; ++iMap1)
     nplot1(iMap1->first)->Write();
-    
+    cout<<"Hi 10 \n";
     unordered_map<string, TH2F*>::const_iterator iMap2 = myMap2->begin();
     unordered_map<string, TH2F*>::const_iterator jMap2 = myMap2->end();
     
