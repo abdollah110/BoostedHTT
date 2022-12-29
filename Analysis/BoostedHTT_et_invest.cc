@@ -248,16 +248,16 @@ int main(int argc, char* argv[]) {
         int idx_lep= lepIndex;
         Ele4Momentum.SetPtEtaPhiM(elePt->at(idx_lep),eleEta->at(idx_lep),elePhi->at(idx_lep),eleMass);
         
-        bool selectElectron_1= false;
-        bool selectElectron_2= false;
+        bool selectElectron_1= true;
+        bool selectElectron_2= true;
         
-        bool eleMVAId= false;
-        if (fabs (eleSCEta->at(idx_lep)) <= 0.8 && eleIDMVANoIso->at(idx_lep) >    0.837   ) eleMVAId= true;
-        else if (fabs (eleSCEta->at(idx_lep)) >  0.8 &&fabs (eleSCEta->at(idx_lep)) <=  1.5 && eleIDMVANoIso->at(idx_lep) >    0.715   ) eleMVAId= true;
-        else if ( fabs (eleSCEta->at(idx_lep)) >=  1.5 && eleIDMVANoIso->at(idx_lep) >   0.357   ) eleMVAId= true;
-        else eleMVAId= false;
-        
-        if (!eleMVAId) continue;
+//        bool eleMVAId= false;
+//        if (fabs (eleSCEta->at(idx_lep)) <= 0.8 && eleIDMVANoIso->at(idx_lep) >    0.837   ) eleMVAId= true;
+//        else if (fabs (eleSCEta->at(idx_lep)) >  0.8 &&fabs (eleSCEta->at(idx_lep)) <=  1.5 && eleIDMVANoIso->at(idx_lep) >    0.715   ) eleMVAId= true;
+//        else if ( fabs (eleSCEta->at(idx_lep)) >=  1.5 && eleIDMVANoIso->at(idx_lep) >   0.357   ) eleMVAId= true;
+//        else eleMVAId= false;
+//
+//        if (!eleMVAId) continue;
         plotFill("cutFlowTable",2 ,15,0,15);
         
         EleIdCorrection = getCorrFactorEleId(isData,  Ele4Momentum.Pt(), eleSCEta->at(idx_lep) ,HistoEleId);
@@ -266,18 +266,18 @@ int main(int argc, char* argv[]) {
             IsoLep1Value= ( elePFChIso->at(idx_lep) + elePFNeuIso->at(idx_lep) + elePFPhoIso->at(idx_lep) - 0.5* elePFPUIso->at(idx_lep))/elePt->at(idx_lep);
         
         
-        if (elePt->at(idx_lep) < 38 || fabs(eleEta->at(idx_lep)) > 2.5) continue;
-        plotFill("cutFlowTable",3 ,15,0,15);
-        // met from 40 to 30
-        if (elePt->at(idx_lep) < 120  && HLT_Ele35 && Met > 30 ){ // FIXME   for checking MB comment why dR drops at zero
+//        if (elePt->at(idx_lep) < 38 || fabs(eleEta->at(idx_lep)) > 2.5) continue;
+//        plotFill("cutFlowTable",3 ,15,0,15);
+//        // met from 40 to 30
+////        if (elePt->at(idx_lep) < 120  && HLT_Ele35 && Met > 30 ){ // FIXME   for checking MB comment why dR drops at zero
 //        if (elePt->at(idx_lep) < 120  && HLT_Ele115 && Met > 30 ){
-            selectElectron_1 = true;
-        }
-        if (elePt->at(idx_lep) >= 120  && HLT_Ele115 ) {
-            selectElectron_2 = true;
-        }
-        
-        if (!selectElectron_1 && !selectElectron_2) continue;
+//            selectElectron_1 = true;
+//        }
+//        if (elePt->at(idx_lep) >= 120  && HLT_Ele115 ) {
+//            selectElectron_2 = true;
+//        }
+//
+//        if (!selectElectron_1 && !selectElectron_2) continue;
         
         plotFill("cutFlowTable",4 ,15,0,15);
         LepCorrection = EleIdCorrection;
@@ -337,7 +337,7 @@ int main(int argc, char* argv[]) {
         Met4Momentum.SetPtEtaPhiM(Met, 0, Metphi, 0);
         Z4Momentum=Tau4Momentum+Ele4Momentum;
         TLorentzVector higgs = Tau4Momentum+Ele4Momentum +Met4Momentum;
-        if (nJet < 1 ) continue;
+//        if (nJet < 1 ) continue;
         TLorentzVector LeadJet= getLeadJet(Ele4Momentum, Tau4Momentum,JetSys);
         
         dR_lep_lep= Tau4Momentum.DeltaR(Ele4Momentum);
@@ -345,20 +345,20 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",6 ,15,0,15);
         
         tmass = TMass_F(Ele4Momentum.Pt(), Ele4Momentum.Px(), Ele4Momentum.Py(),  Met,  Metphi);
-        if (tmass > 80) continue;   //FIXME  for validation
+//        if (tmass > 80) continue;   //FIXME  for validation
         plotFill("cutFlowTable",7 ,15,0,15);
         
-        if (m_sv < 50) continue;  // FIX ME for Validation
+//        if (m_sv < 50) continue;  // FIX ME for Validation
         plotFill("cutFlowTable",8 ,15,0,15);
         
         // BJet veto
         int numBJet=numBJets(BJetPtCut,DeepCSVCut,JetSys);
-        if (numBJet > 0) continue;
+//        if (numBJet > 0) continue;
         plotFill("cutFlowTable",9 ,15,0,15);
         
         // HT cut
         ht= getHT(JetPtCut, Ele4Momentum, Tau4Momentum,JetSys);
-        if (ht < 200) continue;
+//        if (ht < 200) continue;
         plotFill("cutFlowTable",10 ,15,0,15);
         
         // ST definition
@@ -369,7 +369,7 @@ int main(int argc, char* argv[]) {
         if (numMu > 0) continue;
         plotFill("cutFlowTable",11 ,15,0,15);
         
-        if (higgs.Pt() < 250) continue;  //FIXME for validation
+//        if (higgs.Pt() < 250) continue;  //FIXME for validation
         plotFill("cutFlowTable",12 ,15,0,15);
         
 
