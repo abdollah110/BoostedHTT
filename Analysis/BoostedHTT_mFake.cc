@@ -168,14 +168,14 @@ int main(int argc, char* argv[]) {
         for (int imu = 0; imu < nMu; ++imu){
             
             if (muPt->at(imu) <= 28 || fabs(muEta->at(imu)) >= 2.4) continue;
-            bool MuId=( (muIDbit->at(imu) >> 2 & 1)  && fabs(muD0->at(imu)) < 0.045 && fabs(muDz->at(imu)) < 0.2);
+            bool MuId=( (muIDbit->at(imu) >> 1 & 1)  && fabs(muD0->at(imu)) < 0.045 && fabs(muDz->at(imu)) < 0.2);
             if (!MuId ) continue;
             
             float IsoLep1Value=muPFChIso->at(imu)/muPt->at(imu);
             if ( (muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu) )  > 0.0)
                 IsoLep1Value= ( muPFChIso->at(imu) + muPFNeuIso->at(imu) + muPFPhoIso->at(imu) - 0.5* muPFPUIso->at(imu))/muPt->at(imu);
             
-            if (IsoLep1Value > 0.15) continue;
+            if (IsoLep1Value > 0.30) continue;
             
             plotFill("cutFlowTable",6 ,15,0,15);
             
