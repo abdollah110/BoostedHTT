@@ -202,6 +202,7 @@ int main(int argc, char* argv[]) {
                 //                if (LeadTau4Momentum.DeltaR(LeadMu4Momentum) < 1.5) continue;
                 if (LeadTau4Momentum.DeltaR(LeadMu4Momentum) < 0.8) continue;
                 
+                
                 plotFill("cutFlowTable",8 ,15,0,15);
                 
                 float Met=pfMET;
@@ -266,7 +267,8 @@ int main(int argc, char* argv[]) {
                 //###############################################################################################
                 
                 std::string FullStringName = "";
-                
+
+
                 plotFill("denum"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                 plotFill("denum_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                 plotFill("denum_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
@@ -309,7 +311,56 @@ int main(int argc, char* argv[]) {
                 plotFill("st"+FullStringName,st ,100,0,2000,FullWeight);
                 plotFill("LepPt"+FullStringName,LeadMu4Momentum.Pt() ,100,0,1000,FullWeight);
                 
+
+//                charge req
+                if (muCharge->at(imu) * boostedTauCharge->at(ibtau) > 0) {
+
+
+                plotFill("denum_SS"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
+                plotFill("denum_eta_SS"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
+                plotFill("denum_dR_SS"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
+                plotFill("denum_DM_SS"+FullStringName,CombinedDM ,4,0,4,FullWeight);
                 
+                if (boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
+                    plotFill("numVLoose_SS"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
+                    plotFill("numVLoose_eta_SS"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
+                    plotFill("numVLoose_dR_SS"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
+                    plotFill("numVLoose_DM_SS"+FullStringName,CombinedDM ,4,0,4,FullWeight);
+                    
+                }
+                
+                if (boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
+                    plotFill("numLoose_SS"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
+                    plotFill("numLoose_eta_SS"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
+                    plotFill("numLoose_dR_SS"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
+                    plotFill("numLoose_DM_SS"+FullStringName,CombinedDM ,4,0,4,FullWeight);
+                    
+                }
+                if (boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
+                    plotFill("numMedium_SS"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
+                    plotFill("numMedium_eta_SS"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
+                    plotFill("numMedium_dR_SS"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
+                    plotFill("numMedium_DM_SS"+FullStringName,CombinedDM ,4,0,4,FullWeight);
+                    
+                }
+                
+                if (boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
+                    plotFill("numTight_SS"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
+                    plotFill("numTight_eta_SS"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
+                    plotFill("numTight_dR_SS"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
+                    plotFill("numTight_DM_SS"+FullStringName,CombinedDM ,4,0,4,FullWeight);
+                    
+                }
+                
+                plotFill("MT_SS"+FullStringName,tmass ,100,0,500,FullWeight);
+                plotFill("Met_SS"+FullStringName,Met ,100,0,500,FullWeight);
+                plotFill("ZMass_SS"+FullStringName,ZMass ,100,0,500,FullWeight);
+                plotFill("st_SS"+FullStringName,st ,100,0,2000,FullWeight);
+                plotFill("LepPt_SS"+FullStringName,LeadMu4Momentum.Pt() ,100,0,1000,FullWeight);
+
+}
+
+
             }//boostedTau loop
             
         } // leading muon
