@@ -163,7 +163,6 @@ int main(int argc, char* argv[]) {
         //###########       Loop over MuJet events   #################################################
         //############################################################################################
         TLorentzVector LeadMu4Momentum, SubMu4Momentum, LeadTau4Momentum, ZCandida;
-        cout<<"Hi 1 \n";
         
         for (int imu = 0; imu < nMu; ++imu){
             
@@ -187,16 +186,12 @@ int main(int argc, char* argv[]) {
             
             LepCorrection= leadMuIdCorrection * MuIsoCorrection * MuTrgCorrection;
             
-            cout<<"Hi 2 \n";
-            
             for (int ibtau = 0; ibtau < nBoostedTau; ++ibtau){
                 
                 if (boostedTauPt->at(ibtau) < 30 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
 //                if (boostedTaupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;  // change in Dec24
 //                if (boostedTauByIsolationMVArun2v1DBnewDMwLTrawNew->at(ibtau) < -0.5) continue;
-
-                cout<<"Hi 3 \n";
                 if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < -0.5) continue;  // change in Dec24
                 if (boostedTauByLooseMuonRejection3->at(ibtau) < 0.5) continue;
                 if (boostedTauagainstElectronVLooseMVA62018->at(ibtau) < 0.5) continue;
@@ -208,7 +203,7 @@ int main(int argc, char* argv[]) {
                 if (LeadTau4Momentum.DeltaR(LeadMu4Momentum) < 0.8) continue;
                 
                 plotFill("cutFlowTable",8 ,15,0,15);
-                cout<<"Hi 4 \n";
+                
                 float Met=pfMET;
                 float Metphi=pfMETPhi;
                 float tmass = TMass_F(LeadMu4Momentum.Pt(), LeadMu4Momentum.Px(), LeadMu4Momentum.Py(),  Met,  Metphi);
@@ -226,7 +221,7 @@ int main(int argc, char* argv[]) {
                 
                 
                 if (!isData){
-                    cout<<"Hi 5 \n";
+                    
                     // Lumi weight
                     LumiWeight = getLuminsoity(year,"mt") * XSection(sample)*1.0 / HistoTot->GetBinContent(2);
                     
@@ -261,7 +256,7 @@ int main(int argc, char* argv[]) {
                 }
                 
                 float FullWeight = LumiWeight*LepCorrection*zmasspt_weight * PUWeight * WBosonKFactor * ttbar_rwt;
-                cout<<"Hi 6 \n";
+                
                 plotFill("LumiWeight",LumiWeight ,1000,0,100);
                 plotFill("LepCorrection",LepCorrection ,100,0,2);
                 plotFill("PUWeight",PUWeight ,200,0,2);
@@ -271,13 +266,13 @@ int main(int argc, char* argv[]) {
                 //###############################################################################################
                 
                 std::string FullStringName = "";
-                cout<<"Hi 7 \n";
+                
                 plotFill("denum"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                 plotFill("denum_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                 plotFill("denum_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
                 plotFill("denum_DM"+FullStringName,CombinedDM ,4,0,4,FullWeight);
                 
-                if (boostedTauByVLooseIsolationMVArun2v1DBnewDMwLTNew->at(ibtau) > 0.5){
+                if (boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
                     plotFill("numVLoose"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                     plotFill("numVLoose_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                     plotFill("numVLoose_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
@@ -285,14 +280,14 @@ int main(int argc, char* argv[]) {
                     
                 }
                 
-                if (boostedTauByLooseIsolationMVArun2v1DBnewDMwLTNew->at(ibtau) > 0.5){
+                if (boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
                     plotFill("numLoose"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                     plotFill("numLoose_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                     plotFill("numLoose_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
                     plotFill("numLoose_DM"+FullStringName,CombinedDM ,4,0,4,FullWeight);
-                    cout<<"Hi 8 \n";
+                    
                 }
-                if (boostedTauByMediumIsolationMVArun2v1DBnewDMwLTNew->at(ibtau) > 0.5){
+                if (boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
                     plotFill("numMedium"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                     plotFill("numMedium_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                     plotFill("numMedium_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
@@ -300,7 +295,7 @@ int main(int argc, char* argv[]) {
                     
                 }
                 
-                if (boostedTauByTightIsolationMVArun2v1DBnewDMwLTNew->at(ibtau) > 0.5){
+                if (boostedTauByTightIsolationMVArun2v1DBoldDMwLTNew->at(ibtau) > 0.5){
                     plotFill("numTight"+FullStringName,boostedTauPt->at(ibtau) ,100,0,500,FullWeight);
                     plotFill("numTight_eta"+FullStringName,boostedTauEta->at(ibtau) ,100,-2.5,2.5,FullWeight);
                     plotFill("numTight_dR"+FullStringName,LeadTau4Momentum.DeltaR(LeadMu4Momentum) ,100,0,5,FullWeight);
@@ -316,7 +311,7 @@ int main(int argc, char* argv[]) {
                 
                 
             }//boostedTau loop
-            cout<<"Hi 9 \n";
+            
         } // leading muon
         //###############################################################################################
         //  Doing EleTau Analysis
@@ -332,7 +327,7 @@ int main(int argc, char* argv[]) {
     
     for (; iMap1 != jMap1; ++iMap1)
     nplot1(iMap1->first)->Write();
-    cout<<"Hi 10 \n";
+    
     unordered_map<string, TH2F*>::const_iterator iMap2 = myMap2->begin();
     unordered_map<string, TH2F*>::const_iterator jMap2 = myMap2->end();
     
