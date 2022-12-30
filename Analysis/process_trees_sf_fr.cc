@@ -33,8 +33,21 @@ int main(int argc, char *argv[]) {
     else (std::cout << "Year is not specificed in the outFile name !\n");
     
 
-    TFile * FRFile= new TFile(("data/File_fr_num"+workingPoint+"_"+year+".root").c_str(),"r");
-    TH1F * FRhist=(TH1F *) FRFile->Get(("num"+workingPoint).c_str());
+    struct {
+    TH1F * FRhist;
+    float FitPar;
+    float FitParErr;
+    } FR;
+    
+//    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+".root").c_str(),"r");
+    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+"_v7_pt.root").c_str(),"r");
+//    TH1F * FRhist=(TH1F *) FRFile->Get("numVLoose");
+    FR.FRhist=(TH1F *) FRFile->Get("numVLoose");
+    TF1 *func = new TF1("fit","pol0",200,500);
+    FR.FRhist->Fit("fit","R");
+     FR.FitPar= func->GetParameter(0);
+     FR.FitParErr= func->GetParError(0);
+    cout<<"FitPar = " << FR.FitPar  <<"  FitParErr= " << FR.FitParErr<< "\n";
 
 
     string channel, tree_name;
@@ -78,7 +91,7 @@ int main(int argc, char *argv[]) {
     //  delete hists->ff_weight;
 }
 
-void HistTool::histoLoop(std::string year , vector<string> files, string dir,TH1F * FRhist, string tree_name , string var_name, string cut_name, vector<float> OSSS, float lowVal, float highVal, string acWeight = "None", string Sys = "") {
+void HistTool::histoLoop(std::string year , vector<string> files, string dir,TH1F * FRhist, float FitPar, float FitParErr, string tree_name , string var_name, string cut_name, vector<float> OSSS, float lowVal, float highVal, string acWeight = "None", string Sys = "") {
     std::cout<< "starting .... "<<dir<<"\n";
     float vbf_var1(0.);
     bool  cut_var1(0.);

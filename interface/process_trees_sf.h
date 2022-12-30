@@ -52,6 +52,7 @@ public:
     
     //  void convertDataToFake(Categories, std::string, double, double, double, double, double, double);  // 2d
     void histoLoop(std::string year  ,std::vector<std::string>, std::string, TH1F *, std::string, std::string,std::vector<float>, std::string, std::string);
+    void histoLoop(string  ,std::vector<string>, string, TH1F *,float, float, string, string,std::vector<float>, bool, string);
     void histoLoop(std::string year  ,std::vector<std::string>, std::string,TH1F *, std::string,std::string, std::string,std::vector<float>, float, float , std::string, std::string);
     void histoQCD(std::vector<std::string>, std::string, std::string, std::string);
     

@@ -29,8 +29,21 @@ int main(int argc, char *argv[]) {
     else if (dir.find("2018") != string::npos) year ="2018";
     else (std::cout << "Year is not specificed in the outFile name !\n");
     
-    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+".root").c_str(),"r");
-    TH1F * FRhist=(TH1F *) FRFile->Get("numVLoose");
+    struct {
+    TH1F * FRhist;
+    float FitPar;
+    float FitParErr;
+    } FR;
+    
+//    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+".root").c_str(),"r");
+    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+"_v7_pt.root").c_str(),"r");
+//    TH1F * FRhist=(TH1F *) FRFile->Get("numVLoose");
+    FR.FRhist=(TH1F *) FRFile->Get("numVLoose");
+    TF1 *func = new TF1("fit","pol0",200,500);
+    FR.FRhist->Fit("fit","R");
+     FR.FitPar= func->GetParameter(0);
+     FR.FitParErr= func->GetParError(0);
+    cout<<"FitPar = " << FR.FitPar  <<"  FitParErr= " << FR.FitParErr<< "\n";
     
     //    TFile * FRFile= new TFile(("data/File_fr_numLoose_"+year+".root").c_str(),"r");
     //    TH1F * FRhist=(TH1F *) FRFile->Get("numLoose");
@@ -75,7 +88,7 @@ int main(int argc, char *argv[]) {
     
     
     
-    hists->histoLoop(year, files, dir, FRhist,tree_name,var_name,OSSS,runPDF,"");    // fill histograms
+    hists->histoLoop(year, files, dir, FR.FRhist, FR.FitPar, FR.FitParErr,,tree_name,var_name,OSSS,runPDF,"");    // fill histograms
     hists->writeTemplates(dir,channel,year);  // write histograms to file
     // save histograms for pdf and scale uncertainties
     unordered_map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
@@ -90,7 +103,7 @@ int main(int argc, char *argv[]) {
     //  delete hists->ff_weight;
 }
 
-void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FRhist, string tree_name , string var_name, vector<float> OSSS, bool runPDF, string Sys = "") {
+void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FR.FRhist, float FR.FitPar, float FR.FitParErr,, string tree_name , string var_name, vector<float> OSSS, bool runPDF, string Sys = "") {
     
     std::cout<< "starting .... "<<dir<<"\n";
     float vbf_var1(0.);
@@ -222,11 +235,17 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             
             
             float lep2Ptval=lep2Pt_;
-            if (lep2Ptval > 200) lep2Ptval=200;
+//            if (lep2Ptval > 200) lep2Ptval=200;
             float frValu2 = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
             float frValuErr = FRhist->GetBinError(FRhist->GetXaxis()->FindBin(lep2Ptval));
             float frValuUncUp=frValu2+frValuErr;
             float frValuUncDown=frValu2-frValuErr;
+            if (lep2Ptval > 200) {
+                frValu = FitPar;
+                frValuUncUp=frValu+ 2*FitParErr + (lep2Ptval-200)*(5*FitParErr)/300;
+                frValuUncDown=frValu- 2*FitParErr - (lep2Ptval-200)*(5*FitParErr)/300;
+            }
+            
             
             
             //            vbf_var1 =ObsName[var_name];

@@ -220,17 +220,19 @@ void HistTool::histoQCD( vector<string> files, string var_name , string dir, str
         for (auto i = 0; i < tree->GetEntries(); i++) {
             tree->GetEntry(i);
 
-//            if (OS != 0 && !Pass && !lep1IsoPass){
+            if (m_sv < 50) continue;
+
+//            if (OS != 0 && !lep2IsoPass && !lep1IsoPass){
 //                if (OS != 0 &&  !lep2IsoPass){
-//            if (OS != 0 &&  !lep1IsoPass){
-            if (OS != 0 ){
+            if (OS != 0 &&  !lep1IsoPass){
+//            if (OS != 0 ){
                 fillQCD_OS_CR(zeroJet, name, m_sv,  weight);
 //                fillQCD_OS_CR(zeroJet, name, lep1Pt_,  weight);
             }
-//            else if (SS != 0 && !Pass && !lep1IsoPass){
+//            else if (SS != 0 && !lep2IsoPass && !lep1IsoPass){
 //            else if (SS != 0 &&  !lep2IsoPass){
-//            else if (SS != 0  && !lep1IsoPass){
-            else if (SS != 0 ){
+            else if (SS != 0  && !lep1IsoPass){
+//            else if (SS != 0 ){
 //            std::cout<<"\t "<<name<< " "<<lep1Pt_<<"  " << weight<<"\n";
                 fillQCD_SS_CR(zeroJet, name, m_sv,  weight);
 //                fillQCD_SS_CR(zeroJet, name, lep1Pt_,  weight);

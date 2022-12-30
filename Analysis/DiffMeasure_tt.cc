@@ -33,8 +33,21 @@ int main(int argc, char *argv[]) {
     else if (dir.find("2018") != string::npos) year ="2018";
     else (std::cout << "Year is not specificed in the outFile name !\n");
     
-    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+".root").c_str(),"r");
-    TH1F * FRhist=(TH1F *) FRFile->Get("numVLoose");
+    struct {
+    TH1F * FRhist;
+    float FitPar;
+    float FitParErr;
+    } FR;
+    
+//    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+".root").c_str(),"r");
+    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+"_v7_pt.root").c_str(),"r");
+//    TH1F * FRhist=(TH1F *) FRFile->Get("numVLoose");
+    FR.FRhist=(TH1F *) FRFile->Get("numVLoose");
+    TF1 *func = new TF1("fit","pol0",200,500);
+    FR.FRhist->Fit("fit","R");
+     FR.FitPar= func->GetParameter(0);
+     FR.FitParErr= func->GetParError(0);
+    cout<<"FitPar = " << FR.FitPar  <<"  FitParErr= " << FR.FitParErr<< "\n";
     
     string channel, tree_name;
     if (dir.find("_tt") != string::npos) {channel ="tt";tree_name="tautau_tree";}
@@ -68,7 +81,7 @@ int main(int argc, char *argv[]) {
     //    hists->histoQCD(files, dir, tree_name,  "None");    // fill histograms QCD
     std::vector<float>  OSSS= hists->Get_OS_SS_ratio();
     
-    hists->histoLoop(year, files, dir, FRhist,tree_name,var_name,OSSS,cut_name, lowVal, highVal,runPDF,"");    // fill histograms
+    hists->histoLoop(year, files, dir, FR.FRhist, FR.FitPar, FR.FitParErr,tree_name,var_name,OSSS,cut_name, lowVal, highVal,runPDF,"");    // fill histograms
     hists->writeTemplates(dir,channel,year);  // write histograms to file
     // histograms for pdf and scale
     unordered_map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
@@ -81,7 +94,7 @@ int main(int argc, char *argv[]) {
     std::cout << "Template created.\n Timing Info: \n\t CPU Time: " << watch.CpuTime() << "\n\tReal Time: " << watch.RealTime() << std::endl;
 }
 
-void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FRhist, string tree_name , string var_name, vector<float> OSSS, string cut_name, float lowVal, float highVal, bool runPDF, string Sys = "") {
+void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FRhist, float FitPar, float FitParErr, string tree_name , string var_name, vector<float> OSSS, string cut_name, float lowVal, float highVal, bool runPDF, string Sys = "") {
     
     std::cout<< "starting .... "<<dir<<"\n";
     float vbf_var1(0.);

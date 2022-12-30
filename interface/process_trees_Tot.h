@@ -12,6 +12,7 @@
 #include "TH1F.h"
 #include "TH2F.h"
 #include "TTree.h"
+#include "TF1.h"
 using namespace std;
 
 using std::cout;
@@ -59,6 +60,7 @@ public:
     
     //  void convertDataToFake(Categories, string, double, double, double, double, double, double);  // 2d
     void histoLoop(string year  ,std::vector<string>, string, TH1F *, string, string,std::vector<float>,  string);
+    void histoLoop(string  ,std::vector<string>, string, TH1F *,float, float, string, string,std::vector<float>, bool, string);
     void histoLoop(string year  ,std::vector<string>, string, TH1F *, string, string,std::vector<float>,string, float, float,  string);
     //    void histoLoop(string year  ,std::vector<string>, string, TH1F *, string, string, string);
     void histoLoop(string channel, string year  ,std::vector<string>, string, string, string,std::vector<float>, string); //for emu
@@ -77,8 +79,8 @@ public:
     std::vector<TH1F *> fakes_1d_norm,  fakes_1d_norm_Up,  fakes_1d_norm_Down , data;
     std::vector<TH2F *> fakes_2d_norm,  fakes_2d_norm_Up,  fakes_2d_norm_Down;
     std::vector<TH1F *> fakes_1d_SS_CR, fakes_1d_SS_CR_Up, fakes_1d_SS_CR_Down;
-    std::vector<TH1F *> fakes_1d_OS_CR, fakes_1d_OS_CR_Up, fakes_1d_OS_CR_Down, fakes_1d_OS_CR_data;
-    std::vector<TH1F *> fakes_1d_shape, fakes_1d_shape_Up, fakes_1d_shape_Down, fakes_1d_SS_CR_data;
+    std::vector<TH1F *> fakes_1d_OS_CR, fakes_1d_OS_CR_Up, fakes_1d_OS_CR_Down, fakes_1d_OS_CR_data,fakes_1d_OS_CR_mc;
+    std::vector<TH1F *> fakes_1d_shape, fakes_1d_shape_Up, fakes_1d_shape_Down, fakes_1d_SS_CR_data,fakes_1d_SS_CR_mc;
     std::vector<TH2F *> fakes_2d_shape, fakes_2d_shape_Up, fakes_2d_shape_Down;
     // binning
 //    std::vector<int> bins_NN, bins_FAKE;
@@ -120,22 +122,26 @@ systematics{
         if (cat.find("0jet") != string::npos) {
             
             fakes_1d_norm.push_back(new TH1F("fake_0jet", "fake_SS_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
-            fakes_2d_norm.push_back(new TH2F("fake_0jet2", "fake_SS_02", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
+//            fakes_2d_norm.push_back(new TH2F("fake_0jet2", "fake_SS_02", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
+            fakes_2d_norm.push_back(new TH2F("fake_0jet2", "fake_SS_02", 2, 0, 2, 12, 200, 800));
             fakes_1d_norm_Up.push_back(new TH1F("fake_0jet_Up", "fake_SS_0_Up_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
             fakes_1d_norm_Down.push_back(new TH1F("fake_0jet_Down", "fake_SS_0_Down_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
             
             fakes_1d_shape.push_back(new TH1F("fake_0jet_shape", "fake_SS_shape_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
-            fakes_2d_shape.push_back(new TH2F("fake_0jet_shape2", "fake_SS_shape_02",  bins_NN.at(0), bins_NN.at(1), bins_NN.at(2), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
+//            fakes_2d_shape.push_back(new TH2F("fake_0jet_shape2", "fake_SS_shape_02",  bins_NN.at(0), bins_NN.at(1), bins_NN.at(2), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
+            fakes_2d_shape.push_back(new TH2F("fake_0jet_shape2", "fake_SS_shape_02",  2, 0, 2, 12, 200, 800));
             fakes_1d_shape_Up.push_back(new TH1F("fake_0jet_shape_Up", "fake_SS_shape_0_Up_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
             fakes_1d_shape_Down.push_back(new TH1F("fake_0jet_shape_Down", "fake_SS_shape_0_Down_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
             
             fakes_1d_OS_CR.push_back(new TH1F("OS_CR_0jet", "OS_CR_0jet", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
             fakes_1d_OS_CR_data.push_back(new TH1F("OS_CR_0jet_data", "OS_CR_0jet_data", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
+            fakes_1d_OS_CR_mc.push_back(new TH1F("OS_CR_0jet_mc", "OS_CR_0jet_mc", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
             fakes_1d_OS_CR_Up.push_back(new TH1F("OS_CR_0jet_Up", "OS_CR_0jet_Up", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
             fakes_1d_OS_CR_Down.push_back(new TH1F("OS_CR_0jet_Down", "OS_CR_0jet_Down", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
             
             fakes_1d_SS_CR.push_back(new TH1F("SS_CR_0jet", "SS_CR_0jet", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
             fakes_1d_SS_CR_data.push_back(new TH1F("SS_CR_0jet_data", "SS_CR_0jet_data", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
+            fakes_1d_SS_CR_mc.push_back(new TH1F("SS_CR_0jet_mc", "SS_CR_0jet_mc", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
             fakes_1d_SS_CR_Up.push_back(new TH1F("SS_CR_0jet_Up", "SS_CR_0jet_Up", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
             fakes_1d_SS_CR_Down.push_back(new TH1F("SS_CR_0jet_Down", "SS_CR_0jet_Down", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
             
@@ -184,7 +190,9 @@ void HistTool::initVectors2d(string name) {
             name = "data_obs";
         }
         if (key.first == tree_name + "_0jet") {
-            hists_2d.at(key.first.c_str()).push_back(new TH2F((name+"_2D__").c_str(), (name+"_2D__").c_str(), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
+//            hists_2d.at(key.first.c_str()).push_back(new TH2F((name+"_2D__").c_str(), (name+"_2D__").c_str(), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
+            hists_2d.at(key.first.c_str()).push_back(new TH2F((name+"_2D__").c_str(), (name+"_2D__").c_str(), 2, 0, 2, 12, 200, 800));
+
         }
     }
     for (auto key : Histo_2DMatrix) {
@@ -209,6 +217,7 @@ void HistTool::fillQCD_OS_CR(int cat, string name, double var1,  double weight) 
         fakes_1d_OS_CR.at(cat)->Fill(var1, -1*weight);
         fakes_1d_OS_CR_Up.at(cat)->Fill(var1, -1*weight*0.9);
         fakes_1d_OS_CR_Down.at(cat)->Fill(var1, -1*weight*1.1);
+        fakes_1d_OS_CR_mc.at(cat)->Fill(var1, weight);
     }
 }
 // This is CR to extract OS/SS ratio
@@ -222,6 +231,7 @@ void HistTool::fillQCD_SS_CR(int cat, string name, double var1,  double weight) 
         fakes_1d_SS_CR.at(cat)->Fill(var1, -1*weight);
         fakes_1d_SS_CR_Up.at(cat)->Fill(var1, -1*weight*0.9);
         fakes_1d_SS_CR_Down.at(cat)->Fill(var1, -1*weight*1.1);
+        fakes_1d_SS_CR_mc.at(cat)->Fill(var1, weight);
     }
 }
 
@@ -368,9 +378,9 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
         }
         float CorrFactor=1;
         // Updated fake rate
-        if (channel.find("tt") != string::npos && year.find("2016") != string::npos ) CorrFactor =1.14;
-        if (channel.find("tt") != string::npos && year.find("2017") != string::npos ) CorrFactor =0.92;
-        if (channel.find("tt") != string::npos && year.find("2018") != string::npos ) CorrFactor =0.87;
+//        if (channel.find("tt") != string::npos && year.find("2016") != string::npos ) CorrFactor =1.14;
+//        if (channel.find("tt") != string::npos && year.find("2017") != string::npos ) CorrFactor =0.92;
+//        if (channel.find("tt") != string::npos && year.find("2018") != string::npos ) CorrFactor =0.87;
 
         // fake rate
 //        if (channel.find("tt") != string::npos && year.find("2016") != string::npos ) CorrFactor =0.70;
@@ -460,6 +470,8 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
             fakes_1d_SS_CR.at(0)->Write();
             fakes_1d_OS_CR_data.at(0)->Write();
             fakes_1d_SS_CR_data.at(0)->Write();
+            fakes_1d_OS_CR_mc.at(0)->Write();
+            fakes_1d_SS_CR_mc.at(0)->Write();
         }
         
         order++;

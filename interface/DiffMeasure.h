@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include "makeHisto.h"
+#include "TF1.h"
 
 // ROOT includes
 #include "TFile.h"
@@ -42,15 +43,20 @@ public:
     void writeTemplates(string,string,string);
     void initVectors2d(string);
     void initSystematics(string);
-    
+
     void fillQCD_Norm(int, string, double, double,float);
+    void fillQCD_Norm_fr_up(int, string, double, double,float);
+    void fillQCD_Norm_fr_down(int, string, double, double,float);
     void fillQCD_Shape(int, string, double, double,float);
+    void fillQCD_Shape_fr_up(int, string, double, double,float);
+    void fillQCD_Shape_fr_down(int, string, double, double,float);
     void fillQCD_OS_CR(int, string, double, double);
     void fillQCD_SS_CR(int, string, double, double);
     std::vector<float>  Get_OS_SS_ratio();
     
     //  void convertDataToFake(Categories, string, double, double, double, double, double, double);  // 2d
     void histoLoop(string ,std::vector<string>, string, TH1F *, string, string,std::vector<float>,string, float, float, bool, string); // for lt and tt
+    void histoLoop(string  ,std::vector<string>, string, TH1F *,float, float, string, string,std::vector<float>,string, float, float, bool, string); // for lt and tt
     void histoLoop(string ,std::vector<string>, string,string, string,std::vector<float>,string, float, float, bool, string); //for emu
 
     
@@ -69,6 +75,8 @@ public:
     std::vector<TH1F *> fakes_1d_SS_CR, fakes_1d_SS_CR_Up, fakes_1d_SS_CR_Down;
     std::vector<TH1F *> fakes_1d_OS_CR, fakes_1d_OS_CR_Up, fakes_1d_OS_CR_Down;
     std::vector<TH1F *> fakes_1d_shape, fakes_1d_shape_Up, fakes_1d_shape_Down;
+    
+    std::vector<TH1F *> fakeRateShape_down, fakeRateShape_up, fakeRateNorm_down, fakeRateNorm_up;
     
     // binning
     std::vector<int> bins_NN, bins_FAKE;
@@ -106,10 +114,16 @@ systematics{
         fakes_1d_norm.push_back(new TH1F("fake", "fake_SS_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
         fakes_1d_norm_Up.push_back(new TH1F("fake_Up", "fake_SS_0_Up_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
         fakes_1d_norm_Down.push_back(new TH1F("fake_Down", "fake_SS_0_Down_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
-        
+        fakeRateNorm_up.push_back(new TH1F("fakeRateNorm_up", "fakeRateNorm_up", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
+        fakeRateNorm_down.push_back(new TH1F("fakeRateNorm_down", "fakeRateNorm_down", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
+
+
         fakes_1d_shape.push_back(new TH1F("fake_shape", "fake_SS_shape_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
         fakes_1d_shape_Up.push_back(new TH1F("fake_shape_Up", "fake_SS_shape_0_Up_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
         fakes_1d_shape_Down.push_back(new TH1F("fake_shape_Down", "fake_SS_shape_0_Down_0", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
+        fakeRateShape_up.push_back(new TH1F("fakeRateShape_up", "fakeRateShape_up", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
+        fakeRateShape_down.push_back(new TH1F("fakeRateShape_down", "fakeRateShape_down", bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
+        
         
         fakes_1d_OS_CR.push_back(new TH1F("OS_CR", "OS_CR", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
         fakes_1d_OS_CR_Up.push_back(new TH1F("OS_CR_Up", "OS_CR_Up", bins_FAKE.at(0), bins_FAKE.at(1), bins_FAKE.at(2)));
@@ -190,6 +204,23 @@ void HistTool::fillQCD_Norm(int cat, string name, double var1,  double weight, f
         fakes_1d_norm_Down.at(cat)->Fill(var1, -1*OSSS_val*weight*1.1);
     }
 }
+void HistTool::fillQCD_Norm_fr_up(int cat, string name, double var1,  double weight, float OSSS_val) {
+    TH1F *hist;
+    if (name == "Data") {
+        fakeRateNorm_up.at(cat)->Fill(var1, 1*OSSS_val);
+    } else if ( name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
+        fakeRateNorm_up.at(cat)->Fill(var1, -1*OSSS_val*weight);
+    }
+}
+void HistTool::fillQCD_Norm_fr_down(int cat, string name, double var1,  double weight, float OSSS_val) {
+    TH1F *hist;
+    if (name == "Data") {
+        fakeRateNorm_down.at(cat)->Fill(var1, 1*OSSS_val);
+    } else if ( name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
+        fakeRateNorm_down.at(cat)->Fill(var1, -1*OSSS_val*weight);
+    }
+}
+
 
 // This is Loose SS region [To get the shape of QCD from SS and loose region]
 void HistTool::fillQCD_Shape(int cat, string name, double var1,  double weight, float OSSS_val) {
@@ -207,6 +238,25 @@ void HistTool::fillQCD_Shape(int cat, string name, double var1,  double weight, 
         fakes_1d_shape_Down.at(cat)->Fill(var1, -1*OSSS_val*weight*1.1);
     }
 }
+
+void HistTool::fillQCD_Shape_fr_up(int cat, string name, double var1,  double weight, float OSSS_val) {
+    TH1F *hist;
+    if (name == "Data") {
+        fakeRateShape_up.at(cat)->Fill(var1, 1*OSSS_val);
+    } else if ( name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+        fakeRateShape_up.at(cat)->Fill(var1, -1*OSSS_val*weight);// this is fixed on Aug 25 (*weight was missing)
+    }
+}
+void HistTool::fillQCD_Shape_fr_down(int cat, string name, double var1,  double weight, float OSSS_val) {
+    TH1F *hist;
+    if (name == "Data") {
+        fakeRateShape_down.at(cat)->Fill(var1, 1*OSSS_val);
+    } else if ( name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+        fakeRateShape_down.at(cat)->Fill(var1, -1*OSSS_val*weight);// this is fixed on Aug 25 (*weight was missing)
+    }
+}
+
+
 
 // Derive OS/SS ratio
 std::vector<float>  HistTool::Get_OS_SS_ratio(){
@@ -236,15 +286,22 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
         auto fake_hist_norm = fakes_1d_norm.at(order);
         auto fake_hist_norm_Up = fakes_1d_norm_Up.at(order);
         auto fake_hist_norm_Down = fakes_1d_norm_Down.at(order);
+        auto hist_fakeRateNorm_up = fakeRateNorm_up.at(order);
+        auto hist_fakeRateNorm_down = fakeRateNorm_down.at(order);
+        
         auto fake_hist_shape = fakes_1d_shape.at(order);
         auto fake_hist_shape_Up = fakes_1d_shape_Up.at(order);
         auto fake_hist_shape_Down = fakes_1d_shape_Down.at(order);
+        auto hist_fakeRateShape_up = fakeRateShape_up.at(order);
+        auto hist_fakeRateShape_down = fakeRateShape_down.at(order);
+        
         
         std::cout<<"\n\n Norm QCD is = "<<fake_hist_norm->Integral() <<   "  shape integral is "<< fake_hist_shape->Integral()  <<"\n";
         fake_hist_shape->Scale(fake_hist_norm->Integral()/fake_hist_shape->Integral());
         fake_hist_shape_Up->Scale(fake_hist_norm_Up->Integral()/fake_hist_shape_Up->Integral());
         fake_hist_shape_Down->Scale(fake_hist_norm_Down->Integral()/fake_hist_shape_Down->Integral());
-        
+        hist_fakeRateShape_up->Scale(hist_fakeRateNorm_up->Integral()/hist_fakeRateShape_up->Integral());
+        hist_fakeRateShape_down->Scale(hist_fakeRateNorm_down->Integral()/hist_fakeRateShape_down->Integral());
         //========================================================================================================
         //                // ADD protection
         for (int i = 0 ; i < fake_hist_shape->GetNbinsX(); i++){
@@ -263,6 +320,14 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
                 fake_hist_shape_Down->SetBinContent(i+1, 0.0001);
                 fake_hist_shape_Down->SetBinError(i+1, 0.1);
             }
+            if (hist_fakeRateShape_up->GetBinContent(i+1) <0 ){
+                hist_fakeRateShape_up->SetBinContent(i+1, 0.0001);
+                hist_fakeRateShape_up->SetBinError(i+1, 0.1);
+            }
+            if (hist_fakeRateShape_down->GetBinContent(i+1) <0 ){
+                hist_fakeRateShape_down->SetBinContent(i+1, 0.0001);
+                hist_fakeRateShape_down->SetBinError(i+1, 0.1);
+            }
         }
         //========================================================================================================
         
@@ -270,9 +335,14 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
             fake_hist_shape->SetName("QCD");
             fake_hist_shape_Up->SetName("QCD_shape_Up");
             fake_hist_shape_Down->SetName("QCD_shape_Down");
+            hist_fakeRateShape_up->SetName("QCD_fakerateYEAR_Up");
+            hist_fakeRateShape_down->SetName("QCD_fakerateYEAR_Down");
             fake_hist_shape->Write();
             fake_hist_shape_Up->Write();
             fake_hist_shape_Down->Write();
+            hist_fakeRateShape_up->Write();
+            hist_fakeRateShape_down->Write();
+            
             }
         
         order++;

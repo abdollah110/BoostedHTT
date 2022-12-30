@@ -1,6 +1,7 @@
 // user includes
 #include "TStopwatch.h"
 #include "TMath.h"
+#include "TF1.h"
 #include "../interface/CLParser.h"
 #include "../interface/process_trees_NN.h"
 #include <iomanip>      // std::setprecision
@@ -28,10 +29,23 @@ int main(int argc, char *argv[]) {
     else if (dir.find("2017") != string::npos ) year ="2017";
     else if (dir.find("2018") != string::npos) year ="2018";
     else (std::cout << "Year is not specificed in the outFile name !\n");
+        
+    struct {
+    TH1F * FRhist;
+    float FitPar;
+    float FitParErr;
+    } FR;
     
-    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+".root").c_str(),"r");
-    TH1F * FRhist=(TH1F *) FRFile->Get("numVLoose");
-    
+//    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+".root").c_str(),"r");
+    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+"_v7_pt.root").c_str(),"r");
+//    TH1F * FRhist=(TH1F *) FRFile->Get("numVLoose");
+    FR.FRhist=(TH1F *) FRFile->Get("numVLoose");
+    TF1 *func = new TF1("fit","pol0",200,500);
+    FR.FRhist->Fit("fit","R");
+     FR.FitPar= func->GetParameter(0);
+     FR.FitParErr= func->GetParError(0);
+    cout<<"FitPar = " << FR.FitPar  <<"  FitParErr= " << FR.FitParErr<< "\n";
+      
     string channel, tree_name;
     if (dir.find("_et") != string::npos ) { channel ="et";tree_name="etau_tree";}
     else if (dir.find("_mt") != string::npos) { channel ="mt";tree_name="mutau_tree";}
@@ -63,7 +77,7 @@ int main(int argc, char *argv[]) {
     std::vector<float>  OSSS= hists->Get_OS_SS_ratio();
     //    std::cout<<"\n\n\n\n OSSS  "<<OSSS[0]<<"\n";
     
-    hists->histoLoop(year, files, dir, FRhist,tree_name,var_name,OSSS,runPDF,"");    // fill histograms
+    hists->histoLoop(year, files, dir, FR.FRhist, FR.FitPar, FR.FitParErr,tree_name,var_name,OSSS,runPDF,"");    // fill histograms
     hists->writeTemplates(dir,channel,year);  // write histograms to file
     // histograms for pdf and scale
     unordered_map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
@@ -78,7 +92,8 @@ int main(int argc, char *argv[]) {
     //  delete hists->ff_weight;
 }
 
-void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FRhist, string tree_name , string var_name, vector<float> OSSS, bool runPDF,string Sys = "") {
+void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FRhist, float FitPar, float FitParErr,  string tree_name , string var_name, vector<float> OSSS, bool runPDF,string Sys = "") {
+
     std::cout<< "starting .... "<<dir<<"\n";
     float vbf_var1(0.);
     initVectors1dFake("nominal");
@@ -199,14 +214,17 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             //            if (NN_disc < 0.3) continue;
             
             float lep2Ptval=lep2Pt_;
-            if (lep2Ptval > 200) lep2Ptval=200;
+//            if (lep2Ptval > 200) lep2Ptval=200;
             
             float frValu = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
             float frValuErr = FRhist->GetBinError(FRhist->GetXaxis()->FindBin(lep2Ptval));
             float frValuUncUp=frValu+frValuErr;
             float frValuUncDown=frValu-frValuErr;
-            //            vbf_var1 =ObsName[var_name];
-            
+            if (lep2Ptval > 200) {
+                frValu = FitPar;
+                frValuUncUp=frValu+ 2*FitParErr + (lep2Ptval-200)*(5*FitParErr)/300;
+                frValuUncDown=frValu- 2*FitParErr - (lep2Ptval-200)*(5*FitParErr)/300;
+            }
             
             float NN_sig, NN_ztt, NN_qcd;
             vector<float > NN_out_vec;

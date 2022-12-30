@@ -28,8 +28,21 @@ int main(int argc, char *argv[]) {
     else if (dir.find("2018") != string::npos) year ="2018";
     else (std::cout << "Year is not specificed in the outFile name !\n");
     
-    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+".root").c_str(),"r");
-    TH1F * FRhist=(TH1F *) FRFile->Get("numVLoose");
+    struct {
+    TH1F * FRhist;
+    float FitPar;
+    float FitParErr;
+    } FR;
+    
+//    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+".root").c_str(),"r");
+    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+"_v7_pt.root").c_str(),"r");
+//    TH1F * FRhist=(TH1F *) FRFile->Get("numVLoose");
+    FR.FRhist=(TH1F *) FRFile->Get("numVLoose");
+    TF1 *func = new TF1("fit","pol0",200,500);
+    FR.FRhist->Fit("fit","R");
+     FR.FitPar= func->GetParameter(0);
+     FR.FitParErr= func->GetParError(0);
+    cout<<"FitPar = " << FR.FitPar  <<"  FitParErr= " << FR.FitParErr<< "\n";
 
     string channel, tree_name;
     if (dir.find("_et") != string::npos ) { channel ="et";tree_name="etau_tree";}
@@ -59,7 +72,7 @@ int main(int argc, char *argv[]) {
     std::vector<float>  OSSS= hists->Get_OS_SS_ratio();
 //    std::cout<<"\n\n\n\n OSSS  "<<OSSS[0]<<"\n";
     
-    hists->histoLoop(year, files, dir, FRhist,tree_name,var_name,OSSS,"");    // fill histograms
+    hists->histoLoop(year, files, dir, FR.FRhist, FR.FitPar, FR.FitParErr,tree_name,var_name,OSSS,0,"");    // fill histograms
     hists->writeTemplates(dir,channel,year);  // write histograms to file
     hists->fout->Close();
     
@@ -68,7 +81,9 @@ int main(int argc, char *argv[]) {
     //  delete hists->ff_weight;
 }
 
-void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FRhist, string tree_name , string var_name, vector<float> OSSS, string Sys = "") {
+void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FRhist, float FitPar, float FitParErr,  string tree_name , string var_name, vector<float> OSSS, bool runPDF,string Sys = "") {
+
+
     std::cout<< "starting .... "<<dir<<"\n";
     float vbf_var1(0.);
     for (auto ifile : files) {
@@ -165,15 +180,17 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             
             float frValu = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
             vbf_var1 =ObsName[var_name];
-            
+            if (!lep1IsoPass) cout<<" lep1IsoPass  "<<lep1IsoPass<<"\n";
 //            if (OS != 0  && lep1IsoPass && lep2IsoPassV) {
-            if (SS != 0  && lep1IsoPass && lep2IsoPassV) { // Validation // FIXME
+//            if (SS != 0  && lep1IsoPass && lep2IsoPassV) { // Validation // FIXME
+            if (SS != 0  &&  lep2IsoPassV) { // Validation // FIXME
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
 //                hists_2d.at(categories.at(zeroJet)).back()->Fill(NN_disc,NN_disc_ZTT, weight);
 //                Histo_2DMatrix.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
             }
 //            if (OS != 0 && lep1IsoPass && !lep2IsoPassV ){
-            if (SS != 0 && lep1IsoPass && !lep2IsoPassV ){ // Validation
+//            if (SS != 0 && lep1IsoPass && !lep2IsoPassV ){ // Validation
+            if (SS != 0 &&  !lep2IsoPassV ){ // Validation
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu / (1-frValu));
 //                fillQCD_Norm(zeroJet, name, NN_disc,NN_disc_ZTT,  weight, frValu / (1-frValu));
             }
