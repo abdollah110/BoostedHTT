@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
 //    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+".root").c_str(),"r");
     TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+"_v7_pt.root").c_str(),"r");
 //    TH1F * FRhist=(TH1F *) FRFile->Get("numVLoose");
-    FR.FRhist=(TH1F *) FRFile->Get("numVLoose");
+    FR.FRhist=(TH1F *) FRFile->Get("numHistRB");
     TF1 *func = new TF1("fit","pol0",200,500);
     FR.FRhist->Fit("fit","R");
      FR.FitPar= func->GetParameter(0);
@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
     
     
     
-    hists->histoLoop(year, files, dir, FR.FRhist, FR.FitPar, FR.FitParErr,tree_name,var_name,OSSS,runPDF,"");    // fill histograms
+    hists->histoLoop(year, files, dir, FR.FRhist, FR.FitPar, FR.FitParErr,tree_name,var_name,OSSS,0,"");    // fill histograms
     hists->writeTemplates(dir,channel,year);  // write histograms to file
     hists->fout->Close();
     
