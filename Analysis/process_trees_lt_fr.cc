@@ -188,7 +188,6 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 frValuUncDown=frValu- 2*FitParErr - (lep2Ptval-200)*(5*FitParErr)/300;
             }
             
-            float frValu = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
             vbf_var1 =ObsName[var_name];
 //            if (!lep1IsoPass) cout<<" lep1IsoPass  "<<lep1IsoPass<<"\n";
             if (OS != 0  && lep1IsoPass && lep2IsoPassV) {
