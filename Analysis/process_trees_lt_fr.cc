@@ -176,21 +176,31 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
 //            if (tmass > 80) continue;
 //            if (NN_disc < 0.3) continue;
             float lep2Ptval=lep2Pt_;
-            if (lep2Ptval > 200) lep2Ptval=200;
+//            if (lep2Ptval > 200) lep2Ptval=200;
+            
+            float frValu = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
+            float frValuErr = FRhist->GetBinError(FRhist->GetXaxis()->FindBin(lep2Ptval));
+            float frValuUncUp=frValu+frValuErr;
+            float frValuUncDown=frValu-frValuErr;
+            if (lep2Ptval > 200) {
+                frValu = FitPar;
+                frValuUncUp=frValu+ 2*FitParErr + (lep2Ptval-200)*(5*FitParErr)/300;
+                frValuUncDown=frValu- 2*FitParErr - (lep2Ptval-200)*(5*FitParErr)/300;
+            }
             
             float frValu = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
             vbf_var1 =ObsName[var_name];
-            if (!lep1IsoPass) cout<<" lep1IsoPass  "<<lep1IsoPass<<"\n";
-//            if (OS != 0  && lep1IsoPass && lep2IsoPassV) {
+//            if (!lep1IsoPass) cout<<" lep1IsoPass  "<<lep1IsoPass<<"\n";
+            if (OS != 0  && lep1IsoPass && lep2IsoPassV) {
 //            if (SS != 0  && lep1IsoPass && lep2IsoPassV) { // Validation // FIXME
-            if (SS != 0  &&  lep2IsoPassV) { // Validation // FIXME
+//            if (SS != 0  &&  lep2IsoPassV) { // Validation // FIXME
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
 //                hists_2d.at(categories.at(zeroJet)).back()->Fill(NN_disc,NN_disc_ZTT, weight);
 //                Histo_2DMatrix.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
             }
-//            if (OS != 0 && lep1IsoPass && !lep2IsoPassV ){
+            if (OS != 0 && lep1IsoPass && !lep2IsoPassV ){
 //            if (SS != 0 && lep1IsoPass && !lep2IsoPassV ){ // Validation
-            if (SS != 0 &&  !lep2IsoPassV ){ // Validation
+//            if (SS != 0 &&  !lep2IsoPassV ){ // Validation
                 fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu / (1-frValu));
 //                fillQCD_Norm(zeroJet, name, NN_disc,NN_disc_ZTT,  weight, frValu / (1-frValu));
             }

@@ -196,9 +196,22 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             float frValu1 = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep1Ptval));
             
             
+//            float lep2Ptval=lep2Pt_;
+//            if (lep2Ptval > 200) lep2Ptval=200;
+//            float frValu2 = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
+            
             float lep2Ptval=lep2Pt_;
-            if (lep2Ptval > 200) lep2Ptval=200;
+//            if (lep2Ptval > 200) lep2Ptval=200;
             float frValu2 = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
+            float frValuErr = FRhist->GetBinError(FRhist->GetXaxis()->FindBin(lep2Ptval));
+            float frValuUncUp=frValu2+frValuErr;
+            float frValuUncDown=frValu2-frValuErr;
+            if (lep2Ptval > 200) {
+                frValu = FitPar;
+                frValuUncUp=frValu+ 2*FitParErr + (lep2Ptval-200)*(5*FitParErr)/300;
+                frValuUncDown=frValu- 2*FitParErr - (lep2Ptval-200)*(5*FitParErr)/300;
+            }
+            
 
 //p0                        =     0.566429   +/-   0.0729392
 //
