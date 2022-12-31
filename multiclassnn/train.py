@@ -134,15 +134,6 @@ def main(args):
     bkg_df.loc[:, 'evtwt'] = bkg_df['evtwt'].apply(lambda x: x*highest/len(bkg_df)).values
     bkg_df2.loc[:, 'evtwt'] = bkg_df2['evtwt'].apply(lambda x: x*highest/len(bkg_df2)).values
     
-#    if '2016' in args.year:
-#        bkg_df2.loc[:, 'evtwt'] = bkg_df2['evtwt'].apply(lambda x: 0.025*highest/len(bkg_df2)).values # scale to get correct TT/ZTT
-#    elif '2017' in args.year:
-#        bkg_df2.loc[:, 'evtwt'] = bkg_df2['evtwt'].apply(lambda x: 0.056*highest/len(bkg_df2)).values # scale to get correct TT/ZTT
-#    elif '2018' in args.year:
-#        bkg_df2.loc[:, 'evtwt'] = bkg_df2['evtwt'].apply(lambda x: 0.365*highest/len(bkg_df2)).values # scale to get correct TT/ZTT
-#    else:
-#        print 'not valid year'
-
 
     selected_events = pd.concat([sig_df, bkg_df, bkg_df2])
 
@@ -187,7 +178,7 @@ def main(args):
                 train_ztt.append(training_data[i, :])
 
 
-
+#https://www.pluralsight.com/guides/data-visualization-deep-learning-model-using-matplotlib
         trainingPlots(history, 'trainingPlot_{}'.format(args.model))
 
         test_sig, test_tt, test_ztt = [], [], []
