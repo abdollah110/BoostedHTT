@@ -1,7 +1,6 @@
 // user includes
 #include "TStopwatch.h"
 #include "TMath.h"
-#include "TF1.h"
 #include "../interface/CLParser.h"
 #include "../interface/process_trees_NN.h"
 #include <iomanip>      // std::setprecision
