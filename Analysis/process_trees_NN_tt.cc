@@ -209,7 +209,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 {"MuMatchedIsolation",MuMatchedIsolation},
                 {"EleMatchedIsolation",EleMatchedIsolation}
             };
-            
+
+//            FIXME  this cut is for running the analysis in dr< 0.5
 //            if (dR_lep_lep > 0.5) continue;
             
             //            if (higgs_pT < 400) continue;

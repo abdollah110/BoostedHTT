@@ -181,7 +181,7 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
             };
             
 //            FIXME  this cut is for running the analysis in dr< 0.5
-            if (dR_lep_lep > 0.5) continue;
+//            if (dR_lep_lep > 0.5) continue;
             
             
             //            if (channel.find("em")!=string::npos  && lep1Pt_ < 20) continue;

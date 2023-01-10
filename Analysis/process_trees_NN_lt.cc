@@ -203,7 +203,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 
             };
             
-            if (dR_lep_lep > 0.5) continue;
+//            FIXME  this cut is for running the analysis in dr< 0.5
+//            if (dR_lep_lep > 0.5) continue;
             
             // apply tau Id SF
             if (isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos || name.find("JJH125")!= string::npos )) weight *= 0.9;
