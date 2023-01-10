@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
     
     
     
-    hists->histoLoop(year, files, dir, FR.FRhist, FR.FitPar, FR.FitParErr,,tree_name,var_name,OSSS,runPDF,"");    // fill histograms
+    hists->histoLoop(year, files, dir, FR.FRhist, FR.FitPar, FR.FitParErr,tree_name,var_name,OSSS,runPDF,"");    // fill histograms
     hists->writeTemplates(dir,channel,year);  // write histograms to file
     // save histograms for pdf and scale uncertainties
     unordered_map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
@@ -103,7 +103,9 @@ int main(int argc, char *argv[]) {
     //  delete hists->ff_weight;
 }
 
-void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FR.FRhist, float FR.FitPar, float FR.FitParErr,, string tree_name , string var_name, vector<float> OSSS, bool runPDF, string Sys = "") {
+void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FRhist, float FitPar, float FitParErr,  string tree_name , string var_name, vector<float> OSSS, bool runPDF,string Sys = "") {
+
+//void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FR.FRhist, float FR.FitPar, float FR.FitParErr,, string tree_name , string var_name, vector<float> OSSS, bool runPDF, string Sys = "") {
     
     std::cout<< "starting .... "<<dir<<"\n";
     float vbf_var1(0.);
@@ -242,9 +244,9 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             float frValuUncUp=frValu2+frValuErr;
             float frValuUncDown=frValu2-frValuErr;
             if (lep2Ptval > 200) {
-                frValu = FitPar;
-                frValuUncUp=frValu+ 2*FitParErr + (lep2Ptval-200)*(5*FitParErr)/300;
-                frValuUncDown=frValu- 2*FitParErr - (lep2Ptval-200)*(5*FitParErr)/300;
+                frValu2 = FitPar;
+                frValuUncUp=frValu2+ 2*FitParErr + (lep2Ptval-200)*(5*FitParErr)/300;
+                frValuUncDown=frValu2- 2*FitParErr - (lep2Ptval-200)*(5*FitParErr)/300;
             }
             
             
