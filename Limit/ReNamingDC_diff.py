@@ -107,8 +107,10 @@ for k1 in dirList: # loop over categories
     if '_bin1' in Updatednom: Updatednom='Htt_PTH_0_350_cat{}{}'.format(year,channel)
     if '_bin2' in Updatednom: Updatednom='Htt_PTH_350_450_cat{}{}'.format(year,channel)
     if '_bin3' in Updatednom: Updatednom='Htt_PTH_450_600_cat{}{}'.format(year,channel)
-#    if '_bin4' in Updatednom: Updatednom='Htt_PTH_600_800_cat{}{}'.format(year,channel)
     if '_bin4' in Updatednom: Updatednom='Htt_PTH_GT600_cat{}{}'.format(year,channel)
+#    if '_bin1' in Updatednom: Updatednom='Htt_PTH_0_450_cat{}{}'.format(year,channel)
+#    if '_bin2' in Updatednom: Updatednom='Htt_PTH_450_600_cat{}{}'.format(year,channel)
+#    if '_bin3' in Updatednom: Updatednom='Htt_PTH_GT600_cat{}{}'.format(year,channel)
 
     ofile.mkdir(Updatednom)
     h1.cd()
@@ -338,6 +340,7 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('_350_450','_350_450125')
         histo_name=histo_name.replace('_450_600','_450_600125')
         histo_name=histo_name.replace('_GT600','_GT600125')
+        histo_name=histo_name.replace('_0_450','_0_450125')
         
         histo_name=histo_name.replace('XH125','XH')
         histo_name=histo_name.replace('ggH125','ggH')
