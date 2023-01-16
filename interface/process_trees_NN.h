@@ -396,12 +396,16 @@ void HistTool::fillQCD_Shape_emu(int cat, string name, double var1,  double weig
         hists_FakeShape_1d.at(categories.at(cat))[0]->Fill(var1, 1*OSSS_val);
         hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, 1*OSSS_val);
         hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, 1*OSSS_val);
-    } else if (name == "W" || name == "VV" || name == "TT" || name == "EWKZ" ) {
-        //    } else if ( name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+//    } else if (name == "W" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+        } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
         
-        hists_FakeShape_1d.at(categories.at(cat))[0]->Fill(var1, -1*OSSS_val*weight);
-        hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*weight);
-        hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*weight);
+        hists_FakeShape_1d.at(categories.at(cat))[0]->Fill(var1, -1*OSSS_val);
+        hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*0.9);
+        hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*1.1); // these are buggy
+//        hists_FakeShape_1d.at(categories.at(cat))[0]->Fill(var1, -1*OSSS_val*weight);
+//        hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*weight*0.9);
+//        hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*weight*1.1);
+
     }
 }
 void HistTool::fillQCD_Shape_emu(int cat, string name, double var1,double var2,  double weight, float OSSS_val) {

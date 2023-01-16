@@ -242,11 +242,11 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
                 }
                 // qcd norm
                 if (SS != 0 && lep1IsoPass && lep2IsoPass ){
-                    fillQCD_Norm(i, name, NN_out_vec[i],  weight, meausred_OSSS);
+                    fillQCD_Norm_emu(i, name, NN_out_vec[i],  weight, meausred_OSSS);
                 }
                 // qcd shape
                 if (SS != 0 && lep1IsoPass && lep2IsoPass ){
-                    fillQCD_Shape(i, name, NN_out_vec[i],  weight, meausred_OSSS);
+                    fillQCD_Shape_emu(i, name, NN_out_vec[i],  weight, meausred_OSSS);
                 }
             }
             NN_out_vec.clear();
