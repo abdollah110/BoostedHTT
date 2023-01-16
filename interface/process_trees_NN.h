@@ -353,12 +353,12 @@ void HistTool::fillQCD_Shape(int cat, string name, double var1,  double weight, 
         //    } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
     } else if ( name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
         
-        //        hists_FakeShape_1d.at(categories.at(cat))[0]->Fill(var1, -1*OSSS_val);
-        //        hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*0.9);
-        //        hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*1.1);  // this has been buggy
-        hists_FakeShape_1d.at(categories.at(cat))[0]->Fill(var1, -1*OSSS_val*weight);
-        hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*weight*0.9);
-        hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*weight*1.1);
+                hists_FakeShape_1d.at(categories.at(cat))[0]->Fill(var1, -1*OSSS_val);
+                hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*0.9);
+                hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*1.1);  // this has been buggy
+//        hists_FakeShape_1d.at(categories.at(cat))[0]->Fill(var1, -1*OSSS_val*weight); // FIXME return the bug back
+//        hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*weight*0.9);
+//        hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*weight*1.1);
         
     }
 }

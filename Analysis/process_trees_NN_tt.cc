@@ -35,10 +35,10 @@ int main(int argc, char *argv[]) {
     float FitParErr;
     } FR;
     
-//    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+".root").c_str(),"r");
-    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+"_v7_pt.root").c_str(),"r");
-//    TH1F * FRhist=(TH1F *) FRFile->Get("numVLoose");
-    FR.FRhist=(TH1F *) FRFile->Get("numHistRB");
+    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+".root").c_str(),"r");
+//    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+"_v7_pt.root").c_str(),"r");
+    FR.FRhist=(TH1F *) FRFile->Get("numVLoose");
+//    FR.FRhist=(TH1F *) FRFile->Get("numHistRB"); // FIXME for reproducing the preapproval results
     TF1 *func = new TF1("fit","pol0",200,500);
     FR.FRhist->Fit("fit","R");
      FR.FitPar= func->GetParameter(0);
@@ -220,8 +220,11 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             //            if (NN_disc > 0.5) continue;
 
             // apply tau Id SF
-            if (isGenTauLead_ && (  name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.9;
-            if (isGenTauSub_ && ( name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos ))
+//            if (isGenTauLead_ && (  name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.9;
+//            if (isGenTauSub_ && ( name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos ))
+//                weight *= 0.9;
+            if ((  name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.9;
+            if (( name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos ))
                 weight *= 0.9;
 
 
@@ -238,16 +241,16 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             
             
             float lep2Ptval=lep2Pt_;
-//            if (lep2Ptval > 200) lep2Ptval=200;
+            if (lep2Ptval > 200) lep2Ptval=200;// FIXME for reproducing the preapproval results
             float frValu2 = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
             float frValuErr = FRhist->GetBinError(FRhist->GetXaxis()->FindBin(lep2Ptval));
             float frValuUncUp=frValu2+frValuErr;
             float frValuUncDown=frValu2-frValuErr;
-            if (lep2Ptval > 200) {
-                frValu2 = FitPar;
-                frValuUncUp=frValu2+ 2*FitParErr + (lep2Ptval-200)*(5*FitParErr)/300;
-                frValuUncDown=frValu2- 2*FitParErr - (lep2Ptval-200)*(5*FitParErr)/300;
-            }
+//            if (lep2Ptval > 200) {
+//                frValu2 = FitPar;
+//                frValuUncUp=frValu2+ 2*FitParErr + (lep2Ptval-200)*(5*FitParErr)/300;
+//                frValuUncDown=frValu2- 2*FitParErr - (lep2Ptval-200)*(5*FitParErr)/300;
+//            }// FIXME for reproducing the preapproval results
             
             
             

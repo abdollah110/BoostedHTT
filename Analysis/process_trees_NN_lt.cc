@@ -35,10 +35,10 @@ int main(int argc, char *argv[]) {
     float FitParErr;
     } FR;
     
-//    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+".root").c_str(),"r");
-    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+"_v7_pt.root").c_str(),"r");
-//    TH1F * FRhist=(TH1F *) FRFile->Get("numVLoose");
-    FR.FRhist=(TH1F *) FRFile->Get("numHistRB");
+    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+".root").c_str(),"r");
+//    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+"_v7_pt.root").c_str(),"r");
+    FR.FRhist=(TH1F *) FRFile->Get("numVLoose");
+//    FR.FRhist=(TH1F *) FRFile->Get("numHistRB");
     TF1 *func = new TF1("fit","pol0",200,500);
     FR.FRhist->Fit("fit","R");
      FR.FitPar= func->GetParameter(0);
@@ -206,25 +206,27 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
 //            if (dR_lep_lep > 0.5) continue;
             
             // apply tau Id SF
-            if (isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos || name.find("JJH125")!= string::npos )) weight *= 0.9;
-            
+//            if (isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos || name.find("JJH125")!= string::npos )) weight *= 0.9;
+            if ((name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos || name.find("JJH125")!= string::npos )) weight *= 0.9;  // FIXME for reproducing the preapproval results
+
+
             //            if (m_sv < 50) continue;
             //            if (higgs_pT < 250) continue;
             //            if (tmass > 80) continue;
             //            if (NN_disc < 0.3) continue;
             
             float lep2Ptval=lep2Pt_;
-//            if (lep2Ptval > 200) lep2Ptval=200;
+            if (lep2Ptval > 200) lep2Ptval=200; // FIXME for reproducing the preapproval results
             
             float frValu = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
             float frValuErr = FRhist->GetBinError(FRhist->GetXaxis()->FindBin(lep2Ptval));
             float frValuUncUp=frValu+frValuErr;
             float frValuUncDown=frValu-frValuErr;
-            if (lep2Ptval > 200) {
-                frValu = FitPar;
-                frValuUncUp=frValu+ 2*FitParErr + (lep2Ptval-200)*(5*FitParErr)/300;
-                frValuUncDown=frValu- 2*FitParErr - (lep2Ptval-200)*(5*FitParErr)/300;
-            }
+//            if (lep2Ptval > 200) { // FIXME for reproducing the preapproval results
+//                frValu = FitPar;
+//                frValuUncUp=frValu+ 2*FitParErr + (lep2Ptval-200)*(5*FitParErr)/300;
+//                frValuUncDown=frValu- 2*FitParErr - (lep2Ptval-200)*(5*FitParErr)/300;
+//            }
             
             float NN_sig, NN_ztt, NN_qcd;
             vector<float > NN_out_vec;
