@@ -1,0 +1,7 @@
+./build process_trees_NN_lt.cc process_trees_NN_lt
+./build process_trees_NN_tt.cc process_trees_NN_tt
+./build process_trees_NN_em.cc process_trees_NN_em
+
+./build DiffMeasure_em.cc DiffMeasure_em
+./build DiffMeasure_lt.cc DiffMeasure_lt
+./build DiffMeasure_tt.cc DiffMeasure_tt
