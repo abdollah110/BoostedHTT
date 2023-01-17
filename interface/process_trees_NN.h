@@ -64,9 +64,9 @@ public:
     void fillQCD_SS_CR(int, string, double, double);
     std::vector<float>  Get_OS_SS_ratio();
     
-//void HistTool::histoLoop(std::string year , vector<string> files, string dir, struct FR, string tree_name , string var_name, vector<float> OSSS, bool runPDF,string Sys = "") {
+    //void HistTool::histoLoop(std::string year , vector<string> files, string dir, struct FR, string tree_name , string var_name, vector<float> OSSS, bool runPDF,string Sys = "") {
     //  void convertDataToFake(Categories, string, double, double, double, double, double, double);  // 2d
-//    void histoLoop(string  ,std::vector<string>, string, struct(), string, string,std::vector<float>, bool, string);
+    //    void histoLoop(string  ,std::vector<string>, string, struct(), string, string,std::vector<float>, bool, string);
     void histoLoop(string  ,std::vector<string>, string, TH1F *, string, string,std::vector<float>, bool, string);
     void histoLoop(string  ,std::vector<string>, string, TH1F *,float, float, string, string,std::vector<float>, bool, string);
     void histoLoop(string  ,std::vector<string>, string, TH1F *, string, string,std::vector<float>,string, float, float, bool, string);
@@ -261,8 +261,8 @@ void HistTool::fillQCD_OS_CR(int cat, string name, double var1,  double weight) 
     } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
         
         fakes_1d_OS_CR.at(cat)->Fill(var1, -1*weight);
-        fakes_1d_OS_CR_Up.at(cat)->Fill(var1, -1*weight*0.9);
-        fakes_1d_OS_CR_Down.at(cat)->Fill(var1, -1*weight*1.1);
+        fakes_1d_OS_CR_Up.at(cat)->Fill(var1, -1*weight*0.8);
+        fakes_1d_OS_CR_Down.at(cat)->Fill(var1, -1*weight*1.2);
     }
 }
 // This is CR to extract OS/SS ratio
@@ -274,8 +274,8 @@ void HistTool::fillQCD_SS_CR(int cat, string name, double var1,  double weight) 
         fakes_1d_SS_CR_data.at(cat)->Fill(var1, 1);
     } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" ||  name == "EWKZ" ) {
         fakes_1d_SS_CR.at(cat)->Fill(var1, -1*weight);
-        fakes_1d_SS_CR_Up.at(cat)->Fill(var1, -1*weight*0.9);
-        fakes_1d_SS_CR_Down.at(cat)->Fill(var1, -1*weight*1.1);
+        fakes_1d_SS_CR_Up.at(cat)->Fill(var1, -1*weight*0.8);
+        fakes_1d_SS_CR_Down.at(cat)->Fill(var1, -1*weight*1.2);
     }
 }
 
@@ -291,8 +291,8 @@ void HistTool::fillQCD_Norm(int cat, string name, double var1,  double weight, f
         //    } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
     } else if ( name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
         hists_FakeNorm_1d.at(categories.at(cat))[0]->Fill(var1, -1*OSSS_val*weight);
-        hists_FakeNorm_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*weight*0.9);
-        hists_FakeNorm_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*weight*1.1);
+        hists_FakeNorm_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*weight*0.8);
+        hists_FakeNorm_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*weight*1.2);
     }
 }
 void HistTool::fillQCD_Norm_fr_up(int cat, string name, double var1,  double weight, float OSSS_val) {
@@ -326,11 +326,15 @@ void HistTool::fillQCD_Norm_emu(int cat, string name, double var1,  double weigh
         hists_FakeNorm_1d.at(categories.at(cat))[0]->Fill(var1, 1*OSSS_val);
         hists_FakeNorm_1d.at(categories.at(cat))[1]->Fill(var1, 1*OSSS_val);
         hists_FakeNorm_1d.at(categories.at(cat))[2]->Fill(var1, 1*OSSS_val);
+        hists_FakeNorm_1d.at(categories.at(cat))[3]->Fill(var1, 1*OSSS_val);
+        hists_FakeNorm_1d.at(categories.at(cat))[4]->Fill(var1, 1*OSSS_val);
     } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
-        //    } else if ( name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
-        hists_FakeNorm_1d.at(categories.at(cat))[0]->Fill(var1, -1*OSSS_val);
-        hists_FakeNorm_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*weight*0.9);
-        hists_FakeNorm_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*weight*1.1);
+        //            } else if ( name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) { // bug found in January 2023 W should be excluded
+        hists_FakeNorm_1d.at(categories.at(cat))[0]->Fill(var1, -1*OSSS_val*weight);
+        hists_FakeNorm_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*weight*0.8);
+        hists_FakeNorm_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*weight*1.2);
+        hists_FakeNorm_1d.at(categories.at(cat))[3]->Fill(var1, -1*OSSS_val*weight*0.9);
+        hists_FakeNorm_1d.at(categories.at(cat))[4]->Fill(var1, -1*OSSS_val*weight*1.1);
     }
 }
 void HistTool::fillQCD_Norm_emu(int cat, string name, double var1,double var2,  double weight, float OSSS_val) {
@@ -346,25 +350,25 @@ void HistTool::fillQCD_Norm_emu(int cat, string name, double var1,double var2,  
 // This is Loose SS region [To get the shape of QCD from SS and loose region]
 void HistTool::fillQCD_Shape(int cat, string name, double var1,  double weight, float OSSS_val) {
     TH1F *hist;
-    if (name == "Data") {
+    if (name == "Data" || name == "W") {
         hists_FakeShape_1d.at(categories.at(cat))[0]->Fill(var1, 1*OSSS_val);
         hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, 1*OSSS_val);
         hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, 1*OSSS_val);
-        //    } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
-    } else if ( name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+    } else if (name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+        //    } else if ( name == "W" || name == "VV" || name == "TT" || name == "EWKZ" ) {
         
-                hists_FakeShape_1d.at(categories.at(cat))[0]->Fill(var1, -1*OSSS_val);
-                hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*0.9);
-                hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*1.1);  // this has been buggy
-//        hists_FakeShape_1d.at(categories.at(cat))[0]->Fill(var1, -1*OSSS_val*weight); // FIXME return the bug back
-//        hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*weight*0.9);
-//        hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*weight*1.1);
+        //                hists_FakeShape_1d.at(categories.at(cat))[0]->Fill(var1, -1*OSSS_val);
+        //                hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*0.9);
+        //                hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*1.1);  // this has been buggy
+        (hists_FakeShape_1d.at(categories.at(cat))[0])->Fill(var1, -1*OSSS_val*weight); // FIXME return the bug back
+        hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*weight*0.8);
+        hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*weight*1.2);
         
     }
 }
 void HistTool::fillQCD_Shape_fr_up(int cat, string name, double var1,  double weight, float OSSS_val) {
     TH1F *hist;
-    if (name == "Data") {
+    if (name == "Data" || name == "W") {
         hists_FakeShape_1d.at(categories.at(cat))[3]->Fill(var1, 1*OSSS_val);
     } else if ( name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
         hists_FakeShape_1d.at(categories.at(cat))[3]->Fill(var1, -1*OSSS_val*weight);
@@ -372,7 +376,7 @@ void HistTool::fillQCD_Shape_fr_up(int cat, string name, double var1,  double we
 }
 void HistTool::fillQCD_Shape_fr_down(int cat, string name, double var1,  double weight, float OSSS_val) {
     TH1F *hist;
-    if (name == "Data") {
+    if (name == "Data" || name == "W") {
         hists_FakeShape_1d.at(categories.at(cat))[4]->Fill(var1, 1*OSSS_val);
     } else if ( name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
         hists_FakeShape_1d.at(categories.at(cat))[4]->Fill(var1, -1*OSSS_val*weight);
@@ -392,20 +396,23 @@ void HistTool::fillQCD_Shape(int cat, string name, double var1,double var2,  dou
 // This is Loose SS region [To get the shape of QCD from SS and loose region]
 void HistTool::fillQCD_Shape_emu(int cat, string name, double var1,  double weight, float OSSS_val) {
     TH1F *hist;
-    if (name == "Data") {
-        hists_FakeShape_1d.at(categories.at(cat))[0]->Fill(var1, 1*OSSS_val);
-        hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, 1*OSSS_val);
-        hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, 1*OSSS_val);
-//    } else if (name == "W" || name == "VV" || name == "TT" || name == "EWKZ" ) {
-        } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+    if (name == "Data" || name == "W") {
+        hists_FakeShape_1d.at(categories.at(cat))[0]->Fill(var1, 1*OSSS_val*weight);
+        hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, 1*OSSS_val*weight);
+        hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, 1*OSSS_val*weight);
+        hists_FakeShape_1d.at(categories.at(cat))[3]->Fill(var1, 1*OSSS_val*weight);
+        hists_FakeShape_1d.at(categories.at(cat))[4]->Fill(var1, 1*OSSS_val*weight);
+        //    } else if ( name == "VV" || name == "TT" || name == "EWKZ" ) {
+    } else if (name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
         
-        hists_FakeShape_1d.at(categories.at(cat))[0]->Fill(var1, -1*OSSS_val);
-        hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*0.9);
-        hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*1.1); // these are buggy
-//        hists_FakeShape_1d.at(categories.at(cat))[0]->Fill(var1, -1*OSSS_val*weight);
-//        hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*weight*0.9);
-//        hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*weight*1.1);
-
+        //        hists_FakeShape_1d.at(categories.at(cat))[0]->Fill(var1, -1*OSSS_val);
+        //        hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*0.9);
+        //        hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*1.1); // these are buggy
+        hists_FakeShape_1d.at(categories.at(cat))[0]->Fill(var1, -1*OSSS_val*weight);
+        hists_FakeShape_1d.at(categories.at(cat))[1]->Fill(var1, -1*OSSS_val*weight*0.8);
+        hists_FakeShape_1d.at(categories.at(cat))[2]->Fill(var1, -1*OSSS_val*weight*1.2);
+        hists_FakeShape_1d.at(categories.at(cat))[3]->Fill(var1, -1*OSSS_val*weight*0.9);
+        hists_FakeShape_1d.at(categories.at(cat))[4]->Fill(var1, -1*OSSS_val*weight*1.2);
     }
 }
 void HistTool::fillQCD_Shape_emu(int cat, string name, double var1,double var2,  double weight, float OSSS_val) {
@@ -524,18 +531,18 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
             }
             
         }
-
+        
         if (fake_hist_shape_original->Integral() > 0)
-        fake_hist_shape->Scale(fake_hist_norm->Integral()/fake_hist_shape->Integral());
+            fake_hist_shape->Scale(fake_hist_norm->Integral()/fake_hist_shape->Integral());
         if (fake_hist_shape_original_up->Integral() > 0)
-        fake_hist_shape_Up->Scale(fake_hist_norm_Up->Integral()/fake_hist_shape_Up->Integral());
+            fake_hist_shape_Up->Scale(fake_hist_norm_Up->Integral()/fake_hist_shape_Up->Integral());
         if (fake_hist_shape_original_down->Integral() > 0)
-        fake_hist_shape_Down->Scale(fake_hist_norm_Down->Integral()/fake_hist_shape_Down->Integral());
+            fake_hist_shape_Down->Scale(fake_hist_norm_Down->Integral()/fake_hist_shape_Down->Integral());
         if (fake_hist_shape_original_fr_up->Integral() > 0)
-        fake_hist_shape_fr_Up->Scale(fake_hist_norm_fr_Up->Integral()/fake_hist_shape_fr_Up->Integral());
+            fake_hist_shape_fr_Up->Scale(fake_hist_norm_fr_Up->Integral()/fake_hist_shape_fr_Up->Integral());
         if (fake_hist_shape_original_fr_down->Integral() > 0)
-        fake_hist_shape_fr_Down->Scale(fake_hist_norm_fr_Down->Integral()/fake_hist_shape_fr_Down->Integral());
-    
+            fake_hist_shape_fr_Down->Scale(fake_hist_norm_fr_Down->Integral()/fake_hist_shape_fr_Down->Integral());
+        
         
         
         //        //                // ADD protection

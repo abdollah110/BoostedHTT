@@ -276,6 +276,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 // qcd shape
                 if (SS != 0 && !lep2IsoPassV){
                     fillQCD_Shape(i, name, NN_out_vec[i],  weight, frValu / (1-frValu));
+//                    cout<<"i, name, NN_out_vec[i],  weight, frValu / (1-frValu) NN_disc  NN_disc_ZTT  NN_disc_QCD "<< NN_disc <<" "<< NN_disc_ZTT <<" "<< NN_disc_QCD<<" " <<i <<" "<< name<<" "<< NN_out_vec[i]<<" "<<  weight<<" "<< frValu / (1-frValu)<<"\n";
                     fillQCD_Shape_fr_up(i, name, NN_out_vec[i],  weight, frValuUncUp / (1-frValuUncUp));
                     fillQCD_Shape_fr_down(i, name, NN_out_vec[i],  weight, frValuUncDown / (1-frValuUncDown));
                 }
