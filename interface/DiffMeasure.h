@@ -48,6 +48,8 @@ public:
     void fillQCD_Norm_fr_up(int, string, double, double,float);
     void fillQCD_Norm_fr_down(int, string, double, double,float);
     void fillQCD_Shape(int, string, double, double,float);
+    void fillQCD_Norm_emu(int, string, double, double,float);
+    void fillQCD_Shape_emu(int, string, double, double,float);
     void fillQCD_Shape_fr_up(int, string, double, double,float);
     void fillQCD_Shape_fr_down(int, string, double, double,float);
     void fillQCD_OS_CR(int, string, double, double);
@@ -256,6 +258,47 @@ void HistTool::fillQCD_Shape_fr_down(int cat, string name, double var1,  double 
     }
 }
 
+// for the emu
+void HistTool::fillQCD_Norm_emu(int cat, string name, double var1,  double weight, float OSSS_val) {
+    TH1F *hist;
+    if (name == "Data") {
+        fakes_1d_norm.at(cat)->Fill(var1, 1*OSSS_val);
+        fakes_1d_norm_Up.at(cat)->Fill(var1, 1*OSSS_val);
+        fakes_1d_norm_Down.at(cat)->Fill(var1, 1*OSSS_val);
+//        hists_FakeNorm_1d.at(categories.at(cat))[3]->Fill(var1, 1*OSSS_val);
+//        hists_FakeNorm_1d.at(categories.at(cat))[4]->Fill(var1, 1*OSSS_val);
+    } else if (name == "W" || name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) {
+        //            } else if ( name == "ZTT" || name == "VV" || name == "TT"  || name == "EWKZ" ) { // bug found in January 2023 W should be excluded
+        fakes_1d_norm.at(cat)->Fill(var1, -1*OSSS_val*weight);
+        fakes_1d_norm_Up.at(cat)->Fill(var1, -1*OSSS_val*weight*0.8);
+        fakes_1d_norm_Down.at(cat)->Fill(var1, -1*OSSS_val*weight*1.2);
+//        hists_FakeNorm_1d.at(categories.at(cat))[3]->Fill(var1, -1*OSSS_val*weight*0.9);
+//        hists_FakeNorm_1d.at(categories.at(cat))[4]->Fill(var1, -1*OSSS_val*weight*1.1);
+    }
+}
+
+// This is Loose SS region [To get the shape of QCD from SS and loose region]
+void HistTool::fillQCD_Shape_emu(int cat, string name, double var1,  double weight, float OSSS_val) {
+    TH1F *hist;
+    if (name == "Data" || name == "W") {
+        fakes_1d_shape.at(cat)->Fill(var1, 1*OSSS_val*weight);
+        fakes_1d_shape_Up.at(cat)->Fill(var1, 1*OSSS_val*weight);
+        fakes_1d_shape_Down.at(cat)->Fill(var1, 1*OSSS_val*weight);
+//        hists_FakeShape_1d.at(categories.at(cat))[3]->Fill(var1, 1*OSSS_val*weight);
+//        hists_FakeShape_1d.at(categories.at(cat))[4]->Fill(var1, 1*OSSS_val*weight);
+        //    } else if ( name == "VV" || name == "TT" || name == "EWKZ" ) {
+    } else if (name == "ZTT" || name == "VV" || name == "TT" || name == "EWKZ" ) {
+        
+        //        fakes_1d_shape.at(cat)->Fill(var1, -1*OSSS_val);
+        //        fakes_1d_shape_Up.at(cat)->Fill(var1, -1*OSSS_val*0.9);
+        //        fakes_1d_shape_Down.at(cat)->Fill(var1, -1*OSSS_val*1.1); // these are buggy
+        fakes_1d_shape.at(cat)->Fill(var1, -1*OSSS_val*weight);
+        fakes_1d_shape_Up.at(cat)->Fill(var1, -1*OSSS_val*weight*0.8);
+        fakes_1d_shape_Down.at(cat)->Fill(var1, -1*OSSS_val*weight*1.2);
+//        hists_FakeShape_1d.at(categories.at(cat))[3]->Fill(var1, -1*OSSS_val*weight*0.9);
+//        hists_FakeShape_1d.at(categories.at(cat))[4]->Fill(var1, -1*OSSS_val*weight*1.2);
+    }
+}
 
 
 // Derive OS/SS ratio

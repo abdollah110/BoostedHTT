@@ -244,13 +244,24 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             weight *=lep1CorWeight;  // FIXME Removed to see the effects
             
             float lep2Ptval=lep2Pt_;
-            if (lep2Ptval > 200) lep2Ptval=200;
+//            if (lep2Ptval > 200) lep2Ptval=200;
+//            float frValu2 = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
+//            float frValuErr = FRhist->GetBinError(FRhist->GetXaxis()->FindBin(lep2Ptval));
+//            float frValuUncUp=frValu2+frValuErr;
+//            float frValuUncDown=frValu2-frValuErr;
+            
             float frValu2 = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
             float frValuErr = FRhist->GetBinError(FRhist->GetXaxis()->FindBin(lep2Ptval));
             float frValuUncUp=frValu2+frValuErr;
             float frValuUncDown=frValu2-frValuErr;
-            
-            
+            if (lep2Ptval > 200) {
+                frValu2 = FitPar;
+                frValuUncUp=frValu2+ 2*FitParErr + (lep2Ptval-200)*(5*FitParErr)/300;
+                frValuUncDown=frValu2- 2*FitParErr - (lep2Ptval-200)*(5*FitParErr)/300;
+            }
+
+
+
             //            float lep1Ptval=lep1Pt_;
             //            if (lep1Ptval > 200) lep1Ptval=200;
             //            float frValu2 = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep1Ptval));

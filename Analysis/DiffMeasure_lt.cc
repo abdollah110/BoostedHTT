@@ -258,10 +258,10 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 frValuUncDown=frValu- 2*FitParErr - (lep2Ptval-200)*(5*FitParErr)/300;
             }
             
-            float frValu = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
-            float frValuErr = FRhist->GetBinError(FRhist->GetXaxis()->FindBin(lep2Ptval));
-            float frValuUncUp=frValu+frValuErr;
-            float frValuUncDown=frValu-frValuErr;
+//            float frValu = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
+//            float frValuErr = FRhist->GetBinError(FRhist->GetXaxis()->FindBin(lep2Ptval));
+//            float frValuUncUp=frValu+frValuErr;
+//            float frValuUncDown=frValu-frValuErr;
             
             vbf_var1 =ObsName[var_name];
             
