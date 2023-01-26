@@ -17,7 +17,7 @@ scaled_vars = [
                ]
 
 
-def apply_selection(df):
+def apply_selection(df,name):
     """Apply basic preselection and clean some variables."""
     # preselection
     slim_df = df
@@ -33,7 +33,7 @@ def apply_selection(df):
 #    slim_df = slim_df[(slim_df['costheta1'] > -1) & (slim_df['costheta1'] < 1)]
 #    slim_df = slim_df[(slim_df['costheta2'] > -1) & (slim_df['costheta2'] < 1)]
 #    slim_df = slim_df[(slim_df['costhetastar'] > -1) & (slim_df['costhetastar'] < 1)]
-
+    if 'ztt' in name: slim_df = slim_df[(slim_df['st'].astype(int)%2> 0)]  # Get the half of the events only for ZTT
     return slim_df
 
 
@@ -125,7 +125,7 @@ def loadFile(ifile):
     input_df = read_root(ifile, columns=columns)
     input_df['idx'] = np.array([i for i in xrange(0, len(input_df))])
     
-    slim_df = apply_selection(input_df)
+    slim_df = apply_selection(input_df,ifile.lower())
     
     slim_df = slim_df.dropna(axis=0, how='any')  # drop events with a NaN
     # get variables needed for selection (so they aren't normalized)
