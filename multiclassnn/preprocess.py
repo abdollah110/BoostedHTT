@@ -33,7 +33,8 @@ def apply_selection(df,name):
 #    slim_df = slim_df[(slim_df['costheta1'] > -1) & (slim_df['costheta1'] < 1)]
 #    slim_df = slim_df[(slim_df['costheta2'] > -1) & (slim_df['costheta2'] < 1)]
 #    slim_df = slim_df[(slim_df['costhetastar'] > -1) & (slim_df['costhetastar'] < 1)]
-    if 'ztt' in name: slim_df = slim_df[(slim_df['st'].astype(int)%2> 0)]  # Get the half of the events only for ZTT
+#    if 'ztt' in name: slim_df = slim_df[(slim_df['st'].astype(int)%2> 0)]  # Get the half of the events only for ZTT
+    if 'ztt' in name: slim_df = slim_df[(slim_df['st'].astype(int)%2< 1)]  # Get the half of the events only for ZTT
     return slim_df
 
 
