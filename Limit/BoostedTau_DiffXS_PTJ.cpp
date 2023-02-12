@@ -98,13 +98,13 @@ int main(int argc, char** argv) {
     
 //    VString chns = { "mt"};
     VString chns = { "mt","et","em","tt"};
-//    VString chns = { "mt","et","tt"};
 //VString  PT_BIN = { "_bin1","_bin2","_bin3","_bin4"};
     
     map<string, string> input_folders = {
         {"mt", "."},
         {"et", "."},
         {"em", "."},
+//        {"me", "."},
         {"tt", "."}
     };
     
@@ -112,18 +112,13 @@ int main(int argc, char** argv) {
     bkg_procs["mt"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
     bkg_procs["et"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
     bkg_procs["em"] = {"QCD","W", "TT","VV","ZTT","OutsideAcceptance"};
+//    bkg_procs["me"] = {"W", "TT","VV","ZTT"};
     bkg_procs["tt"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
     
-//    VString sig_procs = {"ggH_PTH_0_350","ggH_PTH_350_450","ggH_PTH_450_600","ggH_PTH_600_800","ggH_PTH_GT800","XH_PTH_0_350","XH_PTH_350_450","XH_PTH_450_600","XH_PTH_600_800","XH_PTH_GT800"};
-//    VString ggH_procs = {"ggH_PTH_0_350","ggH_PTH_350_450","ggH_PTH_450_600","ggH_PTH_600_800","ggH_PTH_GT800"};
-
-    VString sig_procs = {"ggH_PTH_0_350","ggH_PTH_350_450","ggH_PTH_450_600","ggH_PTH_GT600","XH_PTH_0_350","XH_PTH_350_450","XH_PTH_450_600","XH_PTH_GT600"};
-    VString ggH_procs = {"ggH_PTH_0_350","ggH_PTH_350_450","ggH_PTH_450_600","ggH_PTH_GT600"};
-//    VString sig_procs = {"ggH_PTH_0_450","ggH_PTH_450_600","ggH_PTH_GT600","XH_PTH_0_450","XH_PTH_450_600","XH_PTH_GT600"};
-//    VString ggH_procs = {"ggH_PTH_0_450","ggH_PTH_450_600","ggH_PTH_GT600"};
-//    VString sig_procs = {"ggH_PTH_450_600","ggH_PTH_GT600","XH_PTH_450_600","XH_PTH_GT600"};
-//    VString ggH_procs = {"ggH_PTH_450_600","ggH_PTH_GT600"};
-
+//    VString sig_procs = {"ggH_PTJ_0_350","ggH_PTJ_350_450","ggH_PTJ_450_600","ggH_PTJ_600_800","ggH_PTJ_GT800","XH_PTJ_0_350","XH_PTJ_350_450","XH_PTJ_450_600","XH_PTJ_600_800","XH_PTJ_GT800"};
+//    VString ggH_procs = {"ggH_PTJ_0_350","ggH_PTJ_350_450","ggH_PTJ_450_600","ggH_PTJ_600_800","ggH_PTJ_GT800"};
+    VString sig_procs = {"ggH_PTJ_0_350","ggH_PTJ_350_450","ggH_PTJ_450_600","ggH_PTJ_GT600","XH_PTJ_0_350","XH_PTJ_350_450","XH_PTJ_450_600","XH_PTJ_GT600"};
+    VString ggH_procs = {"ggH_PTJ_0_350","ggH_PTJ_350_450","ggH_PTJ_450_600","ggH_PTJ_GT600"};
 
 //    VString sig_procs = {"H125"};
     map<string, Categories> cats;
@@ -133,54 +128,29 @@ int main(int argc, char** argv) {
             
 
     cats["mt"] = {
-        {1, "Htt_PTH_0_350_cat"+year+"mt"},
-        {2, "Htt_PTH_350_450_cat"+year+"mt"},
-        {3, "Htt_PTH_450_600_cat"+year+"mt"},
-        {4, "Htt_PTH_GT600_cat"+year+"mt"},
+        {1, "Htt_PTJ_0_350_cat"+year+"mt"},
+        {2, "Htt_PTJ_350_450_cat"+year+"mt"},
+        {3, "Htt_PTJ_450_600_cat"+year+"mt"},
+        {4, "Htt_PTJ_GT600_cat"+year+"mt"},
     };
     cats["et"] = {
-        {1, "Htt_PTH_0_350_cat"+year+"et"},
-        {2, "Htt_PTH_350_450_cat"+year+"et"},
-        {3, "Htt_PTH_450_600_cat"+year+"et"},
-        {4, "Htt_PTH_GT600_cat"+year+"et"},
+        {1, "Htt_PTJ_0_350_cat"+year+"et"},
+        {2, "Htt_PTJ_350_450_cat"+year+"et"},
+        {3, "Htt_PTJ_450_600_cat"+year+"et"},
+        {4, "Htt_PTJ_GT600_cat"+year+"et"},
     };
     cats["tt"] = {
-        {1, "Htt_PTH_0_350_cat"+year+"tt"},
-        {2, "Htt_PTH_350_450_cat"+year+"tt"},
-        {3, "Htt_PTH_450_600_cat"+year+"tt"},
-        {4, "Htt_PTH_GT600_cat"+year+"tt"},
+        {1, "Htt_PTJ_0_350_cat"+year+"tt"},
+        {2, "Htt_PTJ_350_450_cat"+year+"tt"},
+        {3, "Htt_PTJ_450_600_cat"+year+"tt"},
+        {4, "Htt_PTJ_GT600_cat"+year+"tt"},
     };
     cats["em"] = {
-        {1, "Htt_PTH_0_350_cat"+year+"em"},
-        {2, "Htt_PTH_350_450_cat"+year+"em"},
-        {3, "Htt_PTH_450_600_cat"+year+"em"},
-        {4, "Htt_PTH_GT600_cat"+year+"em"},
+        {1, "Htt_PTJ_0_350_cat"+year+"em"},
+        {2, "Htt_PTJ_350_450_cat"+year+"em"},
+        {3, "Htt_PTJ_450_600_cat"+year+"em"},
+        {4, "Htt_PTJ_GT600_cat"+year+"em"},
     };
-
-//    cats["mt"] = {
-//        {1, "Htt_PTH_450_600_cat"+year+"mt"},
-//        {2, "Htt_PTH_GT600_cat"+year+"mt"},
-//    };
-//    cats["et"] = {
-//        {1, "Htt_PTH_450_600_cat"+year+"et"},
-//        {2, "Htt_PTH_GT600_cat"+year+"et"},
-//    };
-//    cats["tt"] = {
-//        {1, "Htt_PTH_450_600_cat"+year+"tt"},
-//        {2, "Htt_PTH_GT600_cat"+year+"tt"},
-//    };
-//    cats["mt"] = {
-//        {1, "Htt_PTH_450_600_cat"+year+"mt"},
-//        {2, "Htt_PTH_GT600_cat"+year+"mt"},
-//    };
-//    cats["et"] = {
-//        {1, "Htt_PTH_450_600_cat"+year+"et"},
-//        {2, "Htt_PTH_GT600_cat"+year+"et"},
-//    };
-//    cats["tt"] = {
-//        {1, "Htt_PTH_450_600_cat"+year+"tt"},
-//        {2, "Htt_PTH_GT600_cat"+year+"tt"},
-//    };
 
 
 
@@ -296,7 +266,6 @@ int main(int argc, char** argv) {
     cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT","OutsideAcceptance"}})).channel({"et","mt","tt"})
     .AddSyst(cb, "CMS_eff_tboost"+year, "lnN", SystMap<era>::init({"13TeV"}, 1.10));
 
-
     //         electron
     cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT","OutsideAcceptance"}})).channel({"em"})
     .AddSyst(cb, "CMS_eff_e_em"+year, "lnN", SystMap<era>::init({"13TeV"}, 1.02));
@@ -367,13 +336,13 @@ int main(int argc, char** argv) {
     cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}}))
     .AddSyst(cb, "CMS_scale_j"+year, "shape", SystMap<>::init(1.00));
 
-
     cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}}))
     .AddSyst(cb, "CMS_scale_met_unclustered"+year, "shape", SystMap<>::init(1.00));
 
 //
 //Tau Energy Scale
 //
+
 
     cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT","OutsideAcceptance"}})).channel({"mt","et","tt"})
         .AddSyst(cb, "CMS_scale_t_1prong1pizero"+year, "shape", SystMap<>::init(1.00));
@@ -383,7 +352,6 @@ int main(int argc, char** argv) {
 
     cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT","OutsideAcceptance"}})).channel({"mt","et","tt"})
         .AddSyst(cb, "CMS_scale_t_3prong"+year, "shape", SystMap<>::init(1.00));
-
 
 
     cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT","OutsideAcceptance"}})).channel({"tt"})
@@ -543,6 +511,6 @@ int main(int argc, char** argv) {
 }
 
 
-//text2workspace.py -P HiggsAnalysis.CombinedLimit.PhysicsModel:multiSignalModel --PO 'map=.*/.*H.*PTH_0_350.*:r_H_PTH_0_350[1,-25,25]' --PO 'map=.*/.*H.*PTH_350_450.*:r_H_PTH_350_450[1,-25,25]' --PO 'map=.*/.*H.*PTH_450_600.*:r_H_PTH_450_600[1,-25,25]' --PO 'map=.*/.*H.*PTH_G.600.*:r_H_PTH_GT600[1,-25,25]' diff_1.txt -o Workspace_pth.root -m 125
+//text2workspace.py -P HiggsAnalysis.CombinedLimit.PhysicsModel:multiSignalModel --PO 'map=.*/.*H.*PTJ_0_350.*:r_H_PTJ_0_350[1,-25,25]' --PO 'map=.*/.*H.*PTJ_350_450.*:r_H_PTJ_350_450[1,-25,25]' --PO 'map=.*/.*H.*PTJ_450_600.*:r_H_PTJ_450_600[1,-25,25]' --PO 'map=.*/.*H.*PTJ_G.600.*:r_H_PTJ_GT600[1,-25,25]' diff_1.txt -o Workspace_PTJ.root -m 125
 
-//combine Workspace_pth.root --robustFit=1 --preFitValue=1. --X-rtd MINIMIZER_analytic --algo=singles --cl=0.68 --setParameters r_H_PTH_0_350=1.0,r_H_PTH_350_450=1.0,r_H_PTH_450_600=1.0,r_H_PTH_GT600=1.0 --setParameterRanges r_H_PTH_0_350=-15,15:r_H_PTH_350_450=-15,15:r_H_PTH_450_600=-15,15:r_H_PTH_GT450=-15,15 --floatOtherPOIs=1 -M MultiDimFit -n test_param0 -m 125 --cminDefaultMinimizerStrategy=0
+//combine Workspace_PTJ.root --robustFit=1 --preFitValue=1. --X-rtd MINIMIZER_analytic --algo=singles --cl=0.68 --setParameters r_H_PTJ_0_350=1.0,r_H_PTJ_350_450=1.0,r_H_PTJ_450_600=1.0,r_H_PTJ_GT600=1.0 --setParameterRanges r_H_PTJ_0_350=-15,15:r_H_PTJ_350_450=-15,15:r_H_PTJ_450_600=-15,15:r_H_PTJ_GT450=-15,15 --floatOtherPOIs=1 -M MultiDimFit -n test_param0 -m 125 --cminDefaultMinimizerStrategy=0

@@ -71,7 +71,6 @@ int main(int argc, char** argv) {
     
     //    VString chns = { "mt_qcd","et","em","me","tt"};
     VString chns = { "mt_qcd","mt_signal","mt_ztt","et_qcd","et_signal","et_ztt","em_qcd","em_signal","em_ztt","tt_qcd","tt_signal","tt_ztt"};
-    
     map<string, string> input_folders = {
         {"mt_qcd", "."},
         {"mt_signal", "."},
@@ -237,18 +236,9 @@ int main(int argc, char** argv) {
         cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).AddSyst(cb, "lumi_13TeV_1718", "lnN", SystMap<era>::init({"13TeV"}, 1.002));
     }
     
-    //        tau
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat,tt_cat}))
-    //    .AddSyst(cb, "CMS_trg_t", "lnN", SystMap<era>::init({"13TeV"}, 1.10)); // now it is shape-based
-    
-    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({et_cat}))
-        .AddSyst(cb, "CMS_eff_tboost_et"+year, "lnN", SystMap<era>::init({"13TeV"}, 1.10));
-    
-    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat}))
-        .AddSyst(cb, "CMS_eff_tboost_mt"+year, "lnN", SystMap<era>::init({"13TeV"}, 1.10));
-    
-    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({tt_cat}))
-        .AddSyst(cb, "CMS_eff_tboost_tt"+year, "lnN", SystMap<era>::init({"13TeV"}, 1.10));
+    // boosted tau
+    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat,et_cat,tt_cat}))
+        .AddSyst(cb, "CMS_eff_tboost"+year, "lnN", SystMap<era>::init({"13TeV"}, 1.10));
     
     
     //         electron
@@ -286,7 +276,6 @@ int main(int argc, char** argv) {
     cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({em_cat,mt_cat,et_cat}))
         .AddSyst(cb, "CMS_scale_b"+year, "lnN", SystMap<era>::init({"13TeV"}, 1.02));
     
-    //      JER
     
     cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}}))
         .AddSyst(cb, "CMS_res_j"+year, "lnN", SystMap<era>::init({"13TeV"}, 1.01));
@@ -302,54 +291,9 @@ int main(int argc, char** argv) {
     
     cb.cp().process({"W"})
         .AddSyst(cb, "CMS_htt_WNorm"+year, "lnN", SystMap<>::init(1.10));
-    
-    
-    // QCD norm uncertainties decorrelated across years channel and categories
-    cb.cp().process({"QCD"}).channel({"tt_signal"})
-        .AddSyst(cb, "CMS_htt_QCDNorm_tt_catsig"+year, "lnN", SystMap<>::init(1.20));
-    
-    cb.cp().process({"QCD"}).channel({"tt_ztt"})
-        .AddSyst(cb, "CMS_htt_QCDNorm_tt_catztt"+year, "lnN", SystMap<>::init(1.20));
-    
-    cb.cp().process({"QCD"}).channel({"tt_qcd"})
-        .AddSyst(cb, "CMS_htt_QCDNorm_tt_catqcd"+year, "lnN", SystMap<>::init(1.20));
-    
-    
-    cb.cp().process({"QCD"}).channel({"mt_signal"})
-        .AddSyst(cb, "CMS_htt_QCDNorm_mt_catsig"+year, "lnN", SystMap<>::init(1.20));
-    
-    cb.cp().process({"QCD"}).channel({"mt_signal"})
-        .AddSyst(cb, "CMS_htt_QCDNorm_mt_catztt"+year, "lnN", SystMap<>::init(1.20));
-    
-    cb.cp().process({"QCD"}).channel({"mt_signal"})
-        .AddSyst(cb, "CMS_htt_QCDNorm_mt_catqcd"+year, "lnN", SystMap<>::init(1.20));
-    
-    cb.cp().process({"QCD"}).channel({"et_signal"})
-        .AddSyst(cb, "CMS_htt_QCDNorm_et_catsig"+year, "lnN", SystMap<>::init(1.20));
-    
-    cb.cp().process({"QCD"}).channel({"et_signal"})
-        .AddSyst(cb, "CMS_htt_QCDNorm_et_catztt"+year, "lnN", SystMap<>::init(1.20));
-    
-    cb.cp().process({"QCD"}).channel({"et_signal"})
-        .AddSyst(cb, "CMS_htt_QCDNorm_et_catqcd"+year, "lnN", SystMap<>::init(1.20));
-    
-    
-    cb.cp().process({"QCD"}).channel({"em_signal"})
-        .AddSyst(cb, "CMS_htt_QCDNorm_em_catsig"+year, "lnN", SystMap<>::init(1.20));
-    
-    cb.cp().process({"QCD"}).channel({"em_ztt"})
-        .AddSyst(cb, "CMS_htt_QCDNorm_em_catztt"+year, "lnN", SystMap<>::init(1.20));
-    
-    cb.cp().process({"QCD"}).channel({"em_qcd"})
-        .AddSyst(cb, "CMS_htt_QCDNorm_em_catqcd"+year, "lnN", SystMap<>::init(1.20));
-    
-    
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({qcd_cat}))
-//        .AddSyst(cb, "Dummy_qcd"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({sig_cat}))
-//        .AddSyst(cb, "Dummy_sig"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({ztt_cat}))
-//        .AddSyst(cb, "Dummy_ztt"+year, "lnN", SystMap<>::init(1.20));
+        
+   // QCD norm uncertainties decorrelated across years channel and categories
+    cb.cp().process({"QCD"}) .AddSyst(cb, "CMS_htt_QCDNorm_"+year, "lnN", SystMap<>::init(1.20));    
     
     
     //####################################################################################
@@ -360,18 +304,18 @@ int main(int argc, char** argv) {
     //  Jet ES
     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}}))
-//        .AddSyst(cb, "CMS_scale_j"+year, "shape", SystMap<>::init(1.00));
+    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}}))
+        .AddSyst(cb, "CMS_scale_j"+year, "shape", SystMap<>::init(1.00));
     
     
-        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({qcd_cat}))
-            .AddSyst(cb, "CMS_scale_j_catqcd"+year, "shape", SystMap<>::init(1.00));
-    
-        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({sig_cat}))
-            .AddSyst(cb, "CMS_scale_j_catsig"+year, "shape", SystMap<>::init(1.00));
-    
-        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({ztt_cat}))
-            .AddSyst(cb, "CMS_scale_j_catztt"+year, "shape", SystMap<>::init(1.00));
+    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({qcd_cat}))
+    //        .AddSyst(cb, "CMS_scale_j_catqcd"+year, "shape", SystMap<>::init(1.00));
+    //
+    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({sig_cat}))
+    //        .AddSyst(cb, "CMS_scale_j_catsig"+year, "shape", SystMap<>::init(1.00));
+    //
+    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({ztt_cat}))
+    //        .AddSyst(cb, "CMS_scale_j_catztt"+year, "shape", SystMap<>::init(1.00));
     
     
     
@@ -379,197 +323,30 @@ int main(int argc, char** argv) {
     //  MET ES
     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    //
-    ////    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}}))
-    ////    .AddSyst(cb, "MissingEn_JES", "shape", SystMap<>::init(1.00));
-    //
-    
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}}))
-//        .AddSyst(cb, "CMS_scale_met_unclustered"+year, "shape", SystMap<>::init(1.00));
-    
-        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({qcd_cat}))
-            .AddSyst(cb, "CMS_scale_met_unclustered_catqcd"+year, "shape", SystMap<>::init(1.00));
-    
-        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({sig_cat}))
-            .AddSyst(cb, "CMS_scale_met_unclustered_catsig"+year, "shape", SystMap<>::init(1.00));
-    
-        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({ztt_cat}))
-            .AddSyst(cb, "CMS_scale_met_unclustered_catztt"+year, "shape", SystMap<>::init(1.00));
-    
-    
-    
+    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}}))
+        .AddSyst(cb, "CMS_scale_met_unclustered"+year, "shape", SystMap<>::init(1.00));
     
     
     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     //  Tau ES
     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
+  
+        cb.cp().process(ch::JoinStr({sig_procs, { "TT","VV","ZTT"}})).channel(ch::JoinStr({tt_cat,mt_cat,et_cat}))
+            .AddSyst(cb, "CMS_scale_t_1prong1pizero"+year, "shape", SystMap<>::init(1.00));
     
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"tt_ztt"})
-    //        .AddSyst(cb, "CMS_scale_t_1prong1pizero_tt_catztt"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"tt_ztt"})
-    //        .AddSyst(cb, "CMS_scale_t_1prong_tt_catztt"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"tt_ztt"})
-    //        .AddSyst(cb, "CMS_scale_t_3prong_tt_catztt"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"mt_ztt"})
-    //        .AddSyst(cb, "CMS_scale_t_1prong1pizero_mt_catztt"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"mt_ztt"})
-    //        .AddSyst(cb, "CMS_scale_t_1prong_mt_catztt"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"mt_ztt"})
-    //        .AddSyst(cb, "CMS_scale_t_3prong_mt_catztt"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"et_ztt"})
-    //        .AddSyst(cb, "CMS_scale_t_1prong1pizero_et_catztt"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"et_ztt"})
-    //        .AddSyst(cb, "CMS_scale_t_1prong_et_catztt"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"et_ztt"})
-    //        .AddSyst(cb, "CMS_scale_t_3prong_et_catztt"+year, "shape", SystMap<>::init(1.00));
-    //
-    //
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"tt_qcd"})
-    //        .AddSyst(cb, "CMS_scale_t_1prong1pizero_tt_catqcd"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"tt_qcd"})
-    //        .AddSyst(cb, "CMS_scale_t_1prong_tt_catqcd"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"tt_qcd"})
-    //        .AddSyst(cb, "CMS_scale_t_3prong_tt_catqcd"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"mt_qcd"})
-    //        .AddSyst(cb, "CMS_scale_t_1prong1pizero_mt_catqcd"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"mt_qcd"})
-    //        .AddSyst(cb, "CMS_scale_t_1prong_mt_catqcd"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"mt_qcd"})
-    //        .AddSyst(cb, "CMS_scale_t_3prong_mt_catqcd"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"et_qcd"})
-    //        .AddSyst(cb, "CMS_scale_t_1prong1pizero_et_catqcd"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"et_qcd"})
-    //        .AddSyst(cb, "CMS_scale_t_1prong_et_catqcd"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"et_qcd"})
-    //        .AddSyst(cb, "CMS_scale_t_3prong_et_catqcd"+year, "shape", SystMap<>::init(1.00));
-    //
-    //
-    //
-    //
-    //
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"tt_signal"})
-    //        .AddSyst(cb, "CMS_scale_t_1prong1pizero_tt_catsig"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"tt_signal"})
-    //        .AddSyst(cb, "CMS_scale_t_1prong_tt_catsig"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"tt_signal"})
-    //        .AddSyst(cb, "CMS_scale_t_3prong_tt_catsig"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"mt_signal"})
-    //        .AddSyst(cb, "CMS_scale_t_1prong1pizero_mt_catsig"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"mt_signal"})
-    //        .AddSyst(cb, "CMS_scale_t_1prong_mt_catsig"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"mt_signal"})
-    //        .AddSyst(cb, "CMS_scale_t_3prong_mt_catsig"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"et_signal"})
-    //        .AddSyst(cb, "CMS_scale_t_1prong1pizero_et_catsig"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"et_signal"})
-    //        .AddSyst(cb, "CMS_scale_t_1prong_et_catsig"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel({"et_signal"})
-    //        .AddSyst(cb, "CMS_scale_t_3prong_et_catsig"+year, "shape", SystMap<>::init(1.00));
-    //
+        cb.cp().process(ch::JoinStr({sig_procs, { "TT","VV","ZTT"}})).channel(ch::JoinStr({tt_cat,mt_cat,et_cat}))
+            .AddSyst(cb, "CMS_scale_t_1prong"+year, "shape", SystMap<>::init(1.00));
     
+        cb.cp().process(ch::JoinStr({sig_procs, { "TT","VV","ZTT"}})).channel(ch::JoinStr({tt_cat,mt_cat,et_cat}))
+            .AddSyst(cb, "CMS_scale_t_3prong"+year, "shape", SystMap<>::init(1.00));
     
-    
-    
-    //
-    //
-    //
-        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({ztt_cat_tau}))
-            .AddSyst(cb, "CMS_scale_t_1prong1pizero_catztt"+year, "shape", SystMap<>::init(1.00));
-    
-        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({ztt_cat_tau}))
-            .AddSyst(cb, "CMS_scale_t_1prong_catztt"+year, "shape", SystMap<>::init(1.00));
-    
-        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({ztt_cat_tau}))
-            .AddSyst(cb, "CMS_scale_t_3prong_catztt"+year, "shape", SystMap<>::init(1.00));
-    
-        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({qcd_cat_tau}))
-            .AddSyst(cb, "CMS_scale_t_1prong1pizero_catqcd"+year, "shape", SystMap<>::init(1.00));
-    
-        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({qcd_cat_tau}))
-            .AddSyst(cb, "CMS_scale_t_1prong_catqcd"+year, "shape", SystMap<>::init(1.00));
-    
-        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({qcd_cat_tau}))
-            .AddSyst(cb, "CMS_scale_t_3prong_catqcd"+year, "shape", SystMap<>::init(1.00));
-    
-        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({sig_cat_tau}))
-            .AddSyst(cb, "CMS_scale_t_1prong1pizero_catsig"+year, "shape", SystMap<>::init(1.00));
-    
-        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({sig_cat_tau}))
-            .AddSyst(cb, "CMS_scale_t_1prong_catsig"+year, "shape", SystMap<>::init(1.00));
-    
-        cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({sig_cat_tau}))
-            .AddSyst(cb, "CMS_scale_t_3prong_catsig"+year, "shape", SystMap<>::init(1.00));
-    
-    
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({tt_cat,mt_cat,et_cat}))
-    //        .AddSyst(cb, "CMS_scale_t_1prong1pizero"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({tt_cat,mt_cat,et_cat}))
-    //        .AddSyst(cb, "CMS_scale_t_1prong"+year, "shape", SystMap<>::init(1.00));
-    //
-    //    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({tt_cat,mt_cat,et_cat}))
-    //        .AddSyst(cb, "CMS_scale_t_3prong"+year, "shape", SystMap<>::init(1.00));
-    
-    
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat}))
-//        .AddSyst(cb, "CMS_scale_t_1prong1pizero_mt"+year, "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat}))
-//        .AddSyst(cb, "CMS_scale_t_1prong_mt"+year, "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat}))
-//        .AddSyst(cb, "CMS_scale_t_3prong_mt"+year, "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({et_cat}))
-//        .AddSyst(cb, "CMS_scale_t_1prong1pizero_et"+year, "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({et_cat}))
-//        .AddSyst(cb, "CMS_scale_t_1prong_et"+year, "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({et_cat}))
-//        .AddSyst(cb, "CMS_scale_t_3prong_et"+year, "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({tt_cat}))
-//        .AddSyst(cb, "CMS_scale_t_1prong1pizero_tt"+year, "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({tt_cat}))
-//        .AddSyst(cb, "CMS_scale_t_1prong_tt"+year, "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({tt_cat}))
-//        .AddSyst(cb, "CMS_scale_t_3prong_tt"+year, "shape", SystMap<>::init(1.00));
     
     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     //  Tau trigger
     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT"}})).channel(ch::JoinStr({tt_cat}))
+    cb.cp().process(ch::JoinStr({sig_procs, { "TT","VV","ZTT"}})).channel(ch::JoinStr({tt_cat}))
         .AddSyst(cb, "CMS_trig_tt"+year, "shape", SystMap<>::init(1.00));
     
     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -666,9 +443,16 @@ int main(int argc, char** argv) {
         .AddSyst(cb, "TTQCDScale_catsig"+year, "shape", SystMap<>::init(1.00));
 
 
+//    cb.cp().process({"ZTT"}).channel(ch::JoinStr({qcd_cat}))
+//        .AddSyst(cb, "NNTraining_catqcd", "lnN", SystMap<era>::init({"13TeV"}, 1.1));
+//
+//    cb.cp().process({"ZTT"}).channel(ch::JoinStr({ztt_cat}))
+//        .AddSyst(cb, "NNTraining_catztt", "lnN", SystMap<era>::init({"13TeV"}, 1.1));
+//
+//    cb.cp().process({"ZTT"}).channel(ch::JoinStr({sig_cat}))
+//        .AddSyst(cb, "NNTraining_catsig", "lnN", SystMap<era>::init({"13TeV"}, 1.1));
 
-    //    }
-    
+
     //    ####################################################################################
     //     Theorethical systematics
     //    ####################################################################################
