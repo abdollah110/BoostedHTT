@@ -160,7 +160,7 @@ int main(int argc, char* argv[]) {
     bool PassTrigger_20;
     bool PassTrigger_21;
     bool PassTrigger_22;
-    int nbjet, gen_matched1_, gen_matched2_,gen_matched1, gen_matched2;
+    int nbjet, gen_matched1_, gen_matched2_,gen_matched1, gen_matched2, gen_nJet;
 
     bool isGenTauSub_, isGenTauLead_;
     bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
@@ -700,6 +700,7 @@ int main(int argc, char* argv[]) {
         nbjet=numBJet;
         gen_higgs_pT = Rivet_higgsPt;
         gen_leadjet_pT = Rivet_j1pt;
+        gen_nJet = Rivet_nJets30;
         isGenTauSub_=isGenTauSub;
         isGenTauLead_=isGenTauLead;
         

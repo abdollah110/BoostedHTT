@@ -158,7 +158,7 @@ int main(int argc, char* argv[]) {
     float tmass,tmass2, ht,st,Met,FullWeight, dR_lep_lep, Metphi, higgs_pT, higgs_m, m_sv_, wtnom_zpt_weight, gen_higgs_pT,gen_leadjet_pT;
     float MuMatchedIsolation= -1; float EleMatchedIsolation =-1;
     float IsoLep1Value, IsoLep2Value, D_zeta;
-    int nbjet, gen_matched1_, gen_matched2_,gen_matched1, gen_matched2;
+    int nbjet, gen_matched1_, gen_matched2_,gen_matched1, gen_matched2, gen_nJet;
 
     bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
 
@@ -518,6 +518,7 @@ int main(int argc, char* argv[]) {
         nbjet= numBJet;
         gen_higgs_pT = Rivet_higgsPt;
         gen_leadjet_pT = Rivet_j1pt;
+        gen_nJet = Rivet_nJets30;
 
         //  fiducial info
         FidSelection fiducial = PassFoducial();
