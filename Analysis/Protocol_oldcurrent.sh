@@ -671,9 +671,9 @@ python autoplot_single.py -i Output/templates/mt2018_dR_lep_lep_test_fr_MB.root 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-python makeSubmissionPackage.py -x SkimerBoost_Differntial -n diff_2016_v8 -i InputSample_Diff_2016.txt -o /eos/uscms/store/user/abdollah/SkimBoostedH2/2016/Diff/v8_sys
-python makeSubmissionPackage.py -x SkimerBoost_Differntial -n diff_2017_v8 -i InputSample_Diff_2017.txt -o /eos/uscms/store/user/abdollah/SkimBoostedH2/2017/Diff/v8_sys
-python makeSubmissionPackage.py -x SkimerBoost_Differntial -n diff_2018_v8 -i InputSample_Diff_2018.txt -o /eos/uscms/store/user/abdollah/SkimBoostedH2/2018/Diff/v8_sys
+python makeSubmissionPackage.py -x SkimerBoost_Differntial -n diff_2016_v2 -i InputSample_Diff_2016.txt -o /eos/uscms/store/user/abdollah/SkimBoostedH3/2016/Diff/v2_sys
+python makeSubmissionPackage.py -x SkimerBoost_Differntial -n diff_2017_v2 -i InputSample_Diff_2017.txt -o /eos/uscms/store/user/abdollah/SkimBoostedH3/2017/Diff/v2_sys
+python makeSubmissionPackage.py -x SkimerBoost_Differntial -n diff_2018_v2 -i InputSample_Diff_2018.txt -o /eos/uscms/store/user/abdollah/SkimBoostedH3/2018/Diff/v2_sys
 
 
 #The first step is to run the SkimerBoost_Differntial.cc code on signal samples. This code is splitting the Higgs signal into different channels the outcome will be here:
@@ -683,9 +683,9 @@ python makeSubmissionPackage.py -x SkimerBoost_Differntial -n diff_2018_v8 -i In
 /eos/uscms/store/user/abdollah/SkimBoostedH3/2018/Diff/v2_sys/
 
 # NExt step is hadding these samples
-sh hadd_Differential.sh /eos/uscms/store/user/abdollah/SkimBoostedH2/2016/Diff/v7_sys/ 2016
-sh hadd_Differential.sh /eos/uscms/store/user/abdollah/SkimBoostedH2/2017/Diff/v7_sys/ 2017
-sh hadd_Differential.sh /eos/uscms/store/user/abdollah/SkimBoostedH2/2018/Diff/v7_sys/ 2018
+sh hadd_Differential.sh /eos/uscms/store/user/abdollah/SkimBoostedH3/2016/Diff/v2_sys/ 2016
+sh hadd_Differential.sh /eos/uscms/store/user/abdollah/SkimBoostedH3/2017/Diff/v2_sys/ 2017
+sh hadd_Differential.sh /eos/uscms/store/user/abdollah/SkimBoostedH3/2018/Diff/v2_sys/ 2018
 
 mv *125* AllHiggs_v3_sys
 #Now
@@ -768,7 +768,6 @@ python Draw_Sys_ScaleUnc_Diff.py -p Output/templates/Diff_Unblind_v2_higgs_pT  #
 #The last step is to add the sys file to the orginal datacards
 #This needs to be done at the lpc machine as there is an inconsistency between the root version in lpc machine and my laptop
 python Draw_Sys_AddScalePdf_To_DC_Diff.py -d Output/templates/Unblind_v2_higgs_pT_ -s Diff_Unblind_v2_higgs_pT  #V20_pdfscale are the directory with full-sys datacards and SysedFiles is directory with added pdf/scale datacards which is copied from my laptop
-python Draw_Sys_AddScalePdf_To_DC_Diff.py  -d Output/templates/Diff_XMass23_V2_LeadJet -s Output/templates/Diff_dr0p5_leadjet_pT_pdfscale_XMass23_V1
 
 
 # The output will be
@@ -1160,17 +1159,9 @@ rm all_0_350/higgsCombine_paramFit_Test_prop_binch19_bin9_QCD.MultiDimFit.mH125.
 
 
 # combined
- for i in all; do mkdir all$i ; cd all$i ;  combineCards.py ../*/125/*.txt > $i.txt ;  text2workspace.py -P HiggsAnalysis.CombinedLimit.PhysicsModel:multiSignalModel --PO 'map=.*/.*H.*PTH_0_350.*:r_H_PTH_0_350[1,-25,25]' --PO 'map=.*/.*H.*PTH_350_450.*:r_H_PTH_350_450[1,-25,25]' --PO 'map=.*/.*H.*PTH_450_600.*:r_H_PTH_450_600[1,-25,25]' --PO 'map=.*/.*H.*PTH_G.600.*:r_H_PTH_GT600[1,-25,25]' $i.txt -m 125 ; for j in r_H_PTH_0_350  r_H_PTH_350_450 r_H_PTH_450_600 r_H_PTH_GT600; do combine $i.root -m 125 -M MultiDimFit --redefineSignalPOIs r_H_PTH_0_350,r_H_PTH_350_450,r_H_PTH_450_600,r_H_PTH_GT600 --algo=grid -P $j --floatOtherPOIs 1 --cminDefaultMinimizerType Minuit2 --cminDefaultMinimizerStrategy 0 --cminDefaultMinimizerTolerance 0.1 ; mv higgsCombineTest.MultiDimFit.mH125.root  higgsCombineTest.MultiDimFit.mH125_${i}_${j}.root  ; done ; cd - ;  done
+ for i in all; do mkdir all$i ; cd all$i ;  combineCards.py ../*/125/*.txt > $i.txt ;  text2workspace.py -P HiggsAnalysis.CombinedLimit.PhysicsModel:multiSignalModel --PO 'map=.*/.*H.*PTH_0_350.*:r_H_PTH_0_350[1,-25,25]' --PO 'map=.*/.*H.*PTH_350_450.*:r_H_PTH_350_450[1,-25,25]' --PO 'map=.*/.*H.*PTH_450_600.*:r_H_PTH_450_600[1,-25,25]' --PO 'map=.*/.*H.*PTH_G.600.*:r_H_PTH_GT600[1,-25,25]' $i.txt -m 125 ; for j in r_H_PTH_0_350  r_H_PTH_350_450 r_H_PTH_450_600 r_H_PTH_GT600; do combine $i.root -m 125 -M MultiDimFit --redefineSignalPOIs r_H_PTH_0_350,r_H_PTH_350_450,r_H_PTH_450_600,r_H_PTH_GT600 --algo=grid -P $j --floatOtherPOIs 1 ; mv higgsCombineTest.MultiDimFit.mH125.root  higgsCombineTest.MultiDimFit.mH125_${i}_${j}.root  ; done ; cd - ;  done
 
-cd allall
-for j in r_H_PTH_0_350  r_H_PTH_350_450 r_H_PTH_450_600 r_H_PTH_GT600; do plot1DScan.py higgsCombineTest.MultiDimFit.mH125_all_${j}.root --POI $j ;  mv scan.pdf ${j}_scan.pdf; mv scan.txt ${j}_scan.txt; done;
-mkdir PDFTXT
-cp *pdf *txt PDFTXT/
 
-for i in all; do mkdir all$i ; cd all$i ;  combineCards.py ../*/125/*.txt > $i.txt ;  text2workspace.py -P HiggsAnalysis.CombinedLimit.PhysicsModel:multiSignalModel --PO 'map=.*/.*H.*PTJ_0_350.*:r_H_PTJ_0_350[1,-25,25]' --PO 'map=.*/.*H.*PTJ_350_450.*:r_H_PTJ_350_450[1,-25,25]' --PO 'map=.*/.*H.*PTJ_450_600.*:r_H_PTJ_450_600[1,-25,25]' --PO 'map=.*/.*H.*PTJ_G.600.*:r_H_PTJ_GT600[1,-25,25]' $i.txt -m 125 ; for j in r_H_PTJ_0_350  r_H_PTJ_350_450 r_H_PTJ_450_600 r_H_PTJ_GT600; do combine $i.root -m 125 -M MultiDimFit --redefineSignalPOIs r_H_PTJ_0_350,r_H_PTJ_350_450,r_H_PTJ_450_600,r_H_PTJ_GT600 --algo=grid -P $j --floatOtherPOIs 1 --cminDefaultMinimizerType Minuit2 --cminDefaultMinimizerStrategy 0 --cminDefaultMinimizerTolerance 0.1 ; mv higgsCombineTest.MultiDimFit.mH125.root  higgsCombineTest.MultiDimFit.mH125_${i}_${j}.root  ; done ; cd - ;  done
-
-cd allall
-for j in r_H_PTJ_0_350  r_H_PTJ_350_450 r_H_PTJ_450_600 r_H_PTJ_GT600; do plot1DScan.py higgsCombineTest.MultiDimFit.mH125_all_${j}.root --POI $j ;  mv scan.pdf ${j}_scan.pdf; mv scan.txt ${j}_scan.txt; done;
 
 
 
@@ -1436,7 +1427,6 @@ python QuickLimit_ReadRootFile.py V32_fixTESNew_13bin_Unblinding WithOverlap
 -rw-r--r--  1 abdollah  4894 Sep 13 14:14 OutReadFile_WithOverlap_V32_fixTESNew_13bin_Unblinding_ObsSig.root
 -rw-r--r--  1 abdollah  4905 Sep 13 14:14 OutReadFile_WithOverlap_V32_fixTESNew_13bin_Unblinding_ExpSig.root
 
-PostFitShapesFromWorkspace -w all.root -f fitDiagnosticsTest.root:fit_s --postfit  --print -d  all.txt -o postfit_shapes_all.root -m 125
 
 #postfit plotspost
 python Draw_POSTPREFIT_Boost_CMB.py V32_fixTESNew_13bin/postfit_shapes_all.root  HPT_0p8 inc
@@ -1617,40 +1607,3 @@ python drawGraph_muValue_DiffAnalysis_multiDim_fromtxt.py higssPt0p5 FITALL_mult
 python Draw_POSTPREFIT_Boost_CMB.py V1_Diff_hpt_dr0p5_noEmu_forPostFitPlots/postfit_shapes_all.root HPT_0p5 diff
 
 
-
-
-#============================
-#Comments from Andrea
-#============================
- Andrea_Validation $ for i in mt et em tt ; do for j in 2016 2017 2018; do for k in ZTT ggH125 VV TT ; do python NN_comparrer.py AndreaNNValidationRootFiles/${i}_${j}_runOnTrainHalf1 AndreaNNValidationRootFiles/${i}_${j}_runOnTrainHalf2 $k $i $j ; done ; done ; done
-
-
-
-
-
-#============================
-#Inclusive fiducial cross section
-#============================
-
-
-text2workspace.py -P HiggsAnalysis.CombinedLimit.FiducialPTHModel:fiducialPTH all.txt -o workspace_pth_fiducial.root -m 125
-combine workspace_pth_fiducial.root --robustFit=1 --preFitValue=1. --X-rtd MINIMIZER_analytic --algo=singles --cl=0.68 --setParameters mu_fid=1.0,rho_0_350=1.0,rho_350_450=1.0,rho_450_600=1.0  --setParameterRanges mu_fid=-1,2:rho_0_350=-15,15:rho_350_450=-15,15:rho_450_600=-15,15 --floatOtherPOIs=1 -M MultiDimFit -n test_param0 -m 125 --cminDefaultMinimizerStrategy=0
-
-
-
-combine workspace_pth_fiducial.root --robustFit=1 --preFitValue=1. --X-rtd MINIMIZER_analytic --algo=singles --cl=0.68 --setParameters mu_fid=1.0,rho_0_350=1.0,rho_350_450=1.0,rho_450_600=1.0 --setParameterRanges mu_fid=-1,2:rho_0_350=-15,15:rho_350_450=-15,15:rho_450_600=-15,15 --floatOtherPOIs=1 -M MultiDimFit -n test_param0 -m 125 --cminDefaultMinimizerStrategy=0
-
-#============================
-#Calculating correlation matrices
-#============================
-# First need to run the following files on
-process_trees_lt_fr
-process_trees_em
-process_trees_tt
-#To fill the 2D
-
-
-
-for i in em  tt; do for j in 2016 2017 2018 ; do ./process_trees_${i} -d ../V21_addgenJet_noSys/${j}_${i} --suf CorrMatrix_New -v NN_disc -b 20 0 1 ; done ; done
-for i in et  mt; do for j in 2016 2017 2018 ; do ./process_trees_lt_fr   -d ../V21_addgenJet_noSys/${j}_${i} --suf CorrMatrix_New -v NN_disc -b 20 0 1 ; done ; done
-for i in me; do for j in 2016 2017 2018 ; do ./process_trees_em -d ../V21_addgenJet_noSys/${j}_${i} --suf CorrMatrix_New -v NN_disc -b 20 0 1 ; done ; done
