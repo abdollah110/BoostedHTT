@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 #for i in NewV3/postfit_shapes_NewV3_201* ; do python Draw_POSTPREFIT_Boost.py $i test1; done
 #for i in em et mt tt; do for j in ztt signal qcd ; do hadd postfit_shapes_V12_newDMN_v2_rename_GIT_2020_${i}_${j}.root postfit_shapes_V12_newDMN_v2_rename_GIT_*_${i}_${j}.root ; done; done
+
+#python Draw_POSTPREFIT_Boost_CMB.py postfit_shapes_all_V32_fixTESNew_13bin.root All_13bin inc
+#python Draw_POSTPREFIT_Boost_CMB.py postfit_shapes_all_diff_V4.root SigIncluded diff
+
 import ROOT
 import sys
 import re
@@ -18,7 +22,6 @@ def add_lumi(year):
     lumi.SetTextSize(0.06)
     lumi.SetTextFont (   42 )
     if year==2016:
-#        lumi.AddText("36.3 fb^{-1} (13 TeV)")
         lumi.AddText("138 fb^{-1} (13 TeV)")
     elif year==2017:
         lumi.AddText("41.5 fb^{-1} (13 TeV)")
@@ -28,7 +31,6 @@ def add_lumi(year):
         lumi.AddText("138 fb^{-1} (13 TeV)")
     else :
         lumi.AddText(str(year))
-#    lumi.AddText("77.4 fb^{-1} (13 TeV)")
     return lumi
 
 def add_CMS():
@@ -68,7 +70,7 @@ def make_legend():
     
     return output
 
-def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
+def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat,TypeRun):
     MaxRange=200
     ROOT.gStyle.SetFrameLineWidth(3)
     ROOT.gStyle.SetLineWidth(3)
@@ -83,11 +85,8 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
 
     adapt=ROOT.gROOT.GetColor(12)
     new_idx=ROOT.gROOT.GetListOfColors().GetSize() + 1
-#    trans=ROOT.TColor(new_idx, adapt.GetRed(), adapt.GetGreen(),adapt.GetBlue(), "",0.5)
 
-#    categories=["MuTau_DiJet","MuTau_JetBJet"]
-#    ncat=
-
+    print  'categories are ',categoriy[0],categoriy[1],categoriy[2]
     Data=file.Get(categoriy[0]).Get("data_obs")
     Data1=file.Get(categoriy[1]).Get("data_obs")
     Data2=file.Get(categoriy[2]).Get("data_obs")
@@ -122,11 +121,8 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
         W.Add(W1)
         W.Add(W2)
         QCD.Add(W)
-#    if 'CR_' in categoriy: QCD=file.Get(categoriy).Get("W")
     QCD.Rebin(RB_)
 
-#    W=file.Get(categoriy).Get("W")
-#    W.Rebin(RB_)
 
     TT=file.Get(categoriy[1]).Get("TT")
     TT1=file.Get(categoriy[0]).Get("TT")
@@ -135,9 +131,6 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
     TT.Add(TT2)
     TT.Rebin(RB_)
 
-#    ZJ=file.Get(categoriy).Get("ZJ")
-#    ZJ.Rebin(RB_)
-    
     VV=file.Get(categoriy[0]).Get("VV")
     VV1=file.Get(categoriy[1]).Get("VV")
     VV2=file.Get(categoriy[2]).Get("VV")
@@ -155,16 +148,22 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
     
     signame_ggh=''
     signame_xh=''
-    if cat=='bin1': signame_ggh='ggH_PTH_0_350'; signame_xh='XH_PTH_0_350';
-    elif cat=='bin2': signame_ggh='ggH_PTH_350_450'; signame_xh='XH_PTH_350_450';
-    elif cat=='bin3': signame_ggh='ggH_PTH_450_600'; signame_xh='XH_PTH_450_600';
-    elif cat=='bin4': signame_ggh='ggH_PTH_GT600'; signame_xh='XH_PTH_GT600';
     
+    if 'diff' in TypeRun:
+        if cat=='bin1': signame_ggh='ggH_PTH_0_350'; signame_xh='XH_PTH_0_350';
+        elif cat=='bin2': signame_ggh='ggH_PTH_350_450'; signame_xh='XH_PTH_350_450';
+        elif cat=='bin3': signame_ggh='ggH_PTH_450_600'; signame_xh='XH_PTH_450_600';
+        elif cat=='bin4': signame_ggh='ggH_PTH_GT600'; signame_xh='XH_PTH_GT600';
+        
+    elif    'nooverlap2bins' in TypeRun:
+        if cat=='bin1': signame_ggh='ggH_PTH_450_600'; signame_xh='XH_PTH_450_600';
+        elif cat=='bin2': signame_ggh='ggH_PTH_GT600'; signame_xh='XH_PTH_GT600';
+#    elif 'inc' in TypeRun:
+    else:
+        signame_ggh='ggH'
+        signame_xh='XH'
 
 
-    
-#    Signal=file.Get(categoriy.replace('postfit','prefit')).Get('ggH')
-#    Signal2=file.Get(categoriy.replace('postfit','prefit')).Get('XH')
     Signal=file.Get(categoriy[0].replace('postfit','prefit')).Get(signame_ggh)
     Signal1=file.Get(categoriy[1].replace('postfit','prefit')).Get(signame_ggh)
     Signal2=file.Get(categoriy[2].replace('postfit','prefit')).Get(signame_ggh)
@@ -176,6 +175,7 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
     Signal_XH.Add(Signal_XH1)
     Signal_XH.Add(Signal_XH2)
     Signal.Add(Signal_XH)
+    Signal_Stck=Signal.Clone()
     Signal.Scale( 20)  # CS x BR  1000_400_440  // factor of 2 is added as we consider the full doublet
     Signal.Rebin(RB_)
     #    Signal.SetFillStyle(0.)
@@ -192,15 +192,15 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
 
 
 #    ##### Garwood Method to assign error bar to bins with zero content https://twiki.cern.ch/twiki/bin/view/CMS/PoissonErrorBars
-#    ALLSample=[Data]
-#    for sample in ALLSample:
-#        for ibin in range(sample.GetXaxis().GetNbins()):
-#            if sample.GetBinContent(ibin)==0:
-#                #                sample.SetBinErrorUp(ibin, 1.8)
-#                sample.SetBinErrorOption(rt.TH1.kPoisson)
-##                sample.GetBinError(ibin,1.8)
-#                print "sample.GetBinErrorLow( ",ibin," )", sample.GetBinErrorLow(ibin)
-#                print "sample.GetBinErrorUp( ",ibin," )", sample.GetBinErrorUp(ibin)
+    ALLSample=[Data]
+    for sample in ALLSample:
+        for ibin in range(sample.GetXaxis().GetNbins()):
+            if sample.GetBinContent(ibin)==0:
+                #                sample.SetBinErrorUp(ibin, 1.8)
+                sample.SetBinErrorOption(rt.TH1.kPoisson)
+#                sample.GetBinError(ibin,1.8)
+                print "sample.GetBinErrorLow( ",ibin," )", sample.GetBinErrorLow(ibin)
+                print "sample.GetBinErrorUp( ",ibin," )", sample.GetBinErrorUp(ibin)
 
 
 ###### chnage binning content
@@ -239,12 +239,19 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
 #    ZJ.SetFillColor(ROOT.TColor.GetColor(150, 132, 232))
     VV.SetFillColor(ROOT.TColor.GetColor(200, 282, 232))
     ZTT.SetFillColor(ROOT.TColor.GetColor(108, 226, 354))
+    Signal_Stck.SetFillColor(ROOT.TColor.GetColor(800, 800, 4))
 
 
 #Blinding
 #    for i in range(Data.GetNbinsX()):
 #        if i > 4 : Data.SetBinContent(i+1,0)
 #        if i > 4 : Data.SetBinError(i+1,0)
+
+
+    for i in range(Data.GetNbinsX()):
+        if Data.GetBinContent(i+1,0) ==0:
+            Data.SetBinContent(i+1,0.00001)
+            Data.SetBinError(i+1,0.000001)
 
 
     ######  Add OverFlow Bin
@@ -267,6 +274,7 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
     TT.SetLineColor(ROOT.kBlack)
     ZTT.SetLineColor(ROOT.kBlack)
     VV.SetLineColor(ROOT.kBlack)
+    Signal_Stck.SetLineColor(ROOT.kBlack)
 #    ZJ.SetLineColor(ROOT.kBlack)
     Data.SetLineColor(ROOT.kBlack)
     Data.SetLineWidth(2)
@@ -280,7 +288,7 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
 #    stack.Add(W)
     stack.Add(QCD)
     stack.Add(ZTT)
-#    stack.Add(Signal)
+    stack.Add(Signal_Stck)
 
     errorBand = QCD.Clone()
 #    errorBand.Add(W)
@@ -288,6 +296,7 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
     errorBand.Add(VV)
 #    errorBand.Add(ZJ)
     errorBand.Add(ZTT)
+    errorBand.Add(Signal_Stck)
     errorBand.SetMarkerSize(0)
     errorBand.SetFillColor(16)
     errorBand.SetFillStyle(3001)
@@ -317,7 +326,7 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
 
     Data.GetXaxis().SetLabelSize(0)
     
-    if Status == "LOG" :Data.SetMaximum(Data.GetMaximum()*2000); Data.SetMinimum(0.001)
+    if Status == "LOG" :Data.SetMaximum(Data.GetMaximum()*2000); Data.SetMinimum(0.1)
 #    if Status == "LOG" :Data.SetMaximum(999); Data.SetMinimum(0.01)
     if Status=="Normal": Data.SetMaximum(Data.GetMaximum()*3) ;  Data.SetMinimum(0)
 
@@ -325,37 +334,28 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
 #    Data.GetXaxis().SetRangeUser(0,MaxRange)
     
     Data.SetBinErrorOption(rt.TH1.kPoisson)
-    Data.Draw("ex0")
+#    Data.Draw("P0ex0P0")
+    Data.Draw("P0")
     stack.Draw("histsame")
     errorBand.Draw("e2same")
-    Data.Draw("ex0same")
+#    Data.Draw("P0ex0sameP0")
+    Data.Draw("P0same")
     Signal.Draw("histsame")
 
 
 
 ########################################################
-#Adding Extra signal
-#    Signal2=Signal.Clone()
-#    Signal2.Scale(2.836/1.391)
-##    Signal2.SetLineStyle(11)
-#    Signal2.SetLineWidth(3)
-#    Signal2.SetLineStyle(2)
-#    Signal2.SetLineColor(2)
-#    Signal2.SetMarkerColor(2)
-#    Signal2.Draw("histsame")
 
     legende=make_legend()
     legende.AddEntry(Data,"Observed","elp")
 
     legende.AddEntry(Signal,"H#rightarrow#tau#tau (x20)","l")
-#    legende.AddEntry(W,"W+jets","f")
-#    legende.AddEntry(Signal2,sigLeg2,"l")
     legende.AddEntry(TT,"t#bar{t}","f")
-#    legende.AddEntry(ZJ,"ZJ","f")
     legende.AddEntry(QCD,"QCD multijet","f")
     legende.AddEntry(ZTT,"Z#rightarrow#tau#tau ","f")
     legende.AddEntry(VV,"VV","f")
     legende.AddEntry(errorBand,"Total uncertainty","f")
+    legende.AddEntry(Signal_Stck,"Signal","f")
 
     legende.Draw()
 
@@ -368,18 +368,19 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
 
     pad1.RedrawAxis()
 
-    categ  = ROOT.TPaveText(0.2, 0.45, 0.45, 0.5, "NDC")
+    categ  = ROOT.TPaveText(0.2, 0.90, 0.45, 0.95, "NDC")
     categ.SetBorderSize(   0 )
     categ.SetFillStyle(    0 )
     categ.SetTextAlign(   12 )
     categ.SetTextSize ( 0.06 )
     categ.SetTextColor(    1 )
-    categ.SetTextFont (   61 )
-    #       if i==1 or i==3:
-#    categ.AddText(PreOrPost+" "+Channel+" "+str(year)+" "+cat)
-    categ.AddText(PreOrPost+" "+Channel+" "+" "+cat)
-    #       else :
-    #        categ.AddText("SS")
+    categ.SetTextFont (   62 )
+#    categ.AddText(PreOrPost+" "+Channel+" "+" "+cat)
+    if 'tt' in Channel: categ.AddText("#tau#tau")
+    if 'mt' in Channel: categ.AddText("#mu#tau")
+    if 'et' in Channel: categ.AddText("e#tau")
+    if 'em' in Channel: categ.AddText("e#mu")
+#    categ.AddText(Channel+" "+" "+cat)
     categ.Draw()
 
     c.cd()
@@ -406,6 +407,10 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
 
     h3=Data.Clone()
 
+    for i in range(h3.GetNbinsX()):
+        if h3.GetBinContent(i+1,0) ==0:
+            h3.SetBinContent(i+1,0.00001)
+            h3.SetBinError(i+1,0.000001)
 
     h3.Sumw2()
     h1.Sumw2()
@@ -451,7 +456,7 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
 #        if i > 5 : h3.SetBinContent(i+1,0)
 
 
-    h1.Draw("e2")
+    h1.Draw("e2P0")
 #    h3.Draw("Ex0psame0")
     h3.Draw("E0Expsame")
 
@@ -463,8 +468,7 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
 
 #    c.Modified()
     h1.GetYaxis().SetRangeUser(.01,1.99)
-#    c.Modified()
-    c.SaveAs("_Finalplot_"+str(year)+"_"+prefix+categoriy[0]+Status+"_CMB_"+Channel+"_"+cat+".pdf")
+    c.SaveAs("_Finalplot_FullRun2_"+prefix+categoriy[0]+Status+"_CMB_"+Channel+"_"+cat+".pdf")
     print "Data.Integral()", file.Get(categoriy[0]).Get("data_obs").Integral()
 
 
@@ -476,73 +480,15 @@ prefix=sys.argv[2]
 TypeRun=sys.argv[3]
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-# For channel-based plots
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if 'single' in TypeRun:
-
-    channel=''
-    if '_mt' in InputRootfile:
-        channel = 'mt'
-    if '_et' in InputRootfile:
-        channel = 'et'
-    if '_tt' in InputRootfile:
-        channel = 'tt'
-    if '_em' in InputRootfile:
-        channel = 'em'
-
-    type=''
-    xAxis=''
-
-    if 'signal' in InputRootfile:
-        type = 'signal'
-        xAxis = 'Signal NN score'
-    if '_qcd' in InputRootfile:
-        type = 'qcd'
-        xAxis = 'QCD NN score'
-    if '_ztt' in InputRootfile:
-        type = 'ztt'
-        xAxis = 'Ztt NN score'
-
-
-    category='H_{}_{}_1_13TeV'.format(channel,type)
-    cat=''
-
-    FileNamesInfo=[
-                   [InputRootfile,category+"_{}".format('postfit'),xAxis,"PostFit",channel],
-                   [InputRootfile,category+"_{}".format('prefit'),xAxis,"PreFit",channel],
-                   ]
-
-    for i in range(0,len(FileNamesInfo)):
-
-        year=0
-        if '2016' in InputRootfile: year =2016
-        if '2017' in InputRootfile: year =2017
-        if '2018' in InputRootfile: year =2018
-        if '2020' in InputRootfile: year =2020
-
-        print FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year
-        MakePlot(FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year,cat)
-
-
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # For all-based plots
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-elif 'all' in TypeRun:
+if 'inc' in TypeRun:
+    print "typeRun is ", TypeRun
+    for i in range(1,13):
 
-#    channel=''
-#    if '_mt' in InputRootfile:
-#        channel = 'mt'
-#    if '_et' in InputRootfile:
-#        channel = 'et'
-#    if '_tt' in InputRootfile:
-#        channel = 'tt'
-#    if '_em' in InputRootfile:
-#        channel = 'em'
-
-
-
-    for i in range(1,37):
         category='ch{}'.format(str(i))
+        category2='ch{}'.format(str(i+12))
+        category3='ch{}'.format(str(i+24))
         
         year_=(i-1)/12
         chCat=(i-1)%12
@@ -582,14 +528,75 @@ elif 'all' in TypeRun:
 
 
         FileNamesInfo=[
-                       [InputRootfile,category+"_{}".format('postfit'),xAxis,"PostFit",ch],
-                       [InputRootfile,category+"_{}".format('prefit'),xAxis,"PreFit",ch],
+                       [InputRootfile,[category+"_{}".format('postfit'),category2+"_{}".format('postfit'),category3+"_{}".format('postfit')],xAxis,"PostFit",ch],
+                       [InputRootfile,[category+"_{}".format('prefit'), category2+"_{}".format('prefit'), category3+"_{}".format('prefit')],xAxis,"PreFit",ch],
                        ]
 
         for i in range(0,len(FileNamesInfo)):
 
             print FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year
-            MakePlot(FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year,cat)
+            MakePlot(FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year,cat,TypeRun)
+
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# For all-based plots
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+elif 'noemu' in TypeRun:
+
+    print "typeRun is ", TypeRun
+
+    for i in range(1,10):
+
+        category='ch{}'.format(str(i))
+        category2='ch{}'.format(str(i+9))
+        category3='ch{}'.format(str(i+18))
+        
+#        year_=(i-1)/9
+        chCat=(i-1)%9
+        ch_=chCat/3
+        cat_=chCat%3
+        
+        year=0
+#        if year_==0: year=2016
+#        elif year_==1: year=2017
+#        elif year_==2: year=2018
+        
+        ch=''
+        if ch_==0: ch='et'
+        elif ch_==1: ch='mt'
+        elif ch_==2: ch='tt'
+        
+        cat=''
+        if cat_==0: cat='qcd'
+        elif cat_==1: cat='signal'
+        elif cat_==2: cat='ztt'
+
+
+
+        type=''
+        xAxis=''
+
+        if 'signal' in cat:
+            type = 'signal'
+            xAxis = 'Signal NN score'
+        if 'qcd' in cat:
+            type = 'qcd'
+            xAxis = 'QCD NN score'
+        if 'ztt' in cat:
+            type = 'ztt'
+            xAxis = 'Ztt NN score'
+
+
+        FileNamesInfo=[
+                       [InputRootfile,[category+"_{}".format('postfit'),category2+"_{}".format('postfit'),category3+"_{}".format('postfit')],xAxis,"PostFit",ch],
+                       [InputRootfile,[category+"_{}".format('prefit'), category2+"_{}".format('prefit'), category3+"_{}".format('prefit')],xAxis,"PreFit",ch],
+                       ]
+
+        for i in range(0,len(FileNamesInfo)):
+
+            print FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year
+            MakePlot(FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year,cat,TypeRun)
+
 
 
 
@@ -597,35 +604,22 @@ elif 'all' in TypeRun:
 # For all-based plots
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 elif 'diff' in TypeRun:
-
-#    channel=''
-#    if '_mt' in InputRootfile:
-#        channel = 'mt'
-#    if '_et' in InputRootfile:
-#        channel = 'et'
-#    if '_tt' in InputRootfile:
-#        channel = 'tt'
-#    if '_em' in InputRootfile:
-#        channel = 'em'
-#
-
-
-#    for i in range(1,49):
+    print "typeRun is ", TypeRun
     for i in range(1,17):
-#    for i in range(1,5):
+
         category='ch{}'.format(str(i))
         category2='ch{}'.format(str(i+16))
         category3='ch{}'.format(str(i+32))
         
-        year_=(i-1)/16
+#        year_=(i-1)/16
         chCat=(i-1)%16
         ch_=chCat/4
         cat_=chCat%4
         
         year=0
-        if year_==0: year=2016
-        elif year_==1: year=2017
-        elif year_==2: year=2018
+#        if year_==0: year=2016
+#        elif year_==1: year=2017
+#        elif year_==2: year=2018
         
         ch=''
         if ch_==0: ch='em'
@@ -666,455 +660,62 @@ elif 'diff' in TypeRun:
         for i in range(0,len(FileNamesInfo)):
 
             print FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year
-            MakePlot(FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year,cat)
+            MakePlot(FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year,cat,TypeRun)
+            print FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"LOG",FileNamesInfo[i][4], year
+            MakePlot(FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"LOG",FileNamesInfo[i][4], year,cat,TypeRun)
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# nooverlap2bins
+
+elif 'nooverlap2bins' in TypeRun:
+
+    print "typeRun is ", TypeRun
+
+    for j in range(0,2): # category
+        
+        for i in range(0,3):
+
+            print 'i and j are', i , j
+            category='ch{}'.format(str(9*j+i+1))
+            category2='ch{}'.format(str(9*j+i+4))
+            category3='ch{}'.format(str(9*j+i+7))
+
+            year=0
+            ch_=i%3
+            
+            ch=''
+            if ch_==0: ch='et'
+            elif ch_==1: ch='mt'
+            elif ch_==2: ch='tt'
+            
+            cat=''
+            if j== 0: cat='bin1'
+            else: cat='bin2'
+
+            type=''
+            xAxis=''
+
+            if 'bin1' in cat:
+                type = 'bin1'
+                xAxis = 'bin1 NN score'
+            if 'bin2' in cat:
+                type = 'bin2'
+                xAxis = 'bin2 NN score'
+
+
+            FileNamesInfo=[
+                           [InputRootfile,[category+"_{}".format('postfit'),category2+"_{}".format('postfit'),category3+"_{}".format('postfit')],xAxis,"PostFit",ch],
+                           [InputRootfile,[category+"_{}".format('prefit'), category2+"_{}".format('prefit'), category3+"_{}".format('prefit')] ,xAxis,"PreFit",ch],
+                           ]
+
+            for i in range(0,len(FileNamesInfo)):
+
+                print FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year
+                MakePlot(FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year,cat,TypeRun)
+                print FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"LOG",FileNamesInfo[i][4], year
+                MakePlot(FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"LOG",FileNamesInfo[i][4], year,cat,TypeRun)
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 else:
     print 'whihc type run are you looking for ?'
-
-
-
-
-
-
-
-
-
-
-
-#
-#
-#shapes *                ch1              ../2016/125/../common/em_2016_NN.root H_em_1_13TeV/$PROCESS H_em_1_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch1              ../2016/125/../common/em_2016_NN.root H_em_1_13TeV/XH_PTH_0_350$MASS H_em_1_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch1              ../2016/125/../common/em_2016_NN.root H_em_1_13TeV/XH_PTH_350_450$MASS H_em_1_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch1              ../2016/125/../common/em_2016_NN.root H_em_1_13TeV/XH_PTH_450_600$MASS H_em_1_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch1              ../2016/125/../common/em_2016_NN.root H_em_1_13TeV/XH_PTH_GT600$MASS H_em_1_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch1              ../2016/125/../common/em_2016_NN.root H_em_1_13TeV/ggH_PTH_0_350$MASS H_em_1_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch1              ../2016/125/../common/em_2016_NN.root H_em_1_13TeV/ggH_PTH_350_450$MASS H_em_1_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch1              ../2016/125/../common/em_2016_NN.root H_em_1_13TeV/ggH_PTH_450_600$MASS H_em_1_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch1              ../2016/125/../common/em_2016_NN.root H_em_1_13TeV/ggH_PTH_GT600$MASS H_em_1_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch10             ../2016/125/../common/mt_2016_NN.root H_mt_2_13TeV/$PROCESS H_mt_2_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch10             ../2016/125/../common/mt_2016_NN.root H_mt_2_13TeV/XH_PTH_0_350$MASS H_mt_2_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch10             ../2016/125/../common/mt_2016_NN.root H_mt_2_13TeV/XH_PTH_350_450$MASS H_mt_2_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch10             ../2016/125/../common/mt_2016_NN.root H_mt_2_13TeV/XH_PTH_450_600$MASS H_mt_2_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch10             ../2016/125/../common/mt_2016_NN.root H_mt_2_13TeV/XH_PTH_GT600$MASS H_mt_2_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch10             ../2016/125/../common/mt_2016_NN.root H_mt_2_13TeV/ggH_PTH_0_350$MASS H_mt_2_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch10             ../2016/125/../common/mt_2016_NN.root H_mt_2_13TeV/ggH_PTH_350_450$MASS H_mt_2_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch10             ../2016/125/../common/mt_2016_NN.root H_mt_2_13TeV/ggH_PTH_450_600$MASS H_mt_2_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch10             ../2016/125/../common/mt_2016_NN.root H_mt_2_13TeV/ggH_PTH_GT600$MASS H_mt_2_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch11             ../2016/125/../common/mt_2016_NN.root H_mt_3_13TeV/$PROCESS H_mt_3_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch11             ../2016/125/../common/mt_2016_NN.root H_mt_3_13TeV/XH_PTH_0_350$MASS H_mt_3_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch11             ../2016/125/../common/mt_2016_NN.root H_mt_3_13TeV/XH_PTH_350_450$MASS H_mt_3_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch11             ../2016/125/../common/mt_2016_NN.root H_mt_3_13TeV/XH_PTH_450_600$MASS H_mt_3_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch11             ../2016/125/../common/mt_2016_NN.root H_mt_3_13TeV/XH_PTH_GT600$MASS H_mt_3_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch11             ../2016/125/../common/mt_2016_NN.root H_mt_3_13TeV/ggH_PTH_0_350$MASS H_mt_3_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch11             ../2016/125/../common/mt_2016_NN.root H_mt_3_13TeV/ggH_PTH_350_450$MASS H_mt_3_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch11             ../2016/125/../common/mt_2016_NN.root H_mt_3_13TeV/ggH_PTH_450_600$MASS H_mt_3_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch11             ../2016/125/../common/mt_2016_NN.root H_mt_3_13TeV/ggH_PTH_GT600$MASS H_mt_3_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch12             ../2016/125/../common/mt_2016_NN.root H_mt_4_13TeV/$PROCESS H_mt_4_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch12             ../2016/125/../common/mt_2016_NN.root H_mt_4_13TeV/XH_PTH_0_350$MASS H_mt_4_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch12             ../2016/125/../common/mt_2016_NN.root H_mt_4_13TeV/XH_PTH_350_450$MASS H_mt_4_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch12             ../2016/125/../common/mt_2016_NN.root H_mt_4_13TeV/XH_PTH_450_600$MASS H_mt_4_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch12             ../2016/125/../common/mt_2016_NN.root H_mt_4_13TeV/XH_PTH_GT600$MASS H_mt_4_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch12             ../2016/125/../common/mt_2016_NN.root H_mt_4_13TeV/ggH_PTH_0_350$MASS H_mt_4_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch12             ../2016/125/../common/mt_2016_NN.root H_mt_4_13TeV/ggH_PTH_350_450$MASS H_mt_4_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch12             ../2016/125/../common/mt_2016_NN.root H_mt_4_13TeV/ggH_PTH_450_600$MASS H_mt_4_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch12             ../2016/125/../common/mt_2016_NN.root H_mt_4_13TeV/ggH_PTH_GT600$MASS H_mt_4_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch13             ../2016/125/../common/tt_2016_NN.root H_tt_1_13TeV/$PROCESS H_tt_1_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch13             ../2016/125/../common/tt_2016_NN.root H_tt_1_13TeV/XH_PTH_0_350$MASS H_tt_1_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch13             ../2016/125/../common/tt_2016_NN.root H_tt_1_13TeV/XH_PTH_350_450$MASS H_tt_1_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch13             ../2016/125/../common/tt_2016_NN.root H_tt_1_13TeV/XH_PTH_450_600$MASS H_tt_1_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch13             ../2016/125/../common/tt_2016_NN.root H_tt_1_13TeV/XH_PTH_GT600$MASS H_tt_1_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch13             ../2016/125/../common/tt_2016_NN.root H_tt_1_13TeV/ggH_PTH_0_350$MASS H_tt_1_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch13             ../2016/125/../common/tt_2016_NN.root H_tt_1_13TeV/ggH_PTH_350_450$MASS H_tt_1_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch13             ../2016/125/../common/tt_2016_NN.root H_tt_1_13TeV/ggH_PTH_450_600$MASS H_tt_1_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch13             ../2016/125/../common/tt_2016_NN.root H_tt_1_13TeV/ggH_PTH_GT600$MASS H_tt_1_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch14             ../2016/125/../common/tt_2016_NN.root H_tt_2_13TeV/$PROCESS H_tt_2_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch14             ../2016/125/../common/tt_2016_NN.root H_tt_2_13TeV/XH_PTH_0_350$MASS H_tt_2_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch14             ../2016/125/../common/tt_2016_NN.root H_tt_2_13TeV/XH_PTH_350_450$MASS H_tt_2_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch14             ../2016/125/../common/tt_2016_NN.root H_tt_2_13TeV/XH_PTH_450_600$MASS H_tt_2_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch14             ../2016/125/../common/tt_2016_NN.root H_tt_2_13TeV/XH_PTH_GT600$MASS H_tt_2_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch14             ../2016/125/../common/tt_2016_NN.root H_tt_2_13TeV/ggH_PTH_0_350$MASS H_tt_2_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch14             ../2016/125/../common/tt_2016_NN.root H_tt_2_13TeV/ggH_PTH_350_450$MASS H_tt_2_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch14             ../2016/125/../common/tt_2016_NN.root H_tt_2_13TeV/ggH_PTH_450_600$MASS H_tt_2_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch14             ../2016/125/../common/tt_2016_NN.root H_tt_2_13TeV/ggH_PTH_GT600$MASS H_tt_2_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch15             ../2016/125/../common/tt_2016_NN.root H_tt_3_13TeV/$PROCESS H_tt_3_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch15             ../2016/125/../common/tt_2016_NN.root H_tt_3_13TeV/XH_PTH_0_350$MASS H_tt_3_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch15             ../2016/125/../common/tt_2016_NN.root H_tt_3_13TeV/XH_PTH_350_450$MASS H_tt_3_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch15             ../2016/125/../common/tt_2016_NN.root H_tt_3_13TeV/XH_PTH_450_600$MASS H_tt_3_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch15             ../2016/125/../common/tt_2016_NN.root H_tt_3_13TeV/XH_PTH_GT600$MASS H_tt_3_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch15             ../2016/125/../common/tt_2016_NN.root H_tt_3_13TeV/ggH_PTH_0_350$MASS H_tt_3_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch15             ../2016/125/../common/tt_2016_NN.root H_tt_3_13TeV/ggH_PTH_350_450$MASS H_tt_3_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch15             ../2016/125/../common/tt_2016_NN.root H_tt_3_13TeV/ggH_PTH_450_600$MASS H_tt_3_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch15             ../2016/125/../common/tt_2016_NN.root H_tt_3_13TeV/ggH_PTH_GT600$MASS H_tt_3_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch16             ../2016/125/../common/tt_2016_NN.root H_tt_4_13TeV/$PROCESS H_tt_4_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch16             ../2016/125/../common/tt_2016_NN.root H_tt_4_13TeV/XH_PTH_0_350$MASS H_tt_4_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch16             ../2016/125/../common/tt_2016_NN.root H_tt_4_13TeV/XH_PTH_350_450$MASS H_tt_4_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch16             ../2016/125/../common/tt_2016_NN.root H_tt_4_13TeV/XH_PTH_450_600$MASS H_tt_4_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch16             ../2016/125/../common/tt_2016_NN.root H_tt_4_13TeV/XH_PTH_GT600$MASS H_tt_4_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch16             ../2016/125/../common/tt_2016_NN.root H_tt_4_13TeV/ggH_PTH_0_350$MASS H_tt_4_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch16             ../2016/125/../common/tt_2016_NN.root H_tt_4_13TeV/ggH_PTH_350_450$MASS H_tt_4_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch16             ../2016/125/../common/tt_2016_NN.root H_tt_4_13TeV/ggH_PTH_450_600$MASS H_tt_4_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch16             ../2016/125/../common/tt_2016_NN.root H_tt_4_13TeV/ggH_PTH_GT600$MASS H_tt_4_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch17             ../2017/125/../common/em_2017_NN.root H_em_1_13TeV/$PROCESS H_em_1_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch17             ../2017/125/../common/em_2017_NN.root H_em_1_13TeV/XH_PTH_0_350$MASS H_em_1_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch17             ../2017/125/../common/em_2017_NN.root H_em_1_13TeV/XH_PTH_350_450$MASS H_em_1_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch17             ../2017/125/../common/em_2017_NN.root H_em_1_13TeV/XH_PTH_450_600$MASS H_em_1_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch17             ../2017/125/../common/em_2017_NN.root H_em_1_13TeV/XH_PTH_GT600$MASS H_em_1_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch17             ../2017/125/../common/em_2017_NN.root H_em_1_13TeV/ggH_PTH_0_350$MASS H_em_1_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch17             ../2017/125/../common/em_2017_NN.root H_em_1_13TeV/ggH_PTH_350_450$MASS H_em_1_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch17             ../2017/125/../common/em_2017_NN.root H_em_1_13TeV/ggH_PTH_450_600$MASS H_em_1_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch17             ../2017/125/../common/em_2017_NN.root H_em_1_13TeV/ggH_PTH_GT600$MASS H_em_1_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch18             ../2017/125/../common/em_2017_NN.root H_em_2_13TeV/$PROCESS H_em_2_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch18             ../2017/125/../common/em_2017_NN.root H_em_2_13TeV/XH_PTH_0_350$MASS H_em_2_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch18             ../2017/125/../common/em_2017_NN.root H_em_2_13TeV/XH_PTH_350_450$MASS H_em_2_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch18             ../2017/125/../common/em_2017_NN.root H_em_2_13TeV/XH_PTH_450_600$MASS H_em_2_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch18             ../2017/125/../common/em_2017_NN.root H_em_2_13TeV/XH_PTH_GT600$MASS H_em_2_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch18             ../2017/125/../common/em_2017_NN.root H_em_2_13TeV/ggH_PTH_0_350$MASS H_em_2_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch18             ../2017/125/../common/em_2017_NN.root H_em_2_13TeV/ggH_PTH_350_450$MASS H_em_2_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch18             ../2017/125/../common/em_2017_NN.root H_em_2_13TeV/ggH_PTH_450_600$MASS H_em_2_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch18             ../2017/125/../common/em_2017_NN.root H_em_2_13TeV/ggH_PTH_GT600$MASS H_em_2_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch19             ../2017/125/../common/em_2017_NN.root H_em_3_13TeV/$PROCESS H_em_3_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch19             ../2017/125/../common/em_2017_NN.root H_em_3_13TeV/XH_PTH_0_350$MASS H_em_3_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch19             ../2017/125/../common/em_2017_NN.root H_em_3_13TeV/XH_PTH_350_450$MASS H_em_3_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch19             ../2017/125/../common/em_2017_NN.root H_em_3_13TeV/XH_PTH_450_600$MASS H_em_3_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch19             ../2017/125/../common/em_2017_NN.root H_em_3_13TeV/XH_PTH_GT600$MASS H_em_3_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch19             ../2017/125/../common/em_2017_NN.root H_em_3_13TeV/ggH_PTH_0_350$MASS H_em_3_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch19             ../2017/125/../common/em_2017_NN.root H_em_3_13TeV/ggH_PTH_350_450$MASS H_em_3_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch19             ../2017/125/../common/em_2017_NN.root H_em_3_13TeV/ggH_PTH_450_600$MASS H_em_3_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch19             ../2017/125/../common/em_2017_NN.root H_em_3_13TeV/ggH_PTH_GT600$MASS H_em_3_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch2              ../2016/125/../common/em_2016_NN.root H_em_2_13TeV/$PROCESS H_em_2_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch2              ../2016/125/../common/em_2016_NN.root H_em_2_13TeV/XH_PTH_0_350$MASS H_em_2_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch2              ../2016/125/../common/em_2016_NN.root H_em_2_13TeV/XH_PTH_350_450$MASS H_em_2_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch2              ../2016/125/../common/em_2016_NN.root H_em_2_13TeV/XH_PTH_450_600$MASS H_em_2_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch2              ../2016/125/../common/em_2016_NN.root H_em_2_13TeV/XH_PTH_GT600$MASS H_em_2_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch2              ../2016/125/../common/em_2016_NN.root H_em_2_13TeV/ggH_PTH_0_350$MASS H_em_2_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch2              ../2016/125/../common/em_2016_NN.root H_em_2_13TeV/ggH_PTH_350_450$MASS H_em_2_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch2              ../2016/125/../common/em_2016_NN.root H_em_2_13TeV/ggH_PTH_450_600$MASS H_em_2_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch2              ../2016/125/../common/em_2016_NN.root H_em_2_13TeV/ggH_PTH_GT600$MASS H_em_2_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch20             ../2017/125/../common/em_2017_NN.root H_em_4_13TeV/$PROCESS H_em_4_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch20             ../2017/125/../common/em_2017_NN.root H_em_4_13TeV/XH_PTH_0_350$MASS H_em_4_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch20             ../2017/125/../common/em_2017_NN.root H_em_4_13TeV/XH_PTH_350_450$MASS H_em_4_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch20             ../2017/125/../common/em_2017_NN.root H_em_4_13TeV/XH_PTH_450_600$MASS H_em_4_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch20             ../2017/125/../common/em_2017_NN.root H_em_4_13TeV/XH_PTH_GT600$MASS H_em_4_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch20             ../2017/125/../common/em_2017_NN.root H_em_4_13TeV/ggH_PTH_0_350$MASS H_em_4_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch20             ../2017/125/../common/em_2017_NN.root H_em_4_13TeV/ggH_PTH_350_450$MASS H_em_4_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch20             ../2017/125/../common/em_2017_NN.root H_em_4_13TeV/ggH_PTH_450_600$MASS H_em_4_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch20             ../2017/125/../common/em_2017_NN.root H_em_4_13TeV/ggH_PTH_GT600$MASS H_em_4_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch21             ../2017/125/../common/et_2017_NN.root H_et_1_13TeV/$PROCESS H_et_1_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch21             ../2017/125/../common/et_2017_NN.root H_et_1_13TeV/XH_PTH_0_350$MASS H_et_1_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch21             ../2017/125/../common/et_2017_NN.root H_et_1_13TeV/XH_PTH_350_450$MASS H_et_1_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch21             ../2017/125/../common/et_2017_NN.root H_et_1_13TeV/XH_PTH_450_600$MASS H_et_1_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch21             ../2017/125/../common/et_2017_NN.root H_et_1_13TeV/XH_PTH_GT600$MASS H_et_1_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch21             ../2017/125/../common/et_2017_NN.root H_et_1_13TeV/ggH_PTH_0_350$MASS H_et_1_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch21             ../2017/125/../common/et_2017_NN.root H_et_1_13TeV/ggH_PTH_350_450$MASS H_et_1_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch21             ../2017/125/../common/et_2017_NN.root H_et_1_13TeV/ggH_PTH_450_600$MASS H_et_1_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch21             ../2017/125/../common/et_2017_NN.root H_et_1_13TeV/ggH_PTH_GT600$MASS H_et_1_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch22             ../2017/125/../common/et_2017_NN.root H_et_2_13TeV/$PROCESS H_et_2_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch22             ../2017/125/../common/et_2017_NN.root H_et_2_13TeV/XH_PTH_0_350$MASS H_et_2_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch22             ../2017/125/../common/et_2017_NN.root H_et_2_13TeV/XH_PTH_350_450$MASS H_et_2_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch22             ../2017/125/../common/et_2017_NN.root H_et_2_13TeV/XH_PTH_450_600$MASS H_et_2_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch22             ../2017/125/../common/et_2017_NN.root H_et_2_13TeV/XH_PTH_GT600$MASS H_et_2_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch22             ../2017/125/../common/et_2017_NN.root H_et_2_13TeV/ggH_PTH_0_350$MASS H_et_2_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch22             ../2017/125/../common/et_2017_NN.root H_et_2_13TeV/ggH_PTH_350_450$MASS H_et_2_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch22             ../2017/125/../common/et_2017_NN.root H_et_2_13TeV/ggH_PTH_450_600$MASS H_et_2_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch22             ../2017/125/../common/et_2017_NN.root H_et_2_13TeV/ggH_PTH_GT600$MASS H_et_2_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch23             ../2017/125/../common/et_2017_NN.root H_et_3_13TeV/$PROCESS H_et_3_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch23             ../2017/125/../common/et_2017_NN.root H_et_3_13TeV/XH_PTH_0_350$MASS H_et_3_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch23             ../2017/125/../common/et_2017_NN.root H_et_3_13TeV/XH_PTH_350_450$MASS H_et_3_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch23             ../2017/125/../common/et_2017_NN.root H_et_3_13TeV/XH_PTH_450_600$MASS H_et_3_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch23             ../2017/125/../common/et_2017_NN.root H_et_3_13TeV/XH_PTH_GT600$MASS H_et_3_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch23             ../2017/125/../common/et_2017_NN.root H_et_3_13TeV/ggH_PTH_0_350$MASS H_et_3_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch23             ../2017/125/../common/et_2017_NN.root H_et_3_13TeV/ggH_PTH_350_450$MASS H_et_3_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch23             ../2017/125/../common/et_2017_NN.root H_et_3_13TeV/ggH_PTH_450_600$MASS H_et_3_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch23             ../2017/125/../common/et_2017_NN.root H_et_3_13TeV/ggH_PTH_GT600$MASS H_et_3_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch24             ../2017/125/../common/et_2017_NN.root H_et_4_13TeV/$PROCESS H_et_4_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch24             ../2017/125/../common/et_2017_NN.root H_et_4_13TeV/XH_PTH_0_350$MASS H_et_4_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch24             ../2017/125/../common/et_2017_NN.root H_et_4_13TeV/XH_PTH_350_450$MASS H_et_4_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch24             ../2017/125/../common/et_2017_NN.root H_et_4_13TeV/XH_PTH_450_600$MASS H_et_4_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch24             ../2017/125/../common/et_2017_NN.root H_et_4_13TeV/XH_PTH_GT600$MASS H_et_4_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch24             ../2017/125/../common/et_2017_NN.root H_et_4_13TeV/ggH_PTH_0_350$MASS H_et_4_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch24             ../2017/125/../common/et_2017_NN.root H_et_4_13TeV/ggH_PTH_350_450$MASS H_et_4_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch24             ../2017/125/../common/et_2017_NN.root H_et_4_13TeV/ggH_PTH_450_600$MASS H_et_4_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch24             ../2017/125/../common/et_2017_NN.root H_et_4_13TeV/ggH_PTH_GT600$MASS H_et_4_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch25             ../2017/125/../common/mt_2017_NN.root H_mt_1_13TeV/$PROCESS H_mt_1_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch25             ../2017/125/../common/mt_2017_NN.root H_mt_1_13TeV/XH_PTH_0_350$MASS H_mt_1_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch25             ../2017/125/../common/mt_2017_NN.root H_mt_1_13TeV/XH_PTH_350_450$MASS H_mt_1_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch25             ../2017/125/../common/mt_2017_NN.root H_mt_1_13TeV/XH_PTH_450_600$MASS H_mt_1_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch25             ../2017/125/../common/mt_2017_NN.root H_mt_1_13TeV/XH_PTH_GT600$MASS H_mt_1_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch25             ../2017/125/../common/mt_2017_NN.root H_mt_1_13TeV/ggH_PTH_0_350$MASS H_mt_1_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch25             ../2017/125/../common/mt_2017_NN.root H_mt_1_13TeV/ggH_PTH_350_450$MASS H_mt_1_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch25             ../2017/125/../common/mt_2017_NN.root H_mt_1_13TeV/ggH_PTH_450_600$MASS H_mt_1_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch25             ../2017/125/../common/mt_2017_NN.root H_mt_1_13TeV/ggH_PTH_GT600$MASS H_mt_1_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch26             ../2017/125/../common/mt_2017_NN.root H_mt_2_13TeV/$PROCESS H_mt_2_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch26             ../2017/125/../common/mt_2017_NN.root H_mt_2_13TeV/XH_PTH_0_350$MASS H_mt_2_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch26             ../2017/125/../common/mt_2017_NN.root H_mt_2_13TeV/XH_PTH_350_450$MASS H_mt_2_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch26             ../2017/125/../common/mt_2017_NN.root H_mt_2_13TeV/XH_PTH_450_600$MASS H_mt_2_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch26             ../2017/125/../common/mt_2017_NN.root H_mt_2_13TeV/XH_PTH_GT600$MASS H_mt_2_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch26             ../2017/125/../common/mt_2017_NN.root H_mt_2_13TeV/ggH_PTH_0_350$MASS H_mt_2_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch26             ../2017/125/../common/mt_2017_NN.root H_mt_2_13TeV/ggH_PTH_350_450$MASS H_mt_2_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch26             ../2017/125/../common/mt_2017_NN.root H_mt_2_13TeV/ggH_PTH_450_600$MASS H_mt_2_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch26             ../2017/125/../common/mt_2017_NN.root H_mt_2_13TeV/ggH_PTH_GT600$MASS H_mt_2_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch27             ../2017/125/../common/mt_2017_NN.root H_mt_3_13TeV/$PROCESS H_mt_3_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch27             ../2017/125/../common/mt_2017_NN.root H_mt_3_13TeV/XH_PTH_0_350$MASS H_mt_3_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch27             ../2017/125/../common/mt_2017_NN.root H_mt_3_13TeV/XH_PTH_350_450$MASS H_mt_3_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch27             ../2017/125/../common/mt_2017_NN.root H_mt_3_13TeV/XH_PTH_450_600$MASS H_mt_3_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch27             ../2017/125/../common/mt_2017_NN.root H_mt_3_13TeV/XH_PTH_GT600$MASS H_mt_3_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch27             ../2017/125/../common/mt_2017_NN.root H_mt_3_13TeV/ggH_PTH_0_350$MASS H_mt_3_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch27             ../2017/125/../common/mt_2017_NN.root H_mt_3_13TeV/ggH_PTH_350_450$MASS H_mt_3_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch27             ../2017/125/../common/mt_2017_NN.root H_mt_3_13TeV/ggH_PTH_450_600$MASS H_mt_3_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch27             ../2017/125/../common/mt_2017_NN.root H_mt_3_13TeV/ggH_PTH_GT600$MASS H_mt_3_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch28             ../2017/125/../common/mt_2017_NN.root H_mt_4_13TeV/$PROCESS H_mt_4_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch28             ../2017/125/../common/mt_2017_NN.root H_mt_4_13TeV/XH_PTH_0_350$MASS H_mt_4_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch28             ../2017/125/../common/mt_2017_NN.root H_mt_4_13TeV/XH_PTH_350_450$MASS H_mt_4_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch28             ../2017/125/../common/mt_2017_NN.root H_mt_4_13TeV/XH_PTH_450_600$MASS H_mt_4_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch28             ../2017/125/../common/mt_2017_NN.root H_mt_4_13TeV/XH_PTH_GT600$MASS H_mt_4_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch28             ../2017/125/../common/mt_2017_NN.root H_mt_4_13TeV/ggH_PTH_0_350$MASS H_mt_4_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch28             ../2017/125/../common/mt_2017_NN.root H_mt_4_13TeV/ggH_PTH_350_450$MASS H_mt_4_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch28             ../2017/125/../common/mt_2017_NN.root H_mt_4_13TeV/ggH_PTH_450_600$MASS H_mt_4_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch28             ../2017/125/../common/mt_2017_NN.root H_mt_4_13TeV/ggH_PTH_GT600$MASS H_mt_4_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch29             ../2017/125/../common/tt_2017_NN.root H_tt_1_13TeV/$PROCESS H_tt_1_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch29             ../2017/125/../common/tt_2017_NN.root H_tt_1_13TeV/XH_PTH_0_350$MASS H_tt_1_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch29             ../2017/125/../common/tt_2017_NN.root H_tt_1_13TeV/XH_PTH_350_450$MASS H_tt_1_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch29             ../2017/125/../common/tt_2017_NN.root H_tt_1_13TeV/XH_PTH_450_600$MASS H_tt_1_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch29             ../2017/125/../common/tt_2017_NN.root H_tt_1_13TeV/XH_PTH_GT600$MASS H_tt_1_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch29             ../2017/125/../common/tt_2017_NN.root H_tt_1_13TeV/ggH_PTH_0_350$MASS H_tt_1_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch29             ../2017/125/../common/tt_2017_NN.root H_tt_1_13TeV/ggH_PTH_350_450$MASS H_tt_1_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch29             ../2017/125/../common/tt_2017_NN.root H_tt_1_13TeV/ggH_PTH_450_600$MASS H_tt_1_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch29             ../2017/125/../common/tt_2017_NN.root H_tt_1_13TeV/ggH_PTH_GT600$MASS H_tt_1_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch3              ../2016/125/../common/em_2016_NN.root H_em_3_13TeV/$PROCESS H_em_3_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch3              ../2016/125/../common/em_2016_NN.root H_em_3_13TeV/XH_PTH_0_350$MASS H_em_3_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch3              ../2016/125/../common/em_2016_NN.root H_em_3_13TeV/XH_PTH_350_450$MASS H_em_3_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch3              ../2016/125/../common/em_2016_NN.root H_em_3_13TeV/XH_PTH_450_600$MASS H_em_3_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch3              ../2016/125/../common/em_2016_NN.root H_em_3_13TeV/XH_PTH_GT600$MASS H_em_3_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch3              ../2016/125/../common/em_2016_NN.root H_em_3_13TeV/ggH_PTH_0_350$MASS H_em_3_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch3              ../2016/125/../common/em_2016_NN.root H_em_3_13TeV/ggH_PTH_350_450$MASS H_em_3_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch3              ../2016/125/../common/em_2016_NN.root H_em_3_13TeV/ggH_PTH_450_600$MASS H_em_3_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch3              ../2016/125/../common/em_2016_NN.root H_em_3_13TeV/ggH_PTH_GT600$MASS H_em_3_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch30             ../2017/125/../common/tt_2017_NN.root H_tt_2_13TeV/$PROCESS H_tt_2_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch30             ../2017/125/../common/tt_2017_NN.root H_tt_2_13TeV/XH_PTH_0_350$MASS H_tt_2_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch30             ../2017/125/../common/tt_2017_NN.root H_tt_2_13TeV/XH_PTH_350_450$MASS H_tt_2_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch30             ../2017/125/../common/tt_2017_NN.root H_tt_2_13TeV/XH_PTH_450_600$MASS H_tt_2_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch30             ../2017/125/../common/tt_2017_NN.root H_tt_2_13TeV/XH_PTH_GT600$MASS H_tt_2_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch30             ../2017/125/../common/tt_2017_NN.root H_tt_2_13TeV/ggH_PTH_0_350$MASS H_tt_2_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch30             ../2017/125/../common/tt_2017_NN.root H_tt_2_13TeV/ggH_PTH_350_450$MASS H_tt_2_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch30             ../2017/125/../common/tt_2017_NN.root H_tt_2_13TeV/ggH_PTH_450_600$MASS H_tt_2_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch30             ../2017/125/../common/tt_2017_NN.root H_tt_2_13TeV/ggH_PTH_GT600$MASS H_tt_2_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch31             ../2017/125/../common/tt_2017_NN.root H_tt_3_13TeV/$PROCESS H_tt_3_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch31             ../2017/125/../common/tt_2017_NN.root H_tt_3_13TeV/XH_PTH_0_350$MASS H_tt_3_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch31             ../2017/125/../common/tt_2017_NN.root H_tt_3_13TeV/XH_PTH_350_450$MASS H_tt_3_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch31             ../2017/125/../common/tt_2017_NN.root H_tt_3_13TeV/XH_PTH_450_600$MASS H_tt_3_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch31             ../2017/125/../common/tt_2017_NN.root H_tt_3_13TeV/XH_PTH_GT600$MASS H_tt_3_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch31             ../2017/125/../common/tt_2017_NN.root H_tt_3_13TeV/ggH_PTH_0_350$MASS H_tt_3_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch31             ../2017/125/../common/tt_2017_NN.root H_tt_3_13TeV/ggH_PTH_350_450$MASS H_tt_3_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch31             ../2017/125/../common/tt_2017_NN.root H_tt_3_13TeV/ggH_PTH_450_600$MASS H_tt_3_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch31             ../2017/125/../common/tt_2017_NN.root H_tt_3_13TeV/ggH_PTH_GT600$MASS H_tt_3_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch32             ../2017/125/../common/tt_2017_NN.root H_tt_4_13TeV/$PROCESS H_tt_4_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch32             ../2017/125/../common/tt_2017_NN.root H_tt_4_13TeV/XH_PTH_0_350$MASS H_tt_4_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch32             ../2017/125/../common/tt_2017_NN.root H_tt_4_13TeV/XH_PTH_350_450$MASS H_tt_4_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch32             ../2017/125/../common/tt_2017_NN.root H_tt_4_13TeV/XH_PTH_450_600$MASS H_tt_4_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch32             ../2017/125/../common/tt_2017_NN.root H_tt_4_13TeV/XH_PTH_GT600$MASS H_tt_4_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch32             ../2017/125/../common/tt_2017_NN.root H_tt_4_13TeV/ggH_PTH_0_350$MASS H_tt_4_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch32             ../2017/125/../common/tt_2017_NN.root H_tt_4_13TeV/ggH_PTH_350_450$MASS H_tt_4_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch32             ../2017/125/../common/tt_2017_NN.root H_tt_4_13TeV/ggH_PTH_450_600$MASS H_tt_4_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch32             ../2017/125/../common/tt_2017_NN.root H_tt_4_13TeV/ggH_PTH_GT600$MASS H_tt_4_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch33             ../2018/125/../common/em_2018_NN.root H_em_1_13TeV/$PROCESS H_em_1_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch33             ../2018/125/../common/em_2018_NN.root H_em_1_13TeV/XH_PTH_0_350$MASS H_em_1_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch33             ../2018/125/../common/em_2018_NN.root H_em_1_13TeV/XH_PTH_350_450$MASS H_em_1_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch33             ../2018/125/../common/em_2018_NN.root H_em_1_13TeV/XH_PTH_450_600$MASS H_em_1_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch33             ../2018/125/../common/em_2018_NN.root H_em_1_13TeV/XH_PTH_GT600$MASS H_em_1_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch33             ../2018/125/../common/em_2018_NN.root H_em_1_13TeV/ggH_PTH_0_350$MASS H_em_1_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch33             ../2018/125/../common/em_2018_NN.root H_em_1_13TeV/ggH_PTH_350_450$MASS H_em_1_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch33             ../2018/125/../common/em_2018_NN.root H_em_1_13TeV/ggH_PTH_450_600$MASS H_em_1_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch33             ../2018/125/../common/em_2018_NN.root H_em_1_13TeV/ggH_PTH_GT600$MASS H_em_1_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch34             ../2018/125/../common/em_2018_NN.root H_em_2_13TeV/$PROCESS H_em_2_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch34             ../2018/125/../common/em_2018_NN.root H_em_2_13TeV/XH_PTH_0_350$MASS H_em_2_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch34             ../2018/125/../common/em_2018_NN.root H_em_2_13TeV/XH_PTH_350_450$MASS H_em_2_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch34             ../2018/125/../common/em_2018_NN.root H_em_2_13TeV/XH_PTH_450_600$MASS H_em_2_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch34             ../2018/125/../common/em_2018_NN.root H_em_2_13TeV/XH_PTH_GT600$MASS H_em_2_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch34             ../2018/125/../common/em_2018_NN.root H_em_2_13TeV/ggH_PTH_0_350$MASS H_em_2_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch34             ../2018/125/../common/em_2018_NN.root H_em_2_13TeV/ggH_PTH_350_450$MASS H_em_2_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch34             ../2018/125/../common/em_2018_NN.root H_em_2_13TeV/ggH_PTH_450_600$MASS H_em_2_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch34             ../2018/125/../common/em_2018_NN.root H_em_2_13TeV/ggH_PTH_GT600$MASS H_em_2_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch35             ../2018/125/../common/em_2018_NN.root H_em_3_13TeV/$PROCESS H_em_3_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch35             ../2018/125/../common/em_2018_NN.root H_em_3_13TeV/XH_PTH_0_350$MASS H_em_3_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch35             ../2018/125/../common/em_2018_NN.root H_em_3_13TeV/XH_PTH_350_450$MASS H_em_3_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch35             ../2018/125/../common/em_2018_NN.root H_em_3_13TeV/XH_PTH_450_600$MASS H_em_3_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch35             ../2018/125/../common/em_2018_NN.root H_em_3_13TeV/XH_PTH_GT600$MASS H_em_3_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch35             ../2018/125/../common/em_2018_NN.root H_em_3_13TeV/ggH_PTH_0_350$MASS H_em_3_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch35             ../2018/125/../common/em_2018_NN.root H_em_3_13TeV/ggH_PTH_350_450$MASS H_em_3_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch35             ../2018/125/../common/em_2018_NN.root H_em_3_13TeV/ggH_PTH_450_600$MASS H_em_3_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch35             ../2018/125/../common/em_2018_NN.root H_em_3_13TeV/ggH_PTH_GT600$MASS H_em_3_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch36             ../2018/125/../common/em_2018_NN.root H_em_4_13TeV/$PROCESS H_em_4_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch36             ../2018/125/../common/em_2018_NN.root H_em_4_13TeV/XH_PTH_0_350$MASS H_em_4_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch36             ../2018/125/../common/em_2018_NN.root H_em_4_13TeV/XH_PTH_350_450$MASS H_em_4_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch36             ../2018/125/../common/em_2018_NN.root H_em_4_13TeV/XH_PTH_450_600$MASS H_em_4_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch36             ../2018/125/../common/em_2018_NN.root H_em_4_13TeV/XH_PTH_GT600$MASS H_em_4_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch36             ../2018/125/../common/em_2018_NN.root H_em_4_13TeV/ggH_PTH_0_350$MASS H_em_4_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch36             ../2018/125/../common/em_2018_NN.root H_em_4_13TeV/ggH_PTH_350_450$MASS H_em_4_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch36             ../2018/125/../common/em_2018_NN.root H_em_4_13TeV/ggH_PTH_450_600$MASS H_em_4_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch36             ../2018/125/../common/em_2018_NN.root H_em_4_13TeV/ggH_PTH_GT600$MASS H_em_4_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch37             ../2018/125/../common/et_2018_NN.root H_et_1_13TeV/$PROCESS H_et_1_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch37             ../2018/125/../common/et_2018_NN.root H_et_1_13TeV/XH_PTH_0_350$MASS H_et_1_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch37             ../2018/125/../common/et_2018_NN.root H_et_1_13TeV/XH_PTH_350_450$MASS H_et_1_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch37             ../2018/125/../common/et_2018_NN.root H_et_1_13TeV/XH_PTH_450_600$MASS H_et_1_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch37             ../2018/125/../common/et_2018_NN.root H_et_1_13TeV/XH_PTH_GT600$MASS H_et_1_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch37             ../2018/125/../common/et_2018_NN.root H_et_1_13TeV/ggH_PTH_0_350$MASS H_et_1_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch37             ../2018/125/../common/et_2018_NN.root H_et_1_13TeV/ggH_PTH_350_450$MASS H_et_1_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch37             ../2018/125/../common/et_2018_NN.root H_et_1_13TeV/ggH_PTH_450_600$MASS H_et_1_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch37             ../2018/125/../common/et_2018_NN.root H_et_1_13TeV/ggH_PTH_GT600$MASS H_et_1_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch38             ../2018/125/../common/et_2018_NN.root H_et_2_13TeV/$PROCESS H_et_2_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch38             ../2018/125/../common/et_2018_NN.root H_et_2_13TeV/XH_PTH_0_350$MASS H_et_2_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch38             ../2018/125/../common/et_2018_NN.root H_et_2_13TeV/XH_PTH_350_450$MASS H_et_2_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch38             ../2018/125/../common/et_2018_NN.root H_et_2_13TeV/XH_PTH_450_600$MASS H_et_2_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch38             ../2018/125/../common/et_2018_NN.root H_et_2_13TeV/XH_PTH_GT600$MASS H_et_2_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch38             ../2018/125/../common/et_2018_NN.root H_et_2_13TeV/ggH_PTH_0_350$MASS H_et_2_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch38             ../2018/125/../common/et_2018_NN.root H_et_2_13TeV/ggH_PTH_350_450$MASS H_et_2_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch38             ../2018/125/../common/et_2018_NN.root H_et_2_13TeV/ggH_PTH_450_600$MASS H_et_2_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch38             ../2018/125/../common/et_2018_NN.root H_et_2_13TeV/ggH_PTH_GT600$MASS H_et_2_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch39             ../2018/125/../common/et_2018_NN.root H_et_3_13TeV/$PROCESS H_et_3_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch39             ../2018/125/../common/et_2018_NN.root H_et_3_13TeV/XH_PTH_0_350$MASS H_et_3_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch39             ../2018/125/../common/et_2018_NN.root H_et_3_13TeV/XH_PTH_350_450$MASS H_et_3_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch39             ../2018/125/../common/et_2018_NN.root H_et_3_13TeV/XH_PTH_450_600$MASS H_et_3_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch39             ../2018/125/../common/et_2018_NN.root H_et_3_13TeV/XH_PTH_GT600$MASS H_et_3_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch39             ../2018/125/../common/et_2018_NN.root H_et_3_13TeV/ggH_PTH_0_350$MASS H_et_3_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch39             ../2018/125/../common/et_2018_NN.root H_et_3_13TeV/ggH_PTH_350_450$MASS H_et_3_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch39             ../2018/125/../common/et_2018_NN.root H_et_3_13TeV/ggH_PTH_450_600$MASS H_et_3_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch39             ../2018/125/../common/et_2018_NN.root H_et_3_13TeV/ggH_PTH_GT600$MASS H_et_3_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch4              ../2016/125/../common/em_2016_NN.root H_em_4_13TeV/$PROCESS H_em_4_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch4              ../2016/125/../common/em_2016_NN.root H_em_4_13TeV/XH_PTH_0_350$MASS H_em_4_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch4              ../2016/125/../common/em_2016_NN.root H_em_4_13TeV/XH_PTH_350_450$MASS H_em_4_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch4              ../2016/125/../common/em_2016_NN.root H_em_4_13TeV/XH_PTH_450_600$MASS H_em_4_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch4              ../2016/125/../common/em_2016_NN.root H_em_4_13TeV/XH_PTH_GT600$MASS H_em_4_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch4              ../2016/125/../common/em_2016_NN.root H_em_4_13TeV/ggH_PTH_0_350$MASS H_em_4_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch4              ../2016/125/../common/em_2016_NN.root H_em_4_13TeV/ggH_PTH_350_450$MASS H_em_4_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch4              ../2016/125/../common/em_2016_NN.root H_em_4_13TeV/ggH_PTH_450_600$MASS H_em_4_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch4              ../2016/125/../common/em_2016_NN.root H_em_4_13TeV/ggH_PTH_GT600$MASS H_em_4_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch40             ../2018/125/../common/et_2018_NN.root H_et_4_13TeV/$PROCESS H_et_4_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch40             ../2018/125/../common/et_2018_NN.root H_et_4_13TeV/XH_PTH_0_350$MASS H_et_4_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch40             ../2018/125/../common/et_2018_NN.root H_et_4_13TeV/XH_PTH_350_450$MASS H_et_4_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch40             ../2018/125/../common/et_2018_NN.root H_et_4_13TeV/XH_PTH_450_600$MASS H_et_4_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch40             ../2018/125/../common/et_2018_NN.root H_et_4_13TeV/XH_PTH_GT600$MASS H_et_4_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch40             ../2018/125/../common/et_2018_NN.root H_et_4_13TeV/ggH_PTH_0_350$MASS H_et_4_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch40             ../2018/125/../common/et_2018_NN.root H_et_4_13TeV/ggH_PTH_350_450$MASS H_et_4_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch40             ../2018/125/../common/et_2018_NN.root H_et_4_13TeV/ggH_PTH_450_600$MASS H_et_4_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch40             ../2018/125/../common/et_2018_NN.root H_et_4_13TeV/ggH_PTH_GT600$MASS H_et_4_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch41             ../2018/125/../common/mt_2018_NN.root H_mt_1_13TeV/$PROCESS H_mt_1_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch41             ../2018/125/../common/mt_2018_NN.root H_mt_1_13TeV/XH_PTH_0_350$MASS H_mt_1_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch41             ../2018/125/../common/mt_2018_NN.root H_mt_1_13TeV/XH_PTH_350_450$MASS H_mt_1_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch41             ../2018/125/../common/mt_2018_NN.root H_mt_1_13TeV/XH_PTH_450_600$MASS H_mt_1_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch41             ../2018/125/../common/mt_2018_NN.root H_mt_1_13TeV/XH_PTH_GT600$MASS H_mt_1_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch41             ../2018/125/../common/mt_2018_NN.root H_mt_1_13TeV/ggH_PTH_0_350$MASS H_mt_1_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch41             ../2018/125/../common/mt_2018_NN.root H_mt_1_13TeV/ggH_PTH_350_450$MASS H_mt_1_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch41             ../2018/125/../common/mt_2018_NN.root H_mt_1_13TeV/ggH_PTH_450_600$MASS H_mt_1_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch41             ../2018/125/../common/mt_2018_NN.root H_mt_1_13TeV/ggH_PTH_GT600$MASS H_mt_1_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch42             ../2018/125/../common/mt_2018_NN.root H_mt_2_13TeV/$PROCESS H_mt_2_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch42             ../2018/125/../common/mt_2018_NN.root H_mt_2_13TeV/XH_PTH_0_350$MASS H_mt_2_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch42             ../2018/125/../common/mt_2018_NN.root H_mt_2_13TeV/XH_PTH_350_450$MASS H_mt_2_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch42             ../2018/125/../common/mt_2018_NN.root H_mt_2_13TeV/XH_PTH_450_600$MASS H_mt_2_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch42             ../2018/125/../common/mt_2018_NN.root H_mt_2_13TeV/XH_PTH_GT600$MASS H_mt_2_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch42             ../2018/125/../common/mt_2018_NN.root H_mt_2_13TeV/ggH_PTH_0_350$MASS H_mt_2_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch42             ../2018/125/../common/mt_2018_NN.root H_mt_2_13TeV/ggH_PTH_350_450$MASS H_mt_2_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch42             ../2018/125/../common/mt_2018_NN.root H_mt_2_13TeV/ggH_PTH_450_600$MASS H_mt_2_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch42             ../2018/125/../common/mt_2018_NN.root H_mt_2_13TeV/ggH_PTH_GT600$MASS H_mt_2_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch43             ../2018/125/../common/mt_2018_NN.root H_mt_3_13TeV/$PROCESS H_mt_3_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch43             ../2018/125/../common/mt_2018_NN.root H_mt_3_13TeV/XH_PTH_0_350$MASS H_mt_3_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch43             ../2018/125/../common/mt_2018_NN.root H_mt_3_13TeV/XH_PTH_350_450$MASS H_mt_3_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch43             ../2018/125/../common/mt_2018_NN.root H_mt_3_13TeV/XH_PTH_450_600$MASS H_mt_3_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch43             ../2018/125/../common/mt_2018_NN.root H_mt_3_13TeV/XH_PTH_GT600$MASS H_mt_3_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch43             ../2018/125/../common/mt_2018_NN.root H_mt_3_13TeV/ggH_PTH_0_350$MASS H_mt_3_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch43             ../2018/125/../common/mt_2018_NN.root H_mt_3_13TeV/ggH_PTH_350_450$MASS H_mt_3_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch43             ../2018/125/../common/mt_2018_NN.root H_mt_3_13TeV/ggH_PTH_450_600$MASS H_mt_3_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch43             ../2018/125/../common/mt_2018_NN.root H_mt_3_13TeV/ggH_PTH_GT600$MASS H_mt_3_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch44             ../2018/125/../common/mt_2018_NN.root H_mt_4_13TeV/$PROCESS H_mt_4_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch44             ../2018/125/../common/mt_2018_NN.root H_mt_4_13TeV/XH_PTH_0_350$MASS H_mt_4_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch44             ../2018/125/../common/mt_2018_NN.root H_mt_4_13TeV/XH_PTH_350_450$MASS H_mt_4_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch44             ../2018/125/../common/mt_2018_NN.root H_mt_4_13TeV/XH_PTH_450_600$MASS H_mt_4_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch44             ../2018/125/../common/mt_2018_NN.root H_mt_4_13TeV/XH_PTH_GT600$MASS H_mt_4_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch44             ../2018/125/../common/mt_2018_NN.root H_mt_4_13TeV/ggH_PTH_0_350$MASS H_mt_4_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch44             ../2018/125/../common/mt_2018_NN.root H_mt_4_13TeV/ggH_PTH_350_450$MASS H_mt_4_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch44             ../2018/125/../common/mt_2018_NN.root H_mt_4_13TeV/ggH_PTH_450_600$MASS H_mt_4_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch44             ../2018/125/../common/mt_2018_NN.root H_mt_4_13TeV/ggH_PTH_GT600$MASS H_mt_4_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch45             ../2018/125/../common/tt_2018_NN.root H_tt_1_13TeV/$PROCESS H_tt_1_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch45             ../2018/125/../common/tt_2018_NN.root H_tt_1_13TeV/XH_PTH_0_350$MASS H_tt_1_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch45             ../2018/125/../common/tt_2018_NN.root H_tt_1_13TeV/XH_PTH_350_450$MASS H_tt_1_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch45             ../2018/125/../common/tt_2018_NN.root H_tt_1_13TeV/XH_PTH_450_600$MASS H_tt_1_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch45             ../2018/125/../common/tt_2018_NN.root H_tt_1_13TeV/XH_PTH_GT600$MASS H_tt_1_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch45             ../2018/125/../common/tt_2018_NN.root H_tt_1_13TeV/ggH_PTH_0_350$MASS H_tt_1_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch45             ../2018/125/../common/tt_2018_NN.root H_tt_1_13TeV/ggH_PTH_350_450$MASS H_tt_1_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch45             ../2018/125/../common/tt_2018_NN.root H_tt_1_13TeV/ggH_PTH_450_600$MASS H_tt_1_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch45             ../2018/125/../common/tt_2018_NN.root H_tt_1_13TeV/ggH_PTH_GT600$MASS H_tt_1_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch46             ../2018/125/../common/tt_2018_NN.root H_tt_2_13TeV/$PROCESS H_tt_2_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch46             ../2018/125/../common/tt_2018_NN.root H_tt_2_13TeV/XH_PTH_0_350$MASS H_tt_2_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch46             ../2018/125/../common/tt_2018_NN.root H_tt_2_13TeV/XH_PTH_350_450$MASS H_tt_2_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch46             ../2018/125/../common/tt_2018_NN.root H_tt_2_13TeV/XH_PTH_450_600$MASS H_tt_2_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch46             ../2018/125/../common/tt_2018_NN.root H_tt_2_13TeV/XH_PTH_GT600$MASS H_tt_2_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch46             ../2018/125/../common/tt_2018_NN.root H_tt_2_13TeV/ggH_PTH_0_350$MASS H_tt_2_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch46             ../2018/125/../common/tt_2018_NN.root H_tt_2_13TeV/ggH_PTH_350_450$MASS H_tt_2_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch46             ../2018/125/../common/tt_2018_NN.root H_tt_2_13TeV/ggH_PTH_450_600$MASS H_tt_2_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch46             ../2018/125/../common/tt_2018_NN.root H_tt_2_13TeV/ggH_PTH_GT600$MASS H_tt_2_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch47             ../2018/125/../common/tt_2018_NN.root H_tt_3_13TeV/$PROCESS H_tt_3_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch47             ../2018/125/../common/tt_2018_NN.root H_tt_3_13TeV/XH_PTH_0_350$MASS H_tt_3_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch47             ../2018/125/../common/tt_2018_NN.root H_tt_3_13TeV/XH_PTH_350_450$MASS H_tt_3_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch47             ../2018/125/../common/tt_2018_NN.root H_tt_3_13TeV/XH_PTH_450_600$MASS H_tt_3_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch47             ../2018/125/../common/tt_2018_NN.root H_tt_3_13TeV/XH_PTH_GT600$MASS H_tt_3_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch47             ../2018/125/../common/tt_2018_NN.root H_tt_3_13TeV/ggH_PTH_0_350$MASS H_tt_3_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch47             ../2018/125/../common/tt_2018_NN.root H_tt_3_13TeV/ggH_PTH_350_450$MASS H_tt_3_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch47             ../2018/125/../common/tt_2018_NN.root H_tt_3_13TeV/ggH_PTH_450_600$MASS H_tt_3_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch47             ../2018/125/../common/tt_2018_NN.root H_tt_3_13TeV/ggH_PTH_GT600$MASS H_tt_3_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch48             ../2018/125/../common/tt_2018_NN.root H_tt_4_13TeV/$PROCESS H_tt_4_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch48             ../2018/125/../common/tt_2018_NN.root H_tt_4_13TeV/XH_PTH_0_350$MASS H_tt_4_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch48             ../2018/125/../common/tt_2018_NN.root H_tt_4_13TeV/XH_PTH_350_450$MASS H_tt_4_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch48             ../2018/125/../common/tt_2018_NN.root H_tt_4_13TeV/XH_PTH_450_600$MASS H_tt_4_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch48             ../2018/125/../common/tt_2018_NN.root H_tt_4_13TeV/XH_PTH_GT600$MASS H_tt_4_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch48             ../2018/125/../common/tt_2018_NN.root H_tt_4_13TeV/ggH_PTH_0_350$MASS H_tt_4_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch48             ../2018/125/../common/tt_2018_NN.root H_tt_4_13TeV/ggH_PTH_350_450$MASS H_tt_4_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch48             ../2018/125/../common/tt_2018_NN.root H_tt_4_13TeV/ggH_PTH_450_600$MASS H_tt_4_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch48             ../2018/125/../common/tt_2018_NN.root H_tt_4_13TeV/ggH_PTH_GT600$MASS H_tt_4_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch5              ../2016/125/../common/et_2016_NN.root H_et_1_13TeV/$PROCESS H_et_1_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch5              ../2016/125/../common/et_2016_NN.root H_et_1_13TeV/XH_PTH_0_350$MASS H_et_1_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch5              ../2016/125/../common/et_2016_NN.root H_et_1_13TeV/XH_PTH_350_450$MASS H_et_1_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch5              ../2016/125/../common/et_2016_NN.root H_et_1_13TeV/XH_PTH_450_600$MASS H_et_1_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch5              ../2016/125/../common/et_2016_NN.root H_et_1_13TeV/XH_PTH_GT600$MASS H_et_1_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch5              ../2016/125/../common/et_2016_NN.root H_et_1_13TeV/ggH_PTH_0_350$MASS H_et_1_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch5              ../2016/125/../common/et_2016_NN.root H_et_1_13TeV/ggH_PTH_350_450$MASS H_et_1_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch5              ../2016/125/../common/et_2016_NN.root H_et_1_13TeV/ggH_PTH_450_600$MASS H_et_1_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch5              ../2016/125/../common/et_2016_NN.root H_et_1_13TeV/ggH_PTH_GT600$MASS H_et_1_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch6              ../2016/125/../common/et_2016_NN.root H_et_2_13TeV/$PROCESS H_et_2_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch6              ../2016/125/../common/et_2016_NN.root H_et_2_13TeV/XH_PTH_0_350$MASS H_et_2_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch6              ../2016/125/../common/et_2016_NN.root H_et_2_13TeV/XH_PTH_350_450$MASS H_et_2_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch6              ../2016/125/../common/et_2016_NN.root H_et_2_13TeV/XH_PTH_450_600$MASS H_et_2_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch6              ../2016/125/../common/et_2016_NN.root H_et_2_13TeV/XH_PTH_GT600$MASS H_et_2_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch6              ../2016/125/../common/et_2016_NN.root H_et_2_13TeV/ggH_PTH_0_350$MASS H_et_2_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch6              ../2016/125/../common/et_2016_NN.root H_et_2_13TeV/ggH_PTH_350_450$MASS H_et_2_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch6              ../2016/125/../common/et_2016_NN.root H_et_2_13TeV/ggH_PTH_450_600$MASS H_et_2_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch6              ../2016/125/../common/et_2016_NN.root H_et_2_13TeV/ggH_PTH_GT600$MASS H_et_2_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch7              ../2016/125/../common/et_2016_NN.root H_et_3_13TeV/$PROCESS H_et_3_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch7              ../2016/125/../common/et_2016_NN.root H_et_3_13TeV/XH_PTH_0_350$MASS H_et_3_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch7              ../2016/125/../common/et_2016_NN.root H_et_3_13TeV/XH_PTH_350_450$MASS H_et_3_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch7              ../2016/125/../common/et_2016_NN.root H_et_3_13TeV/XH_PTH_450_600$MASS H_et_3_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch7              ../2016/125/../common/et_2016_NN.root H_et_3_13TeV/XH_PTH_GT600$MASS H_et_3_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch7              ../2016/125/../common/et_2016_NN.root H_et_3_13TeV/ggH_PTH_0_350$MASS H_et_3_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch7              ../2016/125/../common/et_2016_NN.root H_et_3_13TeV/ggH_PTH_350_450$MASS H_et_3_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch7              ../2016/125/../common/et_2016_NN.root H_et_3_13TeV/ggH_PTH_450_600$MASS H_et_3_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch7              ../2016/125/../common/et_2016_NN.root H_et_3_13TeV/ggH_PTH_GT600$MASS H_et_3_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch8              ../2016/125/../common/et_2016_NN.root H_et_4_13TeV/$PROCESS H_et_4_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch8              ../2016/125/../common/et_2016_NN.root H_et_4_13TeV/XH_PTH_0_350$MASS H_et_4_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch8              ../2016/125/../common/et_2016_NN.root H_et_4_13TeV/XH_PTH_350_450$MASS H_et_4_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch8              ../2016/125/../common/et_2016_NN.root H_et_4_13TeV/XH_PTH_450_600$MASS H_et_4_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch8              ../2016/125/../common/et_2016_NN.root H_et_4_13TeV/XH_PTH_GT600$MASS H_et_4_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch8              ../2016/125/../common/et_2016_NN.root H_et_4_13TeV/ggH_PTH_0_350$MASS H_et_4_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch8              ../2016/125/../common/et_2016_NN.root H_et_4_13TeV/ggH_PTH_350_450$MASS H_et_4_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch8              ../2016/125/../common/et_2016_NN.root H_et_4_13TeV/ggH_PTH_450_600$MASS H_et_4_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch8              ../2016/125/../common/et_2016_NN.root H_et_4_13TeV/ggH_PTH_GT600$MASS H_et_4_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes *                ch9              ../2016/125/../common/mt_2016_NN.root H_mt_1_13TeV/$PROCESS H_mt_1_13TeV/$PROCESS_$SYSTEMATIC
-#shapes XH_PTH_0_350     ch9              ../2016/125/../common/mt_2016_NN.root H_mt_1_13TeV/XH_PTH_0_350$MASS H_mt_1_13TeV/XH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes XH_PTH_350_450   ch9              ../2016/125/../common/mt_2016_NN.root H_mt_1_13TeV/XH_PTH_350_450$MASS H_mt_1_13TeV/XH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes XH_PTH_450_600   ch9              ../2016/125/../common/mt_2016_NN.root H_mt_1_13TeV/XH_PTH_450_600$MASS H_mt_1_13TeV/XH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes XH_PTH_GT600     ch9              ../2016/125/../common/mt_2016_NN.root H_mt_1_13TeV/XH_PTH_GT600$MASS H_mt_1_13TeV/XH_PTH_GT600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_0_350    ch9              ../2016/125/../common/mt_2016_NN.root H_mt_1_13TeV/ggH_PTH_0_350$MASS H_mt_1_13TeV/ggH_PTH_0_350$MASS_$SYSTEMATIC
-#shapes ggH_PTH_350_450  ch9              ../2016/125/../common/mt_2016_NN.root H_mt_1_13TeV/ggH_PTH_350_450$MASS H_mt_1_13TeV/ggH_PTH_350_450$MASS_$SYSTEMATIC
-#shapes ggH_PTH_450_600  ch9              ../2016/125/../common/mt_2016_NN.root H_mt_1_13TeV/ggH_PTH_450_600$MASS H_mt_1_13TeV/ggH_PTH_450_600$MASS_$SYSTEMATIC
-#shapes ggH_PTH_GT600    ch9              ../2016/125/../common/mt_2016_NN.root H_mt_1_13TeV/ggH_PTH_GT600$MASS H_mt_1_13TeV/ggH_PTH_GT600$MASS_$SYSTEMATIC
-#

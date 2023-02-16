@@ -14,6 +14,7 @@ def main(args):
     tDirectory_hpt_nnlops= outFile.mkdir('hpt_nnlops')
     tDirectory_jpt_powheg= outFile.mkdir('jpt_powheg')
     tDirectory_jpt_nnlops= outFile.mkdir('jpt_nnlops')
+    tDirectory_Events= outFile.mkdir('Events')
 
 
     uncertainties=[
@@ -37,6 +38,11 @@ def main(args):
     for f in allfile:
         file=TFile(f,'open')
         print file.GetName()
+        
+        hist=file.Get('hEvents')
+        print hist.Integral()
+        tDirectory_Events.cd()
+        tDirectory_Events.WriteObject(hist,(f.replace(InputDirectoryName,'').replace('.root','')).replace('_Nominal','').replace('/',''))
         for unc in uncertainties:
         
             hist=file.Get('HiggsPt'+'_'+unc.replace('scale','THU_ggH_Mu'))

@@ -97,7 +97,8 @@ for year in Years:
         gr_tot.SetMarkerColor( 2 )
         gr_tot.SetMarkerStyle( 24 )
         gr_tot.SetTitle( '{}  wp : {}'.format(year,wp) )
-        gr_tot.GetXaxis().SetTitle( '#tau p_{T} [GeV]' )
+#        gr_tot.GetXaxis().SetTitle( '#tau p_{T} [GeV]' )
+        gr_tot.GetXaxis().SetTitle( 'dR_lep_lep' )
         gr_tot.GetYaxis().SetTitle( 'Data/MC SF' )
         gr_tot.GetYaxis().SetTitleSize(0.05)
         gr_tot.GetXaxis().SetTitleSize(0.04)
@@ -114,4 +115,4 @@ for year in Years:
         gr_bins.SetMarkerStyle( 21 )
         gr_bins.Draw( 'Pesame' )
 
-        c1.SaveAs('sf_{}_{}.pdf'.format(year,wp))
+        c1.SaveAs('sf_{}_{}_dR.pdf'.format(year,wp))
