@@ -159,8 +159,10 @@ def fillLegend(data, backgrounds,backgrounds_EWK, signals, stat):
 
 def formatPull(pull, title):
     pull.SetTitle('')
-    pull.SetMaximum(1.99)
-    pull.SetMinimum(0.01)
+#    pull.SetMaximum(1.99)
+#    pull.SetMinimum(0.01)
+    pull.SetMaximum(1.50)
+    pull.SetMinimum(0.50)
     pull.GetXaxis().SetTitle(title)
     pull.SetMarkerStyle(21)
     pull.GetXaxis().SetTitleSize(0.18)

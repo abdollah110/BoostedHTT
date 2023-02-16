@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
     cout<<"FitPar = " << FR.FitPar  <<"  FitParErr= " << FR.FitParErr<< "\n";
     
     string channel, tree_name;
-    if (dir.find("_tt") != string::npos) {channel ="tt";tree_name="tautau_tree";}
+    if (dir.find("_tt") != string::npos or dir.find("tt_") != string::npos ) {channel ="tt";tree_name="tautau_tree";}
     else (std::cout << "channel is not specificed in the outFile name !\n");
     string newChannelName= channel;
     
@@ -116,7 +116,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         bool lep1IsoPassV, lep2IsoPassV ,OS,SS, lep1IsoPassL, lep2IsoPassL;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
         float NN_disc,MuMatchedIsolation,EleMatchedIsolation,NN_disc_ZTT,NN_disc_QCD;
-        float higgs_pT, higgs_m, m_sv, gen_higgs_pT;
+        float higgs_pT, higgs_m, m_sv, gen_higgs_pT, gen_leadjet_pT;
         bool isGenTauSub_, isGenTauLead_;
 
         tree->SetBranchAddress("isGenTauLead_",&isGenTauLead_);
@@ -146,6 +146,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         tree->SetBranchAddress("MuMatchedIsolation",&MuMatchedIsolation);
         tree->SetBranchAddress("EleMatchedIsolation",&EleMatchedIsolation);
         tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
+        tree->SetBranchAddress("gen_leadjet_pT",&gen_leadjet_pT);
         
         // Here we have to call OS/SS method extracter
         std::cout<<" tree->GetEntries() is "<<tree->GetEntries()<<"\n";
@@ -173,7 +174,12 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 {"MuMatchedIsolation",MuMatchedIsolation},
                 {"EleMatchedIsolation",EleMatchedIsolation}
             };
-            
+
+
+//            if (int(st) % 2 < 1) continue;
+//            if (int(st) % 2 > 0) continue;
+
+
 //            if (LeadJetPt > 350) continue;
             
 //            if (NN_disc > 0.5) continue; // FIXME to derive the SF for tau
@@ -196,20 +202,16 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             float frValu1 = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep1Ptval));
             
             
-//            float lep2Ptval=lep2Pt_;
-//            if (lep2Ptval > 200) lep2Ptval=200;
-//            float frValu2 = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
-            
             float lep2Ptval=lep2Pt_;
-//            if (lep2Ptval > 200) lep2Ptval=200;
+//            if (lep2Ptval > 200) lep2Ptval=200;// FIXME for reproducing the preapproval results
             float frValu2 = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
             float frValuErr = FRhist->GetBinError(FRhist->GetXaxis()->FindBin(lep2Ptval));
             float frValuUncUp=frValu2+frValuErr;
             float frValuUncDown=frValu2-frValuErr;
             if (lep2Ptval > 200) {
-                frValu = FitPar;
-                frValuUncUp=frValu+ 2*FitParErr + (lep2Ptval-200)*(5*FitParErr)/300;
-                frValuUncDown=frValu- 2*FitParErr - (lep2Ptval-200)*(5*FitParErr)/300;
+                frValu2 = FitPar;
+                frValuUncUp=frValu2+ 2*FitParErr + (lep2Ptval-200)*(5*FitParErr)/300;
+                frValuUncDown=frValu2- 2*FitParErr - (lep2Ptval-200)*(5*FitParErr)/300;
             }
             
 
@@ -264,7 +266,9 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight*lep1CorWeight); // final analysis
                 hists_2d.at(categories.at(zeroJet)).back()->Fill(lep2IsoPassV,higgs_pT,  weight);
 //                hists_2d.at(categories.at(zeroJet)).back()->Fill(NN_disc,NN_disc_ZTT,  weight);
-//                Histo_2DMatrix.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
+                Histo_2DMatrix_Higgs.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
+                Histo_2DMatrix_Jet.at(categories.at(zeroJet)).back()->Fill(gen_leadjet_pT,LeadJetPt,  weight);
+
             }
             
             

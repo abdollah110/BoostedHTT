@@ -8,18 +8,18 @@ F1= sys.argv[1]
 systs=[]
 systs += [
 
-#'CMS_scale_met_unclustered2016', 'CMS_prefiring', 'CMS_scale_t_2016','CMS_scale_j_2016', 'CMS_trig_tt2016'
-#'CMS_scale_t_1prong_et2016','CMS_scale_t_3prong_et2016','CMS_scale_t_1prong1pizero_et2016',
-#'CMS_scale_t_1prong_mt2016','CMS_scale_t_3prong_mt2016','CMS_scale_t_1prong1pizero_mt2016',
-#'CMS_scale_t_1prong_tt2016','CMS_scale_t_3prong_tt2016','CMS_scale_t_1prong1pizero_tt2016',
-#
-#'CMS_scale_t_1prong_et2017','CMS_scale_t_3prong_et2017','CMS_scale_t_1prong1pizero_et2017',
-#'CMS_scale_t_1prong_mt2017','CMS_scale_t_3prong_mt2017','CMS_scale_t_1prong1pizero_mt2017',
-#'CMS_scale_t_1prong_tt2017','CMS_scale_t_3prong_tt2017','CMS_scale_t_1prong1pizero_tt2017',
-#
-#'CMS_scale_t_1prong_et2018','CMS_scale_t_3prong_et2018','CMS_scale_t_1prong1pizero_et2018',
-#'CMS_scale_t_1prong_mt2018','CMS_scale_t_3prong_mt2018','CMS_scale_t_1prong1pizero_mt2018',
-#'CMS_scale_t_1prong_tt2018','CMS_scale_t_3prong_tt2018','CMS_scale_t_1prong1pizero_tt2018',
+'CMS_scale_met_unclustered2016', 'CMS_prefiring', 'CMS_scale_t_2016','CMS_scale_j_2016', 'CMS_trig_tt2016'
+'CMS_scale_t_1prong_et2016','CMS_scale_t_3prong_et2016','CMS_scale_t_1prong1pizero_et2016',
+'CMS_scale_t_1prong_mt2016','CMS_scale_t_3prong_mt2016','CMS_scale_t_1prong1pizero_mt2016',
+'CMS_scale_t_1prong_tt2016','CMS_scale_t_3prong_tt2016','CMS_scale_t_1prong1pizero_tt2016',
+
+'CMS_scale_t_1prong_et2017','CMS_scale_t_3prong_et2017','CMS_scale_t_1prong1pizero_et2017',
+'CMS_scale_t_1prong_mt2017','CMS_scale_t_3prong_mt2017','CMS_scale_t_1prong1pizero_mt2017',
+'CMS_scale_t_1prong_tt2017','CMS_scale_t_3prong_tt2017','CMS_scale_t_1prong1pizero_tt2017',
+
+'CMS_scale_t_1prong_et2018','CMS_scale_t_3prong_et2018','CMS_scale_t_1prong1pizero_et2018',
+'CMS_scale_t_1prong_mt2018','CMS_scale_t_3prong_mt2018','CMS_scale_t_1prong1pizero_mt2018',
+'CMS_scale_t_1prong_tt2018','CMS_scale_t_3prong_tt2018','CMS_scale_t_1prong1pizero_tt2018',
 "CMS_QCD_bkg_fakerate2018","CMS_QCD_bkg_fakerate2017","CMS_QCD_bkg_fakerate2016",
 "CMS_QCD_bkg_modeling_et2018","CMS_QCD_bkg_modeling_et2017","CMS_QCD_bkg_modeling_et2016",
 "CMS_QCD_bkg_modeling_mt2018","CMS_QCD_bkg_modeling_mt2017","CMS_QCD_bkg_modeling_mt2016",

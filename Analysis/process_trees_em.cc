@@ -30,8 +30,8 @@ int main(int argc, char *argv[]) {
 
     string channel, tree_name, newChannelName;
     
-    if (dir.find("_em") != string::npos) { channel ="em"; newChannelName="em"; tree_name="emu_tree";}
-    else if (dir.find("_me") != string::npos ) { channel ="me"; newChannelName="em"; tree_name="emu_tree";}
+    if (dir.find("_em") != string::npos or dir.find("em_") != string::npos) { channel ="em"; newChannelName="em"; tree_name="emu_tree";}
+    else if (dir.find("_me") != string::npos or dir.find("me_") != string::npos) { channel ="me"; newChannelName="em"; tree_name="emu_tree";}
     else (std::cout << "channel is not specificed in the outFile name !\n");
 
 
@@ -96,7 +96,7 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
         bool OS,SS,lep1IsoPass,eleIDMVA, lep2IsoPass;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi, lep2Pt_;
         float NN_disc,MuMatchedIsolation,EleMatchedIsolation,NN_disc_ZTT,NN_disc_QCD;
-        float higgs_pT, higgs_m, m_sv, gen_higgs_pT;
+        float higgs_pT, higgs_m, m_sv, gen_higgs_pT, gen_leadjet_pT;
         
         
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
@@ -122,6 +122,7 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
         tree->SetBranchAddress("MuMatchedIsolation",&MuMatchedIsolation);
         tree->SetBranchAddress("EleMatchedIsolation",&EleMatchedIsolation);
         tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
+        tree->SetBranchAddress("gen_leadjet_pT",&gen_leadjet_pT);
         
         // Here we have to call OS/SS method extracter
 //        std::cout<<" tree->GetEntries() is "<<tree->GetEntries()<<"\n";
@@ -150,7 +151,10 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
                 {"EleMatchedIsolation",EleMatchedIsolation}
                 
             };
-            
+
+//            if (int(st) % 2 < 1) continue;
+//            if (int(st) % 2 > 0) continue;
+
 //            if (channel.find("em")!=string::npos  && lep1Pt_ < 20) continue;
             
 //            if (NN_disc < 0.3) continue;
@@ -166,7 +170,8 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
 //            if (OS != 0  && lep1IsoPass ) {
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
                 hists_2d.at(categories.at(zeroJet)).back()->Fill(NN_disc,NN_disc_ZTT,  weight);
-                Histo_2DMatrix.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
+                Histo_2DMatrix_Higgs.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
+                Histo_2DMatrix_Jet.at(categories.at(zeroJet)).back()->Fill(gen_leadjet_pT,LeadJetPt,  weight);
             }
 
             if (SS != 0 && lep1IsoPass && lep2IsoPass ){

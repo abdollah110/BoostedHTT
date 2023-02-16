@@ -45,8 +45,10 @@ int main(int argc, char *argv[]) {
     cout<<"FitPar = " << FR.FitPar  <<"  FitParErr= " << FR.FitParErr<< "\n";
 
     string channel, tree_name;
-    if (dir.find("_et") != string::npos ) { channel ="et";tree_name="etau_tree";}
-    else if (dir.find("_mt") != string::npos) { channel ="mt";tree_name="mutau_tree";}
+//    if (dir.find("_et") != string::npos or dir.find("et_") != string::npos ) { channel ="et";tree_name="etau_tree";}
+//    else if (dir.find("_mt") != string::npos or dir.find("mt_") != string::npos) { channel ="mt";tree_name="mutau_tree";}
+    if (dir.find("_et") != string::npos  ) { channel ="et";tree_name="etau_tree";}
+    else if (dir.find("_mt") != string::npos ) { channel ="mt";tree_name="mutau_tree";}
     else (std::cout << "channel is not specificed in the outFile name !\n");
     string newChannelName= channel;
     // get the provided histogram binning
@@ -108,7 +110,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         bool lep2IsoPass,lep2IsoPassV, OS,SS,lep1IsoPass,eleIDMVA, lep2IsoPassT,lep2IsoPassL;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
         float NN_disc,MuMatchedIsolation,EleMatchedIsolation,NN_disc_ZTT,NN_disc_QCD;
-        float BoostedTauRawIso, higgs_pT, higgs_m, m_sv, gen_higgs_pT;
+        float BoostedTauRawIso, higgs_pT, higgs_m, m_sv, gen_higgs_pT, gen_leadjet_pT;
         
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
         tree->SetBranchAddress("lep2Pt",&lep2Pt_);
@@ -136,6 +138,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         tree->SetBranchAddress("MuMatchedIsolation",&MuMatchedIsolation);
         tree->SetBranchAddress("EleMatchedIsolation",&EleMatchedIsolation);
         tree->SetBranchAddress("gen_higgs_pT",&gen_higgs_pT);
+        tree->SetBranchAddress("gen_leadjet_pT",&gen_leadjet_pT);
                 
         // Here we have to call OS/SS method extracter
         std::cout<<" tree->GetEntries() is "<<tree->GetEntries()<<"\n";
@@ -168,6 +171,9 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 
             };
             
+//            if (int(st) % 2 < 1) continue;
+//            if (int(st) % 2 > 0) continue;
+            
             // apply tau Id SF
             if (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("H125")!= string::npos || name.find("JJH125")!= string::npos ) weight *= 0.9;
             
@@ -195,7 +201,9 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
 //            if (SS != 0  &&  lep2IsoPassV) { // Validation // FIXME
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
 //                hists_2d.at(categories.at(zeroJet)).back()->Fill(NN_disc,NN_disc_ZTT, weight);
-//                Histo_2DMatrix.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
+                Histo_2DMatrix_Higgs.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
+                Histo_2DMatrix_Jet.at(categories.at(zeroJet)).back()->Fill(gen_leadjet_pT,LeadJetPt,  weight);
+
             }
             if (OS != 0 && lep1IsoPass && !lep2IsoPassV ){
 //            if (SS != 0 && lep1IsoPass && !lep2IsoPassV ){ // Validation

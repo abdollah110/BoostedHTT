@@ -43,7 +43,10 @@ parser.add_option('--path', '-p', action='store',
 
 
 
-InputRootFiles = [ifile for ifile in glob(options.path+'/*') if '.root' in ifile and 'pdfscale' not in ifile]
+InputRootFiles = [ifile for ifile in glob(options.path+'/*') if '.root' in ifile and 'pdfscale.root' not in ifile]
+#InputRootFiles = [ifile for ifile in glob(options.path+'/*')]
+print options.path
+print "InputRootFiles ", InputRootFiles
 
 for inFile in InputRootFiles:
 
@@ -91,7 +94,7 @@ for inFile in InputRootFiles:
 
     lastSys=0
     lowBin=0
-    highBin=0
+    highBin=1
 ##########################################################################################
 # PDF Uncertainty
 ##########################################################################################

@@ -75,7 +75,7 @@ public:
     std::vector<string> categories, systematics;
     //    std::vector<float> mvis_bins, njets_bins;
     std::map<string, std::vector<TH1F *>> hists_1d;
-    std::map<string, std::vector<TH2F *>> hists_2d, Histo_2DMatrix;
+    std::map<string, std::vector<TH2F *>> hists_2d, Histo_2DMatrix_Higgs, Histo_2DMatrix_Jet;
     std::vector<TH1F *> fakes_1d_norm,  fakes_1d_norm_Up,  fakes_1d_norm_Down , data;
     std::vector<TH2F *> fakes_2d_norm,  fakes_2d_norm_Up,  fakes_2d_norm_Down;
     std::vector<TH1F *> fakes_1d_SS_CR, fakes_1d_SS_CR_Up, fakes_1d_SS_CR_Down;
@@ -99,7 +99,8 @@ HistTool::HistTool(string treeName, string channel_prefix, string var, string ye
 bins_NN(bins), // This is for 0jet
 //bins_NN({10,0,0.5}),
 bins_FAKE({10,0,300}),
-bins_genHPt({0,300,400,550,800,2000}),
+//bins_genHPt({0,300,400,550,800,2000}),
+bins_genHPt({0,350,450,600,2000}),
 //bins_FAKE({10,0,1}),
 channel_prefix(channel_prefix),
 tree_name(treeName),
@@ -117,7 +118,8 @@ systematics{
         // make a 2d template
         hists_1d[cat.c_str()] = std::vector<TH1F *>();
         hists_2d[cat.c_str()] = std::vector<TH2F *>();
-        Histo_2DMatrix[cat.c_str()] = std::vector<TH2F *>();
+        Histo_2DMatrix_Higgs[cat.c_str()] = std::vector<TH2F *>();
+        Histo_2DMatrix_Jet[cat.c_str()] = std::vector<TH2F *>();
         
         if (cat.find("0jet") != string::npos) {
             
@@ -165,7 +167,13 @@ systematics{
         fout->cd();
     }
     // make all of the directories for templates
-    for (auto it = Histo_2DMatrix.begin(); it != Histo_2DMatrix.end(); it++) {
+    for (auto it = Histo_2DMatrix_Higgs.begin(); it != Histo_2DMatrix_Higgs.end(); it++) {
+        fout->cd();
+        fout->mkdir((it->first).c_str());
+        std::cout <<"\t test 1   first directory is "<<it->first <<"\n";
+        fout->cd();
+    }
+    for (auto it = Histo_2DMatrix_Jet.begin(); it != Histo_2DMatrix_Jet.end(); it++) {
         fout->cd();
         fout->mkdir((it->first).c_str());
         std::cout <<"\t test 1   first directory is "<<it->first <<"\n";
@@ -195,10 +203,16 @@ void HistTool::initVectors2d(string name) {
 
         }
     }
-    for (auto key : Histo_2DMatrix) {
+    for (auto key : Histo_2DMatrix_Higgs) {
         fout->cd(key.first.c_str());
         if (key.first == tree_name + "_0jet") {
-            Histo_2DMatrix.at(key.first.c_str()).push_back(new TH2F((name+"_2D").c_str(), (name+"_2D").c_str(), bins_genHPt.size() - 1, &bins_genHPt[0], bins_genHPt.size() - 1, &bins_genHPt[0]));
+            Histo_2DMatrix_Higgs.at(key.first.c_str()).push_back(new TH2F((name+"_2D_Higgs").c_str(), (name+"_2D_Higgs").c_str(), bins_genHPt.size() - 1, &bins_genHPt[0], bins_genHPt.size() - 1, &bins_genHPt[0]));
+        }
+    }
+    for (auto key : Histo_2DMatrix_Jet) {
+        fout->cd(key.first.c_str());
+        if (key.first == tree_name + "_0jet") {
+            Histo_2DMatrix_Jet.at(key.first.c_str()).push_back(new TH2F((name+"_2D_Jet").c_str(), (name+"_2D_Jet").c_str(), bins_genHPt.size() - 1, &bins_genHPt[0], bins_genHPt.size() - 1, &bins_genHPt[0]));
         }
     }
 }
@@ -476,7 +490,13 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
         
         order++;
         order2++;
-    for (auto cat : Histo_2DMatrix) {
+    for (auto cat : Histo_2DMatrix_Higgs) {
+        fout->cd(cat.first.c_str());
+        for (auto hist : cat.second) {
+            hist->Write();
+        }
+        }
+    for (auto cat : Histo_2DMatrix_Jet) {
         fout->cd(cat.first.c_str());
         for (auto hist : cat.second) {
             hist->Write();
