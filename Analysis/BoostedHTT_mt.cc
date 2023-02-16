@@ -28,9 +28,6 @@ int main(int argc, char* argv[]) {
     else cout<<"Which year are you looking for \n\n";
     cout<<"%%%% Note: you are running on  "<< year_str <<"%%%%\n";
     
-    bool isEmbed= false;
-    if (sample.find("Embed") != string::npos) isEmbed= true;
-    
     stringstream yearstream(year_str);
     int year=0;
     yearstream >> year;
@@ -282,14 +279,14 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",3 ,15,0,15);
         
         // muon pt to 55 to 52 and met frm 40 to 30
-        if (muPt->at(idx_lep) < 52  &&  ((HLT_Mu27 && !isEmbed) || isEmbed )   && Met > 30 ){
+        if (muPt->at(idx_lep) < 52  &&  HLT_Mu27  && Met > 30 ){
             selectMuon_1 = true;
             MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg27);
             MuIsoCorrection = getCorrFactorMuonIso(year, isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuIso);
             
         }
         // muon pt to 55 to 52
-        if (muPt->at(idx_lep) >= 52  && ((HLT_Mu50 && !isEmbed) || isEmbed ) ) {
+        if (muPt->at(idx_lep) >= 52  && HLT_Mu50 ) {
             selectMuon_2 = true;
             MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg50);
         }
@@ -401,48 +398,6 @@ int main(int argc, char* argv[]) {
         plotFill("cutFlowTable",12 ,15,0,15);
         
         //=========================================================================================================
-        float embedWeight = 1;
-        if (isEmbed){
-            
-            if (genWeight > 1 || genWeight < 0) {
-                LumiWeight=0;
-            }
-            else {
-                LumiWeight = genWeight;
-            }
-
-            ws_SF->var("t_pt")->setVal(Tau4Momentum.Pt());
-            ws_SF->var("m_pt")->setVal(muPt->at(idx_lep));
-            ws_SF->var("m_eta")->setVal(muEta->at(idx_lep));
-            ws_SF->var("m_iso")->setVal(IsoLep1Value);
-            ws_SF->var("gt1_pt")->setVal(getMatchedGenMu(Mu4Momentum).Pt());
-            ws_SF->var("gt1_eta")->setVal(getMatchedGenMu(Mu4Momentum).Eta());
-            ws_SF->var("gt2_pt")->setVal(getMatchedGenTau(Tau4Momentum).Pt());
-            ws_SF->var("gt2_eta")->setVal(getMatchedGenTau(Tau4Momentum).Eta());
-            
-            
-            // double muon trigger eff in selection
-            embedWeight *= ws_SF->function("m_sel_trg_ratio")->getVal();
-            
-            // muon ID eff in selectionm
-            embedWeight *= ws_SF->function("m_sel_idEmb_ratio")->getVal();
-            
-            // muon ID SF
-            embedWeight *= ws_SF->function("m_id_embed_kit_ratio")->getVal();
-            
-          // muon iso SF
-          embedWeight *= ws_SF->function("m_iso_binned_embed_kit_ratio")->getVal(); // sometimes large values
-            
-            // apply trigger SF's
-            embedWeight *= ws_SF->function("m_trg24_27_embed_kit_ratio")->getVal();
-            
-            if (embedWeight > 10){
-                cout<<embedWeight<<"   --> " <<ws_SF->function("m_sel_trg_ratio")->getVal()<< "  "<<  ws_SF->function("m_sel_idEmb_ratio")->getVal() <<"  "<<ws_SF->function("m_id_embed_kit_ratio")->getVal() <<"  " << ws_SF->function("m_iso_binned_embed_kit_ratio")->getVal() <<"  "<< ws_SF->function("m_trg24_27_embed_kit_ratio")->getVal()<<"\n";
-                embedWeight=1;
-                
-            }
-        }
-        
         if (!isData){
             
             // Lumi weight
@@ -574,7 +529,6 @@ int main(int argc, char* argv[]) {
         
         plotFill("weight_g_NNLOPS",weight_g_NNLOPS ,100,0,2);
         plotFill("weight_Rivet",weight_Rivet ,100,0,2);
-        plotFill("embedWeight",embedWeight ,100,0,2);
         
         plotFill("bjetsWeightOnMC",bjetsWeightOnMC ,200,0,2);
         plotFill("LepCorrection",LepCorrection ,100,0,2);
@@ -610,7 +564,7 @@ int main(int argc, char* argv[]) {
         BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_tau);
         m_sv_=m_sv;
         //  Weights
-        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt* weight_Rivet * embedWeight;
+        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt* weight_Rivet * weight_g_NNLOPS;
         nbjet=numBJet;
         gen_higgs_pT = Rivet_higgsPt;
         gen_leadjet_pT = Rivet_j1pt;

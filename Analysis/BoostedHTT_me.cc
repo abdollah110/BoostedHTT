@@ -32,9 +32,6 @@ int main(int argc, char* argv[]) {
     int year=0;
     yearstream >> year;
 
-    bool isEmbed= false;
-    if (sample.find("Embed") != string::npos) isEmbed= true;
-
     std::string systname = "";
     if (!syst.empty()) {
         systname = "_" + syst;
@@ -394,53 +391,6 @@ int main(int argc, char* argv[]) {
 
 
         //=========================================================================================================
-        float embedWeight = 1;
-        if (isEmbed){
-            
-            if (genWeight > 1 || genWeight < 0) {
-                LumiWeight=0;
-            }
-            else {
-                LumiWeight = genWeight;
-            }
-
-
-            ws_SF->var("m_pt")->setVal(Mu4Momentum.Pt());
-            ws_SF->var("m_eta")->setVal(Mu4Momentum.Eta());
-            ws_SF->var("m_iso")->setVal(IsoLep1Value);
-            ws_SF->var("e_pt")->setVal(Ele4Momentum.Pt());
-            ws_SF->var("e_eta")->setVal(Ele4Momentum.Eta());
-            ws_SF->var("e_iso")->setVal(IsoLep2Value);
-            
-            embedWeight *= ws_SF->function("m_trk_ratio")->getVal();
-            embedWeight *= ws_SF->function("e_trk_embed_ratio")->getVal();
-            embedWeight *= ws_SF->function("e_idiso_ic_embed_ratio")->getVal();
-            embedWeight *= ws_SF->function("m_idiso_ic_embed_ratio")->getVal();
-            
-            //         scalefactor correcting for the efficiency of the DoubleMuon-HLT during selection
-            ws_SF->var("gt1_pt")->setVal(getMatchedGenMu(Mu4Momentum).Pt());
-            ws_SF->var("gt1_eta")->setVal(getMatchedGenMu(Mu4Momentum).Eta());
-            ws_SF->var("gt2_pt")->setVal(getMatchedGenEle(Ele4Momentum).Pt());
-            ws_SF->var("gt2_eta")->setVal(getMatchedGenEle(Ele4Momentum).Eta());
-            
-            double trg_ratio_new(ws_SF->function("m_sel_trg_ic_ratio")->getVal());
-            embedWeight *= trg_ratio_new;
-            
-            //          scalefactor correcting for the efficiency of the DoubleMuon-HLT during selection
-            ws_SF->var("gt_pt")->setVal(Ele4Momentum.Pt());
-            ws_SF->var("gt_eta")->setVal(Ele4Momentum.Eta());
-            double id_ratio_1_new(ws_SF->function("m_sel_id_ic_ratio")->getVal());
-            embedWeight *= id_ratio_1_new;
-            
-            //          scalefactor correcting for the efficiency of the muon ID during selection
-            ws_SF->var("gt_pt")->setVal(getMatchedGenMu(Mu4Momentum).Pt());
-            ws_SF->var("gt_eta")->setVal(getMatchedGenMu(Mu4Momentum).Eta());
-            double id_ratio_2_new(ws_SF->function("m_sel_id_ic_ratio")->getVal());
-            embedWeight *= id_ratio_2_new;
-            
-  
-  }
-  
         if (!isData){
             
             // Lumi weight
@@ -547,7 +497,6 @@ int main(int argc, char* argv[]) {
         plotFill("preFireWeight",preFireWeight ,200,0,2);
         plotFill("WBosonKFactor",WBosonKFactor ,200,0,2);
         plotFill("ttbar_rwt",ttbar_rwt ,200,0,2);
-        plotFill("embedWeight",embedWeight ,200,0,2);
         
         //###############################################################################################
         //  tree branches
@@ -565,7 +514,7 @@ int main(int argc, char* argv[]) {
         LeadJetPt = LeadJet.Pt();
         dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
         m_sv_=m_sv;
-        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt* weight_Rivet *embedWeight;
+        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt* weight_Rivet *weight_g_NNLOPS;
         nbjet= numBJet;
         gen_higgs_pT = Rivet_higgsPt;
         gen_leadjet_pT = Rivet_j1pt;

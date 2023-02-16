@@ -27,9 +27,6 @@ int main(int argc, char* argv[]) {
     else cout<<"Which year are you looking for \n\n";
     cout<<"%%%% Note: you are running on  "<< year_str <<"%%%%\n";
     
-    bool isEmbed= false;
-    if (sample.find("Embed") != string::npos) isEmbed= true;
-    
     stringstream yearstream(year_str);
     int year=0;
     yearstream >> year;
@@ -565,38 +562,6 @@ int main(int argc, char* argv[]) {
         
         
 //=========================================================================================================
-        //=========================================================================================================
-        float embedWeight = 1;
-        if (isEmbed){
-            
-            if (genWeight > 1 || genWeight < 0) {
-                LumiWeight=0;
-            }
-            else {
-                LumiWeight = genWeight;
-            }
-
-            ws_SF->var("gt1_pt")->setVal(getMatchedGenTau(LeadTau4Momentum).Pt());
-            ws_SF->var("gt1_eta")->setVal(getMatchedGenTau(LeadTau4Momentum).Eta());
-            ws_SF->var("gt2_pt")->setVal(getMatchedGenTau(SubTau4Momentum).Pt());
-            ws_SF->var("gt2_eta")->setVal(getMatchedGenTau(SubTau4Momentum).Eta());
-            embedWeight *=ws_SF->function("m_sel_trg_ratio")->getVal();
-            
-            ws_SF->var("gt_pt")->setVal(getMatchedGenTau(LeadTau4Momentum).Pt());
-            ws_SF->var("gt_eta")->setVal(getMatchedGenTau(LeadTau4Momentum).Eta());
-            embedWeight *=ws_SF->function("m_sel_idEmb_ratio")->getVal();
-            
-            ws_SF->var("gt_pt")->setVal(getMatchedGenTau(SubTau4Momentum).Pt());
-            ws_SF->var("gt_eta")->setVal(getMatchedGenTau(SubTau4Momentum).Eta());
-            embedWeight *=ws_SF->function("m_sel_idEmb_ratio")->getVal();
-            
-            ws_SF->var("t_pt")->setVal(LeadTau4Momentum.Pt());
-            embedWeight *=ws_SF->function("tt_emb_PFTau35OR40_tight_kit_ratio")->getVal();
-                        
-            ws_SF->var("t_pt")->setVal(SubTau4Momentum.Pt());
-            embedWeight *=ws_SF->function("tt_emb_PFTau35OR40_tight_kit_ratio")->getVal();
-            
-        }
         
         if (!isData){
             
@@ -709,7 +674,6 @@ int main(int argc, char* argv[]) {
         plotFill("preFireWeight",preFireWeight ,200,0,2);
         plotFill("WBosonKFactor",WBosonKFactor ,200,0,2);
         plotFill("ttbar_rwt",ttbar_rwt ,200,0,2);
-        plotFill("embedWeight",embedWeight ,200,0,2);
         
         //###############################################################################################
         //  tree branches
@@ -732,7 +696,7 @@ int main(int argc, char* argv[]) {
         BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_subleadtau);
         m_sv_=m_sv;
         //  Weights
-        FullWeight = LumiWeight*LepCorrection * PUWeight * TriggerWeight*zmasspt_weight * preFireWeight * WBosonKFactor * ttbar_rwt* weight_Rivet *embedWeight;
+        FullWeight = LumiWeight*LepCorrection * PUWeight * TriggerWeight*zmasspt_weight * preFireWeight * WBosonKFactor * ttbar_rwt* weight_Rivet *weight_g_NNLOPS;
         nbjet=numBJet;
         gen_higgs_pT = Rivet_higgsPt;
         gen_leadjet_pT = Rivet_j1pt;
