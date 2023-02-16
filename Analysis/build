@@ -29,5 +29,5 @@ set -e
 
 
 # this is the important part for compiling
-g++ -O3 $1 `root-config --cflags --glibs`  -lRooFit -lRooFitCore  -Wl,-rpath,${ROOTSYS}/lib  -o $2
+g++ -O3 $1 `root-config --cflags --glibs`  -lRooFit -lRooFitCore  -lRooFit -lRooFitCore -Wl,-rpath,${ROOTSYS}/lib  -o $2
 #cp $2 $HOME/bin
