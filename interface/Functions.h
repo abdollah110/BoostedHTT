@@ -1634,7 +1634,7 @@ FidSelection PassFoducial(){
         bool tt_ht = AK8LeadJet > 100 ;
         bool tt_met = genHT > 500 && genMET > 120;
             
-            if ( dRcuts && etacuts && ptcuts && higgsPtCut )
+            if ( dRcuts && etacuts && ptcuts && higgsPtCut &&(tt_ht || tt_met))
                 fid.tautau_fid = true;
         }
     }
