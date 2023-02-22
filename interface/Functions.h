@@ -1631,7 +1631,7 @@ FidSelection PassFoducial(){
             
             
         float AK8LeadJet= jetPt->at(0); // needs a revision
-        bool tt_ht = AK8LeadJet.Pt() > 100 ;
+        bool tt_ht = AK8LeadJet > 100 ;
         bool tt_met = genHT > 500 && genMET > 120;
             
             if ( dRcuts && etacuts && ptcuts && higgsPtCut )
