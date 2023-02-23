@@ -297,7 +297,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             
 //            TLorentzVector AK8LeadJet= getLeadJet(VisibleTau0 , VisibleTau1, jentry);
             
-            bool tt_ht = AK8JetPt->at(0) > 450 ;
+            bool tt_ht = false;
+            if (nAK8Jet > 0) tt_ht = AK8JetPt->at(0) > 450 ;
             bool tt_met = genHT > 700 && genMET > 120;
             
             
