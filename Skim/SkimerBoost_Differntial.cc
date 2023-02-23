@@ -82,7 +82,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
     TH1F * higpt_nnlops_et=new TH1F(("HiggsPt_nnlops_et"+Sys).c_str(),("HiggsPt_et"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
     TH1F * higpt_nnlops_mt=new TH1F(("HiggsPt_nnlops_mt"+Sys).c_str(),("HiggsPt_mt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
     TH1F * higpt_nnlops_tt=new TH1F(("HiggsPt_nnlops_tt"+Sys).c_str(),("HiggsP_tt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
-    TH1F * higpt_nnlops_tt_nocut=new TH1F(("HiggsPt_nnlops_tt_nocut"+Sys).c_str(),("HiggsPt_tt_nocut"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * higpt_nnlops_tt_TrigCut=new TH1F(("HiggsPt_nnlops_tt_nocut"+Sys).c_str(),("HiggsPt_tt_nocut"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
     
     TH1F * jetpt=new TH1F(("JetPt"+Sys).c_str(),("JetPt"+Sys).c_str(),sizeof(xbin_jpt)/sizeof(xbin_jpt[0]) - 1, &xbin_jpt[0]);
     TH1F * jetpt_nnlops=new TH1F(("JetPt_nnlops"+Sys).c_str(),("JetPt"+Sys).c_str(),sizeof(xbin_jpt)/sizeof(xbin_jpt[0]) - 1, &xbin_jpt[0]);
@@ -293,25 +293,34 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             
             
             
-            higpt_nnlops_tt_nocut->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             
-//            TLorentzVector AK8LeadJet= getLeadJet(VisibleTau0 , VisibleTau1, jentry);
-            
-            bool tt_ht = false;
-            if (nAK8Jet > 0) tt_ht = AK8JetPt->at(0) > 450 ;
-            bool tt_met = genHT > 700 && genMET > 120;
-            
-            
-            if (!tt_ht && !tt_met) continue;
-            
-//            TLorentzVector LeadJet= getLeadJet(VisibleTau0 , VisibleTau1, jentry);
-            
+
             higpt->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
             higpt_nnlops->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             higpt_nnlops_tt->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             jetpt->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
             jetpt_nnlops->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             hcount->Fill(5);
+
+
+//            TLorentzVector AK8LeadJet= getLeadJet(VisibleTau0 , VisibleTau1, jentry);
+            
+            bool tt_ht = false;
+            if (nAK8Jet > 0) tt_ht = (AK8JetGenJetPt->at(0) > 450 && AK8JetMass> 30);
+            bool tt_met = ((year==2016 && genHT > 400 && genMET > 180) || (year>2016 && genHT > 700 && genMET > 120));
+            
+            
+            if (!tt_ht && !tt_met) continue;
+            
+            higpt_nnlops_tt_TrigCut->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
+//            TLorentzVector LeadJet= getLeadJet(VisibleTau0 , VisibleTau1, jentry);
+            
+//            higpt->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
+//            higpt_nnlops->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
+//            higpt_nnlops_tt->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
+//            jetpt->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
+//            jetpt_nnlops->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            hcount->Fill(6);
 //            std::cout<<"Channel is tautau: #mu= "<<genMuVec.size() <<"  #ele= "<<genEleVec.size()<<"\n";
         }
     }
@@ -326,7 +335,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
     higpt_nnlops_et->Write();
     higpt_nnlops_mt->Write();
     higpt_nnlops_tt->Write();
-    higpt_nnlops_tt_nocut->Write();
+    higpt_nnlops_tt_TrigCut->Write();
     jetpt->Write();
     jetpt_nnlops->Write();
     TauMul->Write();
