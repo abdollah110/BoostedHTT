@@ -75,17 +75,41 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
 //    float xbin[6]={0,350,450,600,800,2000};
 //    float xbin[6]={0,300,400,550,800,2000};
 //    float jetbin[6]={0,300,400,550,800,2000};
+
     TH1F * higpt=new TH1F(("HiggsPt"+Sys).c_str(),("HiggsPt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
-    TH1F * higpt_nnlops=new TH1F(("HiggsPt_nnlops"+Sys).c_str(),("HiggsPt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
-    
-    TH1F * higpt_nnlops_em=new TH1F(("HiggsPt_nnlops_em"+Sys).c_str(),("HiggsP_emt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
-    TH1F * higpt_nnlops_et=new TH1F(("HiggsPt_nnlops_et"+Sys).c_str(),("HiggsPt_et"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
-    TH1F * higpt_nnlops_mt=new TH1F(("HiggsPt_nnlops_mt"+Sys).c_str(),("HiggsPt_mt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
-    TH1F * higpt_nnlops_tt=new TH1F(("HiggsPt_nnlops_tt"+Sys).c_str(),("HiggsP_tt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
-    TH1F * higpt_nnlops_tt_TrigCut=new TH1F(("HiggsPt_nnlops_tt_nocut"+Sys).c_str(),("HiggsPt_tt_nocut"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
-    
+    TH1F * higpt_TrigCut=new TH1F(("HiggsPttrg"+Sys).c_str(),("HiggsPttrg"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * higpt_em=new TH1F(("HiggsPt_em"+Sys).c_str(),("HiggsP_emt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * higpt_et=new TH1F(("HiggsPt_et"+Sys).c_str(),("HiggsPt_et"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * higpt_mt=new TH1F(("HiggsPt_mt"+Sys).c_str(),("HiggsPt_mt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * higpt_tt=new TH1F(("HiggsPt_tt"+Sys).c_str(),("HiggsP_tt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * higpt_TrigCut_tt=new TH1F(("HiggsPt_trg_tt"+Sys).c_str(),("HiggsP_trg_tt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+
+    TH1F * higpt_nnlops=new TH1F(("HiggsPt_nnlops"+Sys).c_str(),("HiggsPtnn"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * higpt_nnlops_TrigCut=new TH1F(("HiggsPttrg_nnlops"+Sys).c_str(),("HiggsPtnntrg"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * higpt_nnlops_em=new TH1F(("HiggsPt_nnlops_em"+Sys).c_str(),("HiggsPnn_emt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * higpt_nnlops_et=new TH1F(("HiggsPt_nnlops_et"+Sys).c_str(),("HiggsPtnn_et"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * higpt_nnlops_mt=new TH1F(("HiggsPt_nnlops_mt"+Sys).c_str(),("HiggsPtnn_mt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * higpt_nnlops_tt=new TH1F(("HiggsPt_nnlops_tt"+Sys).c_str(),("HiggsPnn_tt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * higpt_nnlops_TrigCut_tt=new TH1F(("HiggsPt_nnlops_trg_tt"+Sys).c_str(),("HiggsPnn_trg_tt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+
     TH1F * jetpt=new TH1F(("JetPt"+Sys).c_str(),("JetPt"+Sys).c_str(),sizeof(xbin_jpt)/sizeof(xbin_jpt[0]) - 1, &xbin_jpt[0]);
-    TH1F * jetpt_nnlops=new TH1F(("JetPt_nnlops"+Sys).c_str(),("JetPt"+Sys).c_str(),sizeof(xbin_jpt)/sizeof(xbin_jpt[0]) - 1, &xbin_jpt[0]);
+    TH1F * jetpt_TrigCut=new TH1F(("JetPttrg"+Sys).c_str(),("JetPttrg"+Sys).c_str(),sizeof(xbin_jpt)/sizeof(xbin_jpt[0]) - 1, &xbin_jpt[0]);
+    TH1F * jetpt_em=new TH1F(("JetPt_em"+Sys).c_str(),("JetP_emt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * jetpt_et=new TH1F(("JetPt_et"+Sys).c_str(),("JetPt_et"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * jetpt_mt=new TH1F(("JetPt_mt"+Sys).c_str(),("JetPt_mt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * jetpt_tt=new TH1F(("JetPt_tt"+Sys).c_str(),("JetP_tt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * jetpt_TrigCut_tt=new TH1F(("JetPttrg_tt"+Sys).c_str(),("JetPtrg_tt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+
+
+    TH1F * jetpt_nnlops=new TH1F(("JetPt_nnlops"+Sys).c_str(),("JetPtnn"+Sys).c_str(),sizeof(xbin_jpt)/sizeof(xbin_jpt[0]) - 1, &xbin_jpt[0]);
+    TH1F * jetpt_nnlops_TrigCut=new TH1F(("JetPttrg_nnlops"+Sys).c_str(),("JetPtnntrg"+Sys).c_str(),sizeof(xbin_jpt)/sizeof(xbin_jpt[0]) - 1, &xbin_jpt[0]);
+    TH1F * jetpt_nnlops_em=new TH1F(("JetPt_nnlops_em"+Sys).c_str(),("JetPnn_emt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * jetpt_nnlops_et=new TH1F(("JetPt_nnlops_et"+Sys).c_str(),("JetPtnn_et"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * jetpt_nnlops_mt=new TH1F(("JetPt_nnlops_mt"+Sys).c_str(),("JetPtnn_mt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * jetpt_nnlops_tt=new TH1F(("JetPt_nnlops_tt"+Sys).c_str(),("JetPnn_tt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+    TH1F * jetpt_nnlops_TrigCut_tt=new TH1F(("JetPt_nnlopstrg_tt"+Sys).c_str(),("JetPnntrg_tt"+Sys).c_str(),sizeof(xbin_hpt)/sizeof(xbin_hpt[0]) - 1, &xbin_hpt[0]);
+
+
     TH1F * TauMul=new TH1F("TauMul","TauMul",5,0,5);
     
     event_info event(Sys);
@@ -202,10 +226,17 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             
 
             higpt->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
+            higpt_TrigCut->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
+            higpt_em->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
             higpt_nnlops->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            higpt_nnlops_TrigCut->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             higpt_nnlops_em->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             jetpt->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
+            jetpt_TrigCut->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
+            jetpt_em->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
             jetpt_nnlops->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            jetpt_nnlops_TrigCut->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            jetpt_nnlops_em->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             hcount->Fill(2);
         }
         
@@ -235,10 +266,17 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             
             
             higpt->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
+            higpt_TrigCut->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
+            higpt_mt->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
             higpt_nnlops->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            higpt_nnlops_TrigCut->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             higpt_nnlops_mt->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             jetpt->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
+            jetpt_TrigCut->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
+            jetpt_mt->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
             jetpt_nnlops->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            jetpt_nnlops_TrigCut->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            jetpt_nnlops_mt->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             hcount->Fill(3);
         }
         
@@ -268,10 +306,17 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
 
             
             higpt->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
+            higpt_TrigCut->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
+            higpt_et->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
             higpt_nnlops->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            higpt_nnlops_TrigCut->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             higpt_nnlops_et->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             jetpt->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
+            jetpt_TrigCut->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
+            jetpt_et->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
             jetpt_nnlops->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            jetpt_nnlops_TrigCut->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            jetpt_nnlops_et->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             hcount->Fill(4);
         }
         //tautau
@@ -296,30 +341,39 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             
 
             higpt->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
+            higpt_tt->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
             higpt_nnlops->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             higpt_nnlops_tt->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             jetpt->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
+            jetpt_tt->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
             jetpt_nnlops->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            jetpt_nnlops_tt->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             hcount->Fill(5);
 
 
 //            TLorentzVector AK8LeadJet= getLeadJet(VisibleTau0 , VisibleTau1, jentry);
             
             bool tt_ht = false;
-            if (nAK8Jet > 0) tt_ht = (AK8JetGenJetPt->at(0) > 450 && AK8JetMass->at(0)> 30);
-            bool tt_met = ((year==2016 && genHT > 400 && genMET > 180) || (year>2016 && genHT > 700 && genMET > 120));
+//            if (nAK8Jet > 0) tt_ht = (AK8JetGenJetPt->at(0) > 450 && AK8JetMass->at(0)> 30);
+            if (nAK8Jet > 0) tt_ht = (AK8JetGenJetPt->at(0) > 450 );
+//            bool tt_met = ((year==2016 && genHT > 400 && genMET > 180) || (year>2016 && genHT > 700 && genMET > 120));
+            bool tt_met = false;
+//            tt_met = ((year==2016 && genHT > 400 && genMET > 180) || (year>2016 && genHT > 700 && genMET > 120));
+            tt_met = (genHT > 500 && genMET > 100);
             
             
             if (!tt_ht && !tt_met) continue;
-            
-            higpt_nnlops_tt_TrigCut->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
-//            TLorentzVector LeadJet= getLeadJet(VisibleTau0 , VisibleTau1, jentry);
-            
-//            higpt->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
-//            higpt_nnlops->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
-//            higpt_nnlops_tt->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
-//            jetpt->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
-//            jetpt_nnlops->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
+
+
+
+            higpt_TrigCut->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
+            higpt_TrigCut_tt->Fill(Rivet_higgsPt,LumiWeight * weight_Rivet);
+            higpt_nnlops_TrigCut->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            higpt_nnlops_TrigCut_tt->Fill(Rivet_higgsPt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            jetpt_TrigCut->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
+            jetpt_TrigCut_tt->Fill(Rivet_j1pt,LumiWeight * weight_Rivet);
+            jetpt_nnlops_TrigCut->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
+            jetpt_nnlops_TrigCut_tt->Fill(Rivet_j1pt,weight_g_NNLOPS* LumiWeight * weight_Rivet);
             hcount->Fill(6);
 //            std::cout<<"Channel is tautau: #mu= "<<genMuVec.size() <<"  #ele= "<<genEleVec.size()<<"\n";
         }
@@ -329,15 +383,41 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
 //    BoostTree->AutoSave();
     hEvents->Write();
     hcount->Write();
+
     higpt->Write();
+    higpt_TrigCut->Write();
+    higpt_em->Write();
+    higpt_et->Write();
+    higpt_mt->Write();
+    higpt_tt->Write();
+    higpt_TrigCut_tt->Write();
+
     higpt_nnlops->Write();
+    higpt_nnlops_TrigCut->Write();
     higpt_nnlops_em->Write();
     higpt_nnlops_et->Write();
     higpt_nnlops_mt->Write();
     higpt_nnlops_tt->Write();
-    higpt_nnlops_tt_TrigCut->Write();
+    higpt_nnlops_TrigCut_tt->Write();
+
     jetpt->Write();
+    jetpt_TrigCut->Write();
+    jetpt_em->Write();
+    jetpt_et->Write();
+    jetpt_mt->Write();
+    jetpt_tt->Write();
+    jetpt_TrigCut_tt->Write();
+
     jetpt_nnlops->Write();
+    jetpt_nnlops_TrigCut->Write();
+    jetpt_nnlops_em->Write();
+    jetpt_nnlops_et->Write();
+    jetpt_nnlops_mt->Write();
+    jetpt_nnlops_tt->Write();
+    jetpt_nnlops_TrigCut_tt->Write();
+
+
+
     TauMul->Write();
 
 //    if (hPU) hPU->Write();
