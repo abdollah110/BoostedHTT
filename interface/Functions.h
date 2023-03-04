@@ -1631,7 +1631,7 @@ FidSelection PassFoducial(){
             
         
         bool tt_ht = false;
-        if (AK8JetGenJetPt->at(0)){
+        if (nAK8Jet> 0){
          tt_ht=AK8JetGenJetPt->at(0) > 450;
         }
         
