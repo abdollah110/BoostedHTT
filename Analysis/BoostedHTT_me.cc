@@ -469,7 +469,7 @@ int main(int argc, char* argv[]) {
         //  Higgs theory uncertainty
         //###############################################################################################
             
-        if (fname.find("ggH125") != std::string::npos) { // now is used for all of prodiuction mode
+        if (fname.find("ggH125") != std::string::npos) {
             if (Rivet_nJets30 == 0)
                 weight_g_NNLOPS = g_NNLOPS_0jet->Eval(std::min(Rivet_higgsPt, static_cast<float>(125.0)));
             if (Rivet_nJets30 == 1)

@@ -1629,10 +1629,13 @@ FidSelection PassFoducial(){
             bool ptcuts = (fabs(VisibleTau0.Pt()) > 30 && fabs(VisibleTau1.Pt()) > 30) ;
             bool higgsPtCut = Rivet_higgsPt > 250;
             
-            
-        float AK8LeadJet= jetPt->at(0); // needs a revision
-        bool tt_ht = AK8LeadJet > 100 ;
-        bool tt_met = genHT > 500 && genMET > 120;
+        
+        bool tt_ht = false;
+        if (AK8JetGenJetPt->at(0)){
+         tt_ht=AK8JetGenJetPt->at(0) > 450;
+        }
+        
+        bool tt_met = genHT > 500 && genMET > 100;
             
             if ( dRcuts && etacuts && ptcuts && higgsPtCut &&(tt_ht || tt_met))
                 fid.tautau_fid = true;
