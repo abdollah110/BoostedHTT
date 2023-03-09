@@ -209,11 +209,13 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             // Higgs pT parameterization
             if (name.find("0_350")!=string::npos){
                 if ( Var_cut > 350 ) continue ;
-                if (!Chan_tautau || !Chan_tautau_fid) continue;
+//                if (!Chan_tautau || !Chan_tautau_fid) continue;
+                if (!Chan_tautau) continue;
             }
             if (name.find("350_450")!=string::npos){
                 if ( Var_cut <= 350 || Var_cut > 450 ) continue ;
-                if (!Chan_tautau || !Chan_tautau_fid) continue;
+//                if (!Chan_tautau || !Chan_tautau_fid) continue;
+                if (!Chan_tautau ) continue;
             }
             // Higgs pT parameterization
 //            if (name.find("0_450")!=string::npos){
@@ -222,11 +224,13 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
 //            }
             if (name.find("450_600")!=string::npos){
                 if ( Var_cut <= 450 || Var_cut > 600 ) continue ;
-                if (!Chan_tautau || !Chan_tautau_fid) continue;
+//                if (!Chan_tautau || !Chan_tautau_fid) continue;
+                if (!Chan_tautau ) continue;
             }
             if (name.find("GT600")!=string::npos){
                 if ( Var_cut <= 600) continue ;
-                if (!Chan_tautau || !Chan_tautau_fid) continue;
+//                if (!Chan_tautau || !Chan_tautau_fid) continue;
+                if (!Chan_tautau) continue;
             }
             
             // apply tau Id SF
