@@ -161,11 +161,16 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
         }
         
-        //        int nbin[3]={14,3,3};
-        int nbin[3]={13,1,1};
+//        //        int nbin[3]={14,3,3};
+//        int nbin[3]={13,1,1};
+////        int nbin[3]={20,20,20};
+////        float lowBin=0;
+//        float lowBin=0.35;
+//        float highBin=1;
+        int nbin[3]={40,1,1}; // FIXME changining the binning to 40
 //        int nbin[3]={20,20,20};
 //        float lowBin=0;
-        float lowBin=0.35;
+        float lowBin=0;
         float highBin=1;
         
         
@@ -243,7 +248,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             
             for (int i =0; i < 3 ;i++) {
                 
-                if (NN_out_vec[i] < 0 )continue;
+//                if (NN_out_vec[i] < 0 )continue;// FIXME changining the binning to 40
                 
                 if (OS != 0  && lep1IsoPass && lep2IsoPassV) {
                     hists_1d.at(categories.at(i)).back()->Fill(NN_out_vec[i],  weight);
