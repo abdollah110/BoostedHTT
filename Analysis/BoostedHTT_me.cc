@@ -203,6 +203,9 @@ int main(int argc, char* argv[]) {
     outTr->Branch("D_zeta",&D_zeta,"D_zeta/F");
     outTr->Branch("gen_matched1_",&gen_matched1_,"gen_matched1_/I");
     outTr->Branch("gen_matched2_",&gen_matched2_,"gen_matched2_/I");
+    outTr->Branch("run",&run,"run/I");
+    outTr->Branch("event",&event,"event/I");
+    outTr->Branch("lumis",&lumis,"lumis/I");
     
     
     string JetSys="Nominal";
