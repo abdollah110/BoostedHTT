@@ -160,7 +160,7 @@ int main(int argc, char* argv[]) {
     float MuMatchedIsolation= -1; float EleMatchedIsolation =-1;
     int nbjet, gen_matched1_, gen_matched2_,gen_matched1, gen_matched2, gen_nJet;
 
-    bool isGenTau_;
+    bool isGenTau_,TauAntiLep;
     bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
     int boostedTauDecayMode_;
     
@@ -211,6 +211,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("run",&run,"run/I");
     outTr->Branch("event",&event,"event/I");
     outTr->Branch("lumis",&lumis,"lumis/I");
+    outTr->Branch("TauAntiLep",&TauAntiLep,"TauAntiLep/O");
     
     
     string JetSys="Nominal";
@@ -270,7 +271,6 @@ int main(int argc, char* argv[]) {
         if ( (muPFNeuIso->at(idx_lep) + muPFPhoIso->at(idx_lep) - 0.5* muPFPUIso->at(idx_lep) )  > 0.0)
             IsoLep1Value= ( muPFChIso->at(idx_lep) + muPFNeuIso->at(idx_lep) + muPFPhoIso->at(idx_lep) - 0.5* muPFPUIso->at(idx_lep))/muPt->at(idx_lep);
         
-        // muon pt from 30 to 28
         if (muPt->at(idx_lep) < 28 || fabs(muEta->at(idx_lep)) > 2.4) continue;
         
         bool MuId=( (muIDbit->at(idx_lep) >> 1 & 1)  && fabs(muD0->at(idx_lep)) < 0.045 && fabs(muDz->at(idx_lep)) < 0.2);
@@ -281,14 +281,12 @@ int main(int argc, char* argv[]) {
         
         plotFill("cutFlowTable",3 ,15,0,15);
         
-        // muon pt to 55 to 52 and met frm 40 to 30
         if (muPt->at(idx_lep) < 52  &&  HLT_Mu27  && Met > 30 ){
             selectMuon_1 = true;
             MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg27);
             MuIsoCorrection = getCorrFactorMuonIso(year, isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuIso);
             
         }
-        // muon pt to 55 to 52
         if (muPt->at(idx_lep) >= 52  && HLT_Mu50 ) {
             selectMuon_2 = true;
             MuTrgCorrection = getCorrFactorMuonTrg(isData,  Mu4Momentum.Pt(), Mu4Momentum.Eta() ,HistoMuTrg50);
@@ -304,12 +302,10 @@ int main(int argc, char* argv[]) {
         bool muonIsoStatu = IsoLep1Value < LeptonIsoCut;
         plotFill("IsoCorrelation",muonIsoStatu, MatchedTauStatus, 2, 0, 2, 2, 0, 2);
         plotFill("cutFlowTable",2 ,15,0,15);
-        //        if (!MatchedTauStatus ) continue;
         MuMatchedIsolation = MatchedBoostedTauIsolation(Mu4Momentum);
         //=========================================================================================================
         // Tau selection
         int idx_tau= tauIndex;
-        // pt from 30 to 20
         Tau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
         Tau4MomentumNominal.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
         float MetphiNominal=Metphi;
@@ -317,9 +313,7 @@ int main(int argc, char* argv[]) {
         
         
         bool isGenTau= isMatchedToGenTau(Tau4Momentum);
-        
-//        cout<<isGenTau <<"  dm  "<< boostedTauDecayMode->at(idx_tau)<< " Metphi "<<Metphi<<"  Tau4Momentum Pt"<<Tau4Momentum.Pt()<<"\t";
-        
+                
         if (syst == "TESUp" && isGenTau) {Tau4Momentum *= 1+0.03 ; m_sv=m_sv_TES_Up ;}
         if (syst == "TESDown" && isGenTau) {Tau4Momentum *= 1-0.03 ;m_sv=m_sv_TES_Down ;}
 
@@ -347,9 +341,6 @@ int main(int argc, char* argv[]) {
 //        if (Metphi > 0) Metphi -=  TMath::Pi();
 //        if (Metphi < 0) Metphi +=  TMath::Pi();
         }
-
-
-//        cout <<" Metphi "<<Metphi<<"  Tau4Momentum Pt"<<Tau4Momentum.Pt()<<"\n";
 
 
         if (Tau4Momentum.Pt() <= 30 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
@@ -586,7 +577,7 @@ int main(int argc, char* argv[]) {
         boostedTauDecayMode_=boostedTauDecayMode->at(idx_tau);
         gen_matched1_=gen_matched1;
         gen_matched2_=gen_matched2;
-        
+        TauAntiLep=boostedTauagainstElectronVLooseMVA62018->at(idx_tau) < 0.5;
         
         // Fill the tree
         outTr->Fill();

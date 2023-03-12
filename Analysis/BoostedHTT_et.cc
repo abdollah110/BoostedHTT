@@ -147,7 +147,7 @@ int main(int argc, char* argv[]) {
     float tmass,ht,st,Met,FullWeight, dR_lep_lep, Metphi,BoostedTauRawIso, higgs_pT, higgs_m, m_sv_, nom_zpt_weight, eleIDMVA, gen_higgs_pT,gen_leadjet_pT;
     float MuMatchedIsolation= -1; float EleMatchedIsolation =-1;
         int nbjet, gen_matched1_, gen_matched2_,gen_matched1, gen_matched2, gen_nJet;
-    bool isGenTau_;
+    bool isGenTau_,TauAntiLep;
     bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
 
     outTr->Branch("Chan_emu",&Chan_emu,"Chan_emu/O");
@@ -194,7 +194,7 @@ int main(int argc, char* argv[]) {
     outTr->Branch("run",&run,"run/I");
     outTr->Branch("event",&event,"event/I");
     outTr->Branch("lumis",&lumis,"lumis/I");
-
+    outTr->Branch("TauAntiLep",&TauAntiLep,"TauAntiLep/O");
 
     string JetSys="Nominal";
     if (syst=="JEnTotUp") JetSys="JetTotUp";
@@ -268,9 +268,7 @@ int main(int argc, char* argv[]) {
         
         if (elePt->at(idx_lep) < 38 || fabs(eleEta->at(idx_lep)) > 2.5) continue;
         plotFill("cutFlowTable",3 ,15,0,15);
-        // met from 40 to 30
-        if (elePt->at(idx_lep) < 120  && HLT_Ele35 && Met > 30 ){ // FIXME   for checking MB comment why dR drops at zero
-//        if (elePt->at(idx_lep) < 120  && HLT_Ele115 && Met > 30 ){
+        if (elePt->at(idx_lep) < 120  && HLT_Ele35 && Met > 30 ){
             selectElectron_1 = true;
         }
         if (elePt->at(idx_lep) >= 120  && HLT_Ele115 ) {
@@ -286,12 +284,10 @@ int main(int argc, char* argv[]) {
         bool eleIsoStatu = IsoLep1Value < LeptonIsoCut;
         plotFill("IsoCorrelation",eleIsoStatu, MatchedTauStatus, 2, 0, 2, 2, 0, 2);
         plotFill("cutFlowTable",2 ,15,0,15);
-//        if (!MatchedTauStatus ) continue;
         EleMatchedIsolation = MatchedBoostedTauIsolation(Ele4Momentum);
         //=========================================================================================================
         // Tau selection
         int idx_tau= tauIndex;
-        // pt from 30 to 20
         Tau4Momentum.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
         Tau4MomentumNominal.SetPtEtaPhiM(boostedTauPt->at(idx_tau),boostedTauEta->at(idx_tau),boostedTauPhi->at(idx_tau),boostedTauMass->at(idx_tau));
         
@@ -324,12 +320,9 @@ int main(int argc, char* argv[]) {
 
         if (Tau4Momentum.Pt() <= 30 || fabs(boostedTauEta->at(idx_tau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_tau) < 0.5 ) continue;
-        //        if (boostedTauagainstElectronTightMVA62018->at(idx_tau) < 0.5) continue;
         if (boostedTauagainstElectronLooseMVA62018->at(idx_tau) < 0.5) continue;
         if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_tau) < -0.5) continue;
         //        if (boostedTauByLooseMuonRejection3->at(idx_tau) < 0.5) continue;
-        //        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < 0) continue;
-        
         
         plotFill("cutFlowTable",5 ,15,0,15);
         //=========================================================================================================
@@ -524,6 +517,7 @@ int main(int argc, char* argv[]) {
         Chan_tautau_fid = fiducial.tautau_fid ;
         gen_matched1_=gen_matched1;
         gen_matched2_=gen_matched2;
+        TauAntiLep=boostedTauByLooseMuonRejection3->at(idx_tau) < 0.5;
         
         // Fill the tree
         outTr->Fill();
