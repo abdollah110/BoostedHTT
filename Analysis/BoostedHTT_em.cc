@@ -199,8 +199,9 @@ int main(int argc, char* argv[]) {
     outTr->Branch("D_zeta",&D_zeta,"D_zeta/F");
     outTr->Branch("gen_matched1_",&gen_matched1_,"gen_matched1_/I");
     outTr->Branch("gen_matched2_",&gen_matched2_,"gen_matched2_/I");
-    
-
+    outTr->Branch("run",&run,"run/I");
+    outTr->Branch("event",&event,"event/I");
+    outTr->Branch("lumis",&lumis,"lumis/I");
     
     
     string JetSys="Nominal";
@@ -551,7 +552,10 @@ int main(int argc, char* argv[]) {
         gen_higgs_pT = Rivet_higgsPt;
         gen_leadjet_pT = Rivet_j1pt;
         gen_nJet = Rivet_nJets30;
-    
+//        run=run;
+//        event=event;
+//        lumis=lumis;
+   
         //  fiducial info
         FidSelection fiducial = PassFoducial();
         Chan_emu = fiducial.emu ;
