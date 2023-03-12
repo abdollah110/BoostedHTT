@@ -207,13 +207,13 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
             vector<float > NN_out_vec;
             NN_out_vec.clear();
             
-            NN_out_vec.push_back((NN_disc > NN_disc_ZTT && NN_disc > NN_disc_QCD )? NN_disc : -1);
-            NN_out_vec.push_back((NN_disc_ZTT > NN_disc && NN_disc_ZTT > NN_disc_QCD )? NN_disc_ZTT : -1);
-            NN_out_vec.push_back((NN_disc_QCD > NN_disc_ZTT && NN_disc_QCD > NN_disc )? NN_disc_QCD : -1);
+//            NN_out_vec.push_back((NN_disc > NN_disc_ZTT && NN_disc > NN_disc_QCD )? NN_disc : -1);
+//            NN_out_vec.push_back((NN_disc_ZTT > NN_disc && NN_disc_ZTT > NN_disc_QCD )? NN_disc_ZTT : -1);
+//            NN_out_vec.push_back((NN_disc_QCD > NN_disc_ZTT && NN_disc_QCD > NN_disc )? NN_disc_QCD : -1);
             
-//            NN_out_vec.push_back(NN_disc);
-//            NN_out_vec.push_back(NN_disc_ZTT);
-//            NN_out_vec.push_back(NN_disc_QCD);
+            NN_out_vec.push_back(NN_disc);
+            NN_out_vec.push_back(NN_disc_ZTT);
+            NN_out_vec.push_back(NN_disc_QCD);
             
             
             
