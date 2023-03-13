@@ -76,11 +76,7 @@ int main(int argc, char *argv[]) {
     // initialize histogram holder
     auto hists = new HistTool(newChannelName, channel, var_name, year, suffix, binName,bins);
     
-    // This part is tro derive the OS/SS ratio (one can actually get the 2D pt/eta binned Values as well)
-    //    hists->histoQCD(files, dir, tree_name,  "None");    // fill histograms QCD
-    std::vector<float>  OSSS= hists->Get_OS_SS_ratio();
-    
-    hists->histoLoop(year, files, dir, FR.FRhist, FR.FitPar, FR.FitParErr,tree_name,var_name,OSSS,cut_name, lowVal, highVal,runPDF,"");    // fill histograms
+    hists->histoLoop(year, files, dir, FR.FRhist, FR.FitPar, FR.FitParErr,tree_name,var_name,cut_name, lowVal, highVal,runPDF,"");    // fill histograms
     hists->writeTemplates(dir,channel,year);  // write histograms to file
     // histograms for pdf and scale
     unordered_map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
@@ -96,9 +92,14 @@ int main(int argc, char *argv[]) {
     //  delete hists->ff_weight;
 }
 
-void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FRhist, float FitPar, float FitParErr, string tree_name , string var_name, vector<float> OSSS, string cut_name, float lowVal, float highVal ,bool runPDF, string Sys = "") {
+void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FRhist, float FitPar, float FitParErr, string tree_name , string var_name, string cut_name, float lowVal, float highVal ,bool runPDF, string Sys = "") {
     std::cout<< "starting .... "<<dir<<"\n";
-    float vbf_var1(0.);
+    initVectors1dFake("nominal");
+    initVectors1dFake("up");
+    initVectors1dFake("down");
+    initVectors1dFake("frup");
+    initVectors1dFake("frdown");
+    
     for (auto ifile : files) {
         
         
@@ -109,7 +110,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         
         
         // do some initialization
-        initVectors2d(name);
+        initVectors1d(name);
         fout->cd();
         
         float lep1Pt_=-10;
@@ -119,7 +120,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         float dR_Z_jet=-10;
         bool lep2IsoPass,lep2IsoPassV, OS,SS,lep1IsoPass,eleIDMVA, lep2IsoPassT,lep2IsoPassL;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
-        float NN_disc;
+        float NN_disc,NN_disc_ZTT,NN_disc_QCD;
         float BoostedTauRawIso, higgs_pT, higgs_m, m_sv,gen_higgs_pT, gen_leadjet_pT;
         bool Chan_emu, Chan_etau, Chan_mutau, Chan_tautau, Chan_emu_fid, Chan_etau_fid, Chan_mutau_fid, Chan_tautau_fid;
         Float_t         pdfWeight=0;
@@ -152,6 +153,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         tree->SetBranchAddress("dR_lep_lep",&dR_lep_lep);
         tree->SetBranchAddress("evtwt",&weight);
         tree->SetBranchAddress("NN_disc",&NN_disc);
+        tree->SetBranchAddress("NN_disc_ZTT",&NN_disc_ZTT);
+        tree->SetBranchAddress("NN_disc_QCD",&NN_disc_QCD);
         tree->SetBranchAddress("BoostedTauRawIso",&BoostedTauRawIso);
         tree->SetBranchAddress("higgs_pT",&higgs_pT);
         tree->SetBranchAddress("higgs_m",&higgs_m);
@@ -163,6 +166,9 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
         }
         
+        int nbin[3]={13,1,1};
+        float lowBin=0.35;
+        float highBin=1;
         
         // Here we have to call OS/SS method extracter
         std::cout<<" tree->GetEntries() is "<<tree->GetEntries()<<"\n";
@@ -218,28 +224,23 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             // Higgs pT parameterization
             if (name.find("0_350")!=string::npos){
                 if ( Var_cut > 350 ) continue ;
-//                if (!Chan_ltau || !Chan_ltau_fid) continue;
-                if (!Chan_ltau ) continue;
+                if (!Chan_ltau || !Chan_ltau_fid) continue;
+//                if (!Chan_ltau ) continue;
             }
             if (name.find("350_450")!=string::npos){
                 if ( Var_cut <= 350 || Var_cut > 450 ) continue ;
-//                if (!Chan_ltau || !Chan_ltau_fid) continue;
-                if (!Chan_ltau ) continue;
+                if (!Chan_ltau || !Chan_ltau_fid) continue;
+//                if (!Chan_ltau ) continue;
             }
-            // Higgs pT parameterization
-//            if (name.find("0_450")!=string::npos){
-//                if ( Var_cut <= 0 || Var_cut > 450 ) continue ;
-//                if (!Chan_ltau || !Chan_ltau_fid) continue;
-//            }
             if (name.find("450_600")!=string::npos){
                 if ( Var_cut <= 450 || Var_cut > 600 ) continue ;
-//                if (!Chan_ltau || !Chan_ltau_fid) continue;
-                if (!Chan_ltau ) continue;
+                if (!Chan_ltau || !Chan_ltau_fid) continue;
+//                if (!Chan_ltau ) continue;
             }
             if (name.find("GT600")!=string::npos){
                 if ( Var_cut <= 600) continue ;
-//                if (!Chan_ltau || !Chan_ltau_fid) continue;
-                if (!Chan_ltau ) continue;
+                if (!Chan_ltau || !Chan_ltau_fid) continue;
+//                if (!Chan_ltau ) continue;
             }
             
             
@@ -247,11 +248,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             if (isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos || name.find("JJH125")!= string::npos )) weight *= 0.9;
             
             
-//            float lep2Ptval=lep2Pt_;
-//            if (lep2Ptval > 200) lep2Ptval=200;
             float lep2Ptval=lep2Pt_;
-//            if (lep2Ptval > 200) lep2Ptval=200;
-            
             float frValu = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
             float frValuErr = FRhist->GetBinError(FRhist->GetXaxis()->FindBin(lep2Ptval));
             float frValuUncUp=frValu+frValuErr;
@@ -261,43 +258,44 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 frValuUncUp=frValu+ 2*FitParErr + (lep2Ptval-200)*(5*FitParErr)/300;
                 frValuUncDown=frValu- 2*FitParErr - (lep2Ptval-200)*(5*FitParErr)/300;
             }
+                        
+            float NN_sig, NN_ztt, NN_qcd;
+            vector<float > NN_out_vec;
+            NN_out_vec.clear();
             
-//            float frValu = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
-//            float frValuErr = FRhist->GetBinError(FRhist->GetXaxis()->FindBin(lep2Ptval));
-//            float frValuUncUp=frValu+frValuErr;
-//            float frValuUncDown=frValu-frValuErr;
+            NN_out_vec.push_back((NN_disc > NN_disc_ZTT && NN_disc > NN_disc_QCD )? NN_disc : -1);
+            NN_out_vec.push_back((NN_disc_ZTT > NN_disc && NN_disc_ZTT > NN_disc_QCD )? NN_disc_ZTT : -1);
+            NN_out_vec.push_back((NN_disc_QCD > NN_disc_ZTT && NN_disc_QCD > NN_disc )? NN_disc_QCD : -1);
             
-            vbf_var1 =ObsName[var_name];
+            for (int i =0; i < 3 ;i++) {
+                if (NN_out_vec[i] < 0 )continue;
             
             if (OS != 0  && lep1IsoPass && lep2IsoPassV) {
-                //            if (SS != 0  && lep1IsoPass && lep2IsoPassV) { // Validation
-                //            if (SS != 0  && lep1IsoPass && lep2IsoPassL) { // Validation
-                hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
+                hists_1d.at(categories.at(i)).back()->Fill(NN_out_vec[i],  weight);
                 
                 if (runPDF){
                     // pdf scale and uncertainties
                     if (name.find("TT") != string::npos && name.find("_") == string::npos ){
                         for (int j =0; j < pdfSystWeight->size(); j++){
                             float newWeight= pdfSystWeight->at(j)/pdfWeight;
-                            plotFill(name+"___"+categories.at(zeroJet)+std::to_string(j),vbf_var1 , bins_NN.at(0), bins_NN.at(1), bins_NN.at(2) ,weight*newWeight);
+                            plotFill(name+"___"+categories.at(i)+std::to_string(j),NN_out_vec[i] , bins_NN.at(0), bins_NN.at(1), bins_NN.at(2) ,weight*newWeight);
                         }
                     }
                 }
             }
             if (OS != 0 && lep1IsoPass && !lep2IsoPassV ){
-                //            if (SS != 0 && lep1IsoPass && !lep2IsoPassV ){ // Validation
-                //            if (SS != 0 && lep1IsoPass && !lep2IsoPassL ){ // Validation
-                fillQCD_Norm(zeroJet, name, vbf_var1,  weight, frValu / (1-frValu));
-                fillQCD_Norm_fr_up(zeroJet, name, vbf_var1,  weight, frValuUncUp / (1-frValuUncUp));
-                fillQCD_Norm_fr_down(zeroJet, name, vbf_var1,  weight, frValuUncDown / (1-frValuUncDown));
+                fillQCD_Norm(i, name, NN_out_vec[i],  weight, frValu / (1-frValu));
+                fillQCD_Norm_fr_up(i, name, NN_out_vec[i],  weight, frValuUncUp / (1-frValuUncUp));
+                fillQCD_Norm_fr_down(i, name, NN_out_vec[i],  weight, frValuUncDown / (1-frValuUncDown));
                 
             }
             if (SS != 0 && !lep2IsoPassV){
-                fillQCD_Shape(zeroJet, name, vbf_var1,  weight, frValu / (1-frValu));
-                fillQCD_Shape_fr_up(zeroJet, name, vbf_var1,  weight, frValuUncUp / (1-frValuUncUp));
-                fillQCD_Shape_fr_down(zeroJet, name, vbf_var1,  weight, frValuUncDown / (1-frValuUncDown));
-                
+                fillQCD_Shape(i, name, NN_out_vec[i],  weight, frValu / (1-frValu));
+                fillQCD_Shape_fr_up(i, name, NN_out_vec[i],  weight, frValuUncUp / (1-frValuUncUp));
+                fillQCD_Shape_fr_down(i, name, NN_out_vec[i],  weight, frValuUncDown / (1-frValuUncDown));
             }
+            }
+            NN_out_vec.clear();
         }
         delete fin;
     }
