@@ -104,6 +104,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         
         
         string name = ifile.substr(0, ifile.find(".")).c_str();
+        if (runPDF && name.find("TT") ==string::npos) continue;
+        
         auto fin = new TFile((dir + "/" + ifile).c_str(), "read");
         std::cout<<"ifile is openning: " <<ifile<<"\n";
         auto tree = reinterpret_cast<TTree *>(fin->Get(tree_name.c_str()));
@@ -278,7 +280,10 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                     if (name.find("TT") != string::npos && name.find("_") == string::npos ){
                         for (int j =0; j < pdfSystWeight->size(); j++){
                             float newWeight= pdfSystWeight->at(j)/pdfWeight;
-                            plotFill(name+"___"+categories.at(i)+std::to_string(j),NN_out_vec[i] , bins_NN.at(0), bins_NN.at(1), bins_NN.at(2) ,weight*newWeight);
+                            if (i==0) plotFill(name+"___"+categories.at(i)+std::to_string(j),NN_out_vec[i] , bins_NN.at(0), bins_NN.at(1), bins_NN.at(2) ,weight*newWeight);
+                            else
+                            plotFill(name+"___"+categories.at(i)+std::to_string(j),NN_out_vec[i] , bins_NN_bkg.at(0), bins_NN_bkg.at(1), bins_NN_bkg.at(2) ,weight*newWeight);
+
                         }
                     }
                 }
