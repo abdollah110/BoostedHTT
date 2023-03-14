@@ -104,7 +104,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         
         
         string name = ifile.substr(0, ifile.find(".")).c_str();
-        if (runPDF && name.find("TT") ==string::npos) continue;
+        if (runPDF && (name.find("TT") ==string::npos || name.find("Up") !=string::npos || name.find("Down") !=string::npos )) continue;
         
         auto fin = new TFile((dir + "/" + ifile).c_str(), "read");
         std::cout<<"ifile is openning: " <<ifile<<"\n";
