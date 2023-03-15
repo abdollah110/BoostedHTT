@@ -109,12 +109,12 @@ HistTool::HistTool(string treeName, string channel_prefix, string var, string ye
 // x-axis
 //bins_NN{0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0}, // This is for 0jet
 //bins_NN(bins), // This is for 0jet
-//bins_NN({13,0.35,1}),
-bins_NN({40,0,1}), // FIXME just for the test
+bins_NN({13,0.35,1}),
+//bins_NN({40,0,1}), // FIXME just for the test
 //bins_NN({20,0,1}),
 //bins_NN_bkg({3,0.3,1}),
-//bins_NN_bkg({1,0.35,1}),
-bins_NN_bkg({1,0,1}), // FIXME just for the test
+bins_NN_bkg({1,0.35,1}),
+//bins_NN_bkg({1,0,1}), // FIXME just for the test
 //bins_NN_bkg(bins),
 //bins_NN_bkg({20,0,1}),
 bins_FAKE({10,0,300}),
@@ -133,10 +133,7 @@ systematics{
     
     // Create empty histograms for each category to fill later.
     for (auto cat : categories) {
-        // make a 2d template
         hists_1d[cat.c_str()] = std::vector<TH1F *>();
-        //        hists_2d[cat.c_str()] = std::vector<TH2F *>();
-        //        Histo_2DMatrix[cat.c_str()] = std::vector<TH2F *>();
         hists_FakeNorm_1d[cat.c_str()] = std::vector<TH1F *>();
         hists_FakeShape_1d[cat.c_str()] = std::vector<TH1F *>();
         
@@ -229,7 +226,6 @@ void HistTool::initVectors1dFake(string type) {
     for (auto key : hists_FakeNorm_1d) {
         fout->cd(key.first.c_str());
     std:string name="Newfake_"+type+key.first;
-        //        std:string name="Newfake_"+key.first;
         
         if (key.first == tree_name +"_signal") {
             hists_FakeNorm_1d.at(key.first.c_str()).push_back(new TH1F((name+"_signal").c_str(), (name+"_signal").c_str(), bins_NN.at(0), bins_NN.at(1), bins_NN.at(2)));
@@ -238,14 +234,10 @@ void HistTool::initVectors1dFake(string type) {
         } else if (key.first == tree_name + "_ztt") {
             hists_FakeNorm_1d.at(key.first.c_str()).push_back(new TH1F((name+"_ztt").c_str(), (name+"_ztt").c_str(), bins_NN_bkg.at(0), bins_NN_bkg.at(1), bins_NN_bkg.at(2)));
             hists_FakeShape_1d.at(key.first.c_str()).push_back(new TH1F((name+"_shape_ztt").c_str(), (name+"_shape_ztt").c_str(), bins_NN_bkg.at(0), bins_NN_bkg.at(1), bins_NN_bkg.at(2)));
-            //            hists_FakeNorm_1d.at(key.first.c_str()).push_back(new TH1F(name.c_str(), name.c_str(), bins_NN_bkg.at(0), bins_NN_bkg.at(1), bins_NN_bkg.at(2)));
-            //            hists_FakeShape_1d.at(key.first.c_str()).push_back(new TH1F(name.c_str(), name.c_str(), bins_NN_bkg.at(0), bins_NN_bkg.at(1), bins_NN_bkg.at(2)));
             
         } else if (key.first == tree_name + "_qcd") {
             hists_FakeNorm_1d.at(key.first.c_str()).push_back(new TH1F((name+"_qcd").c_str(), (name+"_qcd").c_str(), bins_NN_bkg.at(0), bins_NN_bkg.at(1), bins_NN_bkg.at(2)));
             hists_FakeShape_1d.at(key.first.c_str()).push_back(new TH1F((name+"_shape_qcd").c_str(), (name+"_shape_qcd").c_str(), bins_NN_bkg.at(0), bins_NN_bkg.at(1), bins_NN_bkg.at(2)));
-            //            hists_FakeNorm_1d.at(key.first.c_str()).push_back(new TH1F(name.c_str(), name.c_str(), bins_NN_bkg.at(0), bins_NN_bkg.at(1), bins_NN_bkg.at(2)));
-            //            hists_FakeShape_1d.at(key.first.c_str()).push_back(new TH1F(name.c_str(), name.c_str(), bins_NN_bkg.at(0), bins_NN_bkg.at(1), bins_NN_bkg.at(2)));
             
         }
     }

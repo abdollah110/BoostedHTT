@@ -94,6 +94,8 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
         
         
         string name = ifile.substr(0, ifile.find(".")).c_str();
+        if (runPDF && (name.find("TT") ==string::npos || name.find("Up") !=string::npos || name.find("Down") !=string::npos )) continue;
+        if (name.find("PTH") !=string::npos || name.find("OutsideAcceptance") !=string::npos) continue;
         
         auto fin = new TFile((dir + "/" + ifile).c_str(), "read");
         //        std::cout<<"ifile is openning: " <<ifile<<"\n";
@@ -145,18 +147,15 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
                 tree->SetBranchAddress("pdfSystWeight",&pdfSystWeight);
                 }
         
-//        //        int nbin[3]={14,3,3};
-//        int nbin[3]={13,1,1};
-////        int nbin[3]={20,20,20};
-////        float lowBin=0;
-//        float lowBin=0.35;
-//        float highBin=1;
-        //        int nbin[3]={14,3,3};
-        int nbin[3]={40,1,1}; // FIXME changining the binning to 40
+        int nbin[3]={13,1,1};
+        float lowBin=0.35;
+        float highBin=1;
+//        int nbin[3]={14,3,3};
+//        int nbin[3]={40,1,1}; // FIXME changining the binning to 40
 //        int nbin[3]={20,20,20};
 //        float lowBin=0;
-        float lowBin=0;
-        float highBin=1;
+//        float lowBin=0;
+//        float highBin=1;
         
         
         // Here we have to call OS/SS method extracter
@@ -207,30 +206,30 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
             vector<float > NN_out_vec;
             NN_out_vec.clear();
             
-//            NN_out_vec.push_back((NN_disc > NN_disc_ZTT && NN_disc > NN_disc_QCD )? NN_disc : -1);
-//            NN_out_vec.push_back((NN_disc_ZTT > NN_disc && NN_disc_ZTT > NN_disc_QCD )? NN_disc_ZTT : -1);
-//            NN_out_vec.push_back((NN_disc_QCD > NN_disc_ZTT && NN_disc_QCD > NN_disc )? NN_disc_QCD : -1);
+            NN_out_vec.push_back((NN_disc > NN_disc_ZTT && NN_disc > NN_disc_QCD )? NN_disc : -1);
+            NN_out_vec.push_back((NN_disc_ZTT > NN_disc && NN_disc_ZTT > NN_disc_QCD )? NN_disc_ZTT : -1);
+            NN_out_vec.push_back((NN_disc_QCD > NN_disc_ZTT && NN_disc_QCD > NN_disc )? NN_disc_QCD : -1);
             
-            NN_out_vec.push_back(NN_disc);
-            NN_out_vec.push_back(NN_disc_ZTT);
-            NN_out_vec.push_back(NN_disc_QCD);
+//            NN_out_vec.push_back(NN_disc);
+//            NN_out_vec.push_back(NN_disc_ZTT);
+//            NN_out_vec.push_back(NN_disc_QCD);
             
             
             
             for (int i =0; i < 3 ;i++) {
                 
-//                if (NN_out_vec[i] < 0 )continue; // FIXME changining the binning to 40
+                if (NN_out_vec[i] < 0 )continue;
                 
                 if (OS != 0  && lep1IsoPass && lep2IsoPass) {
                     hists_1d.at(categories.at(i)).back()->Fill(NN_out_vec[i],  weight);
                     
-                    plotFill(name+"_HiggsPt_"+categories.at(i),higgs_pT,20,200,1000,weight);
-                    plotFill(name+"_m_sv_"+categories.at(i),m_sv,20,0,400,weight);
-                    plotFill(name+"_Met_"+categories.at(i),Met,20,0,400,weight);
-                    plotFill(name+"_NN_disc_"+categories.at(i),NN_disc,20,0,1,weight);
-                    plotFill(name+"_LeadTauPt_"+categories.at(i),lep1Pt_,20,0,400,weight);
-                    plotFill(name+"_SubLeadTauPt_"+categories.at(i),lep2Pt_,20,0,400,weight);
-                    plotFill(name+"_vis_mass_"+categories.at(i),vis_mass,20,0,200,weight);
+//                    plotFill(name+"_HiggsPt_"+categories.at(i),higgs_pT,20,200,1000,weight);
+//                    plotFill(name+"_m_sv_"+categories.at(i),m_sv,20,0,400,weight);
+//                    plotFill(name+"_Met_"+categories.at(i),Met,20,0,400,weight);
+//                    plotFill(name+"_NN_disc_"+categories.at(i),NN_disc,20,0,1,weight);
+//                    plotFill(name+"_LeadTauPt_"+categories.at(i),lep1Pt_,20,0,400,weight);
+//                    plotFill(name+"_SubLeadTauPt_"+categories.at(i),lep2Pt_,20,0,400,weight);
+//                    plotFill(name+"_vis_mass_"+categories.at(i),vis_mass,20,0,200,weight);
                     
                     
                     
@@ -249,35 +248,13 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
                 // qcd norm
                 if (SS != 0 && lep1IsoPass && lep2IsoPass ){
                     fillQCD_Norm_emu(i, name, NN_out_vec[i],  weight, meausred_OSSS);
-//                    fillQCD_Norm(i, name, NN_out_vec[i],  weight, meausred_OSSS);
-//                    cout<<i <<"  " << name<<"  " << NN_out_vec[i]<<"  " <<  weight<<"  " << meausred_OSSS<<" \n ";
                 }
                 // qcd shape
-//                if (SS != 0 && (!lep1IsoPass || !lep2IsoPass) ){
                 if (SS != 0){
                     fillQCD_Shape_emu(i, name, NN_out_vec[i],  weight, meausred_OSSS);
                 }
             }
-            NN_out_vec.clear();
-            
-            //            if (OS != 0  && lep1IsoPass && lep2IsoPass) {
-            ////            if (OS != 0  && lep1IsoPass ) {
-            //                hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight);
-            //                hists_2d.at(categories.at(zeroJet)).back()->Fill(NN_disc,NN_disc_ZTT,  weight);
-            //                Histo_2DMatrix.at(categories.at(zeroJet)).back()->Fill(gen_higgs_pT,higgs_pT,  weight);
-            //            }
-            //
-            //            if (SS != 0 && lep1IsoPass && lep2IsoPass ){
-            ////            if (SS != 0 && lep1IsoPass  ){
-            //                fillQCD_Norm_emu(zeroJet, name, vbf_var1,  weight,meausred_OSSS);
-            //                fillQCD_Norm_emu(zeroJet, name, NN_disc,NN_disc_ZTT,  weight,meausred_OSSS);
-            //            }
-            //
-            //            if (SS != 0 ){
-            ////            if (SS != 0 && lep1IsoPass && lep2IsoPass ){
-            //                fillQCD_Shape_emu(zeroJet, name, vbf_var1,  weight,meausred_OSSS);
-            //                fillQCD_Shape_emu(zeroJet, name, NN_disc,NN_disc_ZTT,  weight,meausred_OSSS);
-            //            }
+            NN_out_vec.clear();            
         }
         delete fin;
     }
