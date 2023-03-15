@@ -3,7 +3,7 @@
 #include "TMath.h"
 #include "../interface/CLParser.h"
 //#include "../interface/DiffMeasure.h"
-#include "../interface/DiffMeasure_SR.h"
+#include "../interface/DiffMeasure.h"
 #include <iomanip>      // std::setprecision
 
 
