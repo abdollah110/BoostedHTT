@@ -99,6 +99,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         
         
         string name = ifile.substr(0, ifile.find(".")).c_str();
+        if (name.find("Up") !=string::npos || name.find("Down") !=string::npos ) continue;
+        if (name.find("PTH") !=string::npos || name.find("OutsideAcceptance") !=string::npos) continue;
         
         auto fin = new TFile((dir + "/" + ifile).c_str(), "read");
         std::cout<<"ifile is openning: " <<ifile<<"\n";
