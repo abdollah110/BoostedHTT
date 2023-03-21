@@ -205,7 +205,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             if (cut_name.find("gen_higgs_pT") !=string::npos) reco_name="higgs_pT";
             if (cut_name.find("gen_leadjet_pT") !=string::npos) reco_name="LeadJetPt";
             float Var_reco = ObsName[reco_name];
-            if (Var_reco < lowVal || Var_reco > highVal ) continue;
+//            if (Var_reco < lowVal || Var_reco > highVal ) continue;
             
             //OutOfAcceptance
             if (name.find("OutsideAcceptance")!=string::npos){
@@ -274,7 +274,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             
             for (int i =0; i < 3 ;i++) {
                 if (NN_out_vec[i] < 0 )continue;
-
+                if (NN_out_vec[0]> 0 && ( Var_reco < lowVal || Var_reco > highVal )) continue; // Only one bin for ztt and QCd CR
+                
             // non-qcd norm and shape
             if (OS != 0  && lep1IsoPassV && lep2IsoPassV) {
                 hists_1d.at(categories.at(i)).back()->Fill(NN_out_vec[i],  weight);

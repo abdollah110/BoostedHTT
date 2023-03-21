@@ -95,13 +95,13 @@ HistTool::HistTool(string treeName, string channel_prefix, string var, string ye
 
 // x-axis
 //bins_NN(bins),
-//bins_NN({7,0.3,1}),
-bins_NN({4,0.2,1}),
+bins_NN({7,0.3,1}),
+//bins_NN({4,0.2,1}),
 //bins_NN({40,0,1}), // FIXME just for the test
 //bins_NN({20,0,1}),
 //bins_NN_bkg({3,0.3,1}),
-//bins_NN_bkg({1,0.35,1}),
-bins_NN_bkg({1,0,1}), // FIXME just for the test
+bins_NN_bkg({1,0.3,1}),
+//bins_NN_bkg({1,0,1}), // FIXME just for the test
 channel_prefix(channel_prefix),
 tree_name(treeName),
 channel_bin(channel_bin),
