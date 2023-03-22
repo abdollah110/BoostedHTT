@@ -352,7 +352,7 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('XH125','XH')
         histo_name=histo_name.replace('ggH125','ggH')
         
-        
+       if 'PTJ' in diff: histo_name=histo_name.replace('PTH','PTJ')
         
         
         

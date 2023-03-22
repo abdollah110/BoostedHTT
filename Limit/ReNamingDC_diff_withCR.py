@@ -315,7 +315,7 @@ for k1 in dirList: # loop over categories
 #        histo_name=histo_name.replace('OutsideAcceptance','OutsideAcceptance125')
         
         
-        
+        if 'PTJ' in diff: histo_name=histo_name.replace('PTH','PTJ')
         
         
 #        histo_name=histo_name.replace('2016','2020')
