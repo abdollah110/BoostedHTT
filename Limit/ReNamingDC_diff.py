@@ -27,7 +27,7 @@ parser.add_argument(
         "-d",
         "--diff",
         action="store",
-        dest="outputfile",
+        dest="diff",
         default="PTH",
         help="Is that PYH or PTJ")
 args = parser.parse_args()
