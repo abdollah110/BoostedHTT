@@ -274,7 +274,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             
             for (int i =0; i < 3 ;i++) {
                 if (NN_out_vec[i] < 0 )continue;
-                if (NN_out_vec[0]> 0 && ( Var_reco < lowVal || Var_reco > highVal )) continue; // Only one bin for ztt and QCd CR
+//                if (NN_out_vec[0]> 0 && ( Var_reco < lowVal || Var_reco > highVal )) continue; // Only one bin for ztt and QCd CR
                 
             // non-qcd norm and shape
             if (OS != 0  && lep1IsoPassV && lep2IsoPassV) {

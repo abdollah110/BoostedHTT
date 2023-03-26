@@ -98,36 +98,27 @@ int main(int argc, char** argv) {
     
 //    VString chns = { "mt"};
     VString chns = { "mt","et","em","tt"};
-//    VString chns = { "mt","et","tt"};
 //VString  PT_BIN = { "_bin1","_bin2","_bin3","_bin4"};
     
     map<string, string> input_folders = {
         {"mt", "."},
         {"et", "."},
         {"em", "."},
+//        {"me", "."},
         {"tt", "."}
     };
     
     map<string, VString> bkg_procs;
-//    bkg_procs["mt"] = {"QCD", "TT","VV","ZTT"};
-//    bkg_procs["et"] = {"QCD", "TT","VV","ZTT"};
-//    bkg_procs["em"] = {"QCD","W", "TT","VV","ZTT"};
-//    bkg_procs["tt"] = {"QCD", "TT","VV","ZTT"};
-    bkg_procs["mt"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
-    bkg_procs["et"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
-    bkg_procs["em"] = {"QCD","W", "TT","VV","ZTT","OutsideAcceptance"};
-    bkg_procs["tt"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
-
-
-    VString sig_procs = {"ggH_PTH_0_350","ggH_PTH_350_450","ggH_PTH_450_600","ggH_PTH_GT600","XH_PTH_0_350","XH_PTH_350_450","XH_PTH_450_600","XH_PTH_GT600"};
-    VString ggH_procs = {"ggH_PTH_0_350","ggH_PTH_350_450","ggH_PTH_450_600","ggH_PTH_GT600"};
-//    VString sig_procs = {"ggH","XH"};
-//    VString ggH_procs= {"ggH"};
-//    VString sig_procs = {"ggH_PTH_0_450","ggH_PTH_450_600","ggH_PTH_GT600","XH_PTH_0_450","XH_PTH_450_600","XH_PTH_GT600"};
-//    VString ggH_procs = {"ggH_PTH_0_450","ggH_PTH_450_600","ggH_PTH_GT600"};
-//    VString sig_procs = {"ggH_PTH_450_600","ggH_PTH_GT600","XH_PTH_450_600","XH_PTH_GT600"};
-//    VString ggH_procs = {"ggH_PTH_450_600","ggH_PTH_GT600"};
-
+    bkg_procs["mt"] = {"QCD", "TT","VV","ZTT",};
+    bkg_procs["et"] = {"QCD", "TT","VV","ZTT"};
+    bkg_procs["em"] = {"QCD","W", "TT","VV","ZTT"};
+//    bkg_procs["me"] = {"W", "TT","VV","ZTT"};
+    bkg_procs["tt"] = {"QCD", "TT","VV","ZTT"};
+    
+//    VString sig_procs = {"ggH_PTJ_0_350","ggH_PTJ_350_450","ggH_PTJ_450_600","ggH_PTJ_600_800","ggH_PTJ_GT800","XH_PTJ_0_350","XH_PTJ_350_450","XH_PTJ_450_600","XH_PTJ_600_800","XH_PTJ_GT800"};
+//    VString ggH_procs = {"ggH_PTJ_0_350","ggH_PTJ_350_450","ggH_PTJ_450_600","ggH_PTJ_600_800","ggH_PTJ_GT800"};
+    VString sig_procs = {"ggH_PTJ_0_350","ggH_PTJ_350_450","ggH_PTJ_450_600","ggH_PTJ_GT600","XH_PTJ_0_350","XH_PTJ_350_450","XH_PTJ_450_600","XH_PTJ_GT600","OutsideAcceptance"};
+    VString ggH_procs = {"ggH_PTJ_0_350","ggH_PTJ_350_450","ggH_PTJ_450_600","ggH_PTJ_GT600"};
 
 //    VString sig_procs = {"H125"};
     map<string, Categories> cats;
@@ -137,54 +128,29 @@ int main(int argc, char** argv) {
             
 
     cats["mt"] = {
-        {1, "Htt_PTH_0_350_cat"+year+"mt"},
-        {2, "Htt_PTH_350_450_cat"+year+"mt"},
-        {3, "Htt_PTH_450_600_cat"+year+"mt"},
-        {4, "Htt_PTH_GT600_cat"+year+"mt"},
+        {1, "Htt_PTJ_0_350_cat"+year+"mt"},
+        {2, "Htt_PTJ_350_450_cat"+year+"mt"},
+        {3, "Htt_PTJ_450_600_cat"+year+"mt"},
+        {4, "Htt_PTJ_GT600_cat"+year+"mt"},
     };
     cats["et"] = {
-        {1, "Htt_PTH_0_350_cat"+year+"et"},
-        {2, "Htt_PTH_350_450_cat"+year+"et"},
-        {3, "Htt_PTH_450_600_cat"+year+"et"},
-        {4, "Htt_PTH_GT600_cat"+year+"et"},
+        {1, "Htt_PTJ_0_350_cat"+year+"et"},
+        {2, "Htt_PTJ_350_450_cat"+year+"et"},
+        {3, "Htt_PTJ_450_600_cat"+year+"et"},
+        {4, "Htt_PTJ_GT600_cat"+year+"et"},
     };
     cats["tt"] = {
-        {1, "Htt_PTH_0_350_cat"+year+"tt"},
-        {2, "Htt_PTH_350_450_cat"+year+"tt"},
-        {3, "Htt_PTH_450_600_cat"+year+"tt"},
-        {4, "Htt_PTH_GT600_cat"+year+"tt"},
+        {1, "Htt_PTJ_0_350_cat"+year+"tt"},
+        {2, "Htt_PTJ_350_450_cat"+year+"tt"},
+        {3, "Htt_PTJ_450_600_cat"+year+"tt"},
+        {4, "Htt_PTJ_GT600_cat"+year+"tt"},
     };
     cats["em"] = {
-        {1, "Htt_PTH_0_350_cat"+year+"em"},
-        {2, "Htt_PTH_350_450_cat"+year+"em"},
-        {3, "Htt_PTH_450_600_cat"+year+"em"},
-        {4, "Htt_PTH_GT600_cat"+year+"em"},
+        {1, "Htt_PTJ_0_350_cat"+year+"em"},
+        {2, "Htt_PTJ_350_450_cat"+year+"em"},
+        {3, "Htt_PTJ_450_600_cat"+year+"em"},
+        {4, "Htt_PTJ_GT600_cat"+year+"em"},
     };
-
-//    cats["mt"] = {
-//        {1, "Htt_PTH_450_600_cat"+year+"mt"},
-//        {2, "Htt_PTH_GT600_cat"+year+"mt"},
-//    };
-//    cats["et"] = {
-//        {1, "Htt_PTH_450_600_cat"+year+"et"},
-//        {2, "Htt_PTH_GT600_cat"+year+"et"},
-//    };
-//    cats["tt"] = {
-//        {1, "Htt_PTH_450_600_cat"+year+"tt"},
-//        {2, "Htt_PTH_GT600_cat"+year+"tt"},
-//    };
-//    cats["mt"] = {
-//        {1, "Htt_PTH_450_600_cat"+year+"mt"},
-//        {2, "Htt_PTH_GT600_cat"+year+"mt"},
-//    };
-//    cats["et"] = {
-//        {1, "Htt_PTH_450_600_cat"+year+"et"},
-//        {2, "Htt_PTH_GT600_cat"+year+"et"},
-//    };
-//    cats["tt"] = {
-//        {1, "Htt_PTH_450_600_cat"+year+"tt"},
-//        {2, "Htt_PTH_GT600_cat"+year+"tt"},
-//    };
 
 
 
@@ -239,8 +205,6 @@ int main(int argc, char** argv) {
     //    vector<string> masses = ch::MassesFromRange("14-15:1");
     //vector<string> masses = ch::MassesFromRange("14-15:1");
     vector<string> masses = {"125"};
-    vector<int> BIN_Cat = {1,2,3,4};
-    vector<string> BinNames = {"pTbin_1","pTbin_2","pTbin_3","pTbin_4"};
     // Or equivalently, specify the mass points explicitly:
     //! [part2]
     
@@ -302,7 +266,6 @@ int main(int argc, char** argv) {
     cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT","OutsideAcceptance"}})).channel({"et","mt","tt"})
     .AddSyst(cb, "CMS_eff_tboost"+year, "lnN", SystMap<era>::init({"13TeV"}, 1.10));
 
-
     //         electron
     cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT","OutsideAcceptance"}})).channel({"em"})
     .AddSyst(cb, "CMS_eff_e_em"+year, "lnN", SystMap<era>::init({"13TeV"}, 1.02));
@@ -359,82 +322,10 @@ int main(int argc, char** argv) {
     cb.cp().process({"QCD"}).channel({"em"})
     .AddSyst(cb, "CMS_htt_QCDNorm_em"+year, "lnN", SystMap<>::init(1.20));
 
-//    cb.cp().process({"QCD"}).channel({"et"}).bin_id({4})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_et_bin4"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"mt"}).bin_id({4})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_mt_bin4"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"tt"}).bin_id({4})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_tt_bin4"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"em"}).bin_id({4})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_em_bin4"+year, "lnN", SystMap<>::init(1.20));
-//
-//    cb.cp().process({"QCD"}).channel({"et"}).bin_id({3})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_et_bin3"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"mt"}).bin_id({3})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_mt_bin3"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"tt"}).bin_id({3})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_tt_bin3"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"em"}).bin_id({3})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_em_bin3"+year, "lnN", SystMap<>::init(1.20));
-//
-//    cb.cp().process({"QCD"}).channel({"et"}).bin_id({2})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_et_bin2"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"mt"}).bin_id({2})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_mt_bin2"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"tt"}).bin_id({2})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_tt_bin2"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"em"}).bin_id({2})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_em_bin2"+year, "lnN", SystMap<>::init(1.20));
-//
-//    cb.cp().process({"QCD"}).channel({"et"}).bin_id({1})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_et_bin1"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"mt"}).bin_id({1})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_mt_bin1"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"tt"}).bin_id({1})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_tt_bin1"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"em"}).bin_id({1})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_em_bin1"+year, "lnN", SystMap<>::init(1.20));
-
-
 
     cb.cp().process({"QCD"}).channel({"et","mt","tt"})
         .AddSyst(cb, "CMS_QCD_bkg_fakerate"+year, "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().bin_id({1}).channel({"et"})
-//    .AddSyst(cb, "dummy_bin1_et_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({2}).channel({"et"})
-//    .AddSyst(cb, "dummy_bin2_et_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({3}).channel({"et"})
-//    .AddSyst(cb, "dummy_bin3_et_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({4}).channel({"et"})
-//    .AddSyst(cb, "dummy_bin4_et_"+year, "lnN", SystMap<>::init(1.20));
-//
-//    cb.cp().bin_id({1}).channel({"mt"})
-//    .AddSyst(cb, "dummy_bin1_mt_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({2}).channel({"mt"})
-//    .AddSyst(cb, "dummy_bin2_mt_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({3}).channel({"mt"})
-//    .AddSyst(cb, "dummy_bin3_mt_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({4}).channel({"mt"})
-//    .AddSyst(cb, "dummy_bin4_mt_"+year, "lnN", SystMap<>::init(1.20));
-//
-//    cb.cp().bin_id({1}).channel({"tt"})
-//    .AddSyst(cb, "dummy_bin1_tt_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({2}).channel({"tt"})
-//    .AddSyst(cb, "dummy_bin2_tt_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({3}).channel({"tt"})
-//    .AddSyst(cb, "dummy_bin3_tt_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({4}).channel({"tt"})
-//    .AddSyst(cb, "dummy_bin4_tt_"+year, "lnN", SystMap<>::init(1.20));
-//
-//    cb.cp().bin_id({1}).channel({"em"})
-//    .AddSyst(cb, "dummy_bin1_em_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({2}).channel({"em"})
-//    .AddSyst(cb, "dummy_bin2_em_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({3}).channel({"em"})
-//    .AddSyst(cb, "dummy_bin3_em_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({4}).channel({"em"})
-//    .AddSyst(cb, "dummy_bin4_em_"+year, "lnN", SystMap<>::init(1.20));
+
 
 
     //####################################################################################
@@ -442,30 +333,8 @@ int main(int argc, char** argv) {
     //####################################################################################
 
 
-//cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).bin_id({1})
-//    .AddSyst(cb, "CMS_scale_j_bin1"+year, "shape", SystMap<>::init(1.00));
-//cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).bin_id({2})
-//    .AddSyst(cb, "CMS_scale_j_bin2"+year, "shape", SystMap<>::init(1.00));
-//cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).bin_id({3})
-//    .AddSyst(cb, "CMS_scale_j_bin3"+year, "shape", SystMap<>::init(1.00));
-//cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).bin_id({4})
-//    .AddSyst(cb, "CMS_scale_j_bin4"+year, "shape", SystMap<>::init(1.00));
-//
-//
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).bin_id({1})
-//    .AddSyst(cb, "CMS_scale_met_unclustered_bin1"+year, "shape", SystMap<>::init(1.00));
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).bin_id({2})
-//    .AddSyst(cb, "CMS_scale_met_unclustered_bin2"+year, "shape", SystMap<>::init(1.00));
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).bin_id({3})
-//    .AddSyst(cb, "CMS_scale_met_unclustered_bin3"+year, "shape", SystMap<>::init(1.00));
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).bin_id({4})
-//    .AddSyst(cb, "CMS_scale_met_unclustered_bin4"+year, "shape", SystMap<>::init(1.00));
-
-
-
     cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}}))
     .AddSyst(cb, "CMS_scale_j"+year, "shape", SystMap<>::init(1.00));
-
 
     cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}}))
     .AddSyst(cb, "CMS_scale_met_unclustered"+year, "shape", SystMap<>::init(1.00));
@@ -473,6 +342,7 @@ int main(int argc, char** argv) {
 //
 //Tau Energy Scale
 //
+
 
     cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT","OutsideAcceptance"}})).channel({"mt","et","tt"})
         .AddSyst(cb, "CMS_scale_t_1prong1pizero"+year, "shape", SystMap<>::init(1.00));
@@ -482,7 +352,6 @@ int main(int argc, char** argv) {
 
     cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT","OutsideAcceptance"}})).channel({"mt","et","tt"})
         .AddSyst(cb, "CMS_scale_t_3prong"+year, "shape", SystMap<>::init(1.00));
-
 
 
     cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT","OutsideAcceptance"}})).channel({"tt"})
@@ -497,21 +366,10 @@ int main(int argc, char** argv) {
     cb.cp().process({"QCD"}).channel({"tt"})
     .AddSyst(cb, "CMS_QCD_bkg_modeling_tt"+year, "shape", SystMap<>::init(1.00));
 
-//    if (year.find("2018") == string::npos){
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT","OutsideAcceptance"}}))
-//    .AddSyst(cb, "CMS_prefiring", "shape", SystMap<>::init(1.00));
-//    }
-    
-    if (year.find("2017") != string::npos ){
-        cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT","OutsideAcceptance"}})).channel({"mt","et","tt","em"})
-            .AddSyst(cb, "CMS_prefiring", "shape", SystMap<>::init(1.00));
+    if (year.find("2018") == string::npos){
+    cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT","OutsideAcceptance"}}))
+    .AddSyst(cb, "CMS_prefiring", "shape", SystMap<>::init(1.00));
     }
-    if (year.find("2016") != string::npos ){
-        cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT","OutsideAcceptance"}})).channel({"mt","et","em"}) // tt is dropped FIXME
-            .AddSyst(cb, "CMS_prefiring", "shape", SystMap<>::init(1.00));
-    }
-
-
 
     cb.cp().process({"TT"})
     .AddSyst(cb, "CMS_ttbarShape"+year, "shape", SystMap<>::init(1.00));
@@ -530,12 +388,8 @@ int main(int argc, char** argv) {
     cb.cp().process({"TT"})
         .AddSyst(cb, "TTpdf"+year, "shape", SystMap<>::init(1.00));
 
-    //decorrelate across pT bins
-//    for (auto bnid : BinIDs){
-    for (int bnid=0; bnid < 4; bnid++){
-    cb.cp().process({"ZTT"}).bin_id({BIN_Cat[bnid]})
-        .AddSyst(cb, "ZTTQCDScale"+BinNames[bnid]+year, "shape", SystMap<>::init(1.00));
-        }
+    cb.cp().process({"ZTT"})
+        .AddSyst(cb, "ZTTQCDScale"+year, "shape", SystMap<>::init(1.00));
     cb.cp().process({"TT"})
         .AddSyst(cb, "TTQCDScale"+year, "shape", SystMap<>::init(1.00));
     
@@ -544,38 +398,32 @@ int main(int argc, char** argv) {
     // Theorethical systematics
     //####################################################################################
 
-//decorrelate across pT bins
-//for (auto bnid : BinIDs){
-for (int bnid=0; bnid < 4; bnid++){
-    cb.cp().process({ggH_procs}).bin_id({BIN_Cat[bnid]})
-    .AddSyst(cb, "THU_ggH_Mu_"+BinNames[bnid], "shape", SystMap<>::init(1.00));
+    cb.cp().process({ggH_procs})
+    .AddSyst(cb, "THU_ggH_Mu_", "shape", SystMap<>::init(1.00));
 
-    cb.cp().process({ggH_procs}).bin_id({BIN_Cat[bnid]})
-    .AddSyst(cb, "THU_ggH_Res_"+BinNames[bnid], "shape", SystMap<>::init(1.00));
+    cb.cp().process({ggH_procs})
+    .AddSyst(cb, "THU_ggH_Res_", "shape", SystMap<>::init(1.00));
 
-    cb.cp().process({ggH_procs}).bin_id({BIN_Cat[bnid]})
-    .AddSyst(cb, "THU_ggH_Mig01_"+BinNames[bnid], "shape", SystMap<>::init(1.00));
+    cb.cp().process({ggH_procs})
+    .AddSyst(cb, "THU_ggH_Mig01_", "shape", SystMap<>::init(1.00));
 
-    cb.cp().process({ggH_procs}).bin_id({BIN_Cat[bnid]})
-    .AddSyst(cb, "THU_ggH_Mig12_"+BinNames[bnid], "shape", SystMap<>::init(1.00));
+    cb.cp().process({ggH_procs})
+    .AddSyst(cb, "THU_ggH_Mig12_", "shape", SystMap<>::init(1.00));
 
-    cb.cp().process({ggH_procs}).bin_id({BIN_Cat[bnid]})
-    .AddSyst(cb, "THU_ggH_VBF2j_"+BinNames[bnid], "shape", SystMap<>::init(1.00));
+    cb.cp().process({ggH_procs})
+    .AddSyst(cb, "THU_ggH_VBF2j_", "shape", SystMap<>::init(1.00));
 
-    cb.cp().process({ggH_procs}).bin_id({BIN_Cat[bnid]})
-    .AddSyst(cb, "THU_ggH_VBF3j_"+BinNames[bnid], "shape", SystMap<>::init(1.00));
+    cb.cp().process({ggH_procs})
+    .AddSyst(cb, "THU_ggH_VBF3j_", "shape", SystMap<>::init(1.00));
 
-    cb.cp().process({ggH_procs}).bin_id({BIN_Cat[bnid]})
-    .AddSyst(cb, "THU_ggH_PT60_"+BinNames[bnid], "shape", SystMap<>::init(1.00));
+    cb.cp().process({ggH_procs})
+    .AddSyst(cb, "THU_ggH_PT60_", "shape", SystMap<>::init(1.00));
 
-    cb.cp().process({ggH_procs}).bin_id({BIN_Cat[bnid]})
-    .AddSyst(cb, "THU_ggH_PT120_"+BinNames[bnid], "shape", SystMap<>::init(1.00));
+    cb.cp().process({ggH_procs})
+    .AddSyst(cb, "THU_ggH_PT120_", "shape", SystMap<>::init(1.00));
 
-    cb.cp().process({ggH_procs}).bin_id({BIN_Cat[bnid]})
-    .AddSyst(cb, "THU_ggH_qmtop_"+BinNames[bnid], "shape", SystMap<>::init(1.00));
-    
-}
-
+    cb.cp().process({ggH_procs})
+    .AddSyst(cb, "THU_ggH_qmtop_", "shape", SystMap<>::init(1.00));
 //
     
 //    cout << ">> Adding systematic uncertainties...\n";
@@ -663,6 +511,6 @@ for (int bnid=0; bnid < 4; bnid++){
 }
 
 
-//text2workspace.py -P HiggsAnalysis.CombinedLimit.PhysicsModel:multiSignalModel --PO 'map=.*/.*H.*PTH_0_350.*:r_H_PTH_0_350[1,-25,25]' --PO 'map=.*/.*H.*PTH_350_450.*:r_H_PTH_350_450[1,-25,25]' --PO 'map=.*/.*H.*PTH_450_600.*:r_H_PTH_450_600[1,-25,25]' --PO 'map=.*/.*H.*PTH_G.600.*:r_H_PTH_GT600[1,-25,25]' diff_1.txt -o Workspace_pth.root -m 125
+//text2workspace.py -P HiggsAnalysis.CombinedLimit.PhysicsModel:multiSignalModel --PO 'map=.*/.*H.*PTJ_0_350.*:r_H_PTJ_0_350[1,-25,25]' --PO 'map=.*/.*H.*PTJ_350_450.*:r_H_PTJ_350_450[1,-25,25]' --PO 'map=.*/.*H.*PTJ_450_600.*:r_H_PTJ_450_600[1,-25,25]' --PO 'map=.*/.*H.*PTJ_G.600.*:r_H_PTJ_GT600[1,-25,25]' diff_1.txt -o Workspace_PTJ.root -m 125
 
-//combine Workspace_pth.root --robustFit=1 --preFitValue=1. --X-rtd MINIMIZER_analytic --algo=singles --cl=0.68 --setParameters r_H_PTH_0_350=1.0,r_H_PTH_350_450=1.0,r_H_PTH_450_600=1.0,r_H_PTH_GT600=1.0 --setParameterRanges r_H_PTH_0_350=-15,15:r_H_PTH_350_450=-15,15:r_H_PTH_450_600=-15,15:r_H_PTH_GT450=-15,15 --floatOtherPOIs=1 -M MultiDimFit -n test_param0 -m 125 --cminDefaultMinimizerStrategy=0
+//combine Workspace_PTJ.root --robustFit=1 --preFitValue=1. --X-rtd MINIMIZER_analytic --algo=singles --cl=0.68 --setParameters r_H_PTJ_0_350=1.0,r_H_PTJ_350_450=1.0,r_H_PTJ_450_600=1.0,r_H_PTJ_GT600=1.0 --setParameterRanges r_H_PTJ_0_350=-15,15:r_H_PTJ_350_450=-15,15:r_H_PTJ_450_600=-15,15:r_H_PTJ_GT450=-15,15 --floatOtherPOIs=1 -M MultiDimFit -n test_param0 -m 125 --cminDefaultMinimizerStrategy=0

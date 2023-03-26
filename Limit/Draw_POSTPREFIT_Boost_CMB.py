@@ -60,7 +60,7 @@ def add_Preliminary():
     return lumi
 
 def make_legend():
-    output = ROOT.TLegend(0.38, 0.5, 0.92, 0.85, "", "brNDC")
+    output = ROOT.TLegend(0.44, 0.54, 0.92, 0.85, "", "brNDC")
     output.SetLineWidth(0)
     output.SetLineStyle(0)
     output.SetFillStyle(0)
@@ -162,33 +162,38 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat,TypeR
     else:
         signame_ggh='ggH'
         signame_xh='XH'
-
-
-    Signal=file.Get(categoriy[0].replace('postfit','prefit')).Get(signame_ggh)
-    Signal1=file.Get(categoriy[1].replace('postfit','prefit')).Get(signame_ggh)
-    Signal2=file.Get(categoriy[2].replace('postfit','prefit')).Get(signame_ggh)
-    Signal.Add(Signal1)
-    Signal.Add(Signal2)
-    Signal_XH=file.Get(categoriy[0].replace('postfit','prefit')).Get(signame_xh)
-    Signal_XH1=file.Get(categoriy[1].replace('postfit','prefit')).Get(signame_xh)
-    Signal_XH2=file.Get(categoriy[2].replace('postfit','prefit')).Get(signame_xh)
-    Signal_XH.Add(Signal_XH1)
-    Signal_XH.Add(Signal_XH2)
-    Signal.Add(Signal_XH)
+        
+        
+    Signal=VV.Clone()
     Signal_Stck=Signal.Clone()
-    Signal.Scale( 20)  # CS x BR  1000_400_440  // factor of 2 is added as we consider the full doublet
-    Signal.Rebin(RB_)
-    #    Signal.SetFillStyle(0.)
-#    Signal.SetLineStyle(11)
-    Signal.SetLineWidth(3)
-    Signal.SetLineColor(4)
-    Signal.SetMarkerColor(4)
-#    Signal.SetLineStyle(8)
+    if 'Signal' in Xaxis:
+        Signal=file.Get(categoriy[0].replace('postfit','prefit')).Get(signame_ggh)
+        Signal1=file.Get(categoriy[1].replace('postfit','prefit')).Get(signame_ggh)
+        Signal2=file.Get(categoriy[2].replace('postfit','prefit')).Get(signame_ggh)
+        Signal.Add(Signal1)
+        Signal.Add(Signal2)
+        Signal_XH=file.Get(categoriy[0].replace('postfit','prefit')).Get(signame_xh)
+        Signal_XH1=file.Get(categoriy[1].replace('postfit','prefit')).Get(signame_xh)
+        Signal_XH2=file.Get(categoriy[2].replace('postfit','prefit')).Get(signame_xh)
+        Signal_XH.Add(Signal_XH1)
+        Signal_XH.Add(Signal_XH2)
+        Signal.Add(Signal_XH)
+        Signal_Stck=Signal.Clone()
+        Signal.Scale( 20)  # CS x BR  1000_400_440  // factor of 2 is added as we consider the full doublet
+        Signal.Rebin(RB_)
+        #    Signal.SetFillStyle(0.)
+    #    Signal.SetLineStyle(11)
+        Signal.SetLineWidth(3)
+        Signal.SetLineColor(4)
+        Signal.SetMarkerColor(4)
+    #    Signal.SetLineStyle(8)
 
-    Signal.SetLineColor(ROOT.TColor.GetColor(108, 226, 354))
-    Signal.SetMarkerColor(ROOT.TColor.GetColor(108, 226, 354))
-    Signal.SetLineColor(2)
-    
+        Signal.SetLineColor(ROOT.TColor.GetColor(108, 226, 354))
+        Signal.SetMarkerColor(ROOT.TColor.GetColor(108, 226, 354))
+        Signal.SetLineColor(2)
+    else:
+        Signal.Scale(1/1000.)
+        Signal_Stck.Scale(1/1000.)
 
 
 #    ##### Garwood Method to assign error bar to bins with zero content https://twiki.cern.ch/twiki/bin/view/CMS/PoissonErrorBars
@@ -290,9 +295,9 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat,TypeR
     stack.Add(ZTT)
     stack.Add(Signal_Stck)
 
-    errorBand = QCD.Clone()
+    errorBand = TT.Clone()
 #    errorBand.Add(W)
-    errorBand.Add(TT)
+    errorBand.Add(QCD)
     errorBand.Add(VV)
 #    errorBand.Add(ZJ)
     errorBand.Add(ZTT)
@@ -349,13 +354,13 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat,TypeR
     legende=make_legend()
     legende.AddEntry(Data,"Observed","elp")
 
-    legende.AddEntry(Signal,"H#rightarrow#tau#tau (x20)","l")
+    if 'Signal' in Xaxis: legende.AddEntry(Signal,"H#rightarrow#tau#tau (x20)","l")
     legende.AddEntry(TT,"t#bar{t}","f")
     legende.AddEntry(QCD,"QCD multijet","f")
     legende.AddEntry(ZTT,"Z#rightarrow#tau#tau ","f")
     legende.AddEntry(VV,"VV","f")
-    legende.AddEntry(errorBand,"Total uncertainty","f")
-    legende.AddEntry(Signal_Stck,"Signal","f")
+    legende.AddEntry(errorBand,"Total uncert.","f")
+    if 'Signal' in Xaxis: legende.AddEntry(Signal_Stck,"Signal","f")
 
     legende.Draw()
 
@@ -611,15 +616,15 @@ elif 'diff' in TypeRun:
         category2='ch{}'.format(str(i+16))
         category3='ch{}'.format(str(i+32))
         
-#        year_=(i-1)/16
+        year_=(i-1)/16
         chCat=(i-1)%16
         ch_=chCat/4
         cat_=chCat%4
         
         year=0
-#        if year_==0: year=2016
-#        elif year_==1: year=2017
-#        elif year_==2: year=2018
+        if year_==0: year=2016
+        elif year_==1: year=2017
+        elif year_==2: year=2018
         
         ch=''
         if ch_==0: ch='em'

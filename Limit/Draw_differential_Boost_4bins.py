@@ -69,74 +69,78 @@ def main(args):
     new_idx=ROOT.gROOT.GetListOfColors().GetSize() + 1
     trans=ROOT.TColor(new_idx, adapt.GetRed(), adapt.GetGreen(),adapt.GetBlue(), "",0.5)
 
-#    nvar=2
-    nvar=1
-    #variable=["njets","mjj","hpt","jpt","fs"]
-    #xaxis=["N_{jets}","m_{jj} (GeV)","p_{T}^{H} (GeV)","p_{T}^{j_{1}} (GeV)","Final state"]
-    #yaxis=["#sigma_{fid} (fb)","d#sigma_{fid}/dm_{jj} (fb/GeV)","d#sigma_{fid}/dp_{T}(H) (fb/GeV)","d#sigma_{fid}/dp_{T}(jet) (fb/GeV)","#sigma_{fid} (fb)"]
+    nvar=2
+#    nvar=1
     variable=["hpt","jpt"]
     xaxis=["p_{T}^{H} (GeV)","p_{T}^{j_{1}} (GeV)"]
     yaxis=["d#sigma_{fid}/dp_{T}(H) (fb/GeV)","d#sigma_{fid}/dp_{T}(jet) (fb/GeV)"]
     postfix=["_THU_ggH_Mu","_THU_ggH_Res","_THU_ggH_Mig01","_THU_ggH_Mig12","_THU_ggH_VBF2j","_THU_ggH_VBF3j","_THU_ggH_PT60","_THU_ggH_PT120","_THU_ggH_qmtop"]
 
+#       dir_nnlops=variable[k]+"_nnlops_tautrg"
+#       dir_powheg=variable[k]+"_powheg_tautrg"
+
+
+
     for kkkk in range(0,nvar):
+
+       dir_nnlops=variable[kkkk]+"_nnlops_tautrg"
+       dir_powheg=variable[kkkk]+"_powheg_tautrg"
 
        if 'hpt' in args.JetPtLimit: k =0 ; VarName='PTH'
        elif 'jpt' in args.JetPtLimit: k =1 ; VarName='PTJ'
        else: print 'which var are you plotting for '
     
-       ggH_count=file.Get(variable[k]+"_nnlops").Get("ggH_htt125")
        xs=[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
-       print 'ggH_count.GetSize() is ', ggH_count.GetSize()
-       for j in range(1,ggH_count.GetSize()-1):
-         xs[0]=xs[0]+ggH_count.GetBinContent(j)
+       print 'file.Get(dir_nnlops).Get("ggH_htt125").GetSize() is ', file.Get(dir_nnlops).Get("ggH_htt125").GetSize()
+       for j in range(1,file.Get(dir_nnlops).Get("ggH_htt125").GetSize()-1):
+         xs[0]=xs[0]+file.Get(dir_nnlops).Get("ggH_htt125").GetBinContent(j)
          print 'bin ', j, '   val is', xs[0]
-         xs[0]=xs[0]+file.Get(variable[k]+"_powheg").Get("qqH_htt125").GetBinContent(j)
-         xs[0]=xs[0]+file.Get(variable[k]+"_powheg").Get("ggZH_lep_htt125").GetBinContent(j)
-         xs[0]=xs[0]+file.Get(variable[k]+"_powheg").Get("ggZH_had_htt125").GetBinContent(j)
-         xs[0]=xs[0]+file.Get(variable[k]+"_powheg").Get("WH_htt125").GetBinContent(j)
-         xs[0]=xs[0]+file.Get(variable[k]+"_powheg").Get("ZH_htt125").GetBinContent(j)
-         xs[0]=xs[0]+file.Get(variable[k]+"_powheg").Get("ttH_htt125").GetBinContent(j)
+         xs[0]=xs[0]+file.Get(dir_powheg).Get("qqH_htt125").GetBinContent(j)
+         xs[0]=xs[0]+file.Get(dir_powheg).Get("ggZH_lep_htt125").GetBinContent(j)
+         xs[0]=xs[0]+file.Get(dir_powheg).Get("ggZH_had_htt125").GetBinContent(j)
+         xs[0]=xs[0]+file.Get(dir_powheg).Get("WH_htt125").GetBinContent(j)
+         xs[0]=xs[0]+file.Get(dir_powheg).Get("ZH_htt125").GetBinContent(j)
+         xs[0]=xs[0]+file.Get(dir_powheg).Get("ttH_htt125").GetBinContent(j)
          for z in range(0,9):
-            xs[z+1]=xs[z+1]+file.Get(variable[k]+"_nnlops").Get("ggH_htt125"+postfix[z]).GetBinContent(j)
-            xs[z+1]=xs[z+1]+file.Get(variable[k]+"_powheg").Get("qqH_htt125").GetBinContent(j)
-            xs[z+1]=xs[z+1]+file.Get(variable[k]+"_powheg").Get("ggZH_lep_htt125").GetBinContent(j)
-            xs[z+1]=xs[z+1]+file.Get(variable[k]+"_powheg").Get("ggZH_had_htt125").GetBinContent(j)
-            xs[z+1]=xs[z+1]+file.Get(variable[k]+"_powheg").Get("WH_htt125").GetBinContent(j)
-            xs[z+1]=xs[z+1]+file.Get(variable[k]+"_powheg").Get("ZH_htt125").GetBinContent(j)
-            xs[z+1]=xs[z+1]+file.Get(variable[k]+"_powheg").Get("ttH_htt125").GetBinContent(j)
+            xs[z+1]=xs[z+1]+file.Get(dir_nnlops).Get("ggH_htt125"+postfix[z]).GetBinContent(j)
+            xs[z+1]=xs[z+1]+file.Get(dir_powheg).Get("qqH_htt125").GetBinContent(j)
+            xs[z+1]=xs[z+1]+file.Get(dir_powheg).Get("ggZH_lep_htt125").GetBinContent(j)
+            xs[z+1]=xs[z+1]+file.Get(dir_powheg).Get("ggZH_had_htt125").GetBinContent(j)
+            xs[z+1]=xs[z+1]+file.Get(dir_powheg).Get("WH_htt125").GetBinContent(j)
+            xs[z+1]=xs[z+1]+file.Get(dir_powheg).Get("ZH_htt125").GetBinContent(j)
+            xs[z+1]=xs[z+1]+file.Get(dir_powheg).Get("ttH_htt125").GetBinContent(j)
 
-         xs[10]=xs[10]+ggH_count.GetBinContent(j)
-         xs[10]=xs[10]+file.Get(variable[k]+"_powheg").Get("qqH_htt125_scale").GetBinContent(j)
-         xs[10]=xs[10]+file.Get(variable[k]+"_powheg").Get("ggZH_lep_htt125").GetBinContent(j)
-         xs[10]=xs[10]+file.Get(variable[k]+"_powheg").Get("ggZH_had_htt125").GetBinContent(j)
-         xs[10]=xs[10]+file.Get(variable[k]+"_powheg").Get("WH_htt125").GetBinContent(j)
-         xs[10]=xs[10]+file.Get(variable[k]+"_powheg").Get("ZH_htt125").GetBinContent(j)
-         xs[10]=xs[10]+file.Get(variable[k]+"_powheg").Get("ttH_htt125").GetBinContent(j)
+         xs[10]=xs[10]+file.Get(dir_nnlops).Get("ggH_htt125").GetBinContent(j)
+         xs[10]=xs[10]+file.Get(dir_powheg).Get("qqH_htt125_scale").GetBinContent(j)
+         xs[10]=xs[10]+file.Get(dir_powheg).Get("ggZH_lep_htt125").GetBinContent(j)
+         xs[10]=xs[10]+file.Get(dir_powheg).Get("ggZH_had_htt125").GetBinContent(j)
+         xs[10]=xs[10]+file.Get(dir_powheg).Get("WH_htt125").GetBinContent(j)
+         xs[10]=xs[10]+file.Get(dir_powheg).Get("ZH_htt125").GetBinContent(j)
+         xs[10]=xs[10]+file.Get(dir_powheg).Get("ttH_htt125").GetBinContent(j)
 
-         xs[11]=xs[11]+ggH_count.GetBinContent(j)
-         xs[11]=xs[11]+file.Get(variable[k]+"_powheg").Get("qqH_htt125").GetBinContent(j)
-         xs[11]=xs[11]+file.Get(variable[k]+"_powheg").Get("ggZH_lep_htt125").GetBinContent(j)
-         xs[11]=xs[11]+file.Get(variable[k]+"_powheg").Get("ggZH_had_htt125").GetBinContent(j)
-         xs[11]=xs[11]+file.Get(variable[k]+"_powheg").Get("WH_htt125_scale").GetBinContent(j)
-         xs[11]=xs[11]+file.Get(variable[k]+"_powheg").Get("ZH_htt125").GetBinContent(j)
-         xs[11]=xs[11]+file.Get(variable[k]+"_powheg").Get("ttH_htt125").GetBinContent(j)
+         xs[11]=xs[11]+file.Get(dir_nnlops).Get("ggH_htt125").GetBinContent(j)
+         xs[11]=xs[11]+file.Get(dir_powheg).Get("qqH_htt125").GetBinContent(j)
+         xs[11]=xs[11]+file.Get(dir_powheg).Get("ggZH_lep_htt125").GetBinContent(j)
+         xs[11]=xs[11]+file.Get(dir_powheg).Get("ggZH_had_htt125").GetBinContent(j)
+         xs[11]=xs[11]+file.Get(dir_powheg).Get("WH_htt125_scale").GetBinContent(j)
+         xs[11]=xs[11]+file.Get(dir_powheg).Get("ZH_htt125").GetBinContent(j)
+         xs[11]=xs[11]+file.Get(dir_powheg).Get("ttH_htt125").GetBinContent(j)
 
-         xs[12]=xs[12]+ggH_count.GetBinContent(j)
-         xs[12]=xs[12]+file.Get(variable[k]+"_powheg").Get("qqH_htt125").GetBinContent(j)
-         xs[12]=xs[12]+file.Get(variable[k]+"_powheg").Get("ggZH_lep_htt125_scale").GetBinContent(j)
-         xs[12]=xs[12]+file.Get(variable[k]+"_powheg").Get("ggZH_had_htt125_scale").GetBinContent(j)
-         xs[12]=xs[12]+file.Get(variable[k]+"_powheg").Get("WH_htt125").GetBinContent(j)
-         xs[12]=xs[12]+file.Get(variable[k]+"_powheg").Get("ZH_htt125_scale").GetBinContent(j)
-         xs[12]=xs[12]+file.Get(variable[k]+"_powheg").Get("ttH_htt125").GetBinContent(j)
+         xs[12]=xs[12]+file.Get(dir_nnlops).Get("ggH_htt125").GetBinContent(j)
+         xs[12]=xs[12]+file.Get(dir_powheg).Get("qqH_htt125").GetBinContent(j)
+         xs[12]=xs[12]+file.Get(dir_powheg).Get("ggZH_lep_htt125_scale").GetBinContent(j)
+         xs[12]=xs[12]+file.Get(dir_powheg).Get("ggZH_had_htt125_scale").GetBinContent(j)
+         xs[12]=xs[12]+file.Get(dir_powheg).Get("WH_htt125").GetBinContent(j)
+         xs[12]=xs[12]+file.Get(dir_powheg).Get("ZH_htt125_scale").GetBinContent(j)
+         xs[12]=xs[12]+file.Get(dir_powheg).Get("ttH_htt125").GetBinContent(j)
 
-         xs[13]=xs[13]+ggH_count.GetBinContent(j)
-         xs[13]=xs[13]+file.Get(variable[k]+"_powheg").Get("qqH_htt125").GetBinContent(j)
-         xs[13]=xs[13]+file.Get(variable[k]+"_powheg").Get("ggZH_lep_htt125").GetBinContent(j)
-         xs[13]=xs[13]+file.Get(variable[k]+"_powheg").Get("ggZH_had_htt125").GetBinContent(j)
-         xs[13]=xs[13]+file.Get(variable[k]+"_powheg").Get("WH_htt125").GetBinContent(j)
-         xs[13]=xs[13]+file.Get(variable[k]+"_powheg").Get("ZH_htt125").GetBinContent(j)
-         xs[13]=xs[13]+file.Get(variable[k]+"_powheg").Get("ttH_htt125_scale").GetBinContent(j)
+         xs[13]=xs[13]+file.Get(dir_nnlops).Get("ggH_htt125").GetBinContent(j)
+         xs[13]=xs[13]+file.Get(dir_powheg).Get("qqH_htt125").GetBinContent(j)
+         xs[13]=xs[13]+file.Get(dir_powheg).Get("ggZH_lep_htt125").GetBinContent(j)
+         xs[13]=xs[13]+file.Get(dir_powheg).Get("ggZH_had_htt125").GetBinContent(j)
+         xs[13]=xs[13]+file.Get(dir_powheg).Get("WH_htt125").GetBinContent(j)
+         xs[13]=xs[13]+file.Get(dir_powheg).Get("ZH_htt125").GetBinContent(j)
+         xs[13]=xs[13]+file.Get(dir_powheg).Get("ttH_htt125_scale").GetBinContent(j)
 
        xs_scale_2=0.0
        for gg in range(0,13):
@@ -146,79 +150,36 @@ def main(args):
        print "xs ",1000*xs[0],1000*(xs_scale_2**0.5)
 
 
-       ggH_powheg=file.Get(variable[k]+"_powheg").Get("ggH_htt125")
+       ggH_powheg=file.Get(dir_powheg).Get("ggH_htt125")
        for j in range(1,ggH_powheg.GetSize()-1):
          ggH_powheg.SetBinError(j,(ggH_powheg.GetBinError(j)*ggH_powheg.GetBinError(j)+0.0206*0.0206*ggH_powheg.GetBinContent(j)*ggH_powheg.GetBinContent(j))**0.5) #BR tau
          ggH_powheg.SetBinError(j,(ggH_powheg.GetBinError(j)*ggH_powheg.GetBinError(j)+0.032*0.032*ggH_powheg.GetBinContent(j)*ggH_powheg.GetBinContent(j))**0.5) #PDF gg
-    #     if k==0 and j==2: #1 jet
-    #          ggH_powheg.SetBinError(j,(ggH_powheg.GetBinError(j)*ggH_powheg.GetBinError(j)+0.025*0.025*ggH_powheg.GetBinContent(j)*ggH_powheg.GetBinContent(j))**0.5) #Pythia scale
-    #     if k==0 and j==3: #2 jets
-    #          ggH_powheg.SetBinError(j,(ggH_powheg.GetBinError(j)*ggH_powheg.GetBinError(j)+0.05*0.05*ggH_powheg.GetBinContent(j)*ggH_powheg.GetBinContent(j))**0.5) #Pythia scale
-    #     if k==0 and j>3: #2 jets
-    #          ggH_powheg.SetBinError(j,(ggH_powheg.GetBinError(j)*ggH_powheg.GetBinError(j)+0.10*0.10*ggH_powheg.GetBinContent(j)*ggH_powheg.GetBinContent(j))**0.5) #Pythia scale
          ggH_powheg.SetBinError(j,(ggH_powheg.GetBinError(j)*ggH_powheg.GetBinError(j)+0.05*0.05*ggH_powheg.GetBinContent(j)*ggH_powheg.GetBinContent(j))**0.5) #Pythia scale
          for z in range(0,9):
-             ggH_powheg_alternative=file.Get(variable[k]+"_powheg").Get("ggH_htt125"+postfix[z])
+             ggH_powheg_alternative=file.Get(dir_powheg).Get("ggH_htt125"+postfix[z])
              unc=abs(ggH_powheg_alternative.GetBinContent(j)-ggH_powheg.GetBinContent(j))
              ggH_powheg.SetBinError(j,(ggH_powheg.GetBinError(j)*ggH_powheg.GetBinError(j)+unc*unc)**0.5)
 
-       ggH_nnlops=file.Get(variable[k]+"_nnlops").Get("ggH_htt125")
-    #   ggH_nnlops_em=file.Get("njets_nnlops_em").Get("ggH_htt125")
-    #   ggH_nnlops_et=file.Get("njets_nnlops_et").Get("ggH_htt125")
-    #   ggH_nnlops_mt=file.Get("njets_nnlops_mt").Get("ggH_htt125")
-    #   ggH_nnlops_tt=file.Get("njets_nnlops_tt").Get("ggH_htt125")
+       ggH_nnlops=file.Get(dir_nnlops).Get("ggH_htt125")
        for j in range(1,ggH_powheg.GetSize()-1):
          ggH_nnlops.SetBinError(j,(ggH_nnlops.GetBinError(j)*ggH_nnlops.GetBinError(j)+0.0206*0.0206*ggH_nnlops.GetBinContent(j)*ggH_nnlops.GetBinContent(j))**0.5) # BR tau
          ggH_nnlops.SetBinError(j,(ggH_nnlops.GetBinError(j)*ggH_nnlops.GetBinError(j)+0.032*0.032*ggH_nnlops.GetBinContent(j)*ggH_nnlops.GetBinContent(j))**0.5) # PDF gg
-    #     if k==0 and j==2: #1 jet
-    #          ggH_nnlops.SetBinError(j,(ggH_nnlops.GetBinError(j)*ggH_nnlops.GetBinError(j)+0.025*0.025*ggH_nnlops.GetBinContent(j)*ggH_nnlops.GetBinContent(j))**0.5) #Pythia scale
-    #     if k==0 and j==3: #2 jets
-    #          ggH_nnlops.SetBinError(j,(ggH_nnlops.GetBinError(j)*ggH_nnlops.GetBinError(j)+0.05*0.05*ggH_nnlops.GetBinContent(j)*ggH_nnlops.GetBinContent(j))**0.5) #Pythia scale
-    #     if k==0 and j>3: #2 jets
-    #          ggH_nnlops.SetBinError(j,(ggH_nnlops.GetBinError(j)*ggH_nnlops.GetBinError(j)+0.10*0.10*ggH_nnlops.GetBinContent(j)*ggH_nnlops.GetBinContent(j))**0.5) #Pythia scale
          ggH_nnlops.SetBinError(j,(ggH_nnlops.GetBinError(j)*ggH_nnlops.GetBinError(j)+0.05*0.05*ggH_nnlops.GetBinContent(j)*ggH_nnlops.GetBinContent(j))**0.5) #Pythia scale
          for z in range(0,9):
-             ggH_nnlops_alternative=file.Get(variable[k]+"_nnlops").Get("ggH_htt125"+postfix[z])
+             ggH_nnlops_alternative=file.Get(dir_nnlops).Get("ggH_htt125"+postfix[z])
              unc=abs(ggH_nnlops_alternative.GetBinContent(j)-ggH_nnlops.GetBinContent(j))
              ggH_nnlops.SetBinError(j,(ggH_nnlops.GetBinError(j)*ggH_nnlops.GetBinError(j)+unc*unc)**0.5)
         
        for j in range(1,ggH_powheg.GetSize()-1):
          print ggH_nnlops.GetBinContent(j)*ggH_nnlops.GetBinWidth(j),ggH_nnlops.GetBinError(j)*ggH_nnlops.GetBinWidth(j)
 
-       qqH=file.Get(variable[k]+"_powheg").Get("qqH_htt125")
-       WH=file.Get(variable[k]+"_powheg").Get("WH_htt125")
-       ZH=file.Get(variable[k]+"_powheg").Get("ZH_htt125")
-       ggZH_lep=file.Get(variable[k]+"_powheg").Get("ggZH_lep_htt125")
-       ggZH_had=file.Get(variable[k]+"_powheg").Get("ggZH_had_htt125")
-       ttH=file.Get(variable[k]+"_powheg").Get("ttH_htt125")
+       qqH=file.Get(dir_powheg).Get("qqH_htt125")
+       WH=file.Get(dir_powheg).Get("WH_htt125")
+       ZH=file.Get(dir_powheg).Get("ZH_htt125")
+       ggZH_lep=file.Get(dir_powheg).Get("ggZH_lep_htt125")
+       ggZH_had=file.Get(dir_powheg).Get("ggZH_had_htt125")
+       ttH=file.Get(dir_powheg).Get("ttH_htt125")
 
-    #   qqH_em=file.Get("njets_powheg_em").Get("qqH_htt125")
-    #   WH_em=file.Get("njets_powheg_em").Get("WH_htt125")
-    #   ZH_em=file.Get("njets_powheg_em").Get("ZH_htt125")
-    #   ggZH_lep_em=file.Get("njets_powheg_em").Get("ggZH_lep_htt125")
-    #   ggZH_had_em=file.Get("njets_powheg_em").Get("ggZH_had_htt125")
-    #   ttH_em=file.Get("njets_powheg_em").Get("ttH_htt125")
-    #
-    #   qqH_et=file.Get("njets_powheg_et").Get("qqH_htt125")
-    #   WH_et=file.Get("njets_powheg_et").Get("WH_htt125")
-    #   ZH_et=file.Get("njets_powheg_et").Get("ZH_htt125")
-    #   ggZH_lep_et=file.Get("njets_powheg_et").Get("ggZH_lep_htt125")
-    #   ggZH_had_et=file.Get("njets_powheg_et").Get("ggZH_had_htt125")
-    #   ttH_et=file.Get("njets_powheg_et").Get("ttH_htt125")
-    #
-    #   qqH_mt=file.Get("njets_powheg_mt").Get("qqH_htt125")
-    #   WH_mt=file.Get("njets_powheg_mt").Get("WH_htt125")
-    #   ZH_mt=file.Get("njets_powheg_mt").Get("ZH_htt125")
-    #   ggZH_lep_mt=file.Get("njets_powheg_mt").Get("ggZH_lep_htt125")
-    #   ggZH_had_mt=file.Get("njets_powheg_mt").Get("ggZH_had_htt125")
-    #   ttH_mt=file.Get("njets_powheg_mt").Get("ttH_htt125")
-    #
-    #   qqH_tt=file.Get("njets_powheg_tt").Get("qqH_htt125")
-    #   WH_tt=file.Get("njets_powheg_tt").Get("WH_htt125")
-    #   ZH_tt=file.Get("njets_powheg_tt").Get("ZH_htt125")
-    #   ggZH_lep_tt=file.Get("njets_powheg_tt").Get("ggZH_lep_htt125")
-    #   ggZH_had_tt=file.Get("njets_powheg_tt").Get("ggZH_had_htt125")
-    #   ttH_tt=file.Get("njets_powheg_tt").Get("ttH_htt125")
 
        for j in range(1,ggH_powheg.GetSize()-1):
           #BR tau
@@ -235,110 +196,85 @@ def main(args):
           ZH.SetBinError(j,(ZH.GetBinError(j)*ZH.GetBinError(j)+0.013*0.013*ZH.GetBinContent(j)*ZH.GetBinContent(j))**0.5)
 
 #             note, there is no qcd scale for qqH FIXME
-          qqH_alternative=file.Get(variable[k]+"_powheg").Get("qqH_htt125_scale")
+          qqH_alternative=file.Get(dir_powheg).Get("qqH_htt125_scale")
           unc=abs(qqH_alternative.GetBinContent(j)-qqH.GetBinContent(j))
           qqH.SetBinError(j,(qqH.GetBinError(j)*qqH.GetBinError(j)+unc*unc)**0.5)
 
-          WH_alternative=file.Get(variable[k]+"_powheg").Get("WH_htt125_scale")
+          WH_alternative=file.Get(dir_powheg).Get("WH_htt125_scale")
           unc=abs(WH_alternative.GetBinContent(j)-WH.GetBinContent(j))
           WH.SetBinError(j,(WH.GetBinError(j)*WH.GetBinError(j)+unc*unc)**0.5)
 
-          ZH_alternative=file.Get(variable[k]+"_powheg").Get("ZH_htt125_scale")
+          ZH_alternative=file.Get(dir_powheg).Get("ZH_htt125_scale")
           unc=abs(ZH_alternative.GetBinContent(j)-ZH.GetBinContent(j))
           ZH.SetBinError(j,(ZH.GetBinError(j)*ZH.GetBinError(j)+unc*unc)**0.5)
 
-          ggZH_lep_alternative=file.Get(variable[k]+"_powheg").Get("ggZH_lep_htt125_scale")
+          ggZH_lep_alternative=file.Get(dir_powheg).Get("ggZH_lep_htt125_scale")
           unc=abs(ggZH_lep_alternative.GetBinContent(j)-ggZH_lep.GetBinContent(j))
           ggZH_lep.SetBinError(j,(ggZH_lep.GetBinError(j)*ggZH_lep.GetBinError(j)+unc*unc)**0.5)
 
-          ggZH_had_alternative=file.Get(variable[k]+"_powheg").Get("ggZH_had_htt125_scale")
+          ggZH_had_alternative=file.Get(dir_powheg).Get("ggZH_had_htt125_scale")
           unc=abs(ggZH_had_alternative.GetBinContent(j)-ggZH_had.GetBinContent(j))
           ggZH_had.SetBinError(j,(ggZH_had.GetBinError(j)*ggZH_had.GetBinError(j)+unc*unc)**0.5)
 
-          ttH_alternative=file.Get(variable[k]+"_powheg").Get("ttH_htt125_scale")
+          ttH_alternative=file.Get(dir_powheg).Get("ttH_htt125_scale")
           unc=abs(ttH_alternative.GetBinContent(j)-ttH.GetBinContent(j))
           ttH.SetBinError(j,(ttH.GetBinError(j)*ttH.GetBinError(j)+unc*unc)**0.5)
 
        XH=WH.Clone()
+       
        XH.Add(ZH)
        XH.Add(qqH)
        XH.Add(ggZH_lep)
        XH.Add(ggZH_had)
        XH.Add(ttH)
 
-    #   XH_em=WH_em.Clone()
-    #   XH_em.Add(ZH_em)
-    #   XH_em.Add(qqH_em)
-    #   XH_em.Add(ggZH_lep_em)
-    #   XH_em.Add(ggZH_had_em)
-    #   XH_em.Add(ttH_em)
-
-    #   XH_et=WH_et.Clone()
-    #   XH_et.Add(ZH_et)
-    #   XH_et.Add(qqH_et)
-    #   XH_et.Add(ggZH_lep_et)
-    #   XH_et.Add(ggZH_had_et)
-    #   XH_et.Add(ttH_et)
-
-    #   XH_mt=WH_mt.Clone()
-    #   XH_mt.Add(ZH_mt)
-    #   XH_mt.Add(qqH_mt)
-    #   XH_mt.Add(ggZH_lep_mt)
-    #   XH_mt.Add(ggZH_had_mt)
-    #   XH_mt.Add(ttH_mt)
-
-    #   XH_tt=WH_tt.Clone()
-    #   XH_tt.Add(ZH_tt)
-    #   XH_tt.Add(qqH_tt)
-    #   XH_tt.Add(ggZH_lep_tt)
-    #   XH_tt.Add(ggZH_had_tt)
-    #   XH_tt.Add(ttH_tt)
-
        ggH_powheg.Add(XH)
        ggH_nnlops.Add(XH)
-    #   ggH_nnlops_em.Add(XH_em)
-    #   ggH_nnlops_et.Add(XH_et)
-    #   ggH_nnlops_mt.Add(XH_mt)
-    #   ggH_nnlops_tt.Add(XH_tt)
 
-       for j in range(0,ggH_powheg.GetSize()-2):
-         width=ggH_powheg.GetBinWidth(j+1)
-         ggH_powheg.SetBinContent(j+1,ggH_powheg.GetBinContent(j+1)*1000/width)
-         ggH_nnlops.SetBinContent(j+1,ggH_nnlops.GetBinContent(j+1)*1000/width)
-         XH.SetBinContent(j+1,XH.GetBinContent(j+1)*1000/width)
-    #     ggH_nnlops_em.SetBinContent(j+1,ggH_nnlops_em.GetBinContent(j+1)*1000/width)
-    #     XH_em.SetBinContent(j+1,XH_em.GetBinContent(j+1)*1000/width)
-    #     ggH_nnlops_et.SetBinContent(j+1,ggH_nnlops_et.GetBinContent(j+1)*1000/width)
-    #     XH_et.SetBinContent(j+1,XH_et.GetBinContent(j+1)*1000/width)
-    #     ggH_nnlops_mt.SetBinContent(j+1,ggH_nnlops_mt.GetBinContent(j+1)*1000/width)
-    #     XH_mt.SetBinContent(j+1,XH_mt.GetBinContent(j+1)*1000/width)
-    #     ggH_nnlops_tt.SetBinContent(j+1,ggH_nnlops_tt.GetBinContent(j+1)*1000/width)
-    #     XH_tt.SetBinContent(j+1,XH_tt.GetBinContent(j+1)*1000/width)
-         ggH_powheg.SetBinError(j+1,ggH_powheg.GetBinError(j+1)*1000/width)
-         ggH_nnlops.SetBinError(j+1,ggH_nnlops.GetBinError(j+1)*1000/width)
-         XH.SetBinError(j+1,XH.GetBinError(j+1)*1000/width)
+       ggH_powheg_RB=ggH_powheg.Clone()
+       ggH_nnlops_RB=ggH_nnlops.Clone()
+       XH_RB=XH.Clone()
+    
+
+       if 'hpt' in args.JetPtLimit:
+        
+           xbins = array.array('d', [250,350,450,600,2000])
+           ggH_powheg_RB=ggH_powheg.Rebin(4,'numHistRB',xbins)
+           ggH_nnlops_RB=ggH_nnlops.Rebin(4,'numHistRB_b',xbins)
+           XH_RB=XH.Rebin(4,'numHistRB_bXH',xbins)
        
-       ggH_powheg.GetXaxis().SetTitle("")
-       ggH_powheg.GetXaxis().SetTitleSize(0)
-       ggH_powheg.GetXaxis().SetNdivisions(505)
-       ggH_powheg.GetYaxis().SetLabelFont(42)
-       ggH_powheg.GetYaxis().SetLabelOffset(0.01)
-       ggH_powheg.GetYaxis().SetLabelSize(0.06)
-       ggH_powheg.GetYaxis().SetTitleSize(0.075)
-       ggH_powheg.GetYaxis().SetTitleOffset(1.04)
-       ggH_powheg.SetTitle("")
-       ggH_powheg.GetYaxis().SetTitle(yaxis[k])
-       #ggH_powheg.SetMinimum(0.1)
-       if k<4: ggH_powheg.SetMinimum(ggH_powheg.GetBinContent(ggH_powheg.GetSize()-2)/10)
-       if k<4: ggH_powheg.SetMaximum(7*ggH_powheg.GetMaximum())
-       if k==4: ggH_powheg.SetMinimum(0)
-       if k==4: ggH_powheg.SetMaximum(2*ggH_powheg.GetMaximum())
-       if k<2: ggH_powheg.SetMaximum(200*ggH_powheg.GetMaximum())
-       if k==0: ggH_powheg.GetXaxis().SetLimits(250,2000)
-       if k==0: ggH_powheg.SetMinimum(.001)
-       ggH_powheg.SetMarkerStyle(20)
-       ggH_powheg.SetMarkerSize(1)
-       ggH_powheg.GetXaxis().SetLabelSize(0)
+       for j in range(0,ggH_powheg.GetSize()-2):
+         width=ggH_powheg_RB.GetBinWidth(j+1)
+         ggH_powheg_RB.SetBinContent(j+1,ggH_powheg.GetBinContent(j+1)/width)
+         ggH_nnlops_RB.SetBinContent(j+1,ggH_nnlops.GetBinContent(j+1)/width)
+         XH.SetBinContent(j+1,XH.GetBinContent(j+1)/width)
+         ggH_powheg_RB.SetBinError(j+1,ggH_powheg.GetBinError(j+1)/width)
+         ggH_nnlops_RB.SetBinError(j+1,ggH_nnlops.GetBinError(j+1)/width)
+         XH_RB.SetBinError(j+1,XH.GetBinError(j+1)/width)
+       
+       ggH_powheg_RB.GetXaxis().SetTitle("")
+       ggH_powheg_RB.GetXaxis().SetTitleSize(0)
+       ggH_powheg_RB.GetXaxis().SetNdivisions(505)
+       ggH_powheg_RB.GetYaxis().SetLabelFont(42)
+       ggH_powheg_RB.GetYaxis().SetLabelOffset(0.01)
+       ggH_powheg_RB.GetYaxis().SetLabelSize(0.06)
+       ggH_powheg_RB.GetYaxis().SetTitleSize(0.075)
+       ggH_powheg_RB.GetYaxis().SetTitleOffset(1.04)
+       ggH_powheg_RB.SetTitle("")
+       ggH_powheg_RB.GetYaxis().SetTitle(yaxis[k])
+       #ggH_powheg_RB.SetMinimum(0.1)
+       if k<4: ggH_powheg_RB.SetMinimum(ggH_powheg_RB.GetBinContent(ggH_powheg_RB.GetSize()-2)/10)
+       if k<4: ggH_powheg_RB.SetMaximum(7*ggH_powheg_RB.GetMaximum())
+       if k==4: ggH_powheg_RB.SetMinimum(0)
+       if k==4: ggH_powheg_RB.SetMaximum(2*ggH_powheg_RB.GetMaximum())
+#       if k<2: ggH_powheg_RB.SetMaximum(200*ggH_powheg_RB.GetMaximum())
+       if k<2: ggH_powheg_RB.SetMaximum(10)
+       if k==0: ggH_powheg_RB.GetXaxis().SetLimits(250,2000)
+       if k==0: ggH_powheg_RB.SetMinimum(.0000001)
+       if k==1: ggH_powheg_RB.SetMinimum(.0000001)
+       ggH_powheg_RB.SetMarkerStyle(20)
+       ggH_powheg_RB.SetMarkerSize(1)
+       ggH_powheg_RB.GetXaxis().SetLabelSize(0)
        
        pad1 = ROOT.TPad("pad1","pad1",0,0.35,1,1)
        pad1.Draw()
@@ -358,16 +294,16 @@ def main(args):
        pad1.SetFrameBorderSize(10)
        if k<4: pad1.SetLogy()
 
-       #ggH_powheg.SetLineColor(2)
+       #ggH_powheg_RB.SetLineColor(2)
        #ggH_nnlops.SetLineColor(3)
        #XH.SetFillColor(4)
 
-       ggH_powheg.SetLineColor(ROOT.TColor.GetColor("#9999cc"))
-       ggH_nnlops.SetLineColor(ROOT.TColor.GetColor("#12cadd"))
+       ggH_powheg_RB.SetLineColor(ROOT.TColor.GetColor("#9999cc"))
+       ggH_nnlops_RB.SetLineColor(ROOT.TColor.GetColor("#12cadd"))
        XH.SetFillColor(ROOT.TColor.GetColor("#ffcc66"))
        XH.SetLineColor(ROOT.TColor.GetColor("#ffcc66"))
-       ggH_powheg.SetLineWidth(3)
-       ggH_nnlops.SetLineWidth(3)
+       ggH_powheg_RB.SetLineWidth(3)
+       ggH_nnlops_RB.SetLineWidth(3)
 
        xList = [1,2,3,4,0,0,0,0,0]
        yList = [1,4,9,16,0,0,0,0,0]
@@ -376,54 +312,14 @@ def main(args):
        xlowList = [0,0,0,0,0,0,0,0,0]
        ylowList = [1-1,4-1,9-1,16-1,0,0,0,0,0]
 
-    #   if k==0:#njets
-    #      xList = [0.5,1.5,2.5,3.5,4.5,5.5]
-    #      xhighList = [0,0,0,0,0]
-    #      xlowList = [0,0,0,0,0]
-    #      yList = [1.25 * ggH_nnlops.GetBinContent(1),
-    #               1.00 * ggH_nnlops.GetBinContent(2),
-    #               0.84 * ggH_nnlops.GetBinContent(3),
-    #               0.58 * ggH_nnlops.GetBinContent(4),
-    #               0.57 * ggH_nnlops.GetBinContent(5)
-    #      ]
-    #      ylowList = [0.48 * ggH_nnlops.GetBinContent(1),
-    #                  0.27 * ggH_nnlops.GetBinContent(2),
-    #                  0.22 * ggH_nnlops.GetBinContent(3),
-    #                  0.36 * ggH_nnlops.GetBinContent(4),
-    #                  0.45 * ggH_nnlops.GetBinContent(5)
-    #      ]
-    #      yhighList = [0.47 * ggH_nnlops.GetBinContent(1),
-    #                   0.28 * ggH_nnlops.GetBinContent(2),
-    #                   0.22 * ggH_nnlops.GetBinContent(3),
-    #                   0.36 * ggH_nnlops.GetBinContent(4),
-    #                   0.46 * ggH_nnlops.GetBinContent(5)
-    #      ]
-    #      print "njets: ",ggH_nnlops.GetBinContent(1)*ggH_nnlops.GetBinWidth(1),ggH_nnlops.GetBinContent(2)*ggH_nnlops.GetBinWidth(2),ggH_nnlops.GetBinContent(3)*ggH_nnlops.GetBinWidth(3),ggH_nnlops.GetBinContent(4)*ggH_nnlops.GetBinWidth(4),ggH_nnlops.GetBinContent(5)*ggH_nnlops.GetBinWidth(5)
-    #      print "njets err: ",ggH_nnlops.GetBinError(1)*ggH_nnlops.GetBinWidth(1),ggH_nnlops.GetBinError(2)*ggH_nnlops.GetBinWidth(2),ggH_nnlops.GetBinError(3)*ggH_nnlops.GetBinWidth(3),ggH_nnlops.GetBinError(4)*ggH_nnlops.GetBinWidth(4),ggH_nnlops.GetBinError(5)*ggH_nnlops.GetBinWidth(5)
-    #      print "njets em: ",ggH_nnlops_em.GetBinContent(1)*ggH_nnlops_em.GetBinWidth(1),ggH_nnlops_em.GetBinContent(2)*ggH_nnlops_em.GetBinWidth(2),ggH_nnlops_em.GetBinContent(3)*ggH_nnlops_em.GetBinWidth(3),ggH_nnlops_em.GetBinContent(4)*ggH_nnlops_em.GetBinWidth(4),ggH_nnlops_em.GetBinContent(5)*ggH_nnlops_em.GetBinWidth(5)
-    #      print "njets et: ",ggH_nnlops_et.GetBinContent(1)*ggH_nnlops_et.GetBinWidth(1),ggH_nnlops_et.GetBinContent(2)*ggH_nnlops_et.GetBinWidth(2),ggH_nnlops_et.GetBinContent(3)*ggH_nnlops_et.GetBinWidth(3),ggH_nnlops_et.GetBinContent(4)*ggH_nnlops_et.GetBinWidth(4),ggH_nnlops_et.GetBinContent(5)*ggH_nnlops_et.GetBinWidth(5)
-    #      print "njets mt: ",ggH_nnlops_mt.GetBinContent(1)*ggH_nnlops_mt.GetBinWidth(1),ggH_nnlops_mt.GetBinContent(2)*ggH_nnlops_mt.GetBinWidth(2),ggH_nnlops_mt.GetBinContent(3)*ggH_nnlops_mt.GetBinWidth(3),ggH_nnlops_mt.GetBinContent(4)*ggH_nnlops_mt.GetBinWidth(4),ggH_nnlops_mt.GetBinContent(5)*ggH_nnlops_mt.GetBinWidth(5)
-    #      print "njets tt: ",ggH_nnlops_tt.GetBinContent(1)*ggH_nnlops_tt.GetBinWidth(1),ggH_nnlops_tt.GetBinContent(2)*ggH_nnlops_tt.GetBinWidth(2),ggH_nnlops_tt.GetBinContent(3)*ggH_nnlops_tt.GetBinWidth(3),ggH_nnlops_tt.GetBinContent(4)*ggH_nnlops_tt.GetBinWidth(4),ggH_nnlops_tt.GetBinContent(5)*ggH_nnlops_tt.GetBinWidth(5)
-
-
-#       trFile=ROOT.TFile(args.HiggsPtLimit,'read')
-#FITALL_multiDim/higgsCombineTest.MultiDimFit.mH125_all_r_H_PTH_0_350.root_scan.txt
-#
-#       trFile_1=ROOT.TFile('FITALL_multiDim/higgsCombineTest.MultiDimFit.mH125_all_r_H_PTH_0_350.root','read')
-#       trFile_2=ROOT.TFile('FITALL_multiDim/higgsCombineTest.MultiDimFit.mH125_all_r_H_PTH_350_450.root','read')
-#       trFile_3=ROOT.TFile('FITALL_multiDim/higgsCombineTest.MultiDimFit.mH125_all_r_H_PTH_450_600.root','read')
-#       trFile_4=ROOT.TFile('FITALL_multiDim/higgsCombineTest.MultiDimFit.mH125_all_r_H_PTH_GT600.root','read')
-
-
        ListOfLimit_0_350=[]
        ListOfLimit_350_450=[]
        ListOfLimit_450_600=[]
        ListOfLimit_GT600=[]
-#       ListOfLimit_GT800=[]
 
 
 #       with open('{}/higgsCombineTest.MultiDimFit.mH125_all_r_H_PTH_0_350.root_scan.txt'.format(args.InputDir),'r') as f:
-       with open('{}/r_H_{}_0_350_scan.txt'.format(args.InputDir,VarName),'r') as f:
+       with open('{}/scan_r_H_{}_0_350.txt'.format(args.InputDir,VarName),'r') as f:
             lines=f.readline()
             ListOfLimit_0_350.append(float(lines.split(" ")[2]))
             ListOfLimit_0_350.append(abs(float(lines.split(" ")[3])))
@@ -431,51 +327,25 @@ def main(args):
 
 
 #       with open('{}/higgsCombineTest.MultiDimFit.mH125_all_r_H_PTH_350_450.root_scan.txt'.format(args.InputDir),'r') as f:
-       with open('{}/r_H_{}_350_450_scan.txt'.format(args.InputDir,VarName),'r') as f:
+       with open('{}/scan_r_H_{}_350_450.txt'.format(args.InputDir,VarName),'r') as f:
             lines=f.readline()
             ListOfLimit_350_450.append(float(lines.split(" ")[2]))
             ListOfLimit_350_450.append(abs(float(lines.split(" ")[3])))
             ListOfLimit_350_450.append(abs(float(lines.split(" ")[4])))
 
 #       with open('{}/higgsCombineTest.MultiDimFit.mH125_all_r_H_PTH_450_600.root_scan.txt'.format(args.InputDir),'r') as f:
-       with open('{}/r_H_{}_450_600_scan.txt'.format(args.InputDir,VarName),'r') as f:
+       with open('{}/scan_r_H_{}_450_600.txt'.format(args.InputDir,VarName),'r') as f:
             lines=f.readline()
             ListOfLimit_450_600.append(float(lines.split(" ")[2]))
             ListOfLimit_450_600.append(abs(float(lines.split(" ")[3])))
             ListOfLimit_450_600.append(abs(float(lines.split(" ")[4])))
 
 #       with open('{}/higgsCombineTest.MultiDimFit.mH125_all_r_H_PTH_GT600.root_scan.txt'.format(args.InputDir),'r') as f:
-       with open('{}/r_H_{}_GT600_scan.txt'.format(args.InputDir,VarName),'r') as f:
+       with open('{}/scan_r_H_{}_GT600.txt'.format(args.InputDir,VarName),'r') as f:
             lines=f.readline()
             ListOfLimit_GT600.append(float(lines.split(" ")[2]))
             ListOfLimit_GT600.append(abs(float(lines.split(" ")[3])))
             ListOfLimit_GT600.append(abs(float(lines.split(" ")[4])))
-
-
-       
-
-
-
-       
-#       trName=trFile_1.Get('limit')
-#       for tr in trName:
-#            if tr.deltaNLL==0: ListOfLimit_0_350.append(trName.r_H_PTH_0_350)
-#       trFile_1.Close()
-#
-#       trName=trFile_2.Get('limit')
-#       for tr in trName:
-#            if tr.deltaNLL==0: ListOfLimit_350_450.append(trName.r_H_PTH_350_450)
-#       trFile_2.Close()
-#
-#       trName=trFile_3.Get('limit')
-#       for tr in trName:
-#            if tr.deltaNLL==0: ListOfLimit_450_600.append(trName.r_H_PTH_450_600)
-#       trFile_3.Close()
-#
-#       trName=trFile_4.Get('limit')
-#       for tr in trName:
-#            if tr.deltaNLL==0: ListOfLimit_GT600.append(trName.r_H_PTH_GT600)
-#       trFile_4.Close()
 
 
 
@@ -496,108 +366,58 @@ def main(args):
           xlowList = [50,50,75,700]
           
           yList = [
-                   ListOfLimit_All[0][0] * ggH_nnlops.GetBinContent(1),
-                   ListOfLimit_All[1][0] * ggH_nnlops.GetBinContent(2),
-                   ListOfLimit_All[2][0] * ggH_nnlops.GetBinContent(3),
-                   ListOfLimit_All[3][0] * ggH_nnlops.GetBinContent(4),
-#                   ListOfLimit_All[4][0] * ggH_nnlops.GetBinContent(5),
-    #               1.68 * ggH_nnlops.GetBinContent(6),
-    #               2.00 * ggH_nnlops.GetBinContent(7)
+                   ListOfLimit_All[0][0] * ggH_nnlops_RB.GetBinContent(1),
+                   ListOfLimit_All[1][0] * ggH_nnlops_RB.GetBinContent(2),
+                   ListOfLimit_All[2][0] * ggH_nnlops_RB.GetBinContent(3),
+                   ListOfLimit_All[3][0] * ggH_nnlops_RB.GetBinContent(4),
           ]
           ylowList = [
-                   abs((ListOfLimit_All[0][1])) * ggH_nnlops.GetBinContent(1),
-                   abs((ListOfLimit_All[1][1])) * ggH_nnlops.GetBinContent(2),
-                   abs((ListOfLimit_All[2][1])) * ggH_nnlops.GetBinContent(3),
-                   abs((ListOfLimit_All[3][1])) * ggH_nnlops.GetBinContent(4),
-#                   abs((ListOfLimit_All[4][0]- ListOfLimit_All[4][1]) * ggH_nnlops.GetBinContent(5),
-    #               1.68 * ggH_nnlops.GetBinContent(6),
-    #               2.00 * ggH_nnlops.GetBinContent(7)
+                   abs((ListOfLimit_All[0][1])) * ggH_nnlops_RB.GetBinContent(1),
+                   abs((ListOfLimit_All[1][1])) * ggH_nnlops_RB.GetBinContent(2),
+                   abs((ListOfLimit_All[2][1])) * ggH_nnlops_RB.GetBinContent(3),
+                   abs((ListOfLimit_All[3][1])) * ggH_nnlops_RB.GetBinContent(4),
           ]
           yhighList =[
           
-                   abs((ListOfLimit_All[0][2])) * ggH_nnlops.GetBinContent(1),
-                   abs((ListOfLimit_All[1][2])) * ggH_nnlops.GetBinContent(2),
-                   abs((ListOfLimit_All[2][2])) * ggH_nnlops.GetBinContent(3),
-                   abs((ListOfLimit_All[3][2])) * ggH_nnlops.GetBinContent(4),
-#                   (-ListOfLimit_All[4][0]+ ListOfLimit_All[4][2]) * ggH_nnlops.GetBinContent(5),
-    #               1.68 * ggH_nnlops.GetBinContent(6),
-    #               2.00 * ggH_nnlops.GetBinContent(7)
+                   abs((ListOfLimit_All[0][2])) * ggH_nnlops_RB.GetBinContent(1),
+                   abs((ListOfLimit_All[1][2])) * ggH_nnlops_RB.GetBinContent(2),
+                   abs((ListOfLimit_All[2][2])) * ggH_nnlops_RB.GetBinContent(3),
+                   abs((ListOfLimit_All[3][2])) * ggH_nnlops_RB.GetBinContent(4),
           ]
           
           print  ListOfLimit_All[0][0], (ListOfLimit_All[0][0]- ListOfLimit_All[0][1]), (-ListOfLimit_All[0][0]+ ListOfLimit_All[0][2])
-    #   if k==0:#HpT
-    #      xList = [175,400,525,1300]
-    #      xhighList = [175,50,75,700]
-    #      xlowList = [175,50,75,700]
-    #      yList = [2.013 * ggH_nnlops.GetBinContent(1),
-    #               4.432 * ggH_nnlops.GetBinContent(2),
-    #               0.724 * ggH_nnlops.GetBinContent(3),
-    #               2.797 * ggH_nnlops.GetBinContent(4),
-    ##               1.18 * ggH_nnlops.GetBinContent(5),
-    ##               1.68 * ggH_nnlops.GetBinContent(6),
-    ##               2.00 * ggH_nnlops.GetBinContent(7)
-    #      ]
-    #      ylowList = [2.367 * ggH_nnlops.GetBinContent(1),
-    #                  2.257 * ggH_nnlops.GetBinContent(2),
-    #                  1.736 * ggH_nnlops.GetBinContent(3),
-    #                  2.309 * ggH_nnlops.GetBinContent(4),
-    ##                  0.36 * ggH_nnlops.GetBinContent(5),
-    ##                  0.59 * ggH_nnlops.GetBinContent(6),
-    ##                  0.85 * ggH_nnlops.GetBinContent(7)
-    #      ]
-    #      yhighList = [2.565 * ggH_nnlops.GetBinContent(1),
-    #                   2.447 * ggH_nnlops.GetBinContent(2),
-    #                   1.963 * ggH_nnlops.GetBinContent(3),
-    #                   2.843 * ggH_nnlops.GetBinContent(4),
-    ##                   0.41 * ggH_nnlops.GetBinContent(5),
-    ##                   0.67 * ggH_nnlops.GetBinContent(6),
-    ##                   1.02 * ggH_nnlops.GetBinContent(7)
-    #      ]
 
-          print "pth: ",ggH_nnlops.GetBinContent(1)*ggH_nnlops.GetBinWidth(1),ggH_nnlops.GetBinContent(2)*ggH_nnlops.GetBinWidth(2),ggH_nnlops.GetBinContent(3)*ggH_nnlops.GetBinWidth(3),ggH_nnlops.GetBinContent(4)*ggH_nnlops.GetBinWidth(4),ggH_nnlops.GetBinContent(5)*ggH_nnlops.GetBinWidth(5),ggH_nnlops.GetBinContent(6)*ggH_nnlops.GetBinWidth(6),ggH_nnlops.GetBinContent(7)*ggH_nnlops.GetBinWidth(7)
-          print "pth err: ",ggH_nnlops.GetBinError(1)*ggH_nnlops.GetBinWidth(1),ggH_nnlops.GetBinError(2)*ggH_nnlops.GetBinWidth(2),ggH_nnlops.GetBinError(3)*ggH_nnlops.GetBinWidth(3),ggH_nnlops.GetBinError(4)*ggH_nnlops.GetBinWidth(4),ggH_nnlops.GetBinError(5)*ggH_nnlops.GetBinWidth(5),ggH_nnlops.GetBinError(6)*ggH_nnlops.GetBinWidth(6),ggH_nnlops.GetBinError(7)*ggH_nnlops.GetBinWidth(7)
+          print "pth: ",ggH_nnlops_RB.GetBinContent(1)*ggH_nnlops_RB.GetBinWidth(1),ggH_nnlops_RB.GetBinContent(2)*ggH_nnlops_RB.GetBinWidth(2),ggH_nnlops_RB.GetBinContent(3)*ggH_nnlops_RB.GetBinWidth(3),ggH_nnlops_RB.GetBinContent(4)*ggH_nnlops_RB.GetBinWidth(4),ggH_nnlops_RB.GetBinContent(5)*ggH_nnlops_RB.GetBinWidth(5),ggH_nnlops_RB.GetBinContent(6)*ggH_nnlops_RB.GetBinWidth(6),ggH_nnlops_RB.GetBinContent(7)*ggH_nnlops_RB.GetBinWidth(7)
+          print "pth err: ",ggH_nnlops_RB.GetBinError(1)*ggH_nnlops_RB.GetBinWidth(1),ggH_nnlops_RB.GetBinError(2)*ggH_nnlops_RB.GetBinWidth(2),ggH_nnlops_RB.GetBinError(3)*ggH_nnlops_RB.GetBinWidth(3),ggH_nnlops_RB.GetBinError(4)*ggH_nnlops_RB.GetBinWidth(4),ggH_nnlops_RB.GetBinError(5)*ggH_nnlops_RB.GetBinWidth(5),ggH_nnlops_RB.GetBinError(6)*ggH_nnlops_RB.GetBinWidth(6),ggH_nnlops_RB.GetBinError(7)*ggH_nnlops_RB.GetBinWidth(7)
 
        if k==1:
           xList = [175,400,525,1300]
           xhighList = [175,50,75,700]
           xlowList = [175,50,75,700]
 
-#          xList = [300,400,525,1300]
-#          xhighList = [50,50,75,700]
-#          xlowList = [50,50,75,700]
-
           yList = [
-                   ListOfLimit_All[0][0] * ggH_nnlops.GetBinContent(1),
-                   ListOfLimit_All[1][0] * ggH_nnlops.GetBinContent(2),
-                   ListOfLimit_All[2][0] * ggH_nnlops.GetBinContent(3),
-                   ListOfLimit_All[3][0] * ggH_nnlops.GetBinContent(4),
-#                   ListOfLimit_All[4][0] * ggH_nnlops.GetBinContent(5),
-    #               1.68 * ggH_nnlops.GetBinContent(6),
-    #               2.00 * ggH_nnlops.GetBinContent(7)
+                   ListOfLimit_All[0][0] * ggH_nnlops_RB.GetBinContent(1),
+                   ListOfLimit_All[1][0] * ggH_nnlops_RB.GetBinContent(2),
+                   ListOfLimit_All[2][0] * ggH_nnlops_RB.GetBinContent(3),
+                   ListOfLimit_All[3][0] * ggH_nnlops_RB.GetBinContent(4),
           ]
           ylowList = [
-                   abs((ListOfLimit_All[0][1])) * ggH_nnlops.GetBinContent(1),
-                   abs((ListOfLimit_All[1][1])) * ggH_nnlops.GetBinContent(2),
-                   abs((ListOfLimit_All[2][1])) * ggH_nnlops.GetBinContent(3),
-                   abs((ListOfLimit_All[3][1])) * ggH_nnlops.GetBinContent(4),
-#                   abs((ListOfLimit_All[4][0]- ListOfLimit_All[4][1]) * ggH_nnlops.GetBinContent(5),
-    #               1.68 * ggH_nnlops.GetBinContent(6),
-    #               2.00 * ggH_nnlops.GetBinContent(7)
+                   abs((ListOfLimit_All[0][1])) * ggH_nnlops_RB.GetBinContent(1),
+                   abs((ListOfLimit_All[1][1])) * ggH_nnlops_RB.GetBinContent(2),
+                   abs((ListOfLimit_All[2][1])) * ggH_nnlops_RB.GetBinContent(3),
+                   abs((ListOfLimit_All[3][1])) * ggH_nnlops_RB.GetBinContent(4),
           ]
           yhighList =[
           
-                   abs((ListOfLimit_All[0][2])) * ggH_nnlops.GetBinContent(1),
-                   abs((ListOfLimit_All[1][2])) * ggH_nnlops.GetBinContent(2),
-                   abs((ListOfLimit_All[2][2])) * ggH_nnlops.GetBinContent(3),
-                   abs((ListOfLimit_All[3][2])) * ggH_nnlops.GetBinContent(4),
-#                   (-ListOfLimit_All[4][0]+ ListOfLimit_All[4][2]) * ggH_nnlops.GetBinContent(5),
-    #               1.68 * ggH_nnlops.GetBinContent(6),
-    #               2.00 * ggH_nnlops.GetBinContent(7)
+                   abs((ListOfLimit_All[0][2])) * ggH_nnlops_RB.GetBinContent(1),
+                   abs((ListOfLimit_All[1][2])) * ggH_nnlops_RB.GetBinContent(2),
+                   abs((ListOfLimit_All[2][2])) * ggH_nnlops_RB.GetBinContent(3),
+                   abs((ListOfLimit_All[3][2])) * ggH_nnlops_RB.GetBinContent(4),
           ]
 
 
-          print "ljpt: ",ggH_nnlops.GetBinContent(1)*ggH_nnlops.GetBinWidth(1),ggH_nnlops.GetBinContent(2)*ggH_nnlops.GetBinWidth(2),ggH_nnlops.GetBinContent(3)*ggH_nnlops.GetBinWidth(3),ggH_nnlops.GetBinContent(4)*ggH_nnlops.GetBinWidth(4),ggH_nnlops.GetBinContent(5)*ggH_nnlops.GetBinWidth(5)
-          print "ljpt err: ",ggH_nnlops.GetBinError(1)*ggH_nnlops.GetBinWidth(1),ggH_nnlops.GetBinError(2)*ggH_nnlops.GetBinWidth(2),ggH_nnlops.GetBinError(3)*ggH_nnlops.GetBinWidth(3),ggH_nnlops.GetBinError(4)*ggH_nnlops.GetBinWidth(4),ggH_nnlops.GetBinError(5)*ggH_nnlops.GetBinWidth(5)
+          print "ljpt: ",ggH_nnlops_RB.GetBinContent(1)*ggH_nnlops_RB.GetBinWidth(1),ggH_nnlops_RB.GetBinContent(2)*ggH_nnlops_RB.GetBinWidth(2),ggH_nnlops_RB.GetBinContent(3)*ggH_nnlops_RB.GetBinWidth(3),ggH_nnlops_RB.GetBinContent(4)*ggH_nnlops_RB.GetBinWidth(4),ggH_nnlops_RB.GetBinContent(5)*ggH_nnlops_RB.GetBinWidth(5)
+          print "ljpt err: ",ggH_nnlops_RB.GetBinError(1)*ggH_nnlops_RB.GetBinWidth(1),ggH_nnlops_RB.GetBinError(2)*ggH_nnlops_RB.GetBinWidth(2),ggH_nnlops_RB.GetBinError(3)*ggH_nnlops_RB.GetBinWidth(3),ggH_nnlops_RB.GetBinError(4)*ggH_nnlops_RB.GetBinWidth(4),ggH_nnlops_RB.GetBinError(5)*ggH_nnlops_RB.GetBinWidth(5)
 
        x = array.array('d', xList)
        y = array.array('d', yList)
@@ -614,33 +434,33 @@ def main(args):
        pad1.Update()
 
 
-       ggH_powheg_line=ggH_powheg.Clone()
-       ggH_nnlops_line=ggH_nnlops.Clone()
-       ggH_powheg.SetFillStyle(3005)
-       ggH_nnlops.SetFillStyle(3004)
-       ggH_powheg.SetMarkerSize(0)
-       ggH_powheg.SetFillColor(ROOT.TColor.GetColor("#670178"))
-       ggH_nnlops.SetMarkerSize(0)
-       ggH_nnlops.SetFillColor(ROOT.TColor.GetColor("#137a63"))
-       ggH_powheg.GetXaxis().SetRangeUser(250,2000)
-       ggH_nnlops.GetXaxis().SetRangeUser(250,2000)
-       ggH_powheg.Draw("e2")
-       ggH_nnlops.Draw("e2same")
-       ggH_powheg_line.Draw("histsame")
-       ggH_nnlops_line.Draw("histsame")
+       ggH_powheg_RB_line=ggH_powheg_RB.Clone()
+       ggH_nnlops_RB_line=ggH_nnlops_RB.Clone()
+       ggH_powheg_RB.SetFillStyle(3005)
+       ggH_nnlops_RB.SetFillStyle(3004)
+       ggH_powheg_RB.SetMarkerSize(0)
+       ggH_powheg_RB.SetFillColor(ROOT.TColor.GetColor("#670178"))
+       ggH_nnlops_RB.SetMarkerSize(0)
+       ggH_nnlops_RB.SetFillColor(ROOT.TColor.GetColor("#137a63"))
+       ggH_powheg_RB.GetXaxis().SetRangeUser(250,2000)
+       ggH_nnlops_RB.GetXaxis().SetRangeUser(250,2000)
+       ggH_powheg_RB.Draw("e2")
+       ggH_nnlops_RB.Draw("e2same")
+       ggH_powheg_RB_line.Draw("histsame")
+       ggH_nnlops_RB_line.Draw("histsame")
        XH.Draw("histsame")
        Data.Draw("EP0SAME")
        pad1.Update()
 
        fidxs=0.
-       for cc in range(1,ggH_powheg.GetSize()-1):
-         fidxs=fidxs+ggH_nnlops.GetBinContent(cc)*ggH_nnlops.GetBinWidth(cc)
+       for cc in range(1,ggH_powheg_RB.GetSize()-1):
+         fidxs=fidxs+ggH_nnlops_RB.GetBinContent(cc)*ggH_nnlops_RB.GetBinWidth(cc)
        print fidxs
        
        legende=make_legend()
        legende.AddEntry(Data,"Observed","ep")
-       legende.AddEntry(ggH_powheg,"gg#rightarrowH (POWHEG) + XH","lf")
-       legende.AddEntry(ggH_nnlops,"gg#rightarrowH (NNLOPS) + XH","lf")
+       legende.AddEntry(ggH_powheg_RB,"gg#rightarrowH (POWHEG) + XH","lf")
+       legende.AddEntry(ggH_nnlops_RB,"gg#rightarrowH (NNLOPS) + XH","lf")
        legende.AddEntry(XH,"XH = VBF + VH + ttH (POWHEG)","f")
        legende.Draw()
 
@@ -675,11 +495,11 @@ def main(args):
        pad2.Draw()
        pad2.cd()
 
-       hwoError=ggH_nnlops.Clone()
+       hwoError=ggH_nnlops_RB.Clone()
        for z in range(1,hwoError.GetSize()-1):
          hwoError.SetBinError(z,0)
-       h1=ggH_powheg.Clone()
-       h2=ggH_nnlops.Clone()
+       h1=ggH_powheg_RB.Clone()
+       h2=ggH_nnlops_RB.Clone()
        h1.Divide(hwoError)
        h2.Divide(hwoError)
        errorBand1 = h1.Clone()
@@ -710,11 +530,11 @@ def main(args):
        h1.SetMaximum(2.0)
        h1.SetMinimum(0)
        if "p_" in xaxis[k] and "j" not in xaxis[k]:
-         h1.SetMinimum(-0.5)
-         h1.SetMaximum(3.5)
+         h1.SetMinimum(-2.01)
+         h1.SetMaximum(5)
        if "j_" in xaxis[k]:
-         h1.SetMinimum(-0.5)
-         h1.SetMaximum(2.2)
+         h1.SetMinimum(-2.01)
+         h1.SetMaximum(5)
          
        h1.SetFillStyle(0)
        h1.Draw("hist")

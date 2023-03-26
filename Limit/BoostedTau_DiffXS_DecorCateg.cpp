@@ -33,50 +33,14 @@ int main(int argc, char** argv) {
     po::variables_map vm;
     po::options_description config("configuration");
     config.add_options()
-//    ("mass,m", po::value<string>(&mass)->default_value(mass))
-//      ("input_folder_em", po::value<string>(&input_folder_em)->default_value("USCMS"))
-//      ("input_folder_et", po::value<string>(&input_folder_et)->default_value("USCMS"))
-//      ("input_folder_mt", po::value<string>(&input_folder_mt)->default_value("USCMS"))
-//      ("input_folder_tt", po::value<string>(&input_folder_tt)->default_value("USCMS"))
-//      ("input_folder_mm", po::value<string>(&input_folder_mm)->default_value("USCMS"))
-//      ("input_folder_ttbar", po::value<string>(&input_folder_ttbar)->default_value("USCMS"))
       ("prefix", po::value<string>(&prefix)->default_value(""))
       ("postfix", po::value<string>(&postfix)->default_value(""))
       ("Var", po::value<string>(&Var)->default_value(""))
-//      ("vbfcateStr_tt", po::value<string>(&vbfcateStr_tt)->default_value("tt_vbf_ggHMELA_bin"))
-//      ("vbfcateStr_mt", po::value<string>(&vbfcateStr_mt)->default_value("mt_vbf_ggHMELA_bin"))
-//      ("auto_rebin", po::value<bool>(&auto_rebin)->default_value(false))
-//      ("real_data", po::value<bool>(&real_data)->default_value(false))
-//      ("manual_rebin", po::value<bool>(&manual_rebin)->default_value(false))
-//      ("output_folder", po::value<string>(&output_folder)->default_value("sm_run2"))
-//      ("SM125,h", po::value<string>(&SM125)->default_value(SM125))
-//      ("control_region", po::value<int>(&control_region)->default_value(0))
       ("year", po::value<string>(&year)->default_value("2016"))
       ("WP", po::value<string>(&WP)->default_value(""))
       ("inputFile", po::value<string>(&inputFile)->default_value(""));
-//      ("mm_fit", po::value<bool>(&mm_fit)->default_value(true))
-//      ("ttbar_fit", po::value<bool>(&ttbar_fit)->default_value(true))
-//      ("jetfakes", po::value<bool>(&do_jetfakes)->default_value(false))
-//      ("embedded", po::value<bool>(&do_embedded)->default_value(false))
-//      ("shapeSyst", po::value<bool>(&do_shapeSyst)->default_value(false))
-//      ("sync", po::value<bool>(&do_sync)->default_value(false))
-//      ("useSingleVBFdir", po::value<bool>(&useSingleVBFdir)->default_value(false))
-//      ("chn", po::value<string>(&do_chn)->default_value("tt"))
-//      ("par", po::value<string>(&par)->default_value("fa3"))
-//      ("is2017", po::value<bool>(&is_2017)->default_value(false))
-//      ("use_ggHint", po::value<bool>(&use_ggHint)->default_value(false))
-//      ("check_neg_bins", po::value<bool>(&check_neg_bins)->default_value(false))
-//      ("poisson_bbb", po::value<bool>(&poisson_bbb)->default_value(false))
-//      ("w_weighting", po::value<bool>(&do_w_weighting)->default_value(false));
     po::store(po::command_line_parser(argc, argv).options(config).run(), vm);
     po::notify(vm);
-
-
-
-
-
-
-
 
     //! [part1]
     // First define the location of the "auxiliaries" directory where we can
@@ -96,45 +60,132 @@ int main(int argc, char** argv) {
     // Here we will just define two categories for an 8TeV analysis. Each entry in
     // the vector below specifies a bin name and corresponding bin_id.
     
-//    VString chns = { "mt"};
-    VString chns = { "mt","et","em","tt"};
-//    VString chns = { "mt","et","tt"};
-//VString  PT_BIN = { "_bin1","_bin2","_bin3","_bin4"};
+    VString chns = {"Htt_PTH_0_350_cat"+year+"mt",
+        "Htt_PTH_350_450_cat"+year+"mt",
+        "Htt_PTH_450_600_cat"+year+"mt",
+        "Htt_PTH_GT600_cat"+year+"mt",
+        "Htt_PTH_0_350_cat"+year+"et",
+        "Htt_PTH_350_450_cat"+year+"et",
+        "Htt_PTH_450_600_cat"+year+"et",
+        "Htt_PTH_GT600_cat"+year+"et",
+        "Htt_PTH_0_350_cat"+year+"tt",
+        "Htt_PTH_350_450_cat"+year+"tt",
+        "Htt_PTH_450_600_cat"+year+"tt",
+        "Htt_PTH_GT600_cat"+year+"tt",
+        "Htt_PTH_0_350_cat"+year+"em",
+        "Htt_PTH_350_450_cat"+year+"em",
+        "Htt_PTH_450_600_cat"+year+"em",
+        "Htt_PTH_GT600_cat"+year+"em",
+};
     
     map<string, string> input_folders = {
-        {"mt", "."},
-        {"et", "."},
-        {"em", "."},
-        {"tt", "."}
+        {"Htt_PTH_0_350_cat"+year+"mt", "."},
+        {"Htt_PTH_350_450_cat"+year+"mt", "."},
+        {"Htt_PTH_450_600_cat"+year+"mt", "."},
+        {"Htt_PTH_GT600_cat"+year+"mt", "."},
+        {"Htt_PTH_0_350_cat"+year+"et", "."},
+        {"Htt_PTH_350_450_cat"+year+"et", "."},
+        {"Htt_PTH_450_600_cat"+year+"et", "."},
+        {"Htt_PTH_GT600_cat"+year+"et", "."},
+        {"Htt_PTH_0_350_cat"+year+"tt", "."},
+        {"Htt_PTH_350_450_cat"+year+"tt", "."},
+        {"Htt_PTH_450_600_cat"+year+"tt", "."},
+        {"Htt_PTH_GT600_cat"+year+"tt", "."},
+        {"Htt_PTH_0_350_cat"+year+"em", "."},
+        {"Htt_PTH_350_450_cat"+year+"em", "."},
+        {"Htt_PTH_450_600_cat"+year+"em", "."},
+        {"Htt_PTH_GT600_cat"+year+"em", "."},
+        
+        
+        
     };
     
     map<string, VString> bkg_procs;
-//    bkg_procs["mt"] = {"QCD", "TT","VV","ZTT"};
-//    bkg_procs["et"] = {"QCD", "TT","VV","ZTT"};
-//    bkg_procs["em"] = {"QCD","W", "TT","VV","ZTT"};
-//    bkg_procs["tt"] = {"QCD", "TT","VV","ZTT"};
-    bkg_procs["mt"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
-    bkg_procs["et"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
-    bkg_procs["em"] = {"QCD","W", "TT","VV","ZTT","OutsideAcceptance"};
-    bkg_procs["tt"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
-
+    
+    
+        bkg_procs["Htt_PTH_350_450_cat"+year+"mt"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
+        bkg_procs["Htt_PTH_450_600_cat"+year+"mt"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
+        bkg_procs["Htt_PTH_GT600_cat"+year+"mt"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
+        bkg_procs["Htt_PTH_0_350_cat"+year+"et"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
+        bkg_procs["Htt_PTH_350_450_cat"+year+"et"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
+        bkg_procs["Htt_PTH_450_600_cat"+year+"et"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
+        bkg_procs["Htt_PTH_GT600_cat"+year+"et"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
+        bkg_procs["Htt_PTH_0_350_cat"+year+"tt"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
+        bkg_procs["Htt_PTH_350_450_cat"+year+"tt"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
+        bkg_procs["Htt_PTH_450_600_cat"+year+"tt"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
+        bkg_procs["Htt_PTH_GT600_cat"+year+"tt"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
+        bkg_procs["Htt_PTH_0_350_cat"+year+"em"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance","W"};
+        bkg_procs["Htt_PTH_350_450_cat"+year+"em"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance","W"};
+        bkg_procs["Htt_PTH_450_600_cat"+year+"em"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance","W"};
+        bkg_procs["Htt_PTH_GT600_cat"+year+"em"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance","W"};
+        
 
     VString sig_procs = {"ggH_PTH_0_350","ggH_PTH_350_450","ggH_PTH_450_600","ggH_PTH_GT600","XH_PTH_0_350","XH_PTH_350_450","XH_PTH_450_600","XH_PTH_GT600"};
     VString ggH_procs = {"ggH_PTH_0_350","ggH_PTH_350_450","ggH_PTH_450_600","ggH_PTH_GT600"};
-//    VString sig_procs = {"ggH","XH"};
-//    VString ggH_procs= {"ggH"};
-//    VString sig_procs = {"ggH_PTH_0_450","ggH_PTH_450_600","ggH_PTH_GT600","XH_PTH_0_450","XH_PTH_450_600","XH_PTH_GT600"};
-//    VString ggH_procs = {"ggH_PTH_0_450","ggH_PTH_450_600","ggH_PTH_GT600"};
-//    VString sig_procs = {"ggH_PTH_450_600","ggH_PTH_GT600","XH_PTH_450_600","XH_PTH_GT600"};
-//    VString ggH_procs = {"ggH_PTH_450_600","ggH_PTH_GT600"};
 
-
-//    VString sig_procs = {"H125"};
     map<string, Categories> cats;
-    //cats["et_13TeV"] = {
-    //      {1, "EleTau_DiJet"}};
             
             
+            
+         cats["Htt_PTH_0_350_cat"+year+"mt_13TeV"] = {{1, "Htt_PTH_0_350_cat"+year+"mt"},};
+        cats["Htt_PTH_350_450_cat"+year+"mt_13TeV"] = {{1, "Htt_PTH_350_450_cat"+year+"mt"},};
+        cats["Htt_PTH_450_600_cat"+year+"mt_13TeV"] = {{1, "Htt_PTH_450_600_cat"+year+"mt"},};
+        cats["Htt_PTH_GT600_cat"+year+"mt_13TeV"] = {{1, "Htt_PTH_GT600_cat"+year+"mt"},};
+        cats["Htt_PTH_0_350_cat"+year+"et_13TeV"] = {{1, "Htt_PTH_0_350_cat"+year+"et"},};
+        cats["Htt_PTH_350_450_cat"+year+"et_13TeV"] = {{1, ""},};
+        cats["Htt_PTH_450_600_cat"+year+"et_13TeV"] = {{1, ""},};
+        cats["Htt_PTH_GT600_cat"+year+"et_13TeV"] = {{1, ""},};
+        cats["Htt_PTH_0_350_cat"+year+"tt_13TeV"] = {{1, ""},};
+        cats["Htt_PTH_350_450_cat"+year+"tt_13TeV"] = {{1, ""},};
+        cats["Htt_PTH_450_600_cat"+year+"tt_13TeV"] = {{1, ""},};
+        cats["Htt_PTH_GT600_cat"+year+"tt_13TeV"] = {{1, ""},};
+        cats["Htt_PTH_0_350_cat"+year+"em_13TeV"] = {{1, ""},};
+        cats["Htt_PTH_350_450_cat"+year+"em_13TeV"] = {{1, ""},};
+        cats["Htt_PTH_450_600_cat"+year+"em_13TeV"] = {{1, ""},};
+        cats["Htt_PTH_GT600_cat"+year+"em_13TeV"] = {{1, ""},};
+        
+            
+            
+    
+    cats["mt_qcd_13TeV"] = {
+        {1, "mt_qcd"},
+    };
+    cats["mt_signal_13TeV"] = {
+        {1, "mt_signal"},
+    };
+    cats["mt_ztt_13TeV"] = {
+        {1, "mt_ztt"},
+    };
+    cats["et_qcd_13TeV"] = {
+        {1, "et_qcd"},
+    };
+    cats["et_signal_13TeV"] = {
+        {1, "et_signal"},
+    };
+    cats["et_ztt_13TeV"] = {
+        {1, "et_ztt"},
+    };
+    cats["tt_qcd_13TeV"] = {
+        {1, "tt_qcd"},
+    };
+    cats["tt_signal_13TeV"] = {
+        {1, "tt_signal"},
+    };
+    cats["tt_ztt_13TeV"] = {
+        {1, "tt_ztt"},
+    };
+    cats["em_qcd_13TeV"] = {
+        {1, "em_qcd"},
+    };
+    cats["em_signal_13TeV"] = {
+        {1, "em_signal"},
+    };
+    cats["em_ztt_13TeV"] = {
+        {1, "em_ztt"},
+    };
+    
+    
+    
 
     cats["mt"] = {
         {1, "Htt_PTH_0_350_cat"+year+"mt"},
@@ -239,8 +290,6 @@ int main(int argc, char** argv) {
     //    vector<string> masses = ch::MassesFromRange("14-15:1");
     //vector<string> masses = ch::MassesFromRange("14-15:1");
     vector<string> masses = {"125"};
-    vector<int> BIN_Cat = {1,2,3,4};
-    vector<string> BinNames = {"pTbin_1","pTbin_2","pTbin_3","pTbin_4"};
     // Or equivalently, specify the mass points explicitly:
     //! [part2]
     
@@ -359,108 +408,15 @@ int main(int argc, char** argv) {
     cb.cp().process({"QCD"}).channel({"em"})
     .AddSyst(cb, "CMS_htt_QCDNorm_em"+year, "lnN", SystMap<>::init(1.20));
 
-//    cb.cp().process({"QCD"}).channel({"et"}).bin_id({4})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_et_bin4"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"mt"}).bin_id({4})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_mt_bin4"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"tt"}).bin_id({4})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_tt_bin4"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"em"}).bin_id({4})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_em_bin4"+year, "lnN", SystMap<>::init(1.20));
-//
-//    cb.cp().process({"QCD"}).channel({"et"}).bin_id({3})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_et_bin3"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"mt"}).bin_id({3})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_mt_bin3"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"tt"}).bin_id({3})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_tt_bin3"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"em"}).bin_id({3})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_em_bin3"+year, "lnN", SystMap<>::init(1.20));
-//
-//    cb.cp().process({"QCD"}).channel({"et"}).bin_id({2})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_et_bin2"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"mt"}).bin_id({2})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_mt_bin2"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"tt"}).bin_id({2})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_tt_bin2"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"em"}).bin_id({2})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_em_bin2"+year, "lnN", SystMap<>::init(1.20));
-//
-//    cb.cp().process({"QCD"}).channel({"et"}).bin_id({1})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_et_bin1"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"mt"}).bin_id({1})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_mt_bin1"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"tt"}).bin_id({1})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_tt_bin1"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().process({"QCD"}).channel({"em"}).bin_id({1})
-//    .AddSyst(cb, "CMS_htt_QCDNorm_em_bin1"+year, "lnN", SystMap<>::init(1.20));
-
-
 
     cb.cp().process({"QCD"}).channel({"et","mt","tt"})
         .AddSyst(cb, "CMS_QCD_bkg_fakerate"+year, "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().bin_id({1}).channel({"et"})
-//    .AddSyst(cb, "dummy_bin1_et_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({2}).channel({"et"})
-//    .AddSyst(cb, "dummy_bin2_et_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({3}).channel({"et"})
-//    .AddSyst(cb, "dummy_bin3_et_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({4}).channel({"et"})
-//    .AddSyst(cb, "dummy_bin4_et_"+year, "lnN", SystMap<>::init(1.20));
-//
-//    cb.cp().bin_id({1}).channel({"mt"})
-//    .AddSyst(cb, "dummy_bin1_mt_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({2}).channel({"mt"})
-//    .AddSyst(cb, "dummy_bin2_mt_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({3}).channel({"mt"})
-//    .AddSyst(cb, "dummy_bin3_mt_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({4}).channel({"mt"})
-//    .AddSyst(cb, "dummy_bin4_mt_"+year, "lnN", SystMap<>::init(1.20));
-//
-//    cb.cp().bin_id({1}).channel({"tt"})
-//    .AddSyst(cb, "dummy_bin1_tt_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({2}).channel({"tt"})
-//    .AddSyst(cb, "dummy_bin2_tt_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({3}).channel({"tt"})
-//    .AddSyst(cb, "dummy_bin3_tt_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({4}).channel({"tt"})
-//    .AddSyst(cb, "dummy_bin4_tt_"+year, "lnN", SystMap<>::init(1.20));
-//
-//    cb.cp().bin_id({1}).channel({"em"})
-//    .AddSyst(cb, "dummy_bin1_em_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({2}).channel({"em"})
-//    .AddSyst(cb, "dummy_bin2_em_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({3}).channel({"em"})
-//    .AddSyst(cb, "dummy_bin3_em_"+year, "lnN", SystMap<>::init(1.20));
-//    cb.cp().bin_id({4}).channel({"em"})
-//    .AddSyst(cb, "dummy_bin4_em_"+year, "lnN", SystMap<>::init(1.20));
+
 
 
     //####################################################################################
     // Shape systematics
     //####################################################################################
-
-
-//cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).bin_id({1})
-//    .AddSyst(cb, "CMS_scale_j_bin1"+year, "shape", SystMap<>::init(1.00));
-//cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).bin_id({2})
-//    .AddSyst(cb, "CMS_scale_j_bin2"+year, "shape", SystMap<>::init(1.00));
-//cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).bin_id({3})
-//    .AddSyst(cb, "CMS_scale_j_bin3"+year, "shape", SystMap<>::init(1.00));
-//cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).bin_id({4})
-//    .AddSyst(cb, "CMS_scale_j_bin4"+year, "shape", SystMap<>::init(1.00));
-//
-//
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).bin_id({1})
-//    .AddSyst(cb, "CMS_scale_met_unclustered_bin1"+year, "shape", SystMap<>::init(1.00));
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).bin_id({2})
-//    .AddSyst(cb, "CMS_scale_met_unclustered_bin2"+year, "shape", SystMap<>::init(1.00));
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).bin_id({3})
-//    .AddSyst(cb, "CMS_scale_met_unclustered_bin3"+year, "shape", SystMap<>::init(1.00));
-//    cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}})).bin_id({4})
-//    .AddSyst(cb, "CMS_scale_met_unclustered_bin4"+year, "shape", SystMap<>::init(1.00));
-
 
 
     cb.cp().process(ch::JoinStr({sig_procs, {"W", "TT","VV","ZTT","OutsideAcceptance"}}))
@@ -530,12 +486,8 @@ int main(int argc, char** argv) {
     cb.cp().process({"TT"})
         .AddSyst(cb, "TTpdf"+year, "shape", SystMap<>::init(1.00));
 
-    //decorrelate across pT bins
-//    for (auto bnid : BinIDs){
-    for (int bnid=0; bnid < 4; bnid++){
-    cb.cp().process({"ZTT"}).bin_id({BIN_Cat[bnid]})
-        .AddSyst(cb, "ZTTQCDScale"+BinNames[bnid]+year, "shape", SystMap<>::init(1.00));
-        }
+    cb.cp().process({"ZTT"})
+        .AddSyst(cb, "ZTTQCDScale"+year, "shape", SystMap<>::init(1.00));
     cb.cp().process({"TT"})
         .AddSyst(cb, "TTQCDScale"+year, "shape", SystMap<>::init(1.00));
     
@@ -544,38 +496,32 @@ int main(int argc, char** argv) {
     // Theorethical systematics
     //####################################################################################
 
-//decorrelate across pT bins
-//for (auto bnid : BinIDs){
-for (int bnid=0; bnid < 4; bnid++){
-    cb.cp().process({ggH_procs}).bin_id({BIN_Cat[bnid]})
-    .AddSyst(cb, "THU_ggH_Mu_"+BinNames[bnid], "shape", SystMap<>::init(1.00));
+    cb.cp().process({ggH_procs})
+    .AddSyst(cb, "THU_ggH_Mu_", "shape", SystMap<>::init(1.00));
 
-    cb.cp().process({ggH_procs}).bin_id({BIN_Cat[bnid]})
-    .AddSyst(cb, "THU_ggH_Res_"+BinNames[bnid], "shape", SystMap<>::init(1.00));
+    cb.cp().process({ggH_procs})
+    .AddSyst(cb, "THU_ggH_Res_", "shape", SystMap<>::init(1.00));
 
-    cb.cp().process({ggH_procs}).bin_id({BIN_Cat[bnid]})
-    .AddSyst(cb, "THU_ggH_Mig01_"+BinNames[bnid], "shape", SystMap<>::init(1.00));
+    cb.cp().process({ggH_procs})
+    .AddSyst(cb, "THU_ggH_Mig01_", "shape", SystMap<>::init(1.00));
 
-    cb.cp().process({ggH_procs}).bin_id({BIN_Cat[bnid]})
-    .AddSyst(cb, "THU_ggH_Mig12_"+BinNames[bnid], "shape", SystMap<>::init(1.00));
+    cb.cp().process({ggH_procs})
+    .AddSyst(cb, "THU_ggH_Mig12_", "shape", SystMap<>::init(1.00));
 
-    cb.cp().process({ggH_procs}).bin_id({BIN_Cat[bnid]})
-    .AddSyst(cb, "THU_ggH_VBF2j_"+BinNames[bnid], "shape", SystMap<>::init(1.00));
+    cb.cp().process({ggH_procs})
+    .AddSyst(cb, "THU_ggH_VBF2j_", "shape", SystMap<>::init(1.00));
 
-    cb.cp().process({ggH_procs}).bin_id({BIN_Cat[bnid]})
-    .AddSyst(cb, "THU_ggH_VBF3j_"+BinNames[bnid], "shape", SystMap<>::init(1.00));
+    cb.cp().process({ggH_procs})
+    .AddSyst(cb, "THU_ggH_VBF3j_", "shape", SystMap<>::init(1.00));
 
-    cb.cp().process({ggH_procs}).bin_id({BIN_Cat[bnid]})
-    .AddSyst(cb, "THU_ggH_PT60_"+BinNames[bnid], "shape", SystMap<>::init(1.00));
+    cb.cp().process({ggH_procs})
+    .AddSyst(cb, "THU_ggH_PT60_", "shape", SystMap<>::init(1.00));
 
-    cb.cp().process({ggH_procs}).bin_id({BIN_Cat[bnid]})
-    .AddSyst(cb, "THU_ggH_PT120_"+BinNames[bnid], "shape", SystMap<>::init(1.00));
+    cb.cp().process({ggH_procs})
+    .AddSyst(cb, "THU_ggH_PT120_", "shape", SystMap<>::init(1.00));
 
-    cb.cp().process({ggH_procs}).bin_id({BIN_Cat[bnid]})
-    .AddSyst(cb, "THU_ggH_qmtop_"+BinNames[bnid], "shape", SystMap<>::init(1.00));
-    
-}
-
+    cb.cp().process({ggH_procs})
+    .AddSyst(cb, "THU_ggH_qmtop_", "shape", SystMap<>::init(1.00));
 //
     
 //    cout << ">> Adding systematic uncertainties...\n";

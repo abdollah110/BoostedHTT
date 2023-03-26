@@ -132,7 +132,8 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
     ZTT=file.Get(categoriy).Get("ZTT")
     ZTT.Rebin(RB_)
     
-    
+
+    signame_ggh='XH_PTH_450_600'; signame_xh='XH_PTH_450_600';
     if 'dif' in TypeRun:
         if cat=='bin1': signame_ggh='ggH_PTH_0_350'; signame_xh='XH_PTH_0_350';
         elif cat=='bin2': signame_ggh='ggH_PTH_350_450'; signame_xh='XH_PTH_350_450';
@@ -308,7 +309,7 @@ def MakePlot(FileName,categoriy,PreOrPost,Xaxis, Status, Channel, year,cat):
 
     Data.GetXaxis().SetLabelSize(0)
     
-    if Status == "LOG" :Data.SetMaximum(Data.GetMaximum()*20000); Data.SetMinimum(0.01)
+    if Status == "LOG" :Data.SetMaximum(Data.GetMaximum()*20000); Data.SetMinimum(0.1)
 #    if Status == "LOG" :Data.SetMaximum(999); Data.SetMinimum(0.01)
     if Status=="Normal": Data.SetMaximum(Data.GetMaximum()*3) ;  Data.SetMinimum(0)
 
@@ -573,7 +574,99 @@ elif 'all' in TypeRun:
             MakePlot(FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year,cat)
             MakePlot(FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"LOG",FileNamesInfo[i][4], year,cat)
 
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# For Only signal region in 40 bins
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+elif 'OnlySig' in TypeRun:
 
+    for i in range(1,13):
+        category='ch{}'.format(str(i))
+        
+        year_=(i-1)/4
+        ch_=(i-1)%4
+#        ch_=chCat/3
+#        cat_=chCat%3
+        
+        year=0
+        if year_==0: year=2016
+        elif year_==1: year=2017
+        elif year_==2: year=2018
+        
+        ch=''
+        if ch_==0: ch='em'
+        elif ch_==1: ch='et'
+        elif ch_==2: ch='mt'
+        elif ch_==3: ch='tt'
+        
+        cat='signal'
+#        if cat_==0: cat='qcd'
+#        elif cat_==1: cat='signal'
+#        elif cat_==2: cat='ztt'
+
+
+
+        type = 'signal'
+        xAxis = 'Signal NN score'
+
+
+        FileNamesInfo=[
+                       [InputRootfile,category+"_{}".format('postfit'),xAxis,"PostFit",ch],
+                       [InputRootfile,category+"_{}".format('prefit'),xAxis,"PreFit",ch],
+                       ]
+
+        for i in range(0,len(FileNamesInfo)):
+
+            print FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year
+            MakePlot(FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year,cat)
+            MakePlot(FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"LOG",FileNamesInfo[i][4], year,cat)
+
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# For only mu chnnel
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+elif 'OnlyMudif' in TypeRun:
+
+    for i in range(1,13):
+        category='ch{}'.format(str(i))
+        
+        year_=(i-1)/4
+        ch_=(i-1)%4
+#        ch_=chCat/3
+#        cat_=chCat%3
+        
+        year=0
+        if year_==0: year=2016
+        elif year_==1: year=2017
+        elif year_==2: year=2018
+        
+        ch=''
+        if ch_==0: ch='Bin1'
+        elif ch_==1: ch='bin2'
+        elif ch_==2: ch='bin3'
+        elif ch_==3: ch='bin4'
+        
+        cat='signal'
+#        if cat_==0: cat='qcd'
+#        elif cat_==1: cat='signal'
+#        elif cat_==2: cat='ztt'
+
+
+
+        type = 'signal'
+        xAxis = 'Signal NN score'
+
+
+        FileNamesInfo=[
+                       [InputRootfile,category+"_{}".format('postfit'),xAxis,"PostFit",ch],
+                       [InputRootfile,category+"_{}".format('prefit'),xAxis,"PreFit",ch],
+                       ]
+
+        for i in range(0,len(FileNamesInfo)):
+
+            print FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year
+            MakePlot(FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"Normal",FileNamesInfo[i][4], year,cat)
+            MakePlot(FileNamesInfo[i][0],FileNamesInfo[i][1],FileNamesInfo[i][3],FileNamesInfo[i][2],"LOG",FileNamesInfo[i][4], year,cat)
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # For all-based plots

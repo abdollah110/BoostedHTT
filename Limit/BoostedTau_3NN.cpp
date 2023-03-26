@@ -185,6 +185,7 @@ int main(int argc, char** argv) {
                            {"*"}, {"H"}, {"13TeV"}, {chn}, cats[chn+"_13TeV"]);
         cb.AddProcesses(
                         {"*"}, {"H"}, {"13TeV"}, {chn}, bkg_procs[chn], cats[chn+"_13TeV"], false);
+        if ( chn.find("signal") != string::npos)
         cb.AddProcesses(
                         masses, {"H"}, {"13TeV"}, {chn}, sig_procs, cats[chn+"_13TeV"], true);
     }
@@ -390,8 +391,12 @@ int main(int argc, char** argv) {
 //  pre fire
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    if (year.find("2018") == string::npos){
-        cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}}))
+    if (year.find("2017") != string::npos ){
+        cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT"}})).channel(ch::JoinStr({tt_cat,mt_cat,et_cat,em_cat}))
+            .AddSyst(cb, "CMS_prefiring", "shape", SystMap<>::init(1.00));
+    }
+    if (year.find("2016") != string::npos ){
+        cb.cp().process(ch::JoinStr({sig_procs, {"W","TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat,et_cat,em_cat})) // tt is dropped FIXME
             .AddSyst(cb, "CMS_prefiring", "shape", SystMap<>::init(1.00));
     }
     
