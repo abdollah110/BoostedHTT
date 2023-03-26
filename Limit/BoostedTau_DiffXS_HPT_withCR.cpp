@@ -113,22 +113,27 @@ int main(int argc, char** argv) {
     };
     
     map<string, VString> bkg_procs;
-    bkg_procs["mt"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
-    bkg_procs["et"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
-    bkg_procs["em"] = {"QCD","W", "TT","VV","ZTT","OutsideAcceptance"};
-    bkg_procs["tt"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
-    
-//    bkg_procs["em_bkg"] = {"QCD","W", "TT","VV","ZTT"};
-//    bkg_procs["et_bkg"] = {"QCD", "TT","VV","ZTT"};
-//    bkg_procs["mt_bkg"] = {"QCD", "TT","VV","ZTT"};
-//    bkg_procs["tt_bkg"] = {"QCD", "TT","VV","ZTT"};
-    
-    bkg_procs["em_bkg"] = {"QCD","W", "TT","VV","ZTT","OutsideAcceptance"};
-    bkg_procs["et_bkg"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
-    bkg_procs["mt_bkg"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
-    bkg_procs["tt_bkg"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
+    bkg_procs["mt"] = {"QCD", "TT","VV","ZTT"};
+    bkg_procs["et"] = {"QCD", "TT","VV","ZTT"};
+    bkg_procs["em"] = {"QCD","W", "TT","VV","ZTT"};
+    bkg_procs["tt"] = {"QCD", "TT","VV","ZTT"};
 
-    VString sig_procs = {"ggH_PTH_0_350","ggH_PTH_350_450","ggH_PTH_450_600","ggH_PTH_GT600","XH_PTH_0_350","XH_PTH_350_450","XH_PTH_450_600","XH_PTH_GT600"};
+//    bkg_procs["mt"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
+//    bkg_procs["et"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
+//    bkg_procs["em"] = {"QCD","W", "TT","VV","ZTT","OutsideAcceptance"};
+//    bkg_procs["tt"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
+
+    bkg_procs["em_bkg"] = {"QCD","W", "TT","VV","ZTT"};
+    bkg_procs["et_bkg"] = {"QCD", "TT","VV","ZTT"};
+    bkg_procs["mt_bkg"] = {"QCD", "TT","VV","ZTT"};
+    bkg_procs["tt_bkg"] = {"QCD", "TT","VV","ZTT"};
+//
+//    bkg_procs["em_bkg"] = {"QCD","W", "TT","VV","ZTT","OutsideAcceptance"};
+//    bkg_procs["et_bkg"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
+//    bkg_procs["mt_bkg"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
+//    bkg_procs["tt_bkg"] = {"QCD", "TT","VV","ZTT","OutsideAcceptance"};
+
+    VString sig_procs = {"ggH_PTH_0_350","ggH_PTH_350_450","ggH_PTH_450_600","ggH_PTH_GT600","XH_PTH_0_350","XH_PTH_350_450","XH_PTH_450_600","XH_PTH_GT600","OutsideAcceptance"};
     VString ggH_procs = {"ggH_PTH_0_350","ggH_PTH_350_450","ggH_PTH_450_600","ggH_PTH_GT600"};
 
 
@@ -136,9 +141,9 @@ int main(int argc, char** argv) {
 
     cats["mt"] = {
         {1, "Htt_PTH_0_350_cat"+year+"mt_signal"},
-        {2, "Htt_PTH_350_450_cat"+year+"mt_signal"},
-        {3, "Htt_PTH_450_600_cat"+year+"mt_signal"},
-        {4, "Htt_PTH_GT600_cat"+year+"mt_signal"},
+//        {2, "Htt_PTH_350_450_cat"+year+"mt_signal"},
+//        {3, "Htt_PTH_450_600_cat"+year+"mt_signal"},
+//        {4, "Htt_PTH_GT600_cat"+year+"mt_signal"},
 
     };
     cats["mt_bkg"] = {
@@ -148,9 +153,9 @@ int main(int argc, char** argv) {
 
     cats["et"] = {
         {1, "Htt_PTH_0_350_cat"+year+"et_signal"},
-        {2, "Htt_PTH_350_450_cat"+year+"et_signal"},
-        {3, "Htt_PTH_450_600_cat"+year+"et_signal"},
-        {4, "Htt_PTH_GT600_cat"+year+"et_signal"},
+//        {2, "Htt_PTH_350_450_cat"+year+"et_signal"},
+//        {3, "Htt_PTH_450_600_cat"+year+"et_signal"},
+//        {4, "Htt_PTH_GT600_cat"+year+"et_signal"},
     };
     cats["et_bkg"] = {
         {1, "Htt_PTH_GT600_cat"+year+"et_ztt"},
@@ -159,9 +164,9 @@ int main(int argc, char** argv) {
 
     cats["tt"] = {
         {1, "Htt_PTH_0_350_cat"+year+"tt_signal"},
-        {2, "Htt_PTH_350_450_cat"+year+"tt_signal"},
-        {3, "Htt_PTH_450_600_cat"+year+"tt_signal"},
-        {4, "Htt_PTH_GT600_cat"+year+"tt_signal"},
+//        {2, "Htt_PTH_350_450_cat"+year+"tt_signal"},
+//        {3, "Htt_PTH_450_600_cat"+year+"tt_signal"},
+//        {4, "Htt_PTH_GT600_cat"+year+"tt_signal"},
     };
     cats["tt_bkg"] = {
         {1, "Htt_PTH_GT600_cat"+year+"tt_ztt"},
@@ -170,9 +175,9 @@ int main(int argc, char** argv) {
 
     cats["em"] = {
         {1, "Htt_PTH_0_350_cat"+year+"em_signal"},
-        {2, "Htt_PTH_350_450_cat"+year+"em_signal"},
-        {3, "Htt_PTH_450_600_cat"+year+"em_signal"},
-        {4, "Htt_PTH_GT600_cat"+year+"em_signal"},
+//        {2, "Htt_PTH_350_450_cat"+year+"em_signal"},
+//        {3, "Htt_PTH_450_600_cat"+year+"em_signal"},
+//        {4, "Htt_PTH_GT600_cat"+year+"em_signal"},
     };
     cats["em_bkg"] = {
         {1, "Htt_PTH_GT600_cat"+year+"em_ztt"},
