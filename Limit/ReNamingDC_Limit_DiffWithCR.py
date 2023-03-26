@@ -144,7 +144,7 @@ for k1 in dirList: # loop over categories
         h2 = histo.ReadObj()
 #        print 'number of bins   ', numBin(h2)
         h3=h2.Clone()
-        if numBin(h2)==13:
+        if numBin(h2)==14:
             newhis=TH1F(h2.GetName(),h2.GetName(),13,0.35,1.0)
             for i in range(numBin(h2)):
                 newhis.SetBinContent(i,h2.GetBinContent(i+1))
