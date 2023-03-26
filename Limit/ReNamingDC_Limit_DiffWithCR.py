@@ -112,7 +112,7 @@ for k1 in dirList: # loop over categories
     if '_qcd_' in nom:
         categ='qcd'
     elif '_ztt_' in nom:
-        categ='qcd'
+        categ='ztt'
     elif '_signal_' in nom:
         categ='signal'
     else:
