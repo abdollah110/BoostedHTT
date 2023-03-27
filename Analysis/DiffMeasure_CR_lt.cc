@@ -224,27 +224,27 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             
             float Var_cut = ObsName[cut_name];
             
-            // Higgs pT parameterization //FIXME
-//            if (name.find("0_350")!=string::npos){
-//                if ( Var_cut > 350 ) continue ;
-//                if (!Chan_ltau || !Chan_ltau_fid) continue;
-////                if (!Chan_ltau ) continue;
-//            }
-//            if (name.find("350_450")!=string::npos){
-//                if ( Var_cut <= 350 || Var_cut > 450 ) continue ;
-//                if (!Chan_ltau || !Chan_ltau_fid) continue;
-////                if (!Chan_ltau ) continue;
-//            }
-//            if (name.find("450_600")!=string::npos){
-//                if ( Var_cut <= 450 || Var_cut > 600 ) continue ;
-//                if (!Chan_ltau || !Chan_ltau_fid) continue;
-////                if (!Chan_ltau ) continue;
-//            }
-//            if (name.find("GT600")!=string::npos){
-//                if ( Var_cut <= 600) continue ;
-//                if (!Chan_ltau || !Chan_ltau_fid) continue;
-////                if (!Chan_ltau ) continue;
-//            }
+             Higgs pT parameterization //FIXME
+            if (name.find("0_350")!=string::npos){
+                if ( Var_cut > 350 ) continue ;
+                if (!Chan_ltau || !Chan_ltau_fid) continue;
+//                if (!Chan_ltau ) continue;
+            }
+            if (name.find("350_450")!=string::npos){
+                if ( Var_cut <= 350 || Var_cut > 450 ) continue ;
+                if (!Chan_ltau || !Chan_ltau_fid) continue;
+//                if (!Chan_ltau ) continue;
+            }
+            if (name.find("450_600")!=string::npos){
+                if ( Var_cut <= 450 || Var_cut > 600 ) continue ;
+                if (!Chan_ltau || !Chan_ltau_fid) continue;
+//                if (!Chan_ltau ) continue;
+            }
+            if (name.find("GT600")!=string::npos){
+                if ( Var_cut <= 600) continue ;
+                if (!Chan_ltau || !Chan_ltau_fid) continue;
+//                if (!Chan_ltau ) continue;
+            }
             
             
             // apply tau Id SF
@@ -272,7 +272,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             
             for (int i =0; i < 3 ;i++) {
                 if (NN_out_vec[i] < 0 )continue;
-//                if (NN_out_vec[0]> 0 && ( Var_reco < lowVal || Var_reco > highVal )) continue; // Only one bin for ztt and QCd CR
+                if (NN_out_vec[0]> 0 && ( Var_reco < lowVal || Var_reco > highVal )) continue; // Only one bin for ztt and QCd CR
             
             
             if (OS != 0  && lep1IsoPass && lep2IsoPassV) {

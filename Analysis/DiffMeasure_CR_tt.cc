@@ -214,27 +214,27 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             
             float Var_cut = ObsName[cut_name];
             
-            // Higgs pT parameterization //FIXME
-//            if (name.find("0_350")!=string::npos){
-//                if ( Var_cut > 350 ) continue ;
-//                if (!Chan_tautau || !Chan_tautau_fid) continue;
-////                if (!Chan_tautau) continue;
-//            }
-//            if (name.find("350_450")!=string::npos){
-//                if ( Var_cut <= 350 || Var_cut > 450 ) continue ;
-//                if (!Chan_tautau || !Chan_tautau_fid) continue;
-////                if (!Chan_tautau ) continue;
-//            }
-//            if (name.find("450_600")!=string::npos){
-//                if ( Var_cut <= 450 || Var_cut > 600 ) continue ;
-//                if (!Chan_tautau || !Chan_tautau_fid) continue;
-////                if (!Chan_tautau ) continue;
-//            }
-//            if (name.find("GT600")!=string::npos){
-//                if ( Var_cut <= 600) continue ;
-//                if (!Chan_tautau || !Chan_tautau_fid) continue;
-////                if (!Chan_tautau) continue;
-//            }
+             Higgs pT parameterization //FIXME
+            if (name.find("0_350")!=string::npos){
+                if ( Var_cut > 350 ) continue ;
+                if (!Chan_tautau || !Chan_tautau_fid) continue;
+//                if (!Chan_tautau) continue;
+            }
+            if (name.find("350_450")!=string::npos){
+                if ( Var_cut <= 350 || Var_cut > 450 ) continue ;
+                if (!Chan_tautau || !Chan_tautau_fid) continue;
+//                if (!Chan_tautau ) continue;
+            }
+            if (name.find("450_600")!=string::npos){
+                if ( Var_cut <= 450 || Var_cut > 600 ) continue ;
+                if (!Chan_tautau || !Chan_tautau_fid) continue;
+//                if (!Chan_tautau ) continue;
+            }
+            if (name.find("GT600")!=string::npos){
+                if ( Var_cut <= 600) continue ;
+                if (!Chan_tautau || !Chan_tautau_fid) continue;
+//                if (!Chan_tautau) continue;
+            }
             
             // apply tau Id SF
             if (isGenTauLead_ && (  name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos || name.find("JJH125")!= string::npos )) weight *= 0.9;
@@ -274,7 +274,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             
             for (int i =0; i < 3 ;i++) {
                 if (NN_out_vec[i] < 0 )continue;
-//                if (NN_out_vec[0]> 0 && ( Var_reco < lowVal || Var_reco > highVal )) continue; // Only one bin for ztt and QCd CR
+                if (NN_out_vec[0]> 0 && ( Var_reco < lowVal || Var_reco > highVal )) continue; // Only one bin for ztt and QCd CR
                 
             // non-qcd norm and shape
             if (OS != 0  && lep1IsoPassV && lep2IsoPassV) {
@@ -299,7 +299,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 fillQCD_Norm_fr_down(i, name, NN_out_vec[i],  weight, frValuUncDown / (1-frValuUncDown));
             }
             // qcd shape
-            if (SS != 0 && (!lep1IsoPassV || !lep2IsoPassV )){
+//            if (SS != 0 && (!lep1IsoPassV || !lep2IsoPassV )){
+            if (SS != 0 && !lep2IsoPassV ){ // final analysis
                 fillQCD_Shape(i, name, NN_out_vec[i],  weight, frValu2 / (1-frValu2));
                 fillQCD_Shape_fr_up(i, name, NN_out_vec[i],  weight, frValuUncUp / (1-frValuUncUp));
                 fillQCD_Shape_fr_down(i, name, NN_out_vec[i],  weight, frValuUncDown / (1-frValuUncDown));

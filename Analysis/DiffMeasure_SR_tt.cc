@@ -302,7 +302,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             }
             //            if (SS != 0 && !lep2IsoPassV){
             //            if (SS != 0 && !lep2IsoPassV){
-            if (SS != 0 && (!lep1IsoPassV || !lep2IsoPassV )){
+//            if (SS != 0 && (!lep1IsoPassV || !lep2IsoPassV )){
+            if (SS != 0 && !lep2IsoPassV ){ // final analysis
                 fillQCD_Shape(zeroJet, name, vbf_var1,  weight, frValu2 / (1-frValu2));
                 fillQCD_Shape_fr_up(zeroJet, name, vbf_var1,  weight, frValuUncUp / (1-frValuUncUp));
                 fillQCD_Shape_fr_down(zeroJet, name, vbf_var1,  weight, frValuUncDown / (1-frValuUncDown));
