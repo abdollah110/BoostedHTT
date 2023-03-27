@@ -224,7 +224,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             
             float Var_cut = ObsName[cut_name];
             
-             Higgs pT parameterization //FIXME
+//             Higgs pT parameterization //FIXME
             if (name.find("0_350")!=string::npos){
                 if ( Var_cut > 350 ) continue ;
                 if (!Chan_ltau || !Chan_ltau_fid) continue;
