@@ -111,6 +111,7 @@ for inFile in InputRootFiles:
 
         categories=['_ztt','_qcd','_signal']
         for cat in categories:
+            if 'signal' in cat: lowBin=0.35
             HisMean=File.Get('{}{}/{}'.format(channel,cat,pro))
             print 'histo is ', '{}{}/{}'.format(channel,cat,pro)
             histPdfUp=TH1F("pdfUp"+cat,"pdfUp"+cat,HisMean.GetNbinsX(),lowBin , highBin)
@@ -191,6 +192,7 @@ for inFile in InputRootFiles:
     for pro in process:
         categories=['_ztt','_qcd','_signal']
         for cat in categories:
+            if 'signal' in cat: lowBin=0.35
             HisMean=File.Get('{}{}/{}'.format(channel,cat,pro))
             histScaleUp=TH1F("scaleUp"+cat,"scaleUp"+cat,HisMean.GetNbinsX(),lowBin , highBin)
             histScaleDown=TH1F("scaleDown"+cat,"scaleDown"+cat,HisMean.GetNbinsX(),lowBin , highBin)
