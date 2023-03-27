@@ -92,7 +92,7 @@ for inFile in InputRootFiles:
     origCat=cat
 
     lastSys=0
-    lowBin=0.2
+    lowBin=0.35
     highBin=1
 ##########################################################################################
 # PDF Uncertainty
