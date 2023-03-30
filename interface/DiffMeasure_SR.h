@@ -93,7 +93,8 @@ HistTool::HistTool(string treeName_, string channel_prefix, string var, string y
 : fout(new TFile(("Output/templates/" + channel_prefix + year + "_" + var+"_" +suffix+"_"+ channel_bin + ".root").c_str(), "recreate")),
 
 // x-axis
-bins_NN(bins),
+//bins_NN(bins),
+bins_NN({5,0,1}),
 bins_FAKE({20,0,2000}),
 channel_prefix(channel_prefix),
 treeName(treeName_),
