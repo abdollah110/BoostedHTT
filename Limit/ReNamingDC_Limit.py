@@ -193,54 +193,6 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('TESUp_1prong','CMS_scale_t_1prongUp')
         histo_name=histo_name.replace('TESUp_3prong','CMS_scale_t_3prongUp')
 
-#        if channel=='et' :
-#            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_et')
-#            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_etU')
-#            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_etD')
-#            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_et')
-#        if channel=='mt' :
-#            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_mt')
-#            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_mtU')
-#            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_mtD')
-#            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_mt')
-#        if channel=='tt' :
-#            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_tt')
-#            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_ttU')
-#            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_ttD')
-#            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_tt')
-
-
-#        if channel=='et' :
-#            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_et_cat{}'.format(categ))
-#            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_et_cat{}U'.format(categ))
-#            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_et_cat{}D'.format(categ))
-#            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_et_cat{}'.format(categ))
-#        if channel=='mt' :
-#            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_mt_cat{}'.format(categ))
-#            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_mt_cat{}U'.format(categ))
-#            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_mt_cat{}D'.format(categ))
-#            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_mt_cat{}'.format(categ))
-#        if channel=='tt' :
-#            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_tt_cat{}'.format(categ))
-#            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_tt_cat{}U'.format(categ))
-#            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_tt_cat{}D'.format(categ))
-#            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_tt_cat{}'.format(categ))
-
-
-# correlated Tau ES across different channels
-#        histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_{}'.format(channel))
-#        histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_{}U'.format(channel))
-#        histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_{}D'.format(channel))
-#        histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_{}'.format(channel))
-
-
-#        histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_cat{}'.format(categ))
-#        histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_cat{}U'.format(categ))
-#        histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_cat{}D'.format(categ))
-#        histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_cat{}'.format(categ))
-
-
-
 
 #        histo_name=histo_name.replace('JEnTot','CMS_scale_j_cat{}'.format(categ))
         histo_name=histo_name.replace('JEnTot','CMS_scale_j')
@@ -267,8 +219,17 @@ for k1 in dirList: # loop over categories
         
         if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_pdf','TT_TTpdf'+str(year))
         histo_name=histo_name.replace('ZTT_pdf','ZTT_ZTTpdf'+str(year))
-        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_QCDScale','TT_TTQCDScale_cat{}'.format(categ)+str(year))
-        histo_name=histo_name.replace('ZTT_QCDScale','ZTT_ZTTQCDScale_cat{}'.format(categ)+str(year))
+
+#        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_QCDScale','TT_TTQCDScale_cat{}'.format(categ)+str(year))
+#        histo_name=histo_name.replace('ZTT_QCDScale','ZTT_ZTTQCDScale_cat{}'.format(categ)+str(year))
+
+#        /Correlate QCD scale
+        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_QCDScale','TT_TTQCDScale{}'.format(categ)+str(year))
+        histo_name=histo_name.replace('ZTT_QCDScale','ZTT_ZTTQCDScale{}'.format(categ)+str(year))
+
+
+
+
 #
 #
 #        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_TTpdf2017','TT_TTpdf20172018')
