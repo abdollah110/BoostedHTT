@@ -117,18 +117,18 @@ for k1 in dirList: # loop over categories
         type = '_signal'
 
 
-    categ=nom.replace(channel+'_','').replace('nal','')
-    print 'categ is', categ
+#    categ=nom.replace(channel+'_','').replace('nal','')
+#    print 'categ is', categ
     
 #
-#    if '_qcd_' in nom:
-#        categ='qcd'
-#    elif '_ztt_' in nom:
-#        categ='ztt'
-#    elif '_signal_' in nom:
-#        categ='signal'
-#    else:
-#        print 'which category  ???'
+    if '_qcd_' in nom:
+        categ='qcd'
+    elif '_ztt_' in nom:
+        categ='ztt'
+    elif '_signal_' in nom:
+        categ='signal'
+    else:
+        print 'which category  ???'
         
     print 'year is {} and channel is {} and categ is {}'.format(year,channel,categ)
 
