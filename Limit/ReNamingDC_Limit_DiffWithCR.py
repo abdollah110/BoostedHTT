@@ -122,11 +122,12 @@ for k1 in dirList: # loop over categories
 
 #    ofile.mkdir(nom.replace('_0jet',''))
     Updatednom=nom.replace('_0jet','')
+    binName=''
     
-    if '_bin1' in Updatednom: Updatednom='Htt_{}_0_350_cat{}{}_{}'.format(Diff,year,channel,categ)
-    if '_bin2' in Updatednom: Updatednom='Htt_{}_350_450_cat{}{}_{}'.format(Diff,year,channel,categ)
-    if '_bin3' in Updatednom: Updatednom='Htt_{}_450_600_cat{}{}_{}'.format(Diff,year,channel,categ)
-    if '_bin4' in Updatednom: Updatednom='Htt_{}_GT600_cat{}{}_{}'.format(Diff,year,channel,categ)
+    if '_bin1' in Updatednom: Updatednom='Htt_{}_0_350_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin1'
+    if '_bin2' in Updatednom: Updatednom='Htt_{}_350_450_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin2'
+    if '_bin3' in Updatednom: Updatednom='Htt_{}_450_600_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin3'
+    if '_bin4' in Updatednom: Updatednom='Htt_{}_GT600_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin4'
     
     
     ofile.mkdir(Updatednom)
@@ -212,55 +213,6 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('TESUp_1prong','CMS_scale_t_1prongUp')
         histo_name=histo_name.replace('TESUp_3prong','CMS_scale_t_3prongUp')
 
-#        if channel=='et' :
-#            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_et')
-#            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_etU')
-#            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_etD')
-#            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_et')
-#        if channel=='mt' :
-#            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_mt')
-#            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_mtU')
-#            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_mtD')
-#            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_mt')
-#        if channel=='tt' :
-#            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_tt')
-#            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_ttU')
-#            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_ttD')
-#            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_tt')
-
-
-#        if channel=='et' :
-#            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_et_cat{}'.format(categ))
-#            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_et_cat{}U'.format(categ))
-#            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_et_cat{}D'.format(categ))
-#            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_et_cat{}'.format(categ))
-#        if channel=='mt' :
-#            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_mt_cat{}'.format(categ))
-#            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_mt_cat{}U'.format(categ))
-#            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_mt_cat{}D'.format(categ))
-#            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_mt_cat{}'.format(categ))
-#        if channel=='tt' :
-#            histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_tt_cat{}'.format(categ))
-#            histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_tt_cat{}U'.format(categ))
-#            histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_tt_cat{}D'.format(categ))
-#            histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_tt_cat{}'.format(categ))
-
-
-# correlated Tau ES across different channels
-#        histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_{}'.format(channel))
-#        histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_{}U'.format(channel))
-#        histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_{}D'.format(channel))
-#        histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_{}'.format(channel))
-
-
-#        histo_name=histo_name.replace('CMS_scale_t_1prong1pizero','CMS_scale_t_1prong1pizero_cat{}'.format(categ))
-#        histo_name=histo_name.replace('CMS_scale_t_1prongU','CMS_scale_t_1prong_cat{}U'.format(categ))
-#        histo_name=histo_name.replace('CMS_scale_t_1prongD','CMS_scale_t_1prong_cat{}D'.format(categ))
-#        histo_name=histo_name.replace('CMS_scale_t_3prong','CMS_scale_t_3prong_cat{}'.format(categ))
-
-
-
-
 #        histo_name=histo_name.replace('JEnTot','CMS_scale_j_cat{}'.format(categ))
         histo_name=histo_name.replace('JEnTot','CMS_scale_j')
 #        histo_name=histo_name.replace('MissingEn_UES','CMS_scale_met_unclustered_cat{}'.format(categ))
@@ -276,38 +228,30 @@ for k1 in dirList: # loop over categories
 
 
 
-        if channel=='em' or channel=='me': histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling_em_cat{}'.format(categ))
+        if channel=='em' or channel=='me': histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling_em_cat{}'.format(categ))#// for correlating these uncertainties across categories FIXME
         if channel=='et' : histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling_et_cat{}'.format(categ))
         if channel=='mt':  histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling_mt_cat{}'.format(categ))
         if channel=='tt'                 : histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling_tt_cat{}'.format(categ))
+
+#        if channel=='em' or channel=='me': histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling_em')
+#        if channel=='et' : histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling_et')
+#        if channel=='mt':  histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling_mt')
+#        if channel=='tt'                 : histo_name=histo_name.replace('shapeYEAR_','CMS_QCD_bkg_modeling_tt')
 
         if 'THU' not in histo_name and 'pdf' not in histo_name and 'QCDScale' not in histo_name: histo_name=histo_name.replace('Up',str(year)+'Up')
         if 'THU' not in histo_name and 'pdf' not in histo_name and 'QCDScale' not in histo_name: histo_name=histo_name.replace('Down',str(year)+'Down')
         
         if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_pdf','TT_TTpdf'+str(year))
         histo_name=histo_name.replace('ZTT_pdf','ZTT_ZTTpdf'+str(year))
-        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_QCDScale','TT_TTQCDScale_cat{}'.format(categ)+str(year))
-        histo_name=histo_name.replace('ZTT_QCDScale','ZTT_ZTTQCDScale_cat{}'.format(categ)+str(year))
-#
-#
-#        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_TTpdf2017','TT_TTpdf20172018')
-#        histo_name=histo_name.replace('ZTT_ZTTpdf2017','ZTT_ZTTpdf20172018')
-#        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_TTpdf2018','TT_TTpdf20172018')
-#        histo_name=histo_name.replace('ZTT_ZTTpdf2018','ZTT_ZTTpdf20172018')
-#
-#        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_TTQCDScale2017','TT_TTQCDScale20172018')
-#        histo_name=histo_name.replace('ZTT_ZTTQCDScale2017','ZTT_ZTTQCDScale20172018')
-#        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_TTQCDScale2018','TT_TTQCDScale20172018')
-#        histo_name=histo_name.replace('ZTT_ZTTQCDScale2018','ZTT_ZTTQCDScale20172018')
 
+        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_QCDScale','TT_TTQCDScale_cat{}'.format(categ)+str(year)) #// for correlating these uncertainties across categories FIXME
+        histo_name=histo_name.replace('ZTT_QCDScale','ZTT_ZTTQCDScale_cat{}'.format(categ)+str(year))
+#        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_QCDScale','TT_TTQCDScale'+str(year))
+#        histo_name=histo_name.replace('ZTT_QCDScale','ZTT_ZTTQCDScale'+str(year))
 
         histo_name=histo_name.replace('prefire2016','CMS_prefiring')
         histo_name=histo_name.replace('prefire2017','CMS_prefiring')
         histo_name=histo_name.replace('prefire2018','CMS_prefiring')
-        
-#        histo_name=histo_name.replace('CMS_ttbarShape2016','CMS_ttbarShape')
-#        histo_name=histo_name.replace('CMS_ttbarShape2017','CMS_ttbarShape')
-#        histo_name=histo_name.replace('CMS_ttbarShape2018','CMS_ttbarShape')
         
         histo_name=histo_name.replace('Up125','Up')
         histo_name=histo_name.replace('Down125','Down')
@@ -326,7 +270,7 @@ for k1 in dirList: # loop over categories
 
         if 'PTJ' in Diff: histo_name=histo_name.replace('PTH','PTJ')
 
-        
+        if 'THU' in histo_name: histo_name=histo_name.replace(histo_name.GetName(),histo_name.GetName()+binName)
         
 #        histo_name=histo_name.replace('2016','2020')
 #        histo_name=histo_name.replace('2017','2020')
