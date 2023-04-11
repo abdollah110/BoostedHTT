@@ -124,10 +124,10 @@ for k1 in dirList: # loop over categories
     Updatednom=nom.replace('_0jet','')
     binName=''
     
-    if '_bin1' in Updatednom: Updatednom='Htt_{}_0_350_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin1'
-    if '_bin2' in Updatednom: Updatednom='Htt_{}_350_450_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin2'
-    if '_bin3' in Updatednom: Updatednom='Htt_{}_450_600_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin3'
-    if '_bin4' in Updatednom: Updatednom='Htt_{}_GT600_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin4'
+    if '_bin1' in Updatednom: Updatednom='Htt_{}_0_350_cat{}{}{}'.format(Diff,year,channel,categ); binName='_bin1'
+    if '_bin2' in Updatednom: Updatednom='Htt_{}_350_450_cat{}{}{}'.format(Diff,year,channel,categ); binName='_bin2'
+    if '_bin3' in Updatednom: Updatednom='Htt_{}_450_600_cat{}{}{}'.format(Diff,year,channel,categ); binName='_bin3'
+    if '_bin4' in Updatednom: Updatednom='Htt_{}_GT600_cat{}{}{}'.format(Diff,year,channel,categ); binName='_bin4'
     
     
     ofile.mkdir(Updatednom)
@@ -270,7 +270,8 @@ for k1 in dirList: # loop over categories
 
         if 'PTJ' in Diff: histo_name=histo_name.replace('PTH','PTJ')
 
-        if 'THU' in histo_name: histo_name=histo_name.replace(histo_name,histo_name+binName)
+        if 'THU' in histo_name: histo_name=histo_name.replace('Up',binName+'Up')
+        if 'THU' in histo_name: histo_name=histo_name.replace('Down',binName+'Down')
         
 #        histo_name=histo_name.replace('2016','2020')
 #        histo_name=histo_name.replace('2017','2020')
