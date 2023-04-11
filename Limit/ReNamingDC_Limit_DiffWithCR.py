@@ -270,7 +270,7 @@ for k1 in dirList: # loop over categories
 
         if 'PTJ' in Diff: histo_name=histo_name.replace('PTH','PTJ')
 
-        if 'THU' in histo_name: histo_name=histo_name.replace(histo_name.GetName(),histo_name.GetName()+binName)
+        if 'THU' in histo_name: histo_name=histo_name.replace(histo_name,histo_name+binName)
         
 #        histo_name=histo_name.replace('2016','2020')
 #        histo_name=histo_name.replace('2017','2020')
