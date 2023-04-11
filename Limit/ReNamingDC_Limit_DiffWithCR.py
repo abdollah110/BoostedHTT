@@ -109,14 +109,26 @@ for k1 in dirList: # loop over categories
         print 'which channel ???'
 
 
-    if '_qcd_' in nom:
-        categ='qcd'
-    elif '_ztt_' in nom:
-        categ='ztt'
-    elif '_signal_' in nom:
-        categ='signal'
-    else:
-        print 'which category  ???'
+    if 'qcd' in nom:
+        type = '_qcd'
+    elif 'ztt' in nom:
+        type = '_ztt'
+    elif 'signal' in nom:
+        type = '_signal'
+
+
+    categ=nom.replace(channel+'_','').replace('nal','')
+    print 'categ is', categ
+    
+#
+#    if '_qcd_' in nom:
+#        categ='qcd'
+#    elif '_ztt_' in nom:
+#        categ='ztt'
+#    elif '_signal_' in nom:
+#        categ='signal'
+#    else:
+#        print 'which category  ???'
         
     print 'year is {} and channel is {} and categ is {}'.format(year,channel,categ)
 
@@ -124,10 +136,10 @@ for k1 in dirList: # loop over categories
     Updatednom=nom.replace('_0jet','')
     binName=''
     
-    if '_bin1' in Updatednom: Updatednom='Htt_{}_0_350_cat{}{}{}'.format(Diff,year,channel,categ); binName='_bin1'
-    if '_bin2' in Updatednom: Updatednom='Htt_{}_350_450_cat{}{}{}'.format(Diff,year,channel,categ); binName='_bin2'
-    if '_bin3' in Updatednom: Updatednom='Htt_{}_450_600_cat{}{}{}'.format(Diff,year,channel,categ); binName='_bin3'
-    if '_bin4' in Updatednom: Updatednom='Htt_{}_GT600_cat{}{}{}'.format(Diff,year,channel,categ); binName='_bin4'
+    if '_bin1' in Updatednom: Updatednom='Htt_{}_0_350_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin1'
+    if '_bin2' in Updatednom: Updatednom='Htt_{}_350_450_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin2'
+    if '_bin3' in Updatednom: Updatednom='Htt_{}_450_600_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin3'
+    if '_bin4' in Updatednom: Updatednom='Htt_{}_GT600_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin4'
     
     
     ofile.mkdir(Updatednom)
