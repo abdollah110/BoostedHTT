@@ -136,10 +136,10 @@ for k1 in dirList: # loop over categories
     Updatednom=nom.replace('_0jet','')
     binName=''
     
-    if '_bin1' in Updatednom: Updatednom='Htt_{}_0_350_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin1'
-    if '_bin2' in Updatednom: Updatednom='Htt_{}_350_450_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin2'
-    if '_bin3' in Updatednom: Updatednom='Htt_{}_450_600_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin3'
-    if '_bin4' in Updatednom: Updatednom='Htt_{}_GT600_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin4'
+    if '_bin1' in Updatednom: Updatednom='Htt_{}_0_350_cat{}{}{}'.format(Diff,year,channel,type); binName='bin1'
+    if '_bin2' in Updatednom: Updatednom='Htt_{}_350_450_cat{}{}{}'.format(Diff,year,channel,type); binName='bin2'
+    if '_bin3' in Updatednom: Updatednom='Htt_{}_450_600_cat{}{}{}'.format(Diff,year,channel,type); binName='bin3'
+    if '_bin4' in Updatednom: Updatednom='Htt_{}_GT600_cat{}{}{}'.format(Diff,year,channel,type); binName='bin4'
     
     
     ofile.mkdir(Updatednom)
