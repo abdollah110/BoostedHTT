@@ -149,6 +149,7 @@ int main(int argc, char* argv[]) {
     float ttbar_rwt=1;
     float weight_Rivet =1;
     float weight_g_NNLOPS = 1;
+    float Weight_PS=1;
     
     float lepPt_=-10;
     float taupt_=-10;
@@ -441,6 +442,12 @@ int main(int argc, char* argv[]) {
             //            std::cout<<genInfo[1] <<" " <<genInfo[2] << " "<< genInfo[5] <<" " <<genInfo[6] <<"\n";
             
             if  (name == "ZL" || name == "ZTT" || name == "ZLL") {
+            
+            
+                if (syst == "isr_Up") Weight_PS=psWeight[2]/psWeight[0];
+                if (syst == "fsr_Up")  Weight_PS=psWeight[3]/psWeight[0];
+                if (syst == "isr_Down")  Weight_PS=psWeight[4]/psWeight[0];
+                if (syst == "fsr_Down")  Weight_PS=psWeight[5]/psWeight[0];
                 
                 if (ZBosonPt > 999) ZBosonPt=999;
                 if (ZBosonMass < 61) ZBosonMass = 61;
@@ -536,6 +543,10 @@ int main(int argc, char* argv[]) {
         plotFill("mu_dz",muDz->at(idx_lep) ,200,-1,1);
         plotFill("mu_d0_Hpt",fabs(muD0->at(idx_lep)), higgs.Pt(),25,0,0.025,25,0,750);
         plotFill("mu_dz_Hpt",fabs(muDz->at(idx_lep)), higgs.Pt(),25,0,0.1,25,0,750);
+        plotFill("isr_Up",psWeight[2]/psWeight[0] ,200,0,3);
+        plotFill("fsr_Up",psWeight[3]/psWeight[0] ,200,0,3);
+        plotFill("isr_Down",psWeight[4]/psWeight[0] ,200,0,3);
+        plotFill("fsr_Down",psWeight[5]/psWeight[0] ,200,0,3);
         
         //###############################################################################################
         //  tree branches
@@ -558,7 +569,7 @@ int main(int argc, char* argv[]) {
         BoostedTauRawIso=boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_tau);
         m_sv_=m_sv;
         //  Weights
-        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt* weight_Rivet * weight_g_NNLOPS;
+        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt* weight_Rivet * weight_g_NNLOPS * Weight_PS;
         nbjet=numBJet;
         gen_higgs_pT = Rivet_higgsPt;
         gen_leadjet_pT = Rivet_j1pt;
