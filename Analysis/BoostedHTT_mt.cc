@@ -543,10 +543,10 @@ int main(int argc, char* argv[]) {
         plotFill("mu_dz",muDz->at(idx_lep) ,200,-1,1);
         plotFill("mu_d0_Hpt",fabs(muD0->at(idx_lep)), higgs.Pt(),25,0,0.025,25,0,750);
         plotFill("mu_dz_Hpt",fabs(muDz->at(idx_lep)), higgs.Pt(),25,0,0.1,25,0,750);
-        plotFill("isr_Up",psWeight->at(2)/psWeight->at(0); ,200,0,3);
-        plotFill("fsr_Up",psWeight->at(3)/psWeight->at(0); ,200,0,3);
-        plotFill("isr_Down",psWeight->at(4)/psWeight->at(0); ,200,0,3);
-        plotFill("fsr_Down",psWeight->at(5)/psWeight->at(0); ,200,0,3);
+        plotFill("isr_Up",psWeight->at(2)/psWeight->at(0) ,200,0,3);
+        plotFill("fsr_Up",psWeight->at(3)/psWeight->at(0) ,200,0,3);
+        plotFill("isr_Down",psWeight->at(4)/psWeight->at(0) ,200,0,3);
+        plotFill("fsr_Down",psWeight->at(5)/psWeight->at(0 ,200,0,3);
         
         //###############################################################################################
         //  tree branches
