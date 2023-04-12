@@ -546,7 +546,7 @@ int main(int argc, char* argv[]) {
         plotFill("isr_Up",psWeight->at(2)/psWeight->at(0) ,200,0,3);
         plotFill("fsr_Up",psWeight->at(3)/psWeight->at(0) ,200,0,3);
         plotFill("isr_Down",psWeight->at(4)/psWeight->at(0) ,200,0,3);
-        plotFill("fsr_Down",psWeight->at(5)/psWeight->at(0 ,200,0,3);
+        plotFill("fsr_Down",psWeight->at(5)/psWeight->at(0) ,200,0,3);
         
         //###############################################################################################
         //  tree branches
