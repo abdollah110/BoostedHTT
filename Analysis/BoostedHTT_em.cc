@@ -144,7 +144,7 @@ int main(int argc, char* argv[]) {
     float zmasspt_weight_nom=1;
     float weight_Rivet =1;
     float weight_g_NNLOPS = 1;
-
+    float Weight_PS=1;
     
     float lepPt_=-10;
     float elept_=-10;
@@ -473,6 +473,11 @@ int main(int argc, char* argv[]) {
             
             if  (name == "ZL" || name == "ZTT" || name == "ZLL") {
                 
+                if (syst == "isr_Up") Weight_PS=psWeight->at(2)/psWeight->at(0);
+                if (syst == "fsr_Up")  Weight_PS=psWeight->at(3)/psWeight->at(0);
+                if (syst == "isr_Down")  Weight_PS=psWeight->at(4)/psWeight->at(0);
+                if (syst == "fsr_Down")  Weight_PS=psWeight->at(5)/psWeight->at(0);
+                
                 if (ZBosonPt > 999) ZBosonPt=999;
                 if (ZBosonMass < 61) ZBosonMass = 61;
                 if (ZBosonMass > 119) ZBosonMass = 119;
@@ -547,7 +552,7 @@ int main(int argc, char* argv[]) {
         LeadJetPt = LeadJet.Pt();
         dR_Z_jet=LeadJet.DeltaR(Z4Momentum);
         m_sv_=m_sv;
-        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt * weight_Rivet * weight_g_NNLOPS;
+        FullWeight = LumiWeight*LepCorrection*PUWeight*zmasspt_weight * WBosonKFactor * preFireWeight * ttbar_rwt * weight_Rivet * weight_g_NNLOPS* Weight_PS;
         nbjet= numBJet;
         gen_higgs_pT = Rivet_higgsPt;
         gen_leadjet_pT = Rivet_j1pt;
