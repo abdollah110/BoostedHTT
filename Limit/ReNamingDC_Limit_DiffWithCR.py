@@ -262,8 +262,8 @@ for k1 in dirList: # loop over categories
 #        histo_name=histo_name.replace('ZTT_QCDScale','ZTT_ZTTQCDScale'+str(year))
 
 #        decoorelate FSR ISR across different categories
-        histo_name=histo_name.replace('ZTT_isr','ZTT_isr_cat{}'.format(categ)+str(year))
-        histo_name=histo_name.replace('ZTT_fsr','ZTT_fsr_cat{}'.format(categ)+str(year))
+        histo_name=histo_name.replace('ZTT_isr','ZTT_isr_cat{}'.format(categ))
+        histo_name=histo_name.replace('ZTT_fsr','ZTT_fsr_cat{}'.format(categ))
         
         histo_name=histo_name.replace('prefire2016','CMS_prefiring')
         histo_name=histo_name.replace('prefire2017','CMS_prefiring')
