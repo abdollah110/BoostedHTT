@@ -282,8 +282,8 @@ for k1 in dirList: # loop over categories
 
         if 'PTJ' in Diff: histo_name=histo_name.replace('PTH','PTJ')
 
-        if 'THU' in histo_name: histo_name=histo_name.replace('Up',binName+'Up')
-        if 'THU' in histo_name: histo_name=histo_name.replace('Down',binName+'Down')
+#        if 'THU' in histo_name: histo_name=histo_name.replace('Up',binName+'Up')
+#        if 'THU' in histo_name: histo_name=histo_name.replace('Down',binName+'Down')
         
 #        histo_name=histo_name.replace('2016','2020')
 #        histo_name=histo_name.replace('2017','2020')
