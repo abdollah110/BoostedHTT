@@ -253,12 +253,14 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 if (OS != 0  && lep1IsoPass && lep2IsoPassV) {
                     hists_1d.at(categories.at(i)).back()->Fill(NN_out_vec[i],  weight);
                     
-//                    plotFill(name+"_HiggsPt_"+categories.at(i),higgs_pT,20,200,1000,weight);
-//                    plotFill(name+"_m_sv_"+categories.at(i),m_sv,20,0,400,weight);
-//                    plotFill(name+"_Met_"+categories.at(i),Met,20,0,400,weight);
-//                    plotFill(name+"_NN_disc_"+categories.at(i),NN_disc,20,0,1,weight);
-//                    plotFill(name+"_LeadTauPt_"+categories.at(i),lep1Pt_,20,0,400,weight);
-//                    plotFill(name+"_SubLeadTauPt_"+categories.at(i),lep2Pt_,20,0,400,weight);
+                    plotFill(name+"_HiggsPt_"+categories.at(i),higgs_pT,20,200,1000,weight);
+                    plotFill(name+"_m_sv_"+categories.at(i),m_sv,20,0,400,weight);
+                    plotFill(name+"_Met_"+categories.at(i),Met,20,0,400,weight);
+                    plotFill(name+"_NN_disc_"+categories.at(i),NN_disc,20,0,1,weight);
+                    plotFill(name+"_LeadTauPt_"+categories.at(i),lep1Pt_,20,0,400,weight);
+                    plotFill(name+"_SubLeadTauPt_"+categories.at(i),lep2Pt_,20,0,400,weight);
+                    plotFill(name+"_LeadJetPt_"+categories.at(i),LeadJetPt,20,0,1000,weight);
+                    plotFill(name+"_dR_lep_lep_"+categories.at(i),dR_lep_lep,20,0,4,weight);
                     
                     
                     if (runPDF){
