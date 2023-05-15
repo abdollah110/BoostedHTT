@@ -259,7 +259,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             
             
             
-            //            vbf_var1 =ObsName[var_name];
+                        vbf_var1 =ObsName[var_name];
             
             
             //            //            ################################################################################
@@ -362,7 +362,9 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 if (NN_out_vec[i] < 0 )continue;
                 
                 if (OS != 0  && lep1IsoPassV && lep2IsoPassV) { // final analysis
-                    hists_1d.at(categories.at(i)).back()->Fill(NN_out_vec[i],  weight);
+//                    hists_1d.at(categories.at(i)).back()->Fill(NN_out_vec[i],  weight);
+                    hists_1d.at(categories.at(i)).back()->Fill(vbf_var1,  weight);
+                    
 //                    plotFill(name+"_HiggsPt_"+categories.at(i),higgs_pT,20,200,1000,weight);
 //                    plotFill(name+"_m_sv_"+categories.at(i),m_sv,20,0,400,weight);
 //                    plotFill(name+"_Met_"+categories.at(i),Met,20,0,400,weight);
@@ -389,14 +391,16 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 }
                 //            qcd norm
                 if (OS != 0 && lep1IsoPassV && !lep2IsoPassV ){ // final analysis qcd
-                    fillQCD_Norm(i, name, NN_out_vec[i],  weight, frValu2 / (1-frValu2));
+//                    fillQCD_Norm(i, name, NN_out_vec[i],  weight, frValu2 / (1-frValu2));
+                    fillQCD_Norm(i, name, vbf_var1,  weight, frValu2 / (1-frValu2));
                     fillQCD_Norm_fr_up(i, name, NN_out_vec[i],  weight, frValuUncUp / (1-frValuUncUp));
                     fillQCD_Norm_fr_down(i, name, NN_out_vec[i],  weight, frValuUncDown / (1-frValuUncDown));
                 }
                 //            qcd shape
 //                if (SS != 0 && lep1IsoPassV && !lep2IsoPassV ){ // final analysis
                 if (SS != 0 && !lep2IsoPassV ){ // final analysis
-                    fillQCD_Shape(i, name, NN_out_vec[i],  weight, frValu2 / (1-frValu2));
+//                    fillQCD_Shape(i, name, NN_out_vec[i],  weight, frValu2 / (1-frValu2));
+                    fillQCD_Shape(i, name, vbf_var1,  weight, frValu2 / (1-frValu2));
                     fillQCD_Shape_fr_up(i, name, NN_out_vec[i],  weight, frValuUncUp / (1-frValuUncUp));
                     fillQCD_Shape_fr_down(i, name, NN_out_vec[i],  weight, frValuUncDown / (1-frValuUncDown));
                 }
