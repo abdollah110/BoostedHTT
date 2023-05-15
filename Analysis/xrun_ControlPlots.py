@@ -108,11 +108,11 @@ Diff=0
 if Diff:
 #    for pt in PTrange:
     for var in Variable:
-        if Observable==var[0]:
-            print '\n\n\n\n =====> start making datacard for ', var
-            print 'command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} '.format(executable, InputFile, var[0],var[0],var[1],var[2],var[3])
-            os.system('command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} '.format(executable, InputFile, var[0],var[0],var[1],var[2],var[3]))
-            break
+#        if Observable==var[0]:
+        print '\n\n\n\n =====> start making datacard for ', var
+        print 'command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} '.format(executable, InputFile, var[0],var[0],var[1],var[2],var[3])
+        os.system('command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} '.format(executable, InputFile, var[0],var[0],var[1],var[2],var[3]))
+        break
 
 #else:
 #
