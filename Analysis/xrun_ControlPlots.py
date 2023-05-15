@@ -46,23 +46,23 @@ channel=''
 treeName=''
 executable=''
 
-if 'em' in InputFile:
+if '_em' in InputFile:
     channel = 'em'
     treeName = 'emu_tree'
     executable = 'process_trees_NN_em'
-elif 'me' in InputFile:
+elif '_me' in InputFile:
     channel = 'me'
     treeName = 'mue_tree'
     executable = 'process_trees_NN_em'
-elif 'mt_' in InputFile:
+elif '_mt' in InputFile:
     channel = 'mt'
     treeName = 'mutau_tree'
     executable = 'process_trees_NN_lt'
-elif 'et_' in InputFile:
+elif '_et' in InputFile:
     channel = 'et'
     treeName = 'etau_tree'
     executable = 'process_trees_NN_lt'
-elif 'tt' in InputFile:
+elif '_tt' in InputFile:
     channel = 'tt'
     treeName = 'tautau_tree'
     executable = 'process_trees_NN_tt'
