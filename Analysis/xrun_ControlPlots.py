@@ -110,7 +110,7 @@ if Diff:
     for var in Variable:
 #        if Observable==var[0]:
         print '\n\n\n\n =====> start making datacard for ', var
-        print 'command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} '.format(executable, InputFile, prefixvar[0],var[1],var[2],var[3])
+        print 'command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} '.format(executable, InputFile, prefix, var[0],var[1],var[2],var[3])
         os.system('./{} -d {}   --suf {} -v {} -b {} {} {} '.format(executable, InputFile, prefix, var[0],var[1],var[2],var[3]))
 #        break
 
