@@ -108,7 +108,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         if (runPDF && (name.find("TT") ==string::npos || name.find("Up") !=string::npos || name.find("Down") !=string::npos )) continue;
         if (name.find("PTH") !=string::npos || name.find("OutsideAcceptance") !=string::npos) continue;
 //         for Control Plots
-        if (name.find("Up") !=string::npos || name.find("Down") !=string::npos ) continue;
+//        if (name.find("Up") !=string::npos || name.find("Down") !=string::npos ) continue;
         
         auto fin = new TFile((dir + "/" + ifile).c_str(), "read");
         std::cout<<"ifile is openning: " <<ifile<<"\n";
@@ -208,13 +208,9 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 {"gen_higgs_pT",gen_higgs_pT}
                 
             };
-            
-//            FIXME  this cut is for running the analysis in dr< 0.5
-//            if (dR_lep_lep > 0.5) continue;
-            
+                        
             // apply tau Id SF
             if (isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos || name.find("JJH125")!= string::npos )) weight *= 0.9;
-//            if ((name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos || name.find("JJH125")!= string::npos )) weight *= 0.9;  // FIXME for reproducing the preapproval results
 
 
             //            if (m_sv < 50) continue;
@@ -242,19 +238,15 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             NN_out_vec.push_back((NN_disc > NN_disc_ZTT && NN_disc > NN_disc_QCD )? NN_disc : -1);
             NN_out_vec.push_back((NN_disc_ZTT > NN_disc && NN_disc_ZTT > NN_disc_QCD )? NN_disc_ZTT : -1);
             NN_out_vec.push_back((NN_disc_QCD > NN_disc_ZTT && NN_disc_QCD > NN_disc )? NN_disc_QCD : -1);
-            
-//            NN_out_vec.push_back(NN_disc);
-//            NN_out_vec.push_back(NN_disc_ZTT);
-//            NN_out_vec.push_back(NN_disc_QCD);
-            
+                        
             
             for (int i =0; i < 3 ;i++) {
                 
                 if (NN_out_vec[i] < 0 )continue;
                 
                 if (OS != 0  && lep1IsoPass && lep2IsoPassV) {
-//                    hists_1d.at(categories.at(i)).back()->Fill(NN_out_vec[i],  weight);
-                    hists_1d.at(categories.at(i)).back()->Fill(vbf_var1,  weight);
+                    hists_1d.at(categories.at(i)).back()->Fill(NN_out_vec[i],  weight);
+//                    hists_1d.at(categories.at(i)).back()->Fill(vbf_var1,  weight);
                     
 //                    plotFill(name+"_HiggsPt_"+categories.at(i),higgs_pT,20,200,1000,weight);
 //                    plotFill(name+"_m_sv_"+categories.at(i),m_sv,20,0,400,weight);
@@ -279,16 +271,15 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 }
                 // qcd norm
                 if (OS != 0 && lep1IsoPass && !lep2IsoPassV ){
-//                    fillQCD_Norm(i, name, NN_out_vec[i],  weight, frValu / (1-frValu));
-                    fillQCD_Norm(i, name, vbf_var1,  weight, frValu / (1-frValu));
+                    fillQCD_Norm(i, name, NN_out_vec[i],  weight, frValu / (1-frValu));
+//                    fillQCD_Norm(i, name, vbf_var1,  weight, frValu / (1-frValu));
                     fillQCD_Norm_fr_up(i, name, NN_out_vec[i],  weight, frValuUncUp / (1-frValuUncUp));
                     fillQCD_Norm_fr_down(i, name, NN_out_vec[i],  weight, frValuUncDown / (1-frValuUncDown));
                 }
                 // qcd shape
                 if (SS != 0 && !lep2IsoPassV){
-//                    fillQCD_Shape(i, name, NN_out_vec[i],  weight, frValu / (1-frValu));
-                    fillQCD_Shape(i, name, vbf_var1,  weight, frValu / (1-frValu));
-//                    cout<<"i, name, NN_out_vec[i],  weight, frValu / (1-frValu) NN_disc  NN_disc_ZTT  NN_disc_QCD "<< NN_disc <<" "<< NN_disc_ZTT <<" "<< NN_disc_QCD<<" " <<i <<" "<< name<<" "<< NN_out_vec[i]<<" "<<  weight<<" "<< frValu / (1-frValu)<<"\n";
+                    fillQCD_Shape(i, name, NN_out_vec[i],  weight, frValu / (1-frValu));
+//                    fillQCD_Shape(i, name, vbf_var1,  weight, frValu / (1-frValu));
                     fillQCD_Shape_fr_up(i, name, NN_out_vec[i],  weight, frValuUncUp / (1-frValuUncUp));
                     fillQCD_Shape_fr_down(i, name, NN_out_vec[i],  weight, frValuUncDown / (1-frValuUncDown));
                 }

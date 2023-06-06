@@ -97,7 +97,7 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
         if (runPDF && (name.find("TT") ==string::npos || name.find("Up") !=string::npos || name.find("Down") !=string::npos )) continue;
         if (name.find("PTH") !=string::npos || name.find("OutsideAcceptance") !=string::npos) continue;
 //         for Control Plots
-        if (name.find("Up") !=string::npos || name.find("Down") !=string::npos ) continue;
+//        if (name.find("Up") !=string::npos || name.find("Down") !=string::npos ) continue;
         
         auto fin = new TFile((dir + "/" + ifile).c_str(), "read");
         //        std::cout<<"ifile is openning: " <<ifile<<"\n";
@@ -187,9 +187,6 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
                 
             };
             
-//            FIXME  this cut is for running the analysis in dr< 0.5
-//            if (dR_lep_lep > 0.5) continue;
-            
             
             //            if (channel.find("em")!=string::npos  && lep1Pt_ < 20) continue;
             
@@ -211,20 +208,15 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
             NN_out_vec.push_back((NN_disc > NN_disc_ZTT && NN_disc > NN_disc_QCD )? NN_disc : -1);
             NN_out_vec.push_back((NN_disc_ZTT > NN_disc && NN_disc_ZTT > NN_disc_QCD )? NN_disc_ZTT : -1);
             NN_out_vec.push_back((NN_disc_QCD > NN_disc_ZTT && NN_disc_QCD > NN_disc )? NN_disc_QCD : -1);
-            
-//            NN_out_vec.push_back(NN_disc);
-//            NN_out_vec.push_back(NN_disc_ZTT);
-//            NN_out_vec.push_back(NN_disc_QCD);
-            
-            
+                        
             
             for (int i =0; i < 3 ;i++) {
                 
                 if (NN_out_vec[i] < 0 )continue;
                 
                 if (OS != 0  && lep1IsoPass && lep2IsoPass) {
-//                    hists_1d.at(categories.at(i)).back()->Fill(NN_out_vec[i],  weight);
-                    hists_1d.at(categories.at(i)).back()->Fill(vbf_var1,  weight);
+                    hists_1d.at(categories.at(i)).back()->Fill(NN_out_vec[i],  weight);
+//                    hists_1d.at(categories.at(i)).back()->Fill(vbf_var1,  weight);
                     
 //                    plotFill(name+"_HiggsPt_"+categories.at(i),higgs_pT,20,200,1000,weight);
 //                    plotFill(name+"_m_sv_"+categories.at(i),m_sv,20,0,400,weight);
@@ -252,13 +244,13 @@ void HistTool::histoLoop(std::string channel ,std::string year , vector<string> 
                 }
                 // qcd norm
                 if (SS != 0 && lep1IsoPass && lep2IsoPass ){
-//                    fillQCD_Norm_emu(i, name, NN_out_vec[i],  weight, meausred_OSSS);
-                    fillQCD_Norm_emu(i, name, vbf_var1,  weight, meausred_OSSS);
+                    fillQCD_Norm_emu(i, name, NN_out_vec[i],  weight, meausred_OSSS);
+//                    fillQCD_Norm_emu(i, name, vbf_var1,  weight, meausred_OSSS);
                 }
                 // qcd shape
                 if (SS != 0){
-//                    fillQCD_Shape_emu(i, name, NN_out_vec[i],  weight, meausred_OSSS);
-                    fillQCD_Shape_emu(i, name, vbf_var1,  weight, meausred_OSSS);
+                    fillQCD_Shape_emu(i, name, NN_out_vec[i],  weight, meausred_OSSS);
+//                    fillQCD_Shape_emu(i, name, vbf_var1,  weight, meausred_OSSS);
                 }
             }
             NN_out_vec.clear();            
