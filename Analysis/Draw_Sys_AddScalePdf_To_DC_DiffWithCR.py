@@ -116,6 +116,7 @@ for inFile in DataCardRootFiles:
         
         
                     newFile=TFile(File.GetName().replace('.root','_')+"pdfscaleOut.root",'UPDATE')
+                    print File.GetName().replace('.root','_')+"pdfscaleOut.root"
                     tDirectory= newFile.Get(channel+cat)
                     tDirectory.cd()
                     tDirectory.WriteObject(UpSysHist,'{}_{}Up'.format(pro,sys))
