@@ -153,7 +153,7 @@ for inFile in InputRootFiles:
 #                newFile.Close()
 
                 print '\t\t\t  numP,numN  ',numP,numN
-                MaxBinValue= meanCental+math.sqrt( 1./(numP -1) *sumP  )
+                MaxBinValue= numP!=1?meanCental+math.sqrt( 1./(numP -1) *sumP  ):meanCental
 #                MaxBinValue= meanCental+math.sqrt(sumP)
                 if MaxBinValue > 1.2* meanCental:
                     print 'pdf ++ higher ', ibin
