@@ -721,7 +721,7 @@ int main(int argc, char** argv) {
                 cout << ">> Writing datacard for bin: " << b << " and mass: " << m
                 << "\r" << flush;
                 cb.cp().channel({chn}).bin({b}).mass({m, "*"}).WriteDatacard(
-                                                                             folder + "/" + m + "/" + b +year+".txt", output);
+                                                                             folder + "/" + m + "/" + b +".txt", output);
             }
         }
         output.Close();
