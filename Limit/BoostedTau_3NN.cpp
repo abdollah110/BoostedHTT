@@ -185,7 +185,7 @@ int main(int argc, char** argv) {
                            {"*"}, {"H"}, {"13TeV"}, {chn}, cats[chn+"_13TeV"]);
         cb.AddProcesses(
                         {"*"}, {"H"}, {"13TeV"}, {chn}, bkg_procs[chn], cats[chn+"_13TeV"], false);
-        if ( chn.find("signal") != string::npos)
+//        if ( chn.find("signal") != string::npos)
         cb.AddProcesses(
                         masses, {"H"}, {"13TeV"}, {chn}, sig_procs, cats[chn+"_13TeV"], true);
     }
@@ -449,9 +449,9 @@ int main(int argc, char** argv) {
 
 
 // correlated QCDSCale
-    cb.cp().process({"ZTT"}).
+    cb.cp().process({"ZTT"})
         .AddSyst(cb, "ZTTQCDScale"+year, "shape", SystMap<>::init(1.00));
-    cb.cp().process({"TT"}).
+    cb.cp().process({"TT"})
         .AddSyst(cb, "TTQCDScale"+year, "shape", SystMap<>::init(1.00));
 
 
@@ -464,6 +464,36 @@ int main(int argc, char** argv) {
 //
 //    cb.cp().process({"ZTT"}).channel(ch::JoinStr({sig_cat}))
 //        .AddSyst(cb, "NNTraining_catsig", "lnN", SystMap<era>::init({"13TeV"}, 1.1));
+
+
+
+
+    if (year.find("2016") == string::npos){
+    cb.cp().process({"ZTT"})
+    .AddSyst(cb, "isr_"+year, "shape", SystMap<>::init(1.00));
+    cb.cp().process({"ZTT"})
+    .AddSyst(cb, "fsr_"+year, "shape", SystMap<>::init(1.00));
+}
+//    if (year.find("2016") == string::npos){
+//
+//    cb.cp().process({"ZTT"}).channel(ch::JoinStr({qcd_cat}))
+//        .AddSyst(cb, "isr_catqcd_"+year, "shape", SystMap<>::init(1.00));
+//
+//    cb.cp().process({"ZTT"}).channel(ch::JoinStr({ztt_cat}))
+//        .AddSyst(cb, "isr_catztt_"+year, "shape", SystMap<>::init(1.00));
+//
+//    cb.cp().process({"ZTT"}).channel(ch::JoinStr({sig_cat}))
+//        .AddSyst(cb, "isr_catsignal_"+year, "shape", SystMap<>::init(1.00));
+//
+//    cb.cp().process({"ZTT"}).channel(ch::JoinStr({qcd_cat}))
+//        .AddSyst(cb, "fsr_catqcd_"+year, "shape", SystMap<>::init(1.00));
+//
+//    cb.cp().process({"ZTT"}).channel(ch::JoinStr({ztt_cat}))
+//        .AddSyst(cb, "fsr_catztt_"+year, "shape", SystMap<>::init(1.00));
+//
+//    cb.cp().process({"ZTT"}).channel(ch::JoinStr({sig_cat}))
+//        .AddSyst(cb, "fsr_catsignal_"+year, "shape", SystMap<>::init(1.00));
+//    }
 
 
     //    ####################################################################################
