@@ -432,27 +432,27 @@ int main(int argc, char** argv) {
 
 
 // decorrelated QCDSCale
-//    cb.cp().process({"ZTT"}).channel(ch::JoinStr({qcd_cat}))
-//        .AddSyst(cb, "ZTTQCDScale_catqcd"+year, "shape", SystMap<>::init(1.00));
-//    cb.cp().process({"TT"}).channel(ch::JoinStr({qcd_cat}))
-//        .AddSyst(cb, "TTQCDScale_catqcd"+year, "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process({"ZTT"}).channel(ch::JoinStr({ztt_cat}))
-//        .AddSyst(cb, "ZTTQCDScale_catztt"+year, "shape", SystMap<>::init(1.00));
-//    cb.cp().process({"TT"}).channel(ch::JoinStr({ztt_cat}))
-//        .AddSyst(cb, "TTQCDScale_catztt"+year, "shape", SystMap<>::init(1.00));
-//
-//    cb.cp().process({"ZTT"}).channel(ch::JoinStr({sig_cat}))
-//        .AddSyst(cb, "ZTTQCDScale_catsig"+year, "shape", SystMap<>::init(1.00));
-//    cb.cp().process({"TT"}).channel(ch::JoinStr({sig_cat}))
-//        .AddSyst(cb, "TTQCDScale_catsig"+year, "shape", SystMap<>::init(1.00));
+    cb.cp().process({"ZTT"}).channel(ch::JoinStr({qcd_cat}))
+        .AddSyst(cb, "ZTTQCDScale_catqcd"+year, "shape", SystMap<>::init(1.00));
+    cb.cp().process({"TT"}).channel(ch::JoinStr({qcd_cat}))
+        .AddSyst(cb, "TTQCDScale_catqcd"+year, "shape", SystMap<>::init(1.00));
+
+    cb.cp().process({"ZTT"}).channel(ch::JoinStr({ztt_cat}))
+        .AddSyst(cb, "ZTTQCDScale_catztt"+year, "shape", SystMap<>::init(1.00));
+    cb.cp().process({"TT"}).channel(ch::JoinStr({ztt_cat}))
+        .AddSyst(cb, "TTQCDScale_catztt"+year, "shape", SystMap<>::init(1.00));
+
+    cb.cp().process({"ZTT"}).channel(ch::JoinStr({sig_cat}))
+        .AddSyst(cb, "ZTTQCDScale_catsig"+year, "shape", SystMap<>::init(1.00));
+    cb.cp().process({"TT"}).channel(ch::JoinStr({sig_cat}))
+        .AddSyst(cb, "TTQCDScale_catsig"+year, "shape", SystMap<>::init(1.00));
 
 
 // correlated QCDSCale
-    cb.cp().process({"ZTT"})
-        .AddSyst(cb, "ZTTQCDScale"+year, "shape", SystMap<>::init(1.00));
-    cb.cp().process({"TT"})
-        .AddSyst(cb, "TTQCDScale"+year, "shape", SystMap<>::init(1.00));
+//    cb.cp().process({"ZTT"})
+//        .AddSyst(cb, "ZTTQCDScale"+year, "shape", SystMap<>::init(1.00));
+//    cb.cp().process({"TT"})
+//        .AddSyst(cb, "TTQCDScale"+year, "shape", SystMap<>::init(1.00));
 
 
 
