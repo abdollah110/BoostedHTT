@@ -500,11 +500,31 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
         
         //========================================================================================================
         //                // ADD protection
+        float totIntegral =fake_hist_shape->Integral();
+        if (totIntegral< 0){
+        
+                for (int i = 0 ; i < fake_hist_shape->GetNbinsX(); i++){
+            
+                fake_hist_shape->SetBinContent(i+1, 0.001);
+                fake_hist_shape->SetBinError(i+1, 0.1);
+
+                fake_hist_shape_Up->SetBinContent(i+1, 0.002);
+                fake_hist_shape_Up->SetBinError(i+1, 0.1);
+
+                fake_hist_shape_Down->SetBinContent(i+1, 0.0005);
+                fake_hist_shape_Down->SetBinError(i+1, 0.1);
+
+                fake_hist_shape_fr_Up->SetBinContent(i+1, 0.002);
+                fake_hist_shape_fr_Up->SetBinError(i+1, 0.1);
+                fake_hist_shape_fr_Down->SetBinContent(i+1, 0.0005);
+                fake_hist_shape_fr_Down->SetBinError(i+1, 0.1);
+        }
+        }
+        
         for (int i = 0 ; i < fake_hist_shape->GetNbinsX(); i++){
             
             if (fake_hist_shape->GetBinContent(i+1) <0 ){
                 float negBin=fake_hist_shape->GetBinContent(i+1);
-                float totIntegral =fake_hist_shape->Integral();
                 fake_hist_shape->SetBinContent(i+1, 0.0001);
                 fake_hist_shape->SetBinError(i+1, 0.1);
                 std::cout<< cat.first.c_str() << "   QCD bin of "<<i <<"  ratio bin/TotIntegral"<< negBin/totIntegral <<"\n";
