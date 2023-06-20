@@ -107,28 +107,28 @@ void SkimerBoost::Loop(TString OutputFile)
             if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
             if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < -0.5) continue;
                     
-                        
+             hcount->Fill(3);
             for (int jbtau = ibtau+1; jbtau < nBoostedTau; ++jbtau){
                 
                 if (boostedTauPt->at(jbtau) < 30 || fabs(boostedTauEta->at(jbtau)) > 2.3 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(jbtau) < 0.5 ) continue;
                 if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(jbtau) < -0.5) continue;
                 
-                
+              hcount->Fill(4);
             for (int kbtau = jbtau+1; kbtau < nBoostedTau; ++kbtau){
                 
                 if (boostedTauPt->at(kbtau) < 30 || fabs(boostedTauEta->at(kbtau)) > 2.3 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(kbtau) < 0.5 ) continue;
                 if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(kbtau) < -0.5) continue;
                 
-
+            hcount->Fill(5);
             for (int lbtau = kbtau+1; lbtau < nBoostedTau; ++lbtau){
                 
                 if (boostedTauPt->at(lbtau) < 30 || fabs(boostedTauEta->at(lbtau)) > 2.3 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(lbtau) < 0.5 ) continue;
                 if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(lbtau) < -0.5) continue;
 
-                                
+                hcount->Fill(6);
                 num4Tau++;
                 foundApair=true;
             }
@@ -138,7 +138,7 @@ void SkimerBoost::Loop(TString OutputFile)
         
         
         if(num4Tau < 3) continue;
-        hcount->Fill(4);
+        hcount->Fill(7);
                 
         NumPair=num4Tau;
         
