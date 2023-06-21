@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
     if (name == sample) {
         filename = prefix + name +  suffix;
     } else {
-        filename = prefix + sample + std::string("_") + name +  suffix;
+        filename = name;
     }
     std::cout<<"output name is "<<filename.c_str()<<"\n";
     
