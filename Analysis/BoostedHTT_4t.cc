@@ -8,7 +8,7 @@
 #include "RooMsgService.h"
 #include "TLorentzVector.h"
 #include "../interface/CLParser.h"
-#include "../interface/boostHTT.h"
+#include "../interface/boostHTT_4t.h"
 #include "../interface/makeHisto.h"
 
 int main(int argc, char* argv[]) {
