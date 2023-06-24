@@ -107,7 +107,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         
         string name = ifile.substr(0, ifile.find(".")).c_str();
         if (runPDF && (name.find("TT") ==string::npos || name.find("Up") !=string::npos || name.find("Down") !=string::npos )) continue;
-        if (runTauId.find("TauIdBin" && (name.find("Up") !=string::npos || name.find("Down") !=string::npos ))) continue;
+        if (runTauId.find("TauIdBin") && (name.find("Up") !=string::npos || name.find("Down") !=string::npos )) continue;
         if (name.find("PTH") !=string::npos || name.find("OutsideAcceptance") !=string::npos) continue;
 //         for Control Plots
 //        if (name.find("Up") !=string::npos || name.find("Down") !=string::npos ) continue;
