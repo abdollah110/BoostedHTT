@@ -203,7 +203,7 @@ for inFile in InputRootFiles:
                 for isys in range(0,9):
                     
                     testhist=File.Get('{}_ztt/{}___{}{}{}'.format(channel,pro,channel,cat,str(isys)))
-                    print " \nchecking qcd scale uncertainty\n channel,pro,channel,cat, ibin, isys ", channel,pro,cat,ibin,isys,testhist,Integral()
+                    print " \nchecking qcd scale uncertainty\n channel,pro,channel,cat, ibin, isys ", channel,pro,cat,ibin,isys,testhist.Integral()
                     
             #        if isys==5 or isys==7: continue  # these 2 are non-physical related to the (2,0.5) or (0.5,2)
                     if isys==6 or isys==8: continue  # these 2 are non-physical related to the (2,0.5) or (0.5,2)
