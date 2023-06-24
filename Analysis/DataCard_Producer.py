@@ -61,26 +61,31 @@ for ifile in glob('{}/*'.format(InputFile)):
         treeName = 'emu_tree'
 #        executable = 'process_trees_em'
         executable = 'process_trees_NN_em'
+        executable_Z = 'process_trees_NN_em_Z'
     elif '_me' in ifile:
         channel = 'me'
         treeName = 'emu_tree'
 #        executable = 'process_trees_em'
         executable = 'process_trees_NN_em'
+        executable_Z = 'process_trees_NN_em_Z'
     elif '_mt' in ifile:
         channel = 'mt'
         treeName = 'mutau_tree'
 #        executable = 'process_trees_lt_fr'
         executable = 'process_trees_NN_lt'
+        executable_Z = 'process_trees_NN_lt_Z'
     elif '_et' in ifile:
         channel = 'et'
         treeName = 'etau_tree'
 #        executable = 'process_trees_lt_fr'
         executable = 'process_trees_NN_lt'
+        executable_Z = 'process_trees_NN_lt_Z'
     elif '_tt' in ifile:
         channel = 'tt'
         treeName = 'tautau_tree'
 #        executable = 'process_trees_tt'
         executable = 'process_trees_NN_tt'
+        executable_Z = 'process_trees_NN_tt_Z'
     elif '_mm_' in ifile:
         channel = 'mm'
         treeName = 'mumu_tree'
@@ -120,8 +125,8 @@ for ifile in glob('{}/*'.format(InputFile)):
 
         elif RunTauId :
             for tausys in tadIsVars:
-                print './{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable, ifile, sample+suffice, var[0],var[1],var[2],var[3])
-                os.system('./{} -d {}  --suf {} -v {} -b {} {} {} -t {}'.format( executable, ifile,sample+suffice, var[0],var[1],var[2],var[3]),tausys)
+                print './{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable_Z, ifile, sample+suffice, var[0],var[1],var[2],var[3])
+                os.system('./{} -d {}  --suf {} -v {} -b {} {} {} -t {}'.format( executable_Z, ifile,sample+suffice, var[0],var[1],var[2],var[3]),tausys)
             print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
         else:
         
