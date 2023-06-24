@@ -115,8 +115,8 @@ for ifile in glob('{}/*'.format(InputFile)):
     
         if RunTauId :
             for tausys in tadIsVars:
-                print './{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable_Z, ifile, sample+suffice, var[0],var[1],var[2],var[3])
-                os.system('./{} -d {}  --suf {} -v {} -b {} {} {} -t {}'.format( executable_Z, ifile,sample+suffice, var[0],var[1],var[2],var[3]),tausys)
+                print './{} -d {}  --suf {} -v {} -b {} {} {} -t {}'.format( executable_Z, ifile, sample+suffice, var[0],var[1],var[2],var[3],tausys)
+                os.system('./{} -d {}  --suf {} -v {} -b {} {} {} -t {}'.format( executable_Z, ifile,sample+suffice, var[0],var[1],var[2],var[3],tausys)
             print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
         elif RunPdf :
             print './{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable, ifile, sample+suffice, var[0],var[1],var[2],var[3])
