@@ -23,6 +23,11 @@ parser.add_option('--RunPdf', '-p', action='store',
                     help='Run PDF & QCD scale or not'
                 )
 
+parser.add_option('--RunTauId', '-t', action='store',
+                    default=False, dest='TauId',
+                    help='Run TauId'
+                )
+
 
 
 
@@ -30,6 +35,7 @@ parser.add_option('--RunPdf', '-p', action='store',
 InputFile=options.inputFile
 suffice=options.suffice
 RunPdf=options.PDF
+RunTauId=options.TauId
 
 #for ifile in glob('{}/NN_boost_*V12_newDM*'.format(InputFile)):
 for ifile in glob('{}/*'.format(InputFile)):
@@ -89,6 +95,12 @@ for ifile in glob('{}/*'.format(InputFile)):
                 ['NN_disc',20,0,1]
     ]
     
+    
+    tadIsVars=[
+    "TauIdBin_1_Up","TauIdBin_1_Down","TauIdBin_2_Up","TauIdBin_2_Down",
+    "TauIdBin_3_Up","TauIdBin_3_Down","TauIdBin_4_Up","TauIdBin_4_Down"
+    ]
+    
     sample=ifile.replace(InputFile,'').replace('/','')
     
     print 'ifile is   -- >>>  {}  sample is {} year is {}   channel is {} '.format(ifile,sample, year,channel)
@@ -101,7 +113,16 @@ for ifile in glob('{}/*'.format(InputFile)):
             os.system('./{} -d {}  --suf {} -v {} -b {} {} {}'.format( executable, ifile,sample+suffice, var[0],var[1],var[2],var[3]))
             print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
             
-        else:
+        elif RunPdf :
             print './{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable, ifile, sample+suffice, var[0],var[1],var[2],var[3])
             os.system('./{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable, ifile,sample+suffice, var[0],var[1],var[2],var[3]))
             print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+
+        elif RunTauId :
+            for tausys in tadIsVars:
+                print './{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable, ifile, sample+suffice, var[0],var[1],var[2],var[3])
+                os.system('./{} -d {}  --suf {} -v {} -b {} {} {} -t {}'.format( executable, ifile,sample+suffice, var[0],var[1],var[2],var[3]),tausys)
+            print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+        else:
+        
+            print 'why are you taking my time and yours !!!'
