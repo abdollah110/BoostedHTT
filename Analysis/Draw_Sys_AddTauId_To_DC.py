@@ -13,20 +13,20 @@ def FindBinUpDown(file):
     bin=''
     type=''
 
-    if 'Bin_1' in inFile:
+    if 'Bin_1' in file:
         bin='Bin_1'
-    elif 'Bin_2' in inFile:
+    elif 'Bin_2' in file:
         bin='Bin_2'
-    elif 'Bin_3' in inFile:
+    elif 'Bin_3' in file:
         bin='Bin_3'
-    elif 'Bin_4' in inFile:
+    elif 'Bin_4' in file:
         bin='Bin_4'
     else:
         print 'which bin'
 
-    if 'Up' in name:
+    if 'Up' in file:
         type='Up'
-    elif 'Down' in name:
+    elif 'Down' in file:
         type='Down'
     else:
         print 'which type'
