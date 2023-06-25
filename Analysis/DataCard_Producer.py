@@ -27,6 +27,10 @@ parser.add_option('--RunTauId', '-t', action='store',
                     default=False, dest='TauId',
                     help='Run TauId'
                 )
+parser.add_option('--RunZNominal', '-z', action='store',
+                    default=False, dest='ZNominal',
+                    help='Run TauId'
+                )
 
 
 
@@ -35,7 +39,7 @@ parser.add_option('--RunTauId', '-t', action='store',
 InputFile=options.inputFile
 suffice=options.suffice
 RunPdf=options.PDF
-RunTauId=options.TauId
+ZNominal=options.ZNominal
 
 #for ifile in glob('{}/NN_boost_*V12_newDM*'.format(InputFile)):
 for ifile in glob('{}/*'.format(InputFile)):
@@ -118,6 +122,10 @@ for ifile in glob('{}/*'.format(InputFile)):
                 print './{} -d {}  --suf {} -v {} -b {} {} {} -t {}'.format( executable_Z, ifile, sample+suffice, var[0],var[1],var[2],var[3],tausys)
                 os.system('./{} -d {}  --suf {} -v {} -b {} {} {} -t {}'.format( executable_Z, ifile,sample+suffice, var[0],var[1],var[2],var[3],tausys))
                 print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+        elif ZNominal:
+                print './{} -d {}  --suf {} -v {} -b {} {} {} '.format( executable_Z, ifile, sample+suffice, var[0],var[1],var[2],var[3])
+                os.system('./{} -d {}  --suf {} -v {} -b {} {} {} '.format( executable_Z, ifile,sample+suffice, var[0],var[1],var[2],var[3]))
+                print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'        
         elif RunPdf :
             print './{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable, ifile, sample+suffice, var[0],var[1],var[2],var[3])
             os.system('./{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable, ifile,sample+suffice, var[0],var[1],var[2],var[3]))
