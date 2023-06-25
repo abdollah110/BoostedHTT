@@ -55,7 +55,7 @@ for inFile in DataCardRootFiles:
     print 'starting ---->>   ', inFile
     
     File=TFile(inFile,'R')
-    File.Cp(File.GetName().replace('.root','_')+"TauId.root")
+    File.Cp(File.GetName().replace('.root','_')+"tauIdOut.root")
     
     channel=''
     channelName=''
