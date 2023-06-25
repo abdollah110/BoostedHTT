@@ -131,7 +131,7 @@ for inFile in DataCardRootFiles:
                     
 #                print '{}{}/{}_{}Up'.format(channel,cat,pro,sys)
                 UpSysHist=sysTFile.Get('{}{}/{}'.format(channel,cat,pro))
-                UpSysHist.SetName('{}_{}'.format(pro,type))
+#                UpSysHist.SetName('{}_{}'.format(pro,type))
 #                DownSysHist=sysTFile.Get('{}{}/{}_{}Down'.format(channel,cat,pro,sys))
 #                DownSysHist.SetName('{}_{}Down'.format(pro,sys))
                 
