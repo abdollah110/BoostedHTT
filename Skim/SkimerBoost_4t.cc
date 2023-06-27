@@ -22,7 +22,7 @@ void SkimerBoost::Loop(TString OutputFile)
     
     TFile* file = TFile::Open(OutputFile, "RECREATE");
     TTree* BoostTree = fChain->CloneTree(0);
-        
+    
     fChain->SetBranchStatus("*",1);
     
     TH1F* hcount = new TH1F("hcount", "", 10, 0, 10);
@@ -34,55 +34,60 @@ void SkimerBoost::Loop(TString OutputFile)
     float MuMass= 0.10565837;
     float eleMass= 0.000511;
     
-
-    float  m_1 = 0;
-    float  px_1 = 0;
-    float  py_1 = 0;
-    float  pz_1 = 0;
-    float  e_1 = 0;
-    float  pt_1 = 0;
-    float  phi_1 = 0;
-    float  eta_1 = 0;
     
-    float  m_2 = 0;
-    float  px_2 = 0;
-    float  py_2 = 0;
-    float  pz_2 = 0;
-    float  e_2 = 0;
-    float  pt_2 = 0;
-    float  phi_2 = 0;
-    float  eta_2 = 0;
-    
-    int decayMode1 = -1;
-    int decayMode2 = -1;
+//    float  m_1 = 0;
+//    float  px_1 = 0;
+//    float  py_1 = 0;
+//    float  pz_1 = 0;
+//    float  e_1 = 0;
+//    float  pt_1 = 0;
+//    float  phi_1 = 0;
+//    float  eta_1 = 0;
+//    
+//    float  m_2 = 0;
+//    float  px_2 = 0;
+//    float  py_2 = 0;
+//    float  pz_2 = 0;
+//    float  e_2 = 0;
+//    float  pt_2 = 0;
+//    float  phi_2 = 0;
+//    float  eta_2 = 0;
+//    
+//    int decayMode1 = -1;
+//    int decayMode2 = -1;
+//    
     int leadtauIndex = -1;
     int subtauIndex= -1;
+    int thirdtauIndex = -1;
+    int forthtauIndex= -1;
     int NumPair=0;
-        
-    BoostTree->Branch("NumPair", &NumPair);
-
-    BoostTree->Branch("m_1", &m_1);
-    BoostTree->Branch("px_1", &px_1);
-    BoostTree->Branch("py_1", &py_1);
-    BoostTree->Branch("pz_1", &pz_1);
-    BoostTree->Branch("e_1", &e_1);
-    BoostTree->Branch("pt_1", &pt_1);
-    BoostTree->Branch("phi_1", &phi_1);
-    BoostTree->Branch("eta_1", &eta_1);
     
-    BoostTree->Branch("m_2", &m_2);
-    BoostTree->Branch("px_2", &px_2);
-    BoostTree->Branch("py_2", &py_2);
-    BoostTree->Branch("pz_2", &pz_2);
-    BoostTree->Branch("e_2", &e_2);
-    BoostTree->Branch("pt_2", &pt_2);
-    BoostTree->Branch("phi_2", &phi_2);
-    BoostTree->Branch("eta_2", &eta_2);
-    BoostTree->Branch("decayMode1", &decayMode1);
-    BoostTree->Branch("decayMode2", &decayMode2);
+    BoostTree->Branch("NumPair", &NumPair);
+    
+//    BoostTree->Branch("m_1", &m_1);
+//    BoostTree->Branch("px_1", &px_1);
+//    BoostTree->Branch("py_1", &py_1);
+//    BoostTree->Branch("pz_1", &pz_1);
+//    BoostTree->Branch("e_1", &e_1);
+//    BoostTree->Branch("pt_1", &pt_1);
+//    BoostTree->Branch("phi_1", &phi_1);
+//    BoostTree->Branch("eta_1", &eta_1);
+//
+//    BoostTree->Branch("m_2", &m_2);
+//    BoostTree->Branch("px_2", &px_2);
+//    BoostTree->Branch("py_2", &py_2);
+//    BoostTree->Branch("pz_2", &pz_2);
+//    BoostTree->Branch("e_2", &e_2);
+//    BoostTree->Branch("pt_2", &pt_2);
+//    BoostTree->Branch("phi_2", &phi_2);
+//    BoostTree->Branch("eta_2", &eta_2);
+//    BoostTree->Branch("decayMode1", &decayMode1);
+//    BoostTree->Branch("decayMode2", &decayMode2);
     
     BoostTree->Branch("leadtauIndex", &leadtauIndex);
     BoostTree->Branch("subtauIndex", &subtauIndex);
+    BoostTree->Branch("thirdtauIndex", &thirdtauIndex);
+    BoostTree->Branch("forthtauIndex", &forthtauIndex);
     
     for (int jentry=0; jentry<nentries;jentry++) {
         
@@ -97,7 +102,7 @@ void SkimerBoost::Loop(TString OutputFile)
             hcount->Fill(2,genWeight);
         
         auto num4Tau(0);
-        bool foundApair= false;
+        bool foundTwoPairs= false;
         
         
         if (nBoostedTau < 3) continue;
@@ -105,41 +110,47 @@ void SkimerBoost::Loop(TString OutputFile)
             
             if (boostedTauPt->at(ibtau) < 20 || fabs(boostedTauEta->at(ibtau)) > 2.3 ) continue;
             if (boostedTaupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
-            if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < -0.5) continue;
-                    
-             hcount->Fill(3);
+            if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < -0.7) continue;
+            
+            hcount->Fill(3);
             for (int jbtau = ibtau+1; jbtau < nBoostedTau; ++jbtau){
                 
                 if (boostedTauPt->at(jbtau) < 20 || fabs(boostedTauEta->at(jbtau)) > 2.3 ) continue;
                 if (boostedTaupfTausDiscriminationByDecayModeFinding->at(jbtau) < 0.5 ) continue;
-//                if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(jbtau) < -0.5) continue;
+                if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(jbtau) < -0.7) continue;
                 
-              hcount->Fill(4);
-            for (int kbtau = jbtau+1; kbtau < nBoostedTau; ++kbtau){
-                
-                if (boostedTauPt->at(kbtau) < 20 || fabs(boostedTauEta->at(kbtau)) > 2.3 ) continue;
-                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(kbtau) < 0.5 ) continue;
-//                if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(kbtau) < -0.5) continue;
-                
-            hcount->Fill(5);
-            for (int lbtau = kbtau+1; lbtau < nBoostedTau; ++lbtau){
-                
-                if (boostedTauPt->at(lbtau) < 20 || fabs(boostedTauEta->at(lbtau)) > 2.3 ) continue;
-                if (boostedTaupfTausDiscriminationByDecayModeFinding->at(lbtau) < 0.5 ) continue;
-//                if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(lbtau) < -0.5) continue;
-
-                hcount->Fill(6);
-                num4Tau++;
-                foundApair=true;
+                hcount->Fill(4);
+                for (int kbtau = jbtau+1; kbtau < nBoostedTau; ++kbtau){
+                    
+                    if (boostedTauPt->at(kbtau) < 20 || fabs(boostedTauEta->at(kbtau)) > 2.3 ) continue;
+                    if (boostedTaupfTausDiscriminationByDecayModeFinding->at(kbtau) < 0.5 ) continue;
+                    if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(kbtau) < -0.7) continue;
+                    
+                    hcount->Fill(5);
+                    for (int lbtau = kbtau+1; lbtau < nBoostedTau; ++lbtau){
+                        
+                        if (boostedTauPt->at(lbtau) < 20 || fabs(boostedTauEta->at(lbtau)) > 2.3 ) continue;
+                        if (boostedTaupfTausDiscriminationByDecayModeFinding->at(lbtau) < 0.5 ) continue;
+                        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(lbtau) < -0.7) continue;
+                        
+                        hcount->Fill(6);
+                        num4Tau++;
+                        if (!foundTwoPairs){
+                            leadtauIndex=ibtau;
+                            subtauIndex=jbtau;
+                            thirdtauIndex=kbtau;
+                            forthtauIndex=lbtau;
+                        }
+                        foundTwoPairs=true;
+                    }
+                }
             }
         }
-        }
-        }
         
         
-        if(!foundApair) continue;
+        if(!foundTwoPairs) continue;
         hcount->Fill(7);
-                
+        
         NumPair=num4Tau;
         
         BoostTree->Fill();
@@ -163,7 +174,7 @@ int main(int argc, char* argv[]){
     cout<< "\n===\n input is "<<InputFile  <<"  and output is "<<OutputFile<<"\n===\n";
     
     SkimerBoost t(InputFile);
-    t.Loop(OutputFile);    
+    t.Loop(OutputFile);
     return 0;
 }
 
