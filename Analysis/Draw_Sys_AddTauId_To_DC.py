@@ -106,9 +106,6 @@ for inFile in DataCardRootFiles:
     categories=['_ztt','_qcd','_signal']
     
 #    File=TFile(inFile,'R')
-
-
-#mt2018_NN_disc_2018_mttestingTauIdTauIdBin_3_Up.root
     
     print 'channel is {} and years is {}'.format(channel, year)
     
