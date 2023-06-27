@@ -131,7 +131,7 @@ for inFile in DataCardRootFiles:
                     
                 print '{}{}/{}'.format(channel,cat,pro)
                 UpSysHist=sysTFile.Get('{}{}/{}'.format(channel,cat,pro))
-#                UpSysHist.SetName('{}_{}'.format(pro,type))
+                UpSysHist.SetName('{}_{}'.format(pro,type))
 #                DownSysHist=sysTFile.Get('{}{}/{}_{}Down'.format(channel,cat,pro,sys))
 #                DownSysHist.SetName('{}_{}Down'.format(pro,sys))
                 
@@ -143,7 +143,7 @@ for inFile in DataCardRootFiles:
                 tDirectory.cd()
                 tDirectory.WriteObject(UpSysHist,'{}_{}'.format(pro,type))
 #                tDirectory.WriteObject(DownSysHist,'{}_{}Down'.format(pro,sys))
-                UpSysHist.Write()
+#                UpSysHist.Write()
 #                    DownSysHist.Write()
                 
                 newFile.Close()
