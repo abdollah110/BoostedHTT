@@ -23,13 +23,17 @@ parser.add_option('--RunPdf', '-p', action='store',
                     help='Run PDF & QCD scale or not'
                 )
 
-parser.add_option('--RunTauId', '-t', action='store',
-                    default=False, dest='TauId',
+parser.add_option('--RunZTauId', '-t', action='store',
+                    default=False, dest='RunZTauId',
                     help='Run TauId'
                 )
-parser.add_option('--RunZNominal', '-z', action='store',
-                    default=False, dest='ZNominal',
-                    help='Run ZNominal'
+parser.add_option('--RunRunZNominal', '-z', action='store',
+                    default=False, dest='RunZNominal',
+                    help='Run RunZNominal'
+                )
+parser.add_option('--RunZpdf', '-f', action='store',
+                    default=False, dest='RunZpdf',
+                    help='Run RunZpdf'
                 )
 
 
@@ -39,7 +43,9 @@ parser.add_option('--RunZNominal', '-z', action='store',
 InputFile=options.inputFile
 suffice=options.suffice
 RunPdf=options.PDF
-ZNominal=options.ZNominal
+RunZTauId=options.RunZTauId
+RunZNominal=options.RunZNominal
+RunZpdf=options.RunZpdf
 
 #for ifile in glob('{}/NN_boost_*V12_newDM*'.format(InputFile)):
 for ifile in glob('{}/*'.format(InputFile)):
@@ -117,15 +123,18 @@ for ifile in glob('{}/*'.format(InputFile)):
     for var in Variable:
     
     
-        if RunPdf :
+        if RunZTauId :
             for tausys in tadIsVars:
                 print './{} -d {}  --suf {} -v {} -b {} {} {} -t {}'.format( executable_Z, ifile, sample+suffice, var[0],var[1],var[2],var[3],tausys)
                 os.system('./{} -d {}  --suf {} -v {} -b {} {} {} -t {}'.format( executable_Z, ifile,sample+suffice, var[0],var[1],var[2],var[3],tausys))
                 print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
-        elif ZNominal:
+        elif RunZNominal:
                 print './{} -d {}  --suf {} -v {} -b {} {} {} '.format( executable_Z, ifile, sample+suffice, var[0],var[1],var[2],var[3])
                 os.system('./{} -d {}  --suf {} -v {} -b {} {} {} '.format( executable_Z, ifile,sample+suffice, var[0],var[1],var[2],var[3]))
-                print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+        elif RunZpdf:
+                print './{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable_Z, ifile, sample+suffice, var[0],var[1],var[2],var[3])
+                os.system('./{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable_Z, ifile,sample+suffice, var[0],var[1],var[2],var[3]))
+                print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         elif RunPdf :
             print './{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable, ifile, sample+suffice, var[0],var[1],var[2],var[3])
             os.system('./{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable, ifile,sample+suffice, var[0],var[1],var[2],var[3]))
