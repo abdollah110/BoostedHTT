@@ -52,7 +52,7 @@ parser.add_option('--name', '-n', action='store',
 
 
 
-DataCardRootFiles = [ifile for ifile in glob(options.current_DC+'/*{}.root'.format(name)) if '.root' in ifile]
+DataCardRootFiles = [ifile for ifile in glob(options.current_DC+'/*{}.root'.format(options.name)) if '.root' in ifile]
 SysRootFiles = [ifile for ifile in glob(options.current_sys+'/*TauIdTauIdBin*.root') if '.root' in ifile]
 
 for inFile in DataCardRootFiles:
