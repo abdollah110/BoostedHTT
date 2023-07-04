@@ -106,7 +106,7 @@ for inFile in DataCardRootFiles:
 ##########################################################################################
 #Add PDF and QCd Scale uncertainty Uncertainty
 ##########################################################################################
-    process=['ZTT','TT','VV']
+    process=['ZTT','TT','VV','ggH125','XH125']
 #    SysType=['pdf','scale']
     categories=['_ztt','_qcd','_signal']
     
