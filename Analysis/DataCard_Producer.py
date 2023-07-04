@@ -18,22 +18,36 @@ parser.add_option('--suffice', '-s', action='store',
                     help='Location of input file'
                 )
 
-parser.add_option('--RunPdf', '-p', action='store',
-                    default=False, dest='PDF',
-                    help='Run PDF & QCD scale or not'
+parser.add_option('--InputChannel', '-c', action='store',
+                    default=False, dest='InputChannel',
+                    help='InputChannel'
                 )
 
-parser.add_option('--RunZTauId', '-t', action='store',
-                    default=False, dest='RunZTauId',
-                    help='Run TauId'
+# One could have 6 different runs, nominal_H, pdf_H, tauId_H, nominal_Z, pdf_Z, tauId_Z
+
+parser.add_option('--nominal_H', '-nh', action='store',
+                    default=False, dest='nominal_H',
+                    help='nominal on Higgs'
                 )
-parser.add_option('--RunRunZNominal', '-z', action='store',
-                    default=False, dest='RunZNominal',
-                    help='Run RunZNominal'
+parser.add_option('--pdf_H', '-ph', action='store',
+                    default=False, dest='pdf_H',
+                    help='Run PDF & QCD scale or not on Higgs'
                 )
-parser.add_option('--RunZpdf', '-f', action='store',
-                    default=False, dest='RunZpdf',
-                    help='Run RunZpdf'
+parser.add_option('--tauId_H', '-th', action='store',
+                    default=False, dest='tauId_H',
+                    help='Add tau Id Unc on Higgs'
+                )
+parser.add_option('--nominal_Z', '-nz', action='store',
+                    default=False, dest='nominal_Z',
+                    help='nominal on Z'
+                )
+parser.add_option('--pdf_Z', '-pz', action='store',
+                    default=False, dest='pdf_Z',
+                    help='Run PDF & QCD scale or not on Z'
+                )
+parser.add_option('--tauId_Z', '-pz', action='store',
+                    default=False, dest='tauId_Z',
+                    help='Add tau Id Unc on Z'
                 )
 
 
@@ -42,15 +56,20 @@ parser.add_option('--RunZpdf', '-f', action='store',
 (options, args) = parser.parse_args()
 InputFile=options.inputFile
 suffice=options.suffice
-RunPdf=options.PDF
-RunZTauId=options.RunZTauId
-RunZNominal=options.RunZNominal
-RunZpdf=options.RunZpdf
+InputChannel=options.InputChannel
+nominal_H=options.nominal_H
+pdf_H=options.pdf_H
+tauId_H=options.tauId_H
+nominal_Z=options.nominal_Z
+pdf_Z=options.pdf_Z
+tauId_Z=options.tauId_Z
 
 #for ifile in glob('{}/NN_boost_*V12_newDM*'.format(InputFile)):
 for ifile in glob('{}/*'.format(InputFile)):
 
     print 'ifile is   -- >>>  {}'.format(ifile)
+    
+    if InputChannel not in ifile: continue
     
     year=0
     if '2016' in ifile:
@@ -123,23 +142,31 @@ for ifile in glob('{}/*'.format(InputFile)):
     for var in Variable:
     
     
-        if RunZTauId :
+        if nominal_H:
+                print './{} -d {}  --suf {} -v {} -b {} {} {} '.format( executable, ifile, sample+suffice, var[0],var[1],var[2],var[3])
+                os.system('./{} -d {}  --suf {} -v {} -b {} {} {} '.format( executable, ifile,sample+suffice, var[0],var[1],var[2],var[3]))
+                print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+        elif nominal_Z:
+                print './{} -d {}  --suf {} -v {} -b {} {} {} '.format( executable_Z, ifile, sample+suffice, var[0],var[1],var[2],var[3])
+                os.system('./{} -d {}  --suf {} -v {} -b {} {} {} '.format( executable_Z, ifile,sample+suffice, var[0],var[1],var[2],var[3]))
+                print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+        elif pdf_H :
+            print './{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable, ifile, sample+suffice, var[0],var[1],var[2],var[3])
+            os.system('./{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable, ifile,sample+suffice, var[0],var[1],var[2],var[3]))
+            print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+        elif pdf_Z:
+                print './{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable_Z, ifile, sample+suffice, var[0],var[1],var[2],var[3])
+                os.system('./{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable_Z, ifile,sample+suffice, var[0],var[1],var[2],var[3]))
+                print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+        elif tauId_H :
+            for tausys in tadIsVars:
+                print './{} -d {}  --suf {} -v {} -b {} {} {} -t {}'.format( executable, ifile, sample+suffice, var[0],var[1],var[2],var[3],tausys)
+                os.system('./{} -d {}  --suf {} -v {} -b {} {} {} -t {}'.format( executable, ifile,sample+suffice, var[0],var[1],var[2],var[3],tausys))
+                print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+        elif tauId_Z :
             for tausys in tadIsVars:
                 print './{} -d {}  --suf {} -v {} -b {} {} {} -t {}'.format( executable_Z, ifile, sample+suffice, var[0],var[1],var[2],var[3],tausys)
                 os.system('./{} -d {}  --suf {} -v {} -b {} {} {} -t {}'.format( executable_Z, ifile,sample+suffice, var[0],var[1],var[2],var[3],tausys))
                 print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
-        elif RunZNominal:
-                print './{} -d {}  --suf {} -v {} -b {} {} {} '.format( executable_Z, ifile, sample+suffice, var[0],var[1],var[2],var[3])
-                os.system('./{} -d {}  --suf {} -v {} -b {} {} {} '.format( executable_Z, ifile,sample+suffice, var[0],var[1],var[2],var[3]))
-        elif RunZpdf:
-                print './{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable_Z, ifile, sample+suffice, var[0],var[1],var[2],var[3])
-                os.system('./{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable_Z, ifile,sample+suffice, var[0],var[1],var[2],var[3]))
-                print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
-        elif RunPdf :
-            print './{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable, ifile, sample+suffice, var[0],var[1],var[2],var[3])
-            os.system('./{} -d {}  --suf {} -v {} -b {} {} {} -p'.format( executable, ifile,sample+suffice, var[0],var[1],var[2],var[3]))
-            print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
         else:
-            print './{} -d {}  --suf {} -v {} -b {} {} {}'.format( executable, ifile, sample+suffice, var[0],var[1],var[2],var[3])
-            os.system('./{} -d {}  --suf {} -v {} -b {} {} {}'.format( executable, ifile,sample+suffice, var[0],var[1],var[2],var[3]))
-            print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+            print 'input not known'
