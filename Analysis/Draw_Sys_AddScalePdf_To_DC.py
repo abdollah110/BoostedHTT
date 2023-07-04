@@ -16,19 +16,31 @@ parser.add_option('--sys', '-s', action='store',
                   default='Output/templates/PDFScaleFiles/SysedFiles/', dest='current_sys',
                   help='path to current pdf and scale sys directory'
                   )
+#parser.add_option('--name', '-n', action='store',
+#                  default='testZ', dest='name',
+#                  help='the prefix of the root files'
+#                  )
+#parser.add_option('--outName', '-o', action='store',
+#                  default='testZ', dest='outName',
+#                  help='the prefix of the output root files'
+#                  )
+
 (options, args) = parser.parse_args()
 
 
 
-DataCardRootFiles = [ifile for ifile in glob(options.current_DC+'/*.root') if '.root' in ifile and 'pdfscaleOut' not in ifile]
-SysRootFiles = [ifile for ifile in glob(options.current_sys+'/*pdfscale.root') if '.root' in ifile]
+#DataCardRootFiles = [ifile for ifile in glob(options.current_DC+'/*{}.root'.format(name)) if '.root' in ifile and 'FinalOut' not in ifile]
+#SysRootFiles = [ifile for ifile in glob(options.current_sys+'/*pdfscale.root') if '.root' in ifile]
+
+DataCardRootFiles = [ifile for ifile in glob(options.current_DC]
+SysRootFiles = [ifile for ifile in glob(options.current_sys]
 
 for inFile in DataCardRootFiles:
 
     print 'starting ---->>   ', inFile
     
     File=TFile(inFile,'R')
-    File.Cp(File.GetName().replace('.root','_')+"pdfscaleOut.root")
+    File.Cp(File.GetName().replace('.root','_')+"FinalOut.root")
     
     channel=''
     channelName=''
@@ -103,7 +115,7 @@ for inFile in DataCardRootFiles:
                     print UpSysHist.Integral(),DownSysHist.Integral()
         
         
-                    newFile=TFile(File.GetName().replace('.root','_')+"pdfscaleOut.root",'UPDATE')
+                    newFile=TFile(File.GetName().replace('.root','_')+"FinalOut.root",'UPDATE')
                     tDirectory= newFile.Get(channel+cat)
                     tDirectory.cd()
                     tDirectory.WriteObject(UpSysHist,'{}_{}Up'.format(pro,sys))
