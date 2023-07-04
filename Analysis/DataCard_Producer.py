@@ -25,27 +25,27 @@ parser.add_option('--InputChannel', '-c', action='store',
 
 # One could have 6 different runs, nominal_H, pdf_H, tauId_H, nominal_Z, pdf_Z, tauId_Z
 
-parser.add_option('--nominal_H', '-nh', action='store',
+parser.add_option('--nominal_H', '-n', action='store',
                     default=False, dest='nominal_H',
                     help='nominal on Higgs'
                 )
-parser.add_option('--pdf_H', '-ph', action='store',
+parser.add_option('--pdf_H', '-p', action='store',
                     default=False, dest='pdf_H',
                     help='Run PDF & QCD scale or not on Higgs'
                 )
-parser.add_option('--tauId_H', '-th', action='store',
+parser.add_option('--tauId_H', '-t', action='store',
                     default=False, dest='tauId_H',
                     help='Add tau Id Unc on Higgs'
                 )
-parser.add_option('--nominal_Z', '-nz', action='store',
+parser.add_option('--nominal_Z', '-x', action='store',
                     default=False, dest='nominal_Z',
                     help='nominal on Z'
                 )
-parser.add_option('--pdf_Z', '-pz', action='store',
+parser.add_option('--pdf_Z', '-y', action='store',
                     default=False, dest='pdf_Z',
                     help='Run PDF & QCD scale or not on Z'
                 )
-parser.add_option('--tauId_Z', '-pz', action='store',
+parser.add_option('--tauId_Z', '-z', action='store',
                     default=False, dest='tauId_Z',
                     help='Add tau Id Unc on Z'
                 )
