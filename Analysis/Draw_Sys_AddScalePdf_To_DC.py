@@ -32,8 +32,8 @@ parser.add_option('--sys', '-s', action='store',
 #DataCardRootFiles = [ifile for ifile in glob(options.current_DC+'/*{}.root'.format(name)) if '.root' in ifile and 'FinalOut' not in ifile]
 #SysRootFiles = [ifile for ifile in glob(options.current_sys+'/*pdfscale.root') if '.root' in ifile]
 
-DataCardRootFiles = [ifile for ifile in glob(options.current_DC]
-SysRootFiles = [ifile for ifile in glob(options.current_sys]
+DataCardRootFiles = [ifile for ifile in glob(options.current_DC)]
+SysRootFiles = [ifile for ifile in glob(options.current_sys)]
 
 for inFile in DataCardRootFiles:
 
