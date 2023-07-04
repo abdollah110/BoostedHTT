@@ -43,11 +43,16 @@ parser.add_option('--sys', '-s', action='store',
                   default='Output/templates/PDFScaleFiles/SysedFiles/', dest='current_sys',
                   help='path to current pdf and scale sys directory'
                   )
+parser.add_option('--name', '-n', action='store',
+                  default='testZ', dest='name',
+                  help='the prefix of the root files'
+                  )
+                  
 (options, args) = parser.parse_args()
 
 
 
-DataCardRootFiles = [ifile for ifile in glob(options.current_DC+'/*testZ.root') if '.root' in ifile]
+DataCardRootFiles = [ifile for ifile in glob(options.current_DC+'/*{}.root'.format(name)) if '.root' in ifile]
 SysRootFiles = [ifile for ifile in glob(options.current_sys+'/*TauIdTauIdBin*.root') if '.root' in ifile]
 
 for inFile in DataCardRootFiles:
