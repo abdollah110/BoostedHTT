@@ -21,6 +21,7 @@ int main(int argc, char *argv[]) {
     std::string var_name = parser.Option("-v");
     std::vector<std::string> sbins = parser.MultiOption("-b", 3);
     bool runPDF = parser.Flag("-p");
+    std::string runTauId = parser.Option("-t");
     
     
     string year;
@@ -76,7 +77,7 @@ int main(int argc, char *argv[]) {
     read_directory(dir, &files);
     
     // initialize histogram holder
-    auto hists = new HistTool(newChannelName, channel,var_name,  year, suffix, bins);
+    auto hists = new HistTool(newChannelName, channel,var_name,  year, suffix+runTauId, bins);
     
     
     // This part is tro derive the OS/SS ratio (one can actually get the 2D pt/eta binned Values as well)
@@ -88,7 +89,7 @@ int main(int argc, char *argv[]) {
     
     
     
-    hists->histoLoop(year, files, dir, FR.FRhist, FR.FitPar, FR.FitParErr,tree_name,var_name,OSSS,runPDF,"");    // fill histograms
+    hists->histoLoop(year, files, dir, FR.FRhist, FR.FitPar, FR.FitParErr,tree_name,var_name,OSSS,runPDF,runTauId);    // fill histograms
     hists->writeTemplates(dir,channel,year);  // write histograms to file
     // save histograms for pdf and scale uncertainties
     unordered_map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
@@ -103,7 +104,7 @@ int main(int argc, char *argv[]) {
     //  delete hists->ff_weight;
 }
 
-void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FRhist, float FitPar, float FitParErr,  string tree_name , string var_name, vector<float> OSSS, bool runPDF,string Sys = "") {
+void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FRhist, float FitPar, float FitParErr,  string tree_name , string var_name, vector<float> OSSS, bool runPDF,string runTauId ) {
 
 //void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FR.FRhist, float FR.FitPar, float FR.FitParErr,, string tree_name , string var_name, vector<float> OSSS, bool runPDF, string Sys = "") {
     
@@ -122,7 +123,9 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         
         string name = ifile.substr(0, ifile.find(".")).c_str();
         if (runPDF && (name.find("TT") ==string::npos || name.find("Up") !=string::npos || name.find("Down") !=string::npos )) continue;
+        if (runTauId.find("TauIdBin")!=string::npos && (name.find("Up") !=string::npos || name.find("Down") !=string::npos )) continue;
         if (name.find("PTH") !=string::npos || name.find("OutsideAcceptance") !=string::npos) continue;
+        
         
 //         for Control Plots
 //        if (name.find("Up") !=string::npos || name.find("Down") !=string::npos ) continue;
@@ -221,6 +224,18 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             if (isGenTauLead_ && (  name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.9;
             if (isGenTauSub_ && ( name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos ))
                 weight *= 0.9;
+                
+                
+            if (runTauId.find("TauIdBin_1_Up") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 1.2 ;
+            if (runTauId.find("TauIdBin_1_Down") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.8;
+            if (runTauId.find("TauIdBin_2_Up") != string::npos && (higgs_pT> 400 && higgs_pT < 600 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 1.2 ;
+            if (runTauId.find("TauIdBin_2_Down") != string::npos && (higgs_pT> 400 && higgs_pT < 600 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.8;
+            if (runTauId.find("TauIdBin_3_Up") != string::npos && (higgs_pT> 600 && higgs_pT < 800 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 1.2 ;
+            if (runTauId.find("TauIdBin_3_Down") != string::npos && (higgs_pT> 600 && higgs_pT < 800 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.8;
+            if (runTauId.find("TauIdBin_4_Up") != string::npos && (higgs_pT> 800 && higgs_pT < 1000 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 1.2 ;
+            if (runTauId.find("TauIdBin_4_Down") != string::npos && (higgs_pT> 800 && higgs_pT < 1000 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.8;
+
+
             
             // Validation cuts relaxed!
             //            if (m_sv < 50) continue;
