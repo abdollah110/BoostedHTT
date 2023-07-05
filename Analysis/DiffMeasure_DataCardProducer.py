@@ -105,23 +105,23 @@ executable=''
 if '_em' in ifile:
     channel = 'em'
     treeName = 'emu_tree'
-    executable = 'DiffMeasure_em'
+    executable = 'DiffMeasure_CR_em'
 elif '_me' in ifile:
     channel = 'me'
     treeName = 'emu_tree'
-    executable = 'DiffMeasure_em'
+    executable = 'DiffMeasure_CR_em'
 elif '_mt' in ifile:
     channel = 'mt'
     treeName = 'mutau_tree'
-    executable = 'DiffMeasure_lt'
+    executable = 'DiffMeasure_CR_lt'
 elif '_et' in ifile:
     channel = 'et'
     treeName = 'etau_tree'
-    executable = 'DiffMeasure_lt'
+    executable = 'DiffMeasure_CR_lt'
 elif '_tt' in ifile:
     channel = 'tt'
     treeName = 'tautau_tree'
-    executable = 'DiffMeasure_tt'
+    executable = 'DiffMeasure_CR_tt'
 else:
     print 'which channel ???'
 
