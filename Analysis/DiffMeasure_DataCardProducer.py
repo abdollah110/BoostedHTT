@@ -29,6 +29,11 @@ parser.add_option('--RunPdf', '-p', action='store',
                     help='Run PDF & QCD scale or not'
                 )
 
+parser.add_option('--RunTauId', '-t', action='store',
+                    default=False, dest='RunTauId',
+                    help='Run RunTauId Sys'
+                )
+
 
 
 (options, args) = parser.parse_args()
@@ -37,6 +42,7 @@ prefix=options.prefix
 Observable=options.Obs
 DiffVariable=options.Var
 RunPdf=options.PDF
+RunTauId=options.RunTauId
 
 
 
@@ -118,20 +124,33 @@ elif '_tt' in ifile:
     executable = 'DiffMeasure_tt'
 else:
     print 'which channel ???'
-                
+
+
+
+tadIsVars=[
+"TauIdBin_1_Up","TauIdBin_1_Down","TauIdBin_2_Up","TauIdBin_2_Down",
+"TauIdBin_3_Up","TauIdBin_3_Down","TauIdBin_4_Up","TauIdBin_4_Down"
+]
+
+
+
 for pt in PTrange:
         for var in Variable:
             if Observable==var[0]:
                 print '\n\n\n\n =====> start making datacard for ', var
-#                    print 'command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} -c higgs_pT -l {} -h {}  '.format(executable, ifile, var[0],var[0],var[1],var[2],var[3],pt[0],pt[1])
-#                    os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c higgs_pT -l {} -h {}  '.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],pt[0],pt[1]))
-#                    print 'command is ' , './{} -d {}   --suf {} -v {} -b {} {} {} -c LeadJetPt -l {} -h {}  '.format(executable, ifile, var[0],var[0],var[1],var[2],var[3],pt[0],pt[1])
-#                    os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c gen_higgs_pT -l {} -h {}  '.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],pt[0],pt[1]))
-                if not RunPdf:
-                    os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c {} -l {} -h {}  '.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],DiffVariable, pt[0],pt[1]))
-                else:
+                if RunPdf:
+                
                     print './{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c {} -l {} -h {}  -p'.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],DiffVariable, pt[0],pt[1])
-
                     os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c {} -l {} -h {}  -p'.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],DiffVariable, pt[0],pt[1]))
+                print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+                else RunTauId:
+                    for tausys in tadIsVars:
+                    
+                        print './{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c {} -l {} -h {}  -t {}'.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],DiffVariable, pt[0],pt[1],tausys)
+                        os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c {} -l {} -h {}  -t {}'.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],DiffVariable, pt[0],pt[1],tausys))
+                        print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+                else:
 
+                    os.system('./{} -d {}   --suf {}  --bin {} -v {} -b {} {} {} -c {} -l {} -h {}  '.format(executable, ifile, sample+prefix, pt[2],var[0],var[1],var[2],var[3],DiffVariable, pt[0],pt[1]))
+                    print '\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
                 break
