@@ -26,6 +26,7 @@ int main(int argc, char *argv[]) {
     float highVal= std::stoi(parser.Option("-h"));
     std::vector<std::string> sbins = parser.MultiOption("-b", 3);
     bool runPDF = parser.Flag("-p");
+    std::string runTauId = parser.Option("-t");
     
     
     string year;
@@ -75,10 +76,10 @@ int main(int argc, char *argv[]) {
     read_directory(dir, &files);
     
     // initialize histogram holder
-    auto hists = new HistTool(newChannelName, channel, var_name, year, suffix, binName,bins);
+    auto hists = new HistTool(newChannelName, channel, var_name, year, suffix+runTauId, binName,bins);
 
     
-    hists->histoLoop(year, files, dir, FR.FRhist, FR.FitPar, FR.FitParErr,tree_name,var_name,cut_name, lowVal, highVal,runPDF,"");    // fill histograms
+    hists->histoLoop(year, files, dir, FR.FRhist, FR.FitPar, FR.FitParErr,tree_name,var_name,cut_name, lowVal, highVal,runPDF,runTauId);    // fill histograms
     hists->writeTemplates(dir,channel,year);  // write histograms to file
     // histograms for pdf and scale
     unordered_map<string, TH1F*>::const_iterator iMap1 = myMap1->begin();
@@ -91,7 +92,7 @@ int main(int argc, char *argv[]) {
     std::cout << "Template created.\n Timing Info: \n\t CPU Time: " << watch.CpuTime() << "\n\tReal Time: " << watch.RealTime() << std::endl;
 }
 
-void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FRhist, float FitPar, float FitParErr, string tree_name , string var_name, string cut_name, float lowVal, float highVal, bool runPDF, string Sys = "") {
+void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FRhist, float FitPar, float FitParErr, string tree_name , string var_name, string cut_name, float lowVal, float highVal, bool runPDF, string runTauId) {
     
     std::cout<< "starting .... "<<dir<<"\n";
     initVectors1dFake("nominal");
@@ -105,6 +106,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         
         string name = ifile.substr(0, ifile.find(".")).c_str();
         if (runPDF && (name.find("TT") ==string::npos || name.find("Up") !=string::npos || name.find("Down") !=string::npos )) continue;
+        if (runTauId.find("TauIdBin")!=string::npos && (name.find("Up") !=string::npos || name.find("Down") !=string::npos )) continue;
         
         auto fin = new TFile((dir + "/" + ifile).c_str(), "read");
         std::cout<<"ifile is openning: " <<ifile<<"\n";
@@ -237,9 +239,20 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             }
             
             // apply tau Id SF
-            if (isGenTauLead_ && (  name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos || name.find("JJH125")!= string::npos )) weight *= 0.9;
-            if (isGenTauSub_ && ( name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos || name.find("JJH125")!= string::npos )) weight *= 0.9;
-            
+            if (isGenTauLead_ && (  name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= 0.9;
+            if (isGenTauSub_ && ( name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= 0.9;
+
+            // add tau Id uncertainty
+            if (runTauId.find("TauIdBin_1_Up") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 1.2 ;
+            if (runTauId.find("TauIdBin_1_Down") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.8;
+            if (runTauId.find("TauIdBin_2_Up") != string::npos && (higgs_pT> 400 && higgs_pT < 600 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 1.2 ;
+            if (runTauId.find("TauIdBin_2_Down") != string::npos && (higgs_pT> 400 && higgs_pT < 600 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.8;
+            if (runTauId.find("TauIdBin_3_Up") != string::npos && (higgs_pT> 600 && higgs_pT < 800 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 1.2 ;
+            if (runTauId.find("TauIdBin_3_Down") != string::npos && (higgs_pT> 600 && higgs_pT < 800 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.8;
+            if (runTauId.find("TauIdBin_4_Up") != string::npos && (higgs_pT> 800 && higgs_pT < 1000 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 1.2 ;
+            if (runTauId.find("TauIdBin_4_Down") != string::npos && (higgs_pT> 800 && higgs_pT < 1000 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.8;
+
+
 //             correction based on the lead lep pt
             float lep1CorWeight=1;
 //            if (name.find("Data")== string::npos && year =="2016"){
