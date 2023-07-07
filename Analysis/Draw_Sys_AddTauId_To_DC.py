@@ -48,7 +48,7 @@ parser.add_option('--name', '-n', action='store',
                   help='the prefix of the root files'
                   )
 
-parser.add_option('--name', '-m', action='store',
+parser.add_option('--nameSys', '-m', action='store',
                   default='testZ', dest='nameSys',
                   help='the prefix of the root files in TauId sysfile'
                   )
