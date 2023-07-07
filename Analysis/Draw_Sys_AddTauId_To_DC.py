@@ -47,13 +47,18 @@ parser.add_option('--name', '-n', action='store',
                   default='testZ', dest='name',
                   help='the prefix of the root files'
                   )
+
+parser.add_option('--name', '-m', action='store',
+                  default='testZ', dest='nameSys',
+                  help='the prefix of the root files in TauId sysfile'
+                  )
                   
 (options, args) = parser.parse_args()
 
 
 
 DataCardRootFiles = [ifile for ifile in glob(options.current_DC+'/*{}.root'.format(options.name)) if '.root' in ifile]
-SysRootFiles = [ifile for ifile in glob(options.current_sys+'/*TauIdTauIdBin*.root') if '.root' in ifile]
+SysRootFiles = [ifile for ifile in glob(options.current_sys+'/*{}*.root'.format(options.nameSys)) if '.root' in ifile]
 
 for inFile in DataCardRootFiles:
 
