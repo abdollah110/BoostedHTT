@@ -363,7 +363,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                     hists_1d.at(categories.at(i)).back()->Fill(higgs_pT,  weight);
 //                    hists_1d.at(categories.at(i)).back()->Fill(vbf_var1,  weight);
                     
-//                    plotFill(name+"_HiggsPt_"+categories.at(i),higgs_pT,20,200,1000,weight);
+                    plotFill(name+"_HiggsPt_"+categories.at(i),higgs_pT,32,200,1000,weight);
 //                    plotFill(name+"_m_sv_"+categories.at(i),m_sv,20,0,400,weight);
 //                    plotFill(name+"_Met_"+categories.at(i),Met,20,0,400,weight);
 //                    plotFill(name+"_NN_disc_"+categories.at(i),NN_disc,20,0,1,weight);

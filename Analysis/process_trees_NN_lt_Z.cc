@@ -271,7 +271,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
 //                     if (NN_out_vec[i] > 0.8 && NN_out_vec[i] < 0.9 ) plotFill(name+"_ZPt_NN_p8_p9"+categories.at(i),higgs_pT,20,200,1000,weight);
 //                     if (NN_out_vec[i] > 0.9 && NN_out_vec[i] < 1.0 ) plotFill(name+"_ZPt_NN_p9_p10"+categories.at(i),higgs_pT,20,200,1000,weight);
                         
-//                    plotFill(name+"_HiggsPt_"+categories.at(i),higgs_pT,20,200,1000,weight);
+                    plotFill(name+"_HiggsPt_"+categories.at(i),higgs_pT,32,200,1000,weight);
 //                    plotFill(name+"_m_sv_"+categories.at(i),m_sv,20,0,400,weight);
 //                    plotFill(name+"_Met_"+categories.at(i),Met,20,0,400,weight);
 //                    plotFill(name+"_NN_disc_"+categories.at(i),NN_disc,20,0,1,weight);
