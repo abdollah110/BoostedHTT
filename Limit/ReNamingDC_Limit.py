@@ -68,7 +68,7 @@ for k1 in dirList: # loop over categories
     channel=''
     treeName=''
     executable=''
-
+    lepName=''
 
     if 'em_' in nom:
         channel = 'em'
@@ -84,15 +84,18 @@ for k1 in dirList: # loop over categories
     #    executable = 'process_trees_lt'
         executable = 'process_trees_lt_fr'
     #    executable = 'process_trees_sf_fr'
+        lepName='lt'
     elif 'et_' in nom:
         channel = 'et'
         treeName = 'etau_tree'
     #    executable = 'process_trees_lt'
         executable = 'process_trees_lt_fr'
+        lepName='lt'
     elif 'tt_' in nom:
         channel = 'tt'
         treeName = 'tautau_tree'
         executable = 'process_trees_tt'
+        lepName='tt'
     else:
         print 'which channel ???'
 
@@ -220,12 +223,13 @@ for k1 in dirList: # loop over categories
         if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_pdf','TT_TTpdf'+str(year))
         histo_name=histo_name.replace('ZTT_pdf','ZTT_ZTTpdf'+str(year))
 
-#        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_QCDScale','TT_TTQCDScale_cat{}'.format(categ)+str(year))
-#        histo_name=histo_name.replace('ZTT_QCDScale','ZTT_ZTTQCDScale_cat{}'.format(categ)+str(year))
+#        /deCorrelate QCD scale
+        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_QCDScale','TT_TTQCDScale_cat{}'.format(categ)+str(year))
+        histo_name=histo_name.replace('ZTT_QCDScale','ZTT_ZTTQCDScale_cat{}'.format(categ)+str(year))
 
 #        /Correlate QCD scale
-        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_QCDScale','TT_TTQCDScale'+str(year))
-        histo_name=histo_name.replace('ZTT_QCDScale','ZTT_ZTTQCDScale'+str(year))
+#        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_QCDScale','TT_TTQCDScale'+str(year))
+#        histo_name=histo_name.replace('ZTT_QCDScale','ZTT_ZTTQCDScale'+str(year))
 
 
 
@@ -259,6 +263,11 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('_450_600_','_450_600125_')
         histo_name=histo_name.replace('_600_800_','_600_800125_')
         histo_name=histo_name.replace('_GT800_','_GT800125_')
+        
+        histo_name=histo_name.replace('Bin_1','Bin_1_{}_'.format(lepName))
+        histo_name=histo_name.replace('Bin_2','Bin_2_{}_'.format(lepName))
+        histo_name=histo_name.replace('Bin_3','Bin_3_{}_'.format(lepName))
+        histo_name=histo_name.replace('Bin_4','Bin_4_{}_'.format(lepName))
         
         
         
