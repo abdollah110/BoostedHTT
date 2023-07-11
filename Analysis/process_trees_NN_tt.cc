@@ -5,7 +5,9 @@
 #include "../interface/CLParser.h"
 #include "../interface/process_trees_NN.h"
 #include <iomanip>      // std::setprecision
-
+#include <iostream>
+#include <fstream>
+#include <json/json.h>
 
 
 
@@ -225,6 +227,11 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             if (isGenTauSub_ && ( name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos ))
                 weight *= 0.9;
                 
+            Json::Value people;
+            std::ifstream people_file("TauUncValues.json", std::ifstream::binary);
+            people_file >> people;
+                
+            std::cout << people["value"] << "\n";
                 
             if (runTauId.find("TauIdBin_1_Up") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 1.2 ;
             if (runTauId.find("TauIdBin_1_Down") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.8;
