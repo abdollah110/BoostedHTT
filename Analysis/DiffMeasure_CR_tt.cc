@@ -242,15 +242,57 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             if (isGenTauLead_ && (  name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= 0.9;
             if (isGenTauSub_ && ( name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= 0.9;
 
-            // add tau Id uncertainty
-            if (runTauId.find("TauIdBin_1_Up") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 1.2 ;
-            if (runTauId.find("TauIdBin_1_Down") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.8;
-            if (runTauId.find("TauIdBin_2_Up") != string::npos && (higgs_pT> 400 && higgs_pT < 600 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 1.2 ;
-            if (runTauId.find("TauIdBin_2_Down") != string::npos && (higgs_pT> 400 && higgs_pT < 600 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.8;
-            if (runTauId.find("TauIdBin_3_Up") != string::npos && (higgs_pT> 600 && higgs_pT < 800 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 1.2 ;
-            if (runTauId.find("TauIdBin_3_Down") != string::npos && (higgs_pT> 600 && higgs_pT < 800 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.8;
-            if (runTauId.find("TauIdBin_4_Up") != string::npos && (higgs_pT> 800 && higgs_pT < 1000 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 1.2 ;
-            if (runTauId.find("TauIdBin_4_Down") != string::npos && (higgs_pT> 800 && higgs_pT < 1000 ) && (isGenTauLead_ && isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.8;
+            float UncVal=0;
+            
+            if (runTauId.find("TauIdBin_1") != string::npos && year.find("2016") != string::npos) UncVal=
+                0.155270725489;
+            if (runTauId.find("TauIdBin_1") != string::npos && year.find("2017") != string::npos) UncVal=
+                0.145713633392;
+            if (runTauId.find("TauIdBin_1") != string::npos && year.find("2018") != string::npos) UncVal=
+                0.107479907572;
+            if (runTauId.find("TauIdBin_2") != string::npos && year.find("2016") != string::npos) UncVal=
+                0.0943855410442;
+            if (runTauId.find("TauIdBin_2") != string::npos && year.find("2017") != string::npos) UncVal=
+                0.111481435597;
+            if (runTauId.find("TauIdBin_2") != string::npos && year.find("2018") != string::npos) UncVal=
+                0.0855802134611;
+            if (runTauId.find("TauIdBin_3") != string::npos && year.find("2016") != string::npos) UncVal=
+                0.271097958088;
+            if (runTauId.find("TauIdBin_3") != string::npos && year.find("2017") != string::npos) UncVal=
+                0.30220964551;
+            if (runTauId.find("TauIdBin_3") != string::npos && year.find("2018") != string::npos) UncVal=
+                0.271097958088;
+            if (runTauId.find("TauIdBin_4") != string::npos && year.find("2016") != string::npos) UncVal=
+                0.586049079895;
+            if (runTauId.find("TauIdBin_4") != string::npos && year.find("2017") != string::npos) UncVal=
+                0.716439247131;
+            if (runTauId.find("TauIdBin_4") != string::npos && year.find("2018") != string::npos) UncVal=
+                0.345309078693;
+            
+
+
+            float preFitUncUp=1+UncVal;
+            float preFitUncDown=1-UncVal;
+
+            if (runTauId.find("TauIdBin_1_Up") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && (isGenTauLead_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncUp ;
+            if (runTauId.find("TauIdBin_1_Down") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && (isGenTauLead_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncDown;
+            if (runTauId.find("TauIdBin_2_Up") != string::npos && (higgs_pT> 400 && higgs_pT < 500 ) && (isGenTauLead_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncUp ;
+            if (runTauId.find("TauIdBin_2_Down") != string::npos && (higgs_pT> 400 && higgs_pT < 500 ) && (isGenTauLead_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncDown;
+            if (runTauId.find("TauIdBin_3_Up") != string::npos && (higgs_pT> 500 && higgs_pT < 700 ) && (isGenTauLead_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncUp ;
+            if (runTauId.find("TauIdBin_3_Down") != string::npos && (higgs_pT> 500 && higgs_pT < 700 ) && (isGenTauLead_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncDown;
+            if (runTauId.find("TauIdBin_4_Up") != string::npos && (higgs_pT> 700 && higgs_pT < 1000 ) && (isGenTauLead_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncUp ;
+            if (runTauId.find("TauIdBin_4_Down") != string::npos && (higgs_pT> 700 && higgs_pT < 1000 ) && (isGenTauLead_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncDown;
+
+            if (runTauId.find("TauIdBin_1_Up") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && (isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncUp ;
+            if (runTauId.find("TauIdBin_1_Down") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && (isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncDown;
+            if (runTauId.find("TauIdBin_2_Up") != string::npos && (higgs_pT> 400 && higgs_pT < 500 ) && (isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncUp ;
+            if (runTauId.find("TauIdBin_2_Down") != string::npos && (higgs_pT> 400 && higgs_pT < 500 ) && (isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncDown;
+            if (runTauId.find("TauIdBin_3_Up") != string::npos && (higgs_pT> 500 && higgs_pT < 700 ) && (isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncUp ;
+            if (runTauId.find("TauIdBin_3_Down") != string::npos && (higgs_pT> 500 && higgs_pT < 700 ) && (isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncDown;
+            if (runTauId.find("TauIdBin_4_Up") != string::npos && (higgs_pT> 700 && higgs_pT < 1000 ) && (isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncUp ;
+            if (runTauId.find("TauIdBin_4_Down") != string::npos && (higgs_pT> 700 && higgs_pT < 1000 ) && (isGenTauSub_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncDown;
+            
+            
 
 
 //             correction based on the lead lep pt
