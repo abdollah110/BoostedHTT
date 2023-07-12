@@ -29,23 +29,23 @@ int main(int argc, char *argv[]) {
     else if (dir.find("2017") != string::npos ) year ="2017";
     else if (dir.find("2018") != string::npos) year ="2018";
     else (std::cout << "Year is not specificed in the outFile name !\n");
-        
+    
     struct {
-    TH1F * FRhist;
-    float FitPar;
-    float FitParErr;
+        TH1F * FRhist;
+        float FitPar;
+        float FitParErr;
     } FR;
     
-//    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+".root").c_str(),"r");
+    //    TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+".root").c_str(),"r");
     TFile * FRFile= new TFile(("data/File_fr_numVLoose_"+year+"_v7_pt.root").c_str(),"r");
-//    FR.FRhist=(TH1F *) FRFile->Get("numVLoose");
+    //    FR.FRhist=(TH1F *) FRFile->Get("numVLoose");
     FR.FRhist=(TH1F *) FRFile->Get("numHistRB");
     TF1 *func = new TF1("fit","pol0",200,500);
     FR.FRhist->Fit("fit","R");
-     FR.FitPar= func->GetParameter(0);
-     FR.FitParErr= func->GetParError(0);
+    FR.FitPar= func->GetParameter(0);
+    FR.FitParErr= func->GetParError(0);
     cout<<"FitPar = " << FR.FitPar  <<"  FitParErr= " << FR.FitParErr<< "\n";
-      
+    
     string channel, tree_name;
     if (dir.find("_et") != string::npos ) { channel ="et";tree_name="etau_tree";}
     else if (dir.find("_mt") != string::npos) { channel ="mt";tree_name="mutau_tree";}
@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 }
 
 void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH1F * FRhist, float FitPar, float FitParErr,  string tree_name , string var_name, vector<float> OSSS, bool runPDF, string runTauId) {
-
+    
     std::cout<< "starting .... "<<dir<<"\n";
     float vbf_var1(0.);
     initVectors1dFake("nominal");
@@ -109,8 +109,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         if (runPDF && (name.find("TT") ==string::npos || name.find("Up") !=string::npos || name.find("Down") !=string::npos )) continue;
         if (name.find("PTH") !=string::npos || name.find("OutsideAcceptance") !=string::npos) continue;
         if (runTauId.find("TauIdBin")!=string::npos && (name.find("Up") !=string::npos || name.find("Down") !=string::npos )) continue;
-//         for Control Plots
-//        if (name.find("Up") !=string::npos || name.find("Down") !=string::npos ) continue;
+        //         for Control Plots
+        //        if (name.find("Up") !=string::npos || name.find("Down") !=string::npos ) continue;
         
         auto fin = new TFile((dir + "/" + ifile).c_str(), "read");
         std::cout<<"ifile is openning: " <<ifile<<"\n";
@@ -171,11 +171,11 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
         int nbin[3]={13,1,1};
         float lowBin=0.35;
         float highBin=1;
-//        int nbin[3]={40,1,1}; // FIXME changining the binning to 40
-//        int nbin[3]={20,20,20};
-//        float lowBin=0;
-//        float lowBin=0;
-//        float highBin=1;
+        //        int nbin[3]={40,1,1}; // FIXME changining the binning to 40
+        //        int nbin[3]={20,20,20};
+        //        float lowBin=0;
+        //        float lowBin=0;
+        //        float highBin=1;
         
         
         
@@ -210,29 +210,55 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 {"gen_higgs_pT",gen_higgs_pT}
                 
             };
-                        
+            
             // apply tau Id SF
             if (isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.9;
-
-
-            if (runTauId.find("TauIdBin_1_Up") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 1.2 ;
-            if (runTauId.find("TauIdBin_1_Down") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.8 ;
-            if (runTauId.find("TauIdBin_2_Up") != string::npos && (higgs_pT> 400 && higgs_pT < 600 ) && isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 1.2 ;
-            if (runTauId.find("TauIdBin_2_Down") != string::npos && (higgs_pT> 400 && higgs_pT < 600 ) && isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.8 ;
-            if (runTauId.find("TauIdBin_3_Up") != string::npos && (higgs_pT> 600 && higgs_pT < 800 ) && isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 1.2 ;
-            if (runTauId.find("TauIdBin_3_Down") != string::npos && (higgs_pT> 600 && higgs_pT < 800 ) && isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.8 ;
-            if (runTauId.find("TauIdBin_4_Up") != string::npos && (higgs_pT> 800 && higgs_pT < 1000 ) && isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 1.2 ;
-            if (runTauId.find("TauIdBin_4_Down") != string::npos && (higgs_pT> 800 && higgs_pT < 1000 ) && isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= 0.8 ;
-
-
-
+            
+            float UncVal=0;
+            if (runTauId.find("TauIdBin_1") != string::npos && year.find("2016") != string::npos) UncVal=
+                0.146532520652;
+            if (runTauId.find("TauIdBin_1") != string::npos && year.find("2017") != string::npos) UncVal=
+                0.155815535341;
+            if (runTauId.find("TauIdBin_1") != string::npos && year.find("2018") != string::npos) UncVal=
+                0.130120703951;
+            if (runTauId.find("TauIdBin_2") != string::npos && year.find("2016") != string::npos) UncVal=
+                0.133947076276;
+            if (runTauId.find("TauIdBin_2") != string::npos && year.find("2017") != string::npos) UncVal=
+                0.135635789484;
+            if (runTauId.find("TauIdBin_2") != string::npos && year.find("2018") != string::npos) UncVal=
+                0.141447801143;
+            if (runTauId.find("TauIdBin_3") != string::npos && year.find("2016") != string::npos) UncVal=
+                0.16051132232;
+            if (runTauId.find("TauIdBin_3") != string::npos && year.find("2017") != string::npos) UncVal=
+                0.226574122906;
+            if (runTauId.find("TauIdBin_3") != string::npos && year.find("2018") != string::npos) UncVal=
+                0.160953804851;
+            if (runTauId.find("TauIdBin_4") != string::npos && year.find("2016") != string::npos) UncVal=
+                0.399211496115;
+            if (runTauId.find("TauIdBin_4") != string::npos && year.find("2017") != string::npos) UncVal=
+                0.425541073084;
+            if (runTauId.find("TauIdBin_4") != string::npos && year.find("2018") != string::npos) UncVal=
+                0.250638097525;
+            
+            
+            if (runTauId.find("TauIdBin_1_Up") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= (1+ UncVal);
+            if (runTauId.find("TauIdBin_1_Down") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= (1- UncVal);
+            if (runTauId.find("TauIdBin_2_Up") != string::npos && (higgs_pT> 400 && higgs_pT < 600 ) && isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= (1+ UncVal);
+            if (runTauId.find("TauIdBin_2_Down") != string::npos && (higgs_pT> 400 && higgs_pT < 600 ) && isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= (1- UncVal);
+            if (runTauId.find("TauIdBin_3_Up") != string::npos && (higgs_pT> 600 && higgs_pT < 800 ) && isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= (1+ UncVal);
+            if (runTauId.find("TauIdBin_3_Down") != string::npos && (higgs_pT> 600 && higgs_pT < 800 ) && isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= (1- UncVal);
+            if (runTauId.find("TauIdBin_4_Up") != string::npos && (higgs_pT> 800 && higgs_pT < 1000 ) && isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= (1+ UncVal);
+            if (runTauId.find("TauIdBin_4_Down") != string::npos && (higgs_pT> 800 && higgs_pT < 1000 ) && isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos )) weight *= (1- UncVal);
+            
+            
+            
             //            if (m_sv < 50) continue;
             //            if (higgs_pT < 250) continue;
             //            if (tmass > 80) continue;
             //            if (NN_disc < 0.3) continue;
             vbf_var1 =ObsName[var_name];
             float lep2Ptval=lep2Pt_;
-//            if (lep2Ptval > 200) lep2Ptval=200; // FIXME for reproducing the preapproval results
+            //            if (lep2Ptval > 200) lep2Ptval=200; // FIXME for reproducing the preapproval results
             
             float frValu = FRhist->GetBinContent(FRhist->GetXaxis()->FindBin(lep2Ptval));
             float frValuErr = FRhist->GetBinError(FRhist->GetXaxis()->FindBin(lep2Ptval));
@@ -251,7 +277,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             NN_out_vec.push_back((NN_disc > NN_disc_ZTT && NN_disc > NN_disc_QCD )? NN_disc : -1);
             NN_out_vec.push_back((NN_disc_ZTT > NN_disc && NN_disc_ZTT > NN_disc_QCD )? NN_disc_ZTT : -1);
             NN_out_vec.push_back((NN_disc_QCD > NN_disc_ZTT && NN_disc_QCD > NN_disc )? NN_disc_QCD : -1);
-                        
+            
             
             for (int i =0; i < 3 ;i++) {
                 
@@ -259,25 +285,25 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 
                 if (OS != 0  && lep1IsoPass && lep2IsoPassV) {
                     hists_1d.at(categories.at(i)).back()->Fill(NN_out_vec[i],  weight);
-//                    hists_1d.at(categories.at(i)).back()->Fill(vbf_var1,  weight);
+                    //                    hists_1d.at(categories.at(i)).back()->Fill(vbf_var1,  weight);
                     
-//                    plotFill(name+"_HiggsPt_"+categories.at(i),higgs_pT,20,200,1000,weight);
-//                    plotFill(name+"_m_sv_"+categories.at(i),m_sv,20,0,400,weight);
-//                    plotFill(name+"_Met_"+categories.at(i),Met,20,0,400,weight);
-//                    plotFill(name+"_NN_disc_"+categories.at(i),NN_disc,20,0,1,weight);
-//                    plotFill(name+"_LeadTauPt_"+categories.at(i),lep1Pt_,20,0,400,weight);
-//                    plotFill(name+"_SubLeadTauPt_"+categories.at(i),lep2Pt_,20,0,400,weight);
-//                    plotFill(name+"_LeadJetPt_"+categories.at(i),LeadJetPt,20,0,1000,weight);
-//                    plotFill(name+"_dR_lep_lep_"+categories.at(i),dR_lep_lep,20,0,4,weight);
-
-                     plotFill(name+"_ZPt_NN_all"+categories.at(i),higgs_pT,20,200,1000,weight);
-                     if (NN_out_vec[i] > 0.4 && NN_out_vec[i] < 0.5) plotFill(name+"_ZPt_NN_p4_p5"+categories.at(i),higgs_pT,20,200,1000,weight);
-                     if (NN_out_vec[i] > 0.5 && NN_out_vec[i] < 0.6) plotFill(name+"_ZPt_NN_p5_p6"+categories.at(i),higgs_pT,20,200,1000,weight);
-                     if (NN_out_vec[i] > 0.6 && NN_out_vec[i] < 0.7) plotFill(name+"_ZPt_NN_p6_p7"+categories.at(i),higgs_pT,20,200,1000,weight);
-                     if (NN_out_vec[i] > 0.7 && NN_out_vec[i] < 0.8) plotFill(name+"_ZPt_NN_p7_p8"+categories.at(i),higgs_pT,20,200,1000,weight);
-                     if (NN_out_vec[i] > 0.8 && NN_out_vec[i] < 0.9) plotFill(name+"_ZPt_NN_p8_p9"+categories.at(i),higgs_pT,20,200,1000,weight);
-                     if (NN_out_vec[i] > 0.9 && NN_out_vec[i] < 1.0) plotFill(name+"_ZPt_NN_p9_p10"+categories.at(i),higgs_pT,20,200,1000,weight);
-
+                    //                    plotFill(name+"_HiggsPt_"+categories.at(i),higgs_pT,20,200,1000,weight);
+                    //                    plotFill(name+"_m_sv_"+categories.at(i),m_sv,20,0,400,weight);
+                    //                    plotFill(name+"_Met_"+categories.at(i),Met,20,0,400,weight);
+                    //                    plotFill(name+"_NN_disc_"+categories.at(i),NN_disc,20,0,1,weight);
+                    //                    plotFill(name+"_LeadTauPt_"+categories.at(i),lep1Pt_,20,0,400,weight);
+                    //                    plotFill(name+"_SubLeadTauPt_"+categories.at(i),lep2Pt_,20,0,400,weight);
+                    //                    plotFill(name+"_LeadJetPt_"+categories.at(i),LeadJetPt,20,0,1000,weight);
+                    //                    plotFill(name+"_dR_lep_lep_"+categories.at(i),dR_lep_lep,20,0,4,weight);
+                    
+                    plotFill(name+"_ZPt_NN_all"+categories.at(i),higgs_pT,20,200,1000,weight);
+                    if (NN_out_vec[i] > 0.4 && NN_out_vec[i] < 0.5) plotFill(name+"_ZPt_NN_p4_p5"+categories.at(i),higgs_pT,20,200,1000,weight);
+                    if (NN_out_vec[i] > 0.5 && NN_out_vec[i] < 0.6) plotFill(name+"_ZPt_NN_p5_p6"+categories.at(i),higgs_pT,20,200,1000,weight);
+                    if (NN_out_vec[i] > 0.6 && NN_out_vec[i] < 0.7) plotFill(name+"_ZPt_NN_p6_p7"+categories.at(i),higgs_pT,20,200,1000,weight);
+                    if (NN_out_vec[i] > 0.7 && NN_out_vec[i] < 0.8) plotFill(name+"_ZPt_NN_p7_p8"+categories.at(i),higgs_pT,20,200,1000,weight);
+                    if (NN_out_vec[i] > 0.8 && NN_out_vec[i] < 0.9) plotFill(name+"_ZPt_NN_p8_p9"+categories.at(i),higgs_pT,20,200,1000,weight);
+                    if (NN_out_vec[i] > 0.9 && NN_out_vec[i] < 1.0) plotFill(name+"_ZPt_NN_p9_p10"+categories.at(i),higgs_pT,20,200,1000,weight);
+                    
                     
                     if (runPDF){
                         //                                    // pdf scale and uncertainties
@@ -293,14 +319,14 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
                 // qcd norm
                 if (OS != 0 && lep1IsoPass && !lep2IsoPassV ){
                     fillQCD_Norm(i, name, NN_out_vec[i],  weight, frValu / (1-frValu));
-//                    fillQCD_Norm(i, name, vbf_var1,  weight, frValu / (1-frValu));
+                    //                    fillQCD_Norm(i, name, vbf_var1,  weight, frValu / (1-frValu));
                     fillQCD_Norm_fr_up(i, name, NN_out_vec[i],  weight, frValuUncUp / (1-frValuUncUp));
                     fillQCD_Norm_fr_down(i, name, NN_out_vec[i],  weight, frValuUncDown / (1-frValuUncDown));
                 }
                 // qcd shape
                 if (SS != 0 && !lep2IsoPassV){
                     fillQCD_Shape(i, name, NN_out_vec[i],  weight, frValu / (1-frValu));
-//                    fillQCD_Shape(i, name, vbf_var1,  weight, frValu / (1-frValu));
+                    //                    fillQCD_Shape(i, name, vbf_var1,  weight, frValu / (1-frValu));
                     fillQCD_Shape_fr_up(i, name, NN_out_vec[i],  weight, frValuUncUp / (1-frValuUncUp));
                     fillQCD_Shape_fr_down(i, name, NN_out_vec[i],  weight, frValuUncDown / (1-frValuUncDown));
                 }
