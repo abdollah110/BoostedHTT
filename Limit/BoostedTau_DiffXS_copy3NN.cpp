@@ -285,8 +285,8 @@ int main(int argc, char** argv) {
     }
     
     // boosted tau
-    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat,et_cat,tt_cat}))
-        .AddSyst(cb, "CMS_eff_tboost"+year, "lnN", SystMap<era>::init({"13TeV"}, 1.10));
+//    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat,et_cat,tt_cat}))
+//        .AddSyst(cb, "CMS_eff_tboost"+year, "lnN", SystMap<era>::init({"13TeV"}, 1.10));
     
     
     //         electron
@@ -551,6 +551,38 @@ int main(int argc, char** argv) {
 //    cb.cp().process({"ZTT"}).channel(ch::JoinStr({sig_cat}))
 //        .AddSyst(cb, "NNTraining_catsignal", "lnN", SystMap<era>::init({"13TeV"}, 1.1));
 
+
+
+//    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat,et_cat,tt_cat}))
+//        .AddSyst(cb, "Bin_1"+year, "shape", SystMap<>::init(1.00));
+//    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat,et_cat,tt_cat}))
+//        .AddSyst(cb, "Bin_2"+year, "shape", SystMap<>::init(1.00));
+//    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat,et_cat,tt_cat}))
+//        .AddSyst(cb, "Bin_3"+year, "shape", SystMap<>::init(1.00));
+//    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat,et_cat,tt_cat}))
+//        .AddSyst(cb, "Bin_4"+year, "shape", SystMap<>::init(1.00));
+
+
+    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat,et_cat}))
+        .AddSyst(cb, "Bin_1_lt_"+year, "shape", SystMap<>::init(1.00));
+    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat,et_cat}))
+        .AddSyst(cb, "Bin_2_lt_"+year, "shape", SystMap<>::init(1.00));
+    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat,et_cat}))
+        .AddSyst(cb, "Bin_3_lt_"+year, "shape", SystMap<>::init(1.00));
+    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({mt_cat,et_cat}))
+        .AddSyst(cb, "Bin_4_lt_"+year, "shape", SystMap<>::init(1.00));
+
+
+    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({tt_cat}))
+        .AddSyst(cb, "Bin_1_tt_"+year, "shape", SystMap<>::init(1.00));
+    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({tt_cat}))
+        .AddSyst(cb, "Bin_2_tt_"+year, "shape", SystMap<>::init(1.00));
+    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({tt_cat}))
+        .AddSyst(cb, "Bin_3_tt_"+year, "shape", SystMap<>::init(1.00));
+    cb.cp().process(ch::JoinStr({sig_procs, {"TT","VV","ZTT"}})).channel(ch::JoinStr({tt_cat}))
+        .AddSyst(cb, "Bin_4_tt_"+year, "shape", SystMap<>::init(1.00));
+        
+        
 
     //    ####################################################################################
     //     Theorethical systematics
