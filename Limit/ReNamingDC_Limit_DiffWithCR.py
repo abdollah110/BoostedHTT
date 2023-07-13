@@ -261,11 +261,11 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('ZTT_pdf','ZTT_ZTTpdf'+str(year))
 
 ##       DeCorrelate acorss categories
-#        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_QCDScale','TT_TTQCDScale_cat{}'.format(categ)+str(year))
-#        histo_name=histo_name.replace('ZTT_QCDScale','ZTT_ZTTQCDScale_cat{}'.format(categ)+str(year))
+        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_QCDScale','TT_TTQCDScale_cat{}'.format(categ)+str(year))
+        histo_name=histo_name.replace('ZTT_QCDScale','ZTT_ZTTQCDScale_cat{}'.format(categ)+str(year))
 #       Correlate acorss categories
-        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_QCDScale','TT_TTQCDScale'+str(year))
-        histo_name=histo_name.replace('ZTT_QCDScale','ZTT_ZTTQCDScale'+str(year))
+#        if 'ZTT' not in histo_name: histo_name=histo_name.replace('TT_QCDScale','TT_TTQCDScale'+str(year))
+#        histo_name=histo_name.replace('ZTT_QCDScale','ZTT_ZTTQCDScale'+str(year))
 
 #        decoorelate FSR ISR across different categories
         histo_name=histo_name.replace('ZTT_isr','ZTT_isr_cat{}'.format(categ))
