@@ -243,7 +243,6 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             if (isGenTauSub_ && ( name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= 0.9;
 
             float UncVal=0;
-            
             if (runTauId.find("TauIdBin_1") != string::npos && year.find("2016") != string::npos) UncVal=
                 0.155270725489;
             if (runTauId.find("TauIdBin_1") != string::npos && year.find("2017") != string::npos) UncVal=
@@ -271,8 +270,11 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             
 
 
-            float preFitUncUp=1+UncVal;
-            float preFitUncDown=1-UncVal;
+//            float preFitUncUp=1+UncVal;
+//            float preFitUncDown=1-UncVal;
+            float preFitUncUp=1+(2*UncVal);
+            float preFitUncDown=1-(2*UncVal);
+            if ( preFitUncDown < 0.1 ) preFitUncDown = 0.1;
 
             if (runTauId.find("TauIdBin_1_Up") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && (isGenTauLead_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncUp ;
             if (runTauId.find("TauIdBin_1_Down") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && (isGenTauLead_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncDown;
