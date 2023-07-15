@@ -262,8 +262,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             
 
 
-            float preFitUncUp=1+(2*UncVal);
-            float preFitUncDown=1-(2*UncVal);
+            float preFitUncUp=1+(0.5*UncVal);
+            float preFitUncDown=1-(0.5*UncVal);
             if ( preFitUncDown < 0.1 ) preFitUncDown = 0.1;
 
             if (runTauId.find("TauIdBin_1_Up") != string::npos && (higgs_pT> 200 && higgs_pT < 400 ) && (isGenTauLead_) && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= preFitUncUp ;
