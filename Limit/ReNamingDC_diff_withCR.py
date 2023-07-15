@@ -122,10 +122,10 @@ for k1 in dirList: # loop over categories
 #    ofile.mkdir(nom.replace('_0jet',''))
     Updatednom=nom.replace('_0jet','')
     
-    if '_bin1' in Updatednom: Updatednom='Htt_{}_0_350_cat{}{}{}'.format(Diff,year,channel,type)
-    if '_bin2' in Updatednom: Updatednom='Htt_{}_350_450_cat{}{}{}'.format(Diff,year,channel,type)
-    if '_bin3' in Updatednom: Updatednom='Htt_{}_450_600_cat{}{}{}'.format(Diff,year,channel,type)
-    if '_bin4' in Updatednom: Updatednom='Htt_{}_GT600_cat{}{}{}'.format(Diff,year,channel,type)
+    if '_bin1' in Updatednom: Updatednom='Htt_{}_0_350_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin1'
+    if '_bin2' in Updatednom: Updatednom='Htt_{}_350_450_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin2'
+    if '_bin3' in Updatednom: Updatednom='Htt_{}_450_600_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin3'
+    if '_bin4' in Updatednom: Updatednom='Htt_{}_GT600_cat{}{}{}'.format(Diff,year,channel,type); binName='_bin4'
 
     ofile.mkdir(Updatednom)
     h1.cd()
@@ -142,7 +142,7 @@ for k1 in dirList: # loop over categories
         h2 = histo.ReadObj()
 #        print 'number of bins   ', numBin(h2)
         h3=h2.Clone()
-        if numBin(h2)==14:
+        if numBin(h2)==13:
             newhis=TH1F(h2.GetName(),h2.GetName(),13,0.35,1.0)
             for i in range(numBin(h2)):
                 newhis.SetBinContent(i,h2.GetBinContent(i+1))
