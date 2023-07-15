@@ -268,7 +268,13 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('Bin_2','Bin_2_{}_'.format(lepName))
         histo_name=histo_name.replace('Bin_3','Bin_3_{}_'.format(lepName))
         histo_name=histo_name.replace('Bin_4','Bin_4_{}_'.format(lepName))
+        
+        histo_name=histo_name.replace('t_2016','t')
+        histo_name=histo_name.replace('t_2017','t')
+        histo_name=histo_name.replace('t_2018','t')
 
+        
+        
 #        histo_name=histo_name.replace('Bin_1','Bin_1_{}_cat{}_'.format(lepName,categ))
 #        histo_name=histo_name.replace('Bin_2','Bin_2_{}_cat{}_'.format(lepName,categ))
 #        histo_name=histo_name.replace('Bin_3','Bin_3_{}_cat{}_'.format(lepName,categ))
