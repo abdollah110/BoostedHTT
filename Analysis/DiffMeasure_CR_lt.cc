@@ -281,8 +281,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
 
 //            float preFitUncUp=1+UncVal;
 //            float preFitUncDown=1-UncVal;
-            float preFitUncUp=1+(0.5*UncVal);
-            float preFitUncDown=1-(0.5*UncVal);
+            float preFitUncUp=1+(sqrt(3.)*UncVal);
+            float preFitUncDown=1-(sqrt(3.)*UncVal);
             if ( preFitUncDown < 0.1 ) preFitUncDown = 0.1;
             
 
