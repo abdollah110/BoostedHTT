@@ -237,12 +237,12 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             
 //             correction based on the lead lep pt
             float lep1CorWeight=1;
-            if (name.find("Data")== string::npos && year =="2016"){
-                if (lep1Pt_ < 200) lep1CorWeight=2.1+ (-0.00824)*lep1Pt_;
-                else (lep1CorWeight=0.566);
-                //                if (lep2Pt_ < 200) lep1CorWeight *= 1.11691+ (-0.00223)*lep2Pt_;
-                //                else (lep1CorWeight=1.11691+ (-0.00223)*200);
-            }
+//            if (name.find("Data")== string::npos && year =="2016"){
+//                if (lep1Pt_ < 200) lep1CorWeight=2.1+ (-0.00824)*lep1Pt_;
+//                else (lep1CorWeight=0.566);
+//                //                if (lep2Pt_ < 200) lep1CorWeight *= 1.11691+ (-0.00223)*lep2Pt_;
+//                //                else (lep1CorWeight=1.11691+ (-0.00223)*200);
+//            }
             weight *=lep1CorWeight;  // FIXME Removed to see the effects
             
             float lep2Ptval=lep2Pt_;

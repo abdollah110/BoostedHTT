@@ -243,32 +243,57 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             if (isGenTauSub_ && ( name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= 0.9;
 
             float UncVal=0;
-            if (runTauId.find("TauIdBin_1") != string::npos && year.find("2016") != string::npos) UncVal=
-                0.155270725489;
-            if (runTauId.find("TauIdBin_1") != string::npos && year.find("2017") != string::npos) UncVal=
-                0.145713633392;
-            if (runTauId.find("TauIdBin_1") != string::npos && year.find("2018") != string::npos) UncVal=
-                0.107479907572;
-            if (runTauId.find("TauIdBin_2") != string::npos && year.find("2016") != string::npos) UncVal=
-                0.0943855410442;
-            if (runTauId.find("TauIdBin_2") != string::npos && year.find("2017") != string::npos) UncVal=
-                0.111481435597;
-            if (runTauId.find("TauIdBin_2") != string::npos && year.find("2018") != string::npos) UncVal=
-                0.0855802134611;
-            if (runTauId.find("TauIdBin_3") != string::npos && year.find("2016") != string::npos) UncVal=
-                0.271097958088;
-            if (runTauId.find("TauIdBin_3") != string::npos && year.find("2017") != string::npos) UncVal=
-                0.30220964551;
-            if (runTauId.find("TauIdBin_3") != string::npos && year.find("2018") != string::npos) UncVal=
-                0.271097958088;
-            if (runTauId.find("TauIdBin_4") != string::npos && year.find("2016") != string::npos) UncVal=
-                0.586049079895;
-            if (runTauId.find("TauIdBin_4") != string::npos && year.find("2017") != string::npos) UncVal=
-                0.716439247131;
-            if (runTauId.find("TauIdBin_4") != string::npos && year.find("2018") != string::npos) UncVal=
-                0.345309078693;
+//            if (runTauId.find("TauIdBin_1") != string::npos && year.find("2016") != string::npos) UncVal=
+//                0.155270725489;
+//            if (runTauId.find("TauIdBin_1") != string::npos && year.find("2017") != string::npos) UncVal=
+//                0.145713633392;
+//            if (runTauId.find("TauIdBin_1") != string::npos && year.find("2018") != string::npos) UncVal=
+//                0.107479907572;
+//            if (runTauId.find("TauIdBin_2") != string::npos && year.find("2016") != string::npos) UncVal=
+//                0.0943855410442;
+//            if (runTauId.find("TauIdBin_2") != string::npos && year.find("2017") != string::npos) UncVal=
+//                0.111481435597;
+//            if (runTauId.find("TauIdBin_2") != string::npos && year.find("2018") != string::npos) UncVal=
+//                0.0855802134611;
+//            if (runTauId.find("TauIdBin_3") != string::npos && year.find("2016") != string::npos) UncVal=
+//                0.271097958088;
+//            if (runTauId.find("TauIdBin_3") != string::npos && year.find("2017") != string::npos) UncVal=
+//                0.30220964551;
+//            if (runTauId.find("TauIdBin_3") != string::npos && year.find("2018") != string::npos) UncVal=
+//                0.271097958088;
+//            if (runTauId.find("TauIdBin_4") != string::npos && year.find("2016") != string::npos) UncVal=
+//                0.586049079895;
+//            if (runTauId.find("TauIdBin_4") != string::npos && year.find("2017") != string::npos) UncVal=
+//                0.716439247131;
+//            if (runTauId.find("TauIdBin_4") != string::npos && year.find("2018") != string::npos) UncVal=
+//                0.345309078693;
             
 
+           if (runTauId.find("TauIdBin_1") != string::npos && year.find("2016") != string::npos) UncVal=
+                0.25;
+            if (runTauId.find("TauIdBin_1") != string::npos && year.find("2017") != string::npos) UncVal=
+                0.14;
+            if (runTauId.find("TauIdBin_1") != string::npos && year.find("2018") != string::npos) UncVal=
+                0.11;
+            if (runTauId.find("TauIdBin_2") != string::npos && year.find("2016") != string::npos) UncVal=
+                0.1;
+            if (runTauId.find("TauIdBin_2") != string::npos && year.find("2017") != string::npos) UncVal=
+                0.11;
+            if (runTauId.find("TauIdBin_2") != string::npos && year.find("2018") != string::npos) UncVal=
+                0.09;
+            if (runTauId.find("TauIdBin_3") != string::npos && year.find("2016") != string::npos) UncVal=
+                0.17;
+            if (runTauId.find("TauIdBin_3") != string::npos && year.find("2017") != string::npos) UncVal=
+                0.19;
+            if (runTauId.find("TauIdBin_3") != string::npos && year.find("2018") != string::npos) UncVal=
+                0.19;
+            if (runTauId.find("TauIdBin_4") != string::npos && year.find("2016") != string::npos) UncVal=
+                0.43;
+            if (runTauId.find("TauIdBin_4") != string::npos && year.find("2017") != string::npos) UncVal=
+                0.51;
+            if (runTauId.find("TauIdBin_4") != string::npos && year.find("2018") != string::npos) UncVal=
+                0.17;
+                
 
 //            float preFitUncUp=1+UncVal;
 //            float preFitUncDown=1-UncVal;

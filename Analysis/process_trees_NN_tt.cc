@@ -233,32 +233,45 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             //            people_file >> people;
             //            std::cout << people["value"] << "\n";
             
+//"Bin_1_tt_2016" 0.25
+//"Bin_1_tt_2017" 0.14
+//"Bin_1_tt_2018" 0.11
+//"Bin_2_tt_2016" 0.1
+//"Bin_2_tt_2017" 0.11
+//"Bin_2_tt_2018" 0.09
+//"Bin_3_tt_2016" 0.17
+//"Bin_3_tt_2017" 0.19
+//"Bin_3_tt_2017" 0.194  [I got this]
+//"Bin_4_tt_2016" 0.43
+//"Bin_4_tt_2017" 0.51
+//"Bin_4_tt_2018" 0.17
+
             float UncVal=0;
             
             if (runTauId.find("TauIdBin_1") != string::npos && year.find("2016") != string::npos) UncVal=
-                0.155270725489;
+                0.25;
             if (runTauId.find("TauIdBin_1") != string::npos && year.find("2017") != string::npos) UncVal=
-                0.145713633392;
+                0.14;
             if (runTauId.find("TauIdBin_1") != string::npos && year.find("2018") != string::npos) UncVal=
-                0.107479907572;
+                0.11;
             if (runTauId.find("TauIdBin_2") != string::npos && year.find("2016") != string::npos) UncVal=
-                0.0943855410442;
+                0.1;
             if (runTauId.find("TauIdBin_2") != string::npos && year.find("2017") != string::npos) UncVal=
-                0.111481435597;
+                0.11;
             if (runTauId.find("TauIdBin_2") != string::npos && year.find("2018") != string::npos) UncVal=
-                0.0855802134611;
+                0.09;
             if (runTauId.find("TauIdBin_3") != string::npos && year.find("2016") != string::npos) UncVal=
-                0.271097958088;
+                0.17;
             if (runTauId.find("TauIdBin_3") != string::npos && year.find("2017") != string::npos) UncVal=
-                0.30220964551;
+                0.19;
             if (runTauId.find("TauIdBin_3") != string::npos && year.find("2018") != string::npos) UncVal=
-                0.271097958088;
+                0.19;
             if (runTauId.find("TauIdBin_4") != string::npos && year.find("2016") != string::npos) UncVal=
-                0.586049079895;
+                0.43;
             if (runTauId.find("TauIdBin_4") != string::npos && year.find("2017") != string::npos) UncVal=
-                0.716439247131;
+                0.51;
             if (runTauId.find("TauIdBin_4") != string::npos && year.find("2018") != string::npos) UncVal=
-                0.345309078693;
+                0.17;
             
 
 

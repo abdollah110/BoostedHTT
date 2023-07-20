@@ -253,32 +253,58 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             if (isGenTau_ && (name.find("ZTT")!= string::npos || name.find("TT")!= string::npos || name.find("VV")!= string::npos || name.find("125")!= string::npos  )) weight *= 0.9;
 
 
+//            float UncVal=0;
+//            if (runTauId.find("TauIdBin_1") != string::npos && year.find("2016") != string::npos) UncVal=
+//                0.146532520652;
+//            if (runTauId.find("TauIdBin_1") != string::npos && year.find("2017") != string::npos) UncVal=
+//                0.155815535341;
+//            if (runTauId.find("TauIdBin_1") != string::npos && year.find("2018") != string::npos) UncVal=
+//                0.130120703951;
+//            if (runTauId.find("TauIdBin_2") != string::npos && year.find("2016") != string::npos) UncVal=
+//                0.133947076276;
+//            if (runTauId.find("TauIdBin_2") != string::npos && year.find("2017") != string::npos) UncVal=
+//                0.135635789484;
+//            if (runTauId.find("TauIdBin_2") != string::npos && year.find("2018") != string::npos) UncVal=
+//                0.141447801143;
+//            if (runTauId.find("TauIdBin_3") != string::npos && year.find("2016") != string::npos) UncVal=
+//                0.16051132232;
+//            if (runTauId.find("TauIdBin_3") != string::npos && year.find("2017") != string::npos) UncVal=
+//                0.226574122906;
+//            if (runTauId.find("TauIdBin_3") != string::npos && year.find("2018") != string::npos) UncVal=
+//                0.160953804851;
+//            if (runTauId.find("TauIdBin_4") != string::npos && year.find("2016") != string::npos) UncVal=
+//                0.399211496115;
+//            if (runTauId.find("TauIdBin_4") != string::npos && year.find("2017") != string::npos) UncVal=
+//                0.425541073084;
+//            if (runTauId.find("TauIdBin_4") != string::npos && year.find("2018") != string::npos) UncVal=
+//                0.250638097525;
+
             float UncVal=0;
             if (runTauId.find("TauIdBin_1") != string::npos && year.find("2016") != string::npos) UncVal=
-                0.146532520652;
+                0.15;
             if (runTauId.find("TauIdBin_1") != string::npos && year.find("2017") != string::npos) UncVal=
-                0.155815535341;
+                0.16;
             if (runTauId.find("TauIdBin_1") != string::npos && year.find("2018") != string::npos) UncVal=
-                0.130120703951;
+                0.14;
             if (runTauId.find("TauIdBin_2") != string::npos && year.find("2016") != string::npos) UncVal=
-                0.133947076276;
+                0.14;
             if (runTauId.find("TauIdBin_2") != string::npos && year.find("2017") != string::npos) UncVal=
-                0.135635789484;
+                0.14;
             if (runTauId.find("TauIdBin_2") != string::npos && year.find("2018") != string::npos) UncVal=
-                0.141447801143;
+                0.15;
             if (runTauId.find("TauIdBin_3") != string::npos && year.find("2016") != string::npos) UncVal=
-                0.16051132232;
+                0.16;
             if (runTauId.find("TauIdBin_3") != string::npos && year.find("2017") != string::npos) UncVal=
-                0.226574122906;
+                0.14;
             if (runTauId.find("TauIdBin_3") != string::npos && year.find("2018") != string::npos) UncVal=
-                0.160953804851;
+                0.15;
             if (runTauId.find("TauIdBin_4") != string::npos && year.find("2016") != string::npos) UncVal=
-                0.399211496115;
+                0.23;
             if (runTauId.find("TauIdBin_4") != string::npos && year.find("2017") != string::npos) UncVal=
-                0.425541073084;
+                0.22;
             if (runTauId.find("TauIdBin_4") != string::npos && year.find("2018") != string::npos) UncVal=
-                0.250638097525;
-
+                0.21;
+                
 //            float preFitUncUp=1+UncVal;
 //            float preFitUncDown=1-UncVal;
             float preFitUncUp=1+(sqrt(3.)*UncVal);
