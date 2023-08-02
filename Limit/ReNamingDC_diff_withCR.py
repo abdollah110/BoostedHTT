@@ -312,7 +312,7 @@ for k1 in dirList: # loop over categories
         
         histo_name=histo_name.replace('XH','XH125')
         histo_name=histo_name.replace('ggH','ggH125')
-        histo_name=histo_name.replace('125125','125')
+#        histo_name=histo_name.replace('125125','125')
 #        histo_name=histo_name.replace('XH125','XH125')
 #        histo_name=histo_name.replace('ggH125','ggH125')
         histo_name=histo_name.replace('OutsideAcceptance','OutsideAcceptance125')
