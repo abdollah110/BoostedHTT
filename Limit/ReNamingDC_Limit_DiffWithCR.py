@@ -293,6 +293,8 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('XH','XH125')
         histo_name=histo_name.replace('ggH','ggH125')
         histo_name=histo_name.replace('125125','125')
+        histo_name=histo_name.replace('THU_ggH125','THU_ggH')
+        
 
         histo_name=histo_name.replace('Bin_1','Bin_1_{}_'.format(lepName))
         histo_name=histo_name.replace('Bin_2','Bin_2_{}_'.format(lepName))
