@@ -195,10 +195,14 @@ for inFile in InputRootFiles:
                     
                     
                     hist=File.Get('{}_ztt{}/{}___{}{}{}'.format(channel,origCat,pro,channel,cat,str(isys)))
-                    if not hist:
-                        print 'sample {} does not exist for scale unc'.format('{}_ztt{}/{}___{}{}{}'.format(channel,origCat,pro,channel,cat,str(isys)))
-                        continue
-                    
+                    if not hist or if hist.Integral()==0:
+                        print 'sample {} integral is zero or does not exist for scale unc'.format('{}_ztt{}/{}___{}{}{}'.format(channel,origCat,pro,channel,cat,str(isys)))
+                        histScaleUp.SetBinContent(ibin+1,0)
+                        histScaleUp.SetBinError(ibin+1,.001)
+                        histScaleDown.SetBinContent(ibin+1,0)
+                        histScaleDown.SetBinError(ibin+1,0.001)
+                        
+                    else:                    
                     listHistForScale.append(File.Get('{}_ztt{}/{}___{}{}{}'.format(channel,origCat,pro,channel,cat,str(isys))))
                     
                 maxBinContent,maxBinError=findMaxBin(ibin+1,listHistForScale)
