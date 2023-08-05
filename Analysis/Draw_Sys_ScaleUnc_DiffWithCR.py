@@ -148,7 +148,7 @@ for inFile in InputRootFiles:
                 
                 MaxBinValue= meanCentral+math.sqrt( 1./(numP -1) *sumP  )
                 MinBinValue= meanCentral-math.sqrt( 1./(numN -1) *sumN  )
-                print " after ibin= ", ibin, " meanCentral= ", meanCentral, "  MaxBinValue ", MaxBinValue, " MinBinValue ", MinBinValue
+#                print " after ibin= ", ibin, " meanCentral= ", meanCentral, "  MaxBinValue ", MaxBinValue, " MinBinValue ", MinBinValue
 
                 histPdfUp.SetBinContent(ibin+1,MaxBinValue)
                 histPdfUp.SetBinError(ibin+1,meanError)
@@ -156,7 +156,7 @@ for inFile in InputRootFiles:
                 histPdfDown.SetBinContent(ibin+1,MinBinValue)
                 histPdfDown.SetBinError(ibin+1,meanError)
                 
-            print pro, " " , type, "  HisMean= ", HisMean.Integral() ,  "  \t  histPdfUp.Intergal() ", histPdfUp.Integral() , "   histPdfDown.Integral() ", histPdfDown.Integral()
+#            print pro, " " , type, "  HisMean= ", HisMean.Integral() ,  "  \t  histPdfUp.Intergal() ", histPdfUp.Integral() , "   histPdfDown.Integral() ", histPdfDown.Integral()
                 
             newFile=TFile(File.GetName().replace('.root','_')+"pdfscale.root",'UPDATE')
             tDirectory= newFile.Get(channel+cat)
