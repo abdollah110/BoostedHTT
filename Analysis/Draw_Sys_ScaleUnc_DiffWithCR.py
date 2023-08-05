@@ -196,22 +196,21 @@ for inFile in InputRootFiles:
                     
                     hist=File.Get('{}_ztt{}/{}___{}{}{}'.format(channel,origCat,pro,channel,cat,str(isys)))
                     if not hist or hist.Integral()==0:
-                        print 'sample {} integral is zero or does not exist for scale unc'.format('{}_ztt{}/{}___{}{}{}'.format(channel,origCat,pro,channel,cat,str(isys)))
-                        histScaleUp.SetBinContent(ibin+1,0)
-                        histScaleUp.SetBinError(ibin+1,.001)
-                        histScaleDown.SetBinContent(ibin+1,0)
-                        histScaleDown.SetBinError(ibin+1,0.001)
-                        
-                    else:
-                        listHistForScale.append(File.Get('{}_ztt{}/{}___{}{}{}'.format(channel,origCat,pro,channel,cat,str(isys))))
+                        print 'sample {} does not exist for scale unc'.format('{}_ztt{}/{}___{}{}{}'.format(channel,origCat,pro,channel,cat,str(isys)))
+                        continue
+                    
+                    listHistForScale.append(File.Get('{}_ztt{}/{}___{}{}{}'.format(channel,origCat,pro,channel,cat,str(isys))))
                     
                 maxBinContent,maxBinError=findMaxBin(ibin+1,listHistForScale)
                 minBinContent,minBinError=findMinBin(ibin+1,listHistForScale)
+                if not hist or hist.Integral()==0:
+                        maxBinContent,maxBinError=0,0
+                        minBinContent,minBinError=0,0
                 histScaleUp.SetBinContent(ibin+1,maxBinContent)
                 histScaleUp.SetBinError(ibin+1,maxBinError)
                 histScaleDown.SetBinContent(ibin+1,minBinContent)
                 histScaleDown.SetBinError(ibin+1,minBinError)
-                print " maxBinContent  ", maxBinContent ,"     \t  minBinContent ", minBinContent
+#                print " maxBinContent  ", maxBinContent ,"     \t  minBinContent ", minBinContent
 
             if  histScaleDown.Integral() > HisMean.Integral()*2 or histScaleDown.Integral() < HisMean.Integral()/2:
                 print  pro, " " , type, "  HisMean= ", HisMean.Integral() , "  \t  histScaleUp  in ", histScaleUp.Integral(), "   histScaleDown  ", histScaleDown.Integral()
