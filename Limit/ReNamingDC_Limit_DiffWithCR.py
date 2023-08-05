@@ -286,14 +286,17 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('_GT600','_GT600125')
         histo_name=histo_name.replace('_0_450','_0_450125')
 
-#        histo_name=histo_name.replace('XH125','XH')
-#        histo_name=histo_name.replace('ggH125','ggH')
-#        histo_name=histo_name.replace('OutsideAcceptance','OutsideAcceptance125')
 
-        histo_name=histo_name.replace('XH','XH125')
-        histo_name=histo_name.replace('ggH','ggH125')
-        histo_name=histo_name.replace('125125','125')
-        histo_name=histo_name.replace('THU_ggH125','THU_ggH')
+        if "Inc" in inputfile:
+            histo_name=histo_name.replace('XH','XH125')
+            histo_name=histo_name.replace('ggH','ggH125')
+            histo_name=histo_name.replace('125125','125')
+            histo_name=histo_name.replace('THU_ggH125','THU_ggH')
+        else:
+            histo_name=histo_name.replace('XH125','XH')
+            histo_name=histo_name.replace('ggH125','ggH')
+    #        histo_name=histo_name.replace('OutsideAcceptance','OutsideAcceptance125')
+        
         
 
         histo_name=histo_name.replace('Bin_1','Bin_1_{}_'.format(lepName))
