@@ -209,9 +209,9 @@ for inFile in InputRootFiles:
                 histScaleDown.SetBinError(ibin+1,minBinError)
 #                print " maxBinContent  ", maxBinContent ,"     \t  minBinContent ", minBinContent
 
-            if print histScaleDown.Integral() > HisMean.Integral()*2 or histScaleDown.Integral() < HisMean.Integral()/2:
+            if  histScaleDown.Integral() > HisMean.Integral()*2 or histScaleDown.Integral() < HisMean.Integral()/2:
                 print  pro, " " , type, "  HisMean= ", HisMean.Integral() , "  \t  histScaleUp  in ", histScaleUp.Integral(), "   histScaleDown  ", histScaleDown.Integral()
-            if print histScaleUp.Integral() > HisMean.Integral()*2 or histScaleUp.Integral() < HisMean.Integral()/2:
+            if  histScaleUp.Integral() > HisMean.Integral()*2 or histScaleUp.Integral() < HisMean.Integral()/2:
                 print  pro, " " , type, "  HisMean= ", HisMean.Integral() , "  \t  histScaleUp  in ", histScaleUp.Integral(), "   histScaleDown  ", histScaleDown.Integral()
                 
             
