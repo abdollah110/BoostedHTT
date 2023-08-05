@@ -211,7 +211,7 @@ for inFile in InputRootFiles:
                 histScaleUp.SetBinError(ibin+1,maxBinError)
                 histScaleDown.SetBinContent(ibin+1,minBinContent)
                 histScaleDown.SetBinError(ibin+1,minBinError)
-#                print " maxBinContent  ", maxBinContent ,"     \t  minBinContent ", minBinContent
+                print " maxBinContent  ", maxBinContent ,"     \t  minBinContent ", minBinContent
 
             if  histScaleDown.Integral() > HisMean.Integral()*2 or histScaleDown.Integral() < HisMean.Integral()/2:
                 print  pro, " " , type, "  HisMean= ", HisMean.Integral() , "  \t  histScaleUp  in ", histScaleUp.Integral(), "   histScaleDown  ", histScaleDown.Integral()
