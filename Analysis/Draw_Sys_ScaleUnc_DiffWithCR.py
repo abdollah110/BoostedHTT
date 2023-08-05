@@ -203,7 +203,7 @@ for inFile in InputRootFiles:
                         histScaleDown.SetBinError(ibin+1,0.001)
                         
                     else:
-                    listHistForScale.append(File.Get('{}_ztt{}/{}___{}{}{}'.format(channel,origCat,pro,channel,cat,str(isys))))
+                        listHistForScale.append(File.Get('{}_ztt{}/{}___{}{}{}'.format(channel,origCat,pro,channel,cat,str(isys))))
                     
                 maxBinContent,maxBinError=findMaxBin(ibin+1,listHistForScale)
                 minBinContent,minBinError=findMinBin(ibin+1,listHistForScale)
