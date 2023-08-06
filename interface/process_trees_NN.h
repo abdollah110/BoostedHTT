@@ -506,18 +506,18 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
                 for (int i = 0 ; i < fake_hist_shape->GetNbinsX(); i++){
             
                 fake_hist_shape->SetBinContent(i+1, 0.001);
-                fake_hist_shape->SetBinError(i+1, 0.001);
+                fake_hist_shape->SetBinError(i+1, 0.01);
 
                 fake_hist_shape_Up->SetBinContent(i+1, 0.001);
-                fake_hist_shape_Up->SetBinError(i+1, 0.001);
+                fake_hist_shape_Up->SetBinError(i+1, 0.01);
 
                 fake_hist_shape_Down->SetBinContent(i+1, 0.001);
-                fake_hist_shape_Down->SetBinError(i+1, 0.001);
+                fake_hist_shape_Down->SetBinError(i+1, 0.01);
 
                 fake_hist_shape_fr_Up->SetBinContent(i+1, 0.001);
-                fake_hist_shape_fr_Up->SetBinError(i+1, 0.001);
+                fake_hist_shape_fr_Up->SetBinError(i+1, 0.01);
                 fake_hist_shape_fr_Down->SetBinContent(i+1, 0.001);
-                fake_hist_shape_fr_Down->SetBinError(i+1, 0.001);
+                fake_hist_shape_fr_Down->SetBinError(i+1, 0.01);
         }
         }
         
@@ -526,24 +526,24 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
             if (fake_hist_shape->GetBinContent(i+1) <0 ){
                 float negBin=fake_hist_shape->GetBinContent(i+1);
                 fake_hist_shape->SetBinContent(i+1, 0.0001);
-                fake_hist_shape->SetBinError(i+1, 0.001);
+                fake_hist_shape->SetBinError(i+1, 0.01);
                 std::cout<< cat.first.c_str() << "   QCD bin of "<<i <<"  ratio bin/TotIntegral"<< negBin/totIntegral <<"\n";
             }
             if (fake_hist_shape_Up->GetBinContent(i+1) <0 ){
                 fake_hist_shape_Up->SetBinContent(i+1, 0.001);
-                fake_hist_shape_Up->SetBinError(i+1, 0.001);
+                fake_hist_shape_Up->SetBinError(i+1, 0.01);
             }
             if (fake_hist_shape_Down->GetBinContent(i+1) <0 ){
                 fake_hist_shape_Down->SetBinContent(i+1, 0.001);
-                fake_hist_shape_Down->SetBinError(i+1, 0.001);
+                fake_hist_shape_Down->SetBinError(i+1, 0.01);
             }
             if (fake_hist_shape_fr_Up->GetBinContent(i+1) <0 ){
                 fake_hist_shape_fr_Up->SetBinContent(i+1, 0.001);
-                fake_hist_shape_fr_Up->SetBinError(i+1, 0.001);
+                fake_hist_shape_fr_Up->SetBinError(i+1, 0.01);
             }
             if (fake_hist_shape_fr_Down->GetBinContent(i+1) <0 ){
                 fake_hist_shape_fr_Down->SetBinContent(i+1, 0.001);
-                fake_hist_shape_fr_Down->SetBinError(i+1, 0.001);
+                fake_hist_shape_fr_Down->SetBinError(i+1, 0.01);
             }
             
         }
