@@ -23,18 +23,13 @@ parser.add_argument(
         dest="outputfile",
         default="Y.root",
         help="Which file1name to run over?")
-parser.add_argument(
-        "-d",
-        "--diff",
-        action="store",
-        dest="diff",
-        default="PTH",
-        help="Is that PYH or PTJ")
 args = parser.parse_args()
 
 inputfile =args.inputfile
 outputfile=args.outputfile
-Diff=args.diff
+Diff="PTH"
+if 'jpt' in inputfile or 'ptj' in inputfile:
+        Diff="PTJ"
 
 
 inputfile =args.inputfile
