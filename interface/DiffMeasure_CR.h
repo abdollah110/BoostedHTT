@@ -334,11 +334,11 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
 
         //========================================================================================================
         //                // ADD protection
-//        float totIntegral =fake_hist_shape->Integral();
+        float totIntegral =fake_hist_shape->Integral();
 //        if (totIntegral< 0){
-//        
+//
 //                for (int i = 0 ; i < fake_hist_shape->GetNbinsX(); i++){
-//            
+//
 //                fake_hist_shape->SetBinContent(i+1, 0.001);
 //                fake_hist_shape->SetBinError(i+1, 0.01);
 //
