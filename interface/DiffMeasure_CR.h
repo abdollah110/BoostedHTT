@@ -295,17 +295,17 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
         auto fake_hist_shape_fr_Down = hists_FakeShape_1d.at(cat.first.c_str())[4];
         
 
-        cout<<fake_hist_norm.Integral()<<"\n";
-        cout<<fake_hist_norm_Up.Integral()<<"\n";
-        cout<<fake_hist_norm_Down.Integral()<<"\n";
-        cout<<fake_hist_norm_fr_Up.Integral()<<"\n";
-        cout<<fake_hist_norm_fr_Down.Integral()<<"\n";
+        cout<<fake_hist_norm->Integral()<<"\n";
+        cout<<fake_hist_norm_Up->Integral()<<"\n";
+        cout<<fake_hist_norm_Down->Integral()<<"\n";
+        cout<<fake_hist_norm_fr_Up->Integral()<<"\n";
+        cout<<fake_hist_norm_fr_Down->Integral()<<"\n";
         
-        cout<<fake_hist_shape.Integral()<<"\n";
-        cout<<fake_hist_shape_Up.Integral()<<"\n";
-        cout<<fake_hist_shape_Down.Integral()<<"\n";
-        cout<<fake_hist_shape_fr_Up.Integral()<<"\n";
-        cout<<fake_hist_shape_fr_Down.Integral()<<"\n";
+        cout<<fake_hist_shape->Integral()<<"\n";
+        cout<<fake_hist_shape_Up->Integral()<<"\n";
+        cout<<fake_hist_shape_Down->Integral()<<"\n";
+        cout<<fake_hist_shape_fr_Up->Integral()<<"\n";
+        cout<<fake_hist_shape_fr_Down->Integral()<<"\n";
         
 
         
