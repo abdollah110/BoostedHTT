@@ -282,7 +282,7 @@ for k1 in dirList: # loop over categories
         histo_name=histo_name.replace('_0_450','_0_450125')
 
 
-        if "Inc" in inputfile:
+        if "Inc" in outputfile:
             histo_name=histo_name.replace('XH','XH125')
             histo_name=histo_name.replace('ggH','ggH125')
             histo_name=histo_name.replace('125125','125')
