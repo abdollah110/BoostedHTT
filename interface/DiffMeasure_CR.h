@@ -356,6 +356,10 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
             fake_hist_shape_fr_Down->Scale(fake_hist_norm_fr_Down->Integral()/fake_hist_shape_fr_Down->Integral());
         
         std::cout<<"\n\n Norm QCD is = "<<fake_hist_norm->Integral() <<   "  shape integral is "<< fake_hist_shape->Integral()  <<"\n";
+        std::cout<<"\n\n fake_hist_shape_Up = "<<fake_hist_shape_Up->Integral() <<"\n";
+        std::cout<<"\n\n fake_hist_shape_Down = "<<fake_hist_shape_Down->Integral() <<"\n";
+        std::cout<<"\n\n fake_hist_shape_fr_Up = "<<fake_hist_shape_fr_Up->Integral() <<"\n";
+        std::cout<<"\n\n fake_hist_shape_fr_Down = "<<fake_hist_shape_fr_Down->Integral() <<"\n";
         
         // Only make QCD for nominal process and not sys Up/Down
         if (dir.find("Up")==string::npos && dir.find("Down")==string::npos){
