@@ -331,31 +331,53 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
         
         
         //========================================================================================================
+
+        //========================================================================================================
         //                // ADD protection
+        float totIntegral =fake_hist_shape->Integral();
+        if (totIntegral< 0){
+        
+                for (int i = 0 ; i < fake_hist_shape->GetNbinsX(); i++){
+            
+                fake_hist_shape->SetBinContent(i+1, 0.001);
+                fake_hist_shape->SetBinError(i+1, 0.01);
+
+                fake_hist_shape_Up->SetBinContent(i+1, 0.001);
+                fake_hist_shape_Up->SetBinError(i+1, 0.01);
+
+                fake_hist_shape_Down->SetBinContent(i+1, 0.001);
+                fake_hist_shape_Down->SetBinError(i+1, 0.01);
+
+                fake_hist_shape_fr_Up->SetBinContent(i+1, 0.001);
+                fake_hist_shape_fr_Up->SetBinError(i+1, 0.01);
+                fake_hist_shape_fr_Down->SetBinContent(i+1, 0.001);
+                fake_hist_shape_fr_Down->SetBinError(i+1, 0.01);
+        }
+        }
+        
         for (int i = 0 ; i < fake_hist_shape->GetNbinsX(); i++){
             
             if (fake_hist_shape->GetBinContent(i+1) <0 ){
                 float negBin=fake_hist_shape->GetBinContent(i+1);
-                float totIntegral =fake_hist_shape->Integral();
                 fake_hist_shape->SetBinContent(i+1, 0.001);
-                fake_hist_shape->SetBinError(i+1, 0.001);
+                fake_hist_shape->SetBinError(i+1, 0.01);
                 std::cout<< cat.first.c_str() << "   QCD bin of "<<i <<"  ratio bin/TotIntegral"<< negBin/totIntegral <<"\n";
             }
             if (fake_hist_shape_Up->GetBinContent(i+1) <0 ){
                 fake_hist_shape_Up->SetBinContent(i+1, 0.001);
-                fake_hist_shape_Up->SetBinError(i+1, 0.001);
+                fake_hist_shape_Up->SetBinError(i+1, 0.01);
             }
             if (fake_hist_shape_Down->GetBinContent(i+1) <0 ){
                 fake_hist_shape_Down->SetBinContent(i+1, 0.001);
-                fake_hist_shape_Down->SetBinError(i+1, 0.001);
+                fake_hist_shape_Down->SetBinError(i+1, 0.01);
             }
             if (fake_hist_shape_fr_Up->GetBinContent(i+1) <0 ){
                 fake_hist_shape_fr_Up->SetBinContent(i+1, 0.001);
-                fake_hist_shape_fr_Up->SetBinError(i+1, 0.001);
+                fake_hist_shape_fr_Up->SetBinError(i+1, 0.01);
             }
             if (fake_hist_shape_fr_Down->GetBinContent(i+1) <0 ){
                 fake_hist_shape_fr_Down->SetBinContent(i+1, 0.001);
-                fake_hist_shape_fr_Down->SetBinError(i+1, 0.001);
+                fake_hist_shape_fr_Down->SetBinError(i+1, 0.01);
             }
             
         }
@@ -370,6 +392,47 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
             fake_hist_shape_fr_Up->Scale(fake_hist_norm_fr_Up->Integral()/fake_hist_shape_fr_Up->Integral());
         if (fake_hist_shape_original_fr_down->Integral() > 0)
             fake_hist_shape_fr_Down->Scale(fake_hist_norm_fr_Down->Integral()/fake_hist_shape_fr_Down->Integral());
+            
+//
+//        //                // ADD protection
+//        for (int i = 0 ; i < fake_hist_shape->GetNbinsX(); i++){
+//
+//            if (fake_hist_shape->GetBinContent(i+1) <0 ){
+//                float negBin=fake_hist_shape->GetBinContent(i+1);
+//                float totIntegral =fake_hist_shape->Integral();
+//                fake_hist_shape->SetBinContent(i+1, 0.001);
+//                fake_hist_shape->SetBinError(i+1, 0.001);
+//                std::cout<< cat.first.c_str() << "   QCD bin of "<<i <<"  ratio bin/TotIntegral"<< negBin/totIntegral <<"\n";
+//            }
+//            if (fake_hist_shape_Up->GetBinContent(i+1) <0 ){
+//                fake_hist_shape_Up->SetBinContent(i+1, 0.001);
+//                fake_hist_shape_Up->SetBinError(i+1, 0.001);
+//            }
+//            if (fake_hist_shape_Down->GetBinContent(i+1) <0 ){
+//                fake_hist_shape_Down->SetBinContent(i+1, 0.001);
+//                fake_hist_shape_Down->SetBinError(i+1, 0.001);
+//            }
+//            if (fake_hist_shape_fr_Up->GetBinContent(i+1) <0 ){
+//                fake_hist_shape_fr_Up->SetBinContent(i+1, 0.001);
+//                fake_hist_shape_fr_Up->SetBinError(i+1, 0.001);
+//            }
+//            if (fake_hist_shape_fr_Down->GetBinContent(i+1) <0 ){
+//                fake_hist_shape_fr_Down->SetBinContent(i+1, 0.001);
+//                fake_hist_shape_fr_Down->SetBinError(i+1, 0.001);
+//            }
+//
+//        }
+//
+//        if (fake_hist_shape_original->Integral() > 0)
+//            fake_hist_shape->Scale(fake_hist_norm->Integral()/fake_hist_shape->Integral());
+//        if (fake_hist_shape_original_up->Integral() > 0)
+//            fake_hist_shape_Up->Scale(fake_hist_norm_Up->Integral()/fake_hist_shape_Up->Integral());
+//        if (fake_hist_shape_original_down->Integral() > 0)
+//            fake_hist_shape_Down->Scale(fake_hist_norm_Down->Integral()/fake_hist_shape_Down->Integral());
+//        if (fake_hist_shape_original_fr_up->Integral() > 0)
+//            fake_hist_shape_fr_Up->Scale(fake_hist_norm_fr_Up->Integral()/fake_hist_shape_fr_Up->Integral());
+//        if (fake_hist_shape_original_fr_down->Integral() > 0)
+//            fake_hist_shape_fr_Down->Scale(fake_hist_norm_fr_Down->Integral()/fake_hist_shape_fr_Down->Integral());
         
         std::cout<<"\n\n Norm QCD is = "<<fake_hist_norm->Integral() <<   "  shape integral is "<< fake_hist_shape->Integral()  <<"\n";
         std::cout<<"\n\n fake_hist_shape_Up = "<<fake_hist_shape_Up->Integral() <<"\n";
