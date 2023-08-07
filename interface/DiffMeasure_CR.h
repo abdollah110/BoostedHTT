@@ -382,6 +382,8 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
             
         }
         
+        cout<<"Before fake_hist_shape_Down fake_hist_norm_Down"<<fake_hist_shape_Down->Integral() <<"  "<<fake_hist_norm_Down->Integral()<<"\n\n";
+        
         if (fake_hist_shape_original->Integral() > 0)
             fake_hist_shape->Scale(fake_hist_norm->Integral()/fake_hist_shape->Integral());
         if (fake_hist_shape_original_up->Integral() > 0)
@@ -392,7 +394,9 @@ void HistTool::writeTemplates(string dir, string channel, string year) {
             fake_hist_shape_fr_Up->Scale(fake_hist_norm_fr_Up->Integral()/fake_hist_shape_fr_Up->Integral());
         if (fake_hist_shape_original_fr_down->Integral() > 0)
             fake_hist_shape_fr_Down->Scale(fake_hist_norm_fr_Down->Integral()/fake_hist_shape_fr_Down->Integral());
-            
+
+        cout<<"After fake_hist_shape_Down fake_hist_norm_Down"<<fake_hist_shape_Down->Integral() <<"  "<<fake_hist_norm_Down->Integral()<<"\n\n";
+
 //
 //        //                // ADD protection
 //        for (int i = 0 ; i < fake_hist_shape->GetNbinsX(); i++){
