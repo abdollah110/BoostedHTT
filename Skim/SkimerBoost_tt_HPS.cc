@@ -102,12 +102,13 @@ void SkimerBoost::Loop(TString OutputFile)
         
         cout<<"nTau "<<nTau<<endl;
         for (int ibtau = 0; ibtau < nTau; ++ibtau){
-            
+                cout<<"nTau 1"<<endl;
             if (tauPt->at(ibtau) < 30 || fabs(tauEta->at(ibtau)) > 2.3 ) continue;
             if (taupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
+            cout<<"nTau 2"<<endl;
 //            if (taupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
             if (tauByIsolationMVArun2v1DBoldDMwLTraw->at(ibtau) < -0.5) continue;
-            
+            cout<<"nTau 3"<<endl;
             LeadTau4Momtmp.SetPtEtaPhiM(tauPt->at(ibtau),tauEta->at(ibtau),tauPhi->at(ibtau),tauMass->at(ibtau));
             
             
@@ -116,19 +117,22 @@ void SkimerBoost::Loop(TString OutputFile)
                 
                 if (tauPt->at(jbtau) < 30 || fabs(tauEta->at(jbtau)) > 2.3 ) continue;
                 if (taupfTausDiscriminationByDecayModeFinding->at(jbtau) < 0.5 ) continue;
+                cout<<"nTau 4"<<endl;
 //                if (taupfTausDiscriminationByDecayModeFindingNewDMs->at(jbtau) < 0.5 ) continue;
                 if (tauByIsolationMVArun2v1DBoldDMwLTraw->at(jbtau) < -0.5) continue;
-                
+                cout<<"nTau 5"<<endl;
                 SubTau4Momtmp.SetPtEtaPhiM(tauPt->at(jbtau),tauEta->at(jbtau),tauPhi->at(jbtau),tauMass->at(jbtau));
-                
+                cout<<"nTau 6"<<endl;
                 
                 if(SubTau4Momtmp.DeltaR(LeadTau4Momtmp) > 0.8 || SubTau4Momtmp.DeltaR(LeadTau4Momtmp) < 0.1) continue;
                 decayMode1 = tauDecayMode->at(ibtau);
                 decayMode2 = tauDecayMode->at(jbtau);
+                cout<<"nTau 7"<<endl;
                 numTauTau++;
                 if (!foundApair){
                     leadtauIndex=ibtau;
                     subtauIndex=jbtau;
+                    cout<<"nTau 8"<<endl;
                 }
                 foundApair=true;
                 //                break;
@@ -138,7 +142,7 @@ void SkimerBoost::Loop(TString OutputFile)
         
         if(numTauTau < 1) continue;
         hcount->Fill(4);
-        
+        cout<<"nTau 9"<<endl;
         LeadTau4Mom.SetPtEtaPhiM(tauPt->at(leadtauIndex),tauEta->at(leadtauIndex),tauPhi->at(leadtauIndex),tauMass->at(leadtauIndex));
         SubTau4Mom.SetPtEtaPhiM(tauPt->at(subtauIndex),tauEta->at(subtauIndex),tauPhi->at(subtauIndex),tauMass->at(subtauIndex));
         
@@ -163,9 +167,10 @@ void SkimerBoost::Loop(TString OutputFile)
         NumPair=numTauTau;
         
         BoostTree->Fill();
+        cout<<"nTau 10"<<endl;
     }
     
-    
+    cout<<"nTau 11"<<endl;
     BoostTree->SetName("tautau_tree");
     BoostTree->AutoSave();
     hEvents->Write();
