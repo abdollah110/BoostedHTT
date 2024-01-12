@@ -100,7 +100,7 @@ void SkimerBoost::Loop(TString OutputFile)
         auto numTauTau(0);
         bool foundApair= false;
         
-        
+        cout<<"nTau "<<nTau<<;
         for (int ibtau = 0; ibtau < nTau; ++ibtau){
             
             if (tauPt->at(ibtau) < 30 || fabs(tauEta->at(ibtau)) > 2.3 ) continue;
