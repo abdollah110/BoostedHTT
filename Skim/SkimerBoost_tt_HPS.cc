@@ -106,7 +106,7 @@ void SkimerBoost::Loop(TString OutputFile)
             if (tauPt->at(ibtau) < 30 || fabs(tauEta->at(ibtau)) > 2.3 ) continue;
             if (taupfTausDiscriminationByDecayModeFinding->at(ibtau) < 0.5 ) continue;
 //            if (taupfTausDiscriminationByDecayModeFindingNewDMs->at(ibtau) < 0.5 ) continue;
-            if (tauByIsolationMVArun2v1DBoldDMwLTrawNew->at(ibtau) < -0.5) continue;
+            if (tauByIsolationMVArun2v1DBoldDMwLTraw->at(ibtau) < -0.5) continue;
             
             LeadTau4Momtmp.SetPtEtaPhiM(tauPt->at(ibtau),tauEta->at(ibtau),tauPhi->at(ibtau),tauMass->at(ibtau));
             
@@ -117,7 +117,7 @@ void SkimerBoost::Loop(TString OutputFile)
                 if (tauPt->at(jbtau) < 30 || fabs(tauEta->at(jbtau)) > 2.3 ) continue;
                 if (taupfTausDiscriminationByDecayModeFinding->at(jbtau) < 0.5 ) continue;
 //                if (taupfTausDiscriminationByDecayModeFindingNewDMs->at(jbtau) < 0.5 ) continue;
-                if (tauByIsolationMVArun2v1DBoldDMwLTrawNew->at(jbtau) < -0.5) continue;
+                if (tauByIsolationMVArun2v1DBoldDMwLTraw->at(jbtau) < -0.5) continue;
                 
                 SubTau4Momtmp.SetPtEtaPhiM(tauPt->at(jbtau),tauEta->at(jbtau),tauPhi->at(jbtau),tauMass->at(jbtau));
                 

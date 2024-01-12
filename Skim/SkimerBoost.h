@@ -241,7 +241,7 @@ public :
    vector<bool>    *boostedTauByLooseIsolationMVArun2v1DBoldDMwLT;
    vector<bool>    *boostedTauByTightIsolationMVArun2v1DBoldDMwLT;
    vector<float>   *boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew;
-    vector<float>   *tauByIsolationMVArun2v1DBoldDMwLTrawNew;
+    vector<float>   *tauByIsolationMVArun2v1DBoldDMwLTraw;
    vector<bool>    *boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew;
    vector<bool>    *boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew;
    vector<bool>    *boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew;
@@ -566,7 +566,7 @@ public :
    TBranch        *b_boostedTauByLooseIsolationMVArun2v1DBoldDMwLT;   //!
    TBranch        *b_boostedTauByTightIsolationMVArun2v1DBoldDMwLT;   //!
    TBranch        *b_boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew;   //!
-   TBranch        *b_tauByIsolationMVArun2v1DBoldDMwLTrawNew;   //!
+   TBranch        *b_tauByIsolationMVArun2v1DBoldDMwLTraw;   //!
    TBranch        *b_boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew;   //!
    TBranch        *b_boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew;   //!
    TBranch        *b_boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew;   //!
@@ -853,7 +853,7 @@ void SkimerBoost::Init(TTree *tree)
    boostedTauByLooseIsolationMVArun2v1DBoldDMwLT = 0;
    boostedTauByTightIsolationMVArun2v1DBoldDMwLT = 0;
    boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew = 0;
-   tauByIsolationMVArun2v1DBoldDMwLTrawNew = 0;
+   tauByIsolationMVArun2v1DBoldDMwLTraw = 0;
    boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew = 0;
    boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew = 0;
    boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew = 0;
@@ -1181,7 +1181,7 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBoldDMwLT", &boostedTauByLooseIsolationMVArun2v1DBoldDMwLT, &b_boostedTauByLooseIsolationMVArun2v1DBoldDMwLT);
    fChain->SetBranchAddress("boostedTauByTightIsolationMVArun2v1DBoldDMwLT", &boostedTauByTightIsolationMVArun2v1DBoldDMwLT, &b_boostedTauByTightIsolationMVArun2v1DBoldDMwLT);
    fChain->SetBranchAddress("boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew", &boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew, &b_boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew);
-   fChain->SetBranchAddress("tauByIsolationMVArun2v1DBoldDMwLTrawNew", &tauByIsolationMVArun2v1DBoldDMwLTrawNew, &b_tauByIsolationMVArun2v1DBoldDMwLTrawNew);
+   fChain->SetBranchAddress("tauByIsolationMVArun2v1DBoldDMwLTraw", &tauByIsolationMVArun2v1DBoldDMwLTraw, &b_tauByIsolationMVArun2v1DBoldDMwLTraw);
    fChain->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew", &boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew, &b_boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew);
    fChain->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew", &boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew, &b_boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew);
    fChain->SetBranchAddress("boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew", &boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew, &b_boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew);
