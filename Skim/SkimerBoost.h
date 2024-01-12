@@ -53,6 +53,7 @@ public :
    Float_t         genHT;
    Int_t           nPUInfo;
    vector<float>   *puTrue;
+   vector<float>    *psWeight_;
    Int_t           nLHE;
    Float_t         Rivet_VEta;
    Float_t         Rivet_VPt;
@@ -226,8 +227,10 @@ public :
    vector<float>   *jetTotal;
    vector<ULong64_t> *jetFiredTrgs;
    Int_t           nBoostedTau;
+   Int_t           nTau;
    Int_t           nBoostedTauOrig;
    vector<bool>    *boostedTaupfTausDiscriminationByDecayModeFinding;
+   vector<bool>    *taupfTausDiscriminationByDecayModeFinding;
    vector<bool>    *boostedTaupfTausDiscriminationByDecayModeFindingNewDMs;
    vector<bool>    *boostedTauByMVA6LooseElectronRejection;
    vector<bool>    *boostedTauByMVA6TightElectronRejection;
@@ -238,6 +241,7 @@ public :
    vector<bool>    *boostedTauByLooseIsolationMVArun2v1DBoldDMwLT;
    vector<bool>    *boostedTauByTightIsolationMVArun2v1DBoldDMwLT;
    vector<float>   *boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew;
+    vector<float>   *tauByIsolationMVArun2v1DBoldDMwLTrawNew;
    vector<bool>    *boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew;
    vector<bool>    *boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew;
    vector<bool>    *boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew;
@@ -249,6 +253,10 @@ public :
    vector<bool>    *boostedTauByMediumIsolationMVArun2v1DBnewDMwLTNew;
    vector<bool>    *boostedTauByTightIsolationMVArun2v1DBnewDMwLTNew;
    vector<bool>    *boostedTauByVTightIsolationMVArun2v1DBnewDMwLTNew;
+   vector<float>   *tauEta;
+   vector<float>   *tauPhi;
+   vector<float>   *tauPt;
+   vector<float>   *tauEt;
    vector<float>   *boostedTauEta;
    vector<float>   *boostedTauPhi;
    vector<float>   *boostedTauPt;
@@ -261,6 +269,7 @@ public :
    vector<float>   *boostedTauVz;
    vector<float>   *boostedTauEnergy;
    vector<float>   *boostedTauMass;
+   vector<float>   *tauMass;
    vector<float>   *boostedTauDxy;
    vector<float>   *boostedTauZImpact;
    vector<int>     *boostedTauDecayMode;
@@ -544,6 +553,7 @@ public :
    TBranch        *b_nBoostedTau;   //!
    TBranch        *b_nBoostedTauOrig;   //!
    TBranch        *b_boostedTaupfTausDiscriminationByDecayModeFinding;   //!
+   TBranch        *b_taupfTausDiscriminationByDecayModeFinding;   //!
    TBranch        *b_boostedTaupfTausDiscriminationByDecayModeFindingNewDMs;   //!
    TBranch        *b_boostedTauByMVA6LooseElectronRejection;   //!
    TBranch        *b_boostedTauByMVA6TightElectronRejection;   //!
@@ -554,6 +564,7 @@ public :
    TBranch        *b_boostedTauByLooseIsolationMVArun2v1DBoldDMwLT;   //!
    TBranch        *b_boostedTauByTightIsolationMVArun2v1DBoldDMwLT;   //!
    TBranch        *b_boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew;   //!
+   TBranch        *b_tauByIsolationMVArun2v1DBoldDMwLTrawNew;   //!
    TBranch        *b_boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew;   //!
    TBranch        *b_boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew;   //!
    TBranch        *b_boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew;   //!
@@ -569,6 +580,10 @@ public :
    TBranch        *b_boostedTauPhi;   //!
    TBranch        *b_boostedTauPt;   //!
    TBranch        *b_boostedTauEt;   //!
+   TBranch        *b_tauEta;   //!
+   TBranch        *b_tauPhi;   //!
+   TBranch        *b_tauPt;   //!
+   TBranch        *b_tauEt;   //!
    TBranch        *b_boostedTauCharge;   //!
    TBranch        *b_boostedTauP;   //!
    TBranch        *b_boostedTauPx;   //!
@@ -823,6 +838,7 @@ void SkimerBoost::Init(TTree *tree)
    jetTotal = 0;
    jetFiredTrgs = 0;
    boostedTaupfTausDiscriminationByDecayModeFinding = 0;
+   taupfTausDiscriminationByDecayModeFinding = 0;
    boostedTaupfTausDiscriminationByDecayModeFindingNewDMs = 0;
    boostedTauByMVA6LooseElectronRejection = 0;
    boostedTauByMVA6TightElectronRejection = 0;
@@ -833,6 +849,7 @@ void SkimerBoost::Init(TTree *tree)
    boostedTauByLooseIsolationMVArun2v1DBoldDMwLT = 0;
    boostedTauByTightIsolationMVArun2v1DBoldDMwLT = 0;
    boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew = 0;
+   tauByIsolationMVArun2v1DBoldDMwLTrawNew = 0;
    boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew = 0;
    boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew = 0;
    boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew = 0;
@@ -847,6 +864,10 @@ void SkimerBoost::Init(TTree *tree)
    boostedTauEta = 0;
    boostedTauPhi = 0;
    boostedTauPt = 0;
+   tauEt = 0;
+   tauEta = 0;
+   tauPhi = 0;
+   tauPt = 0;
    boostedTauEt = 0;
    boostedTauCharge = 0;
    boostedTauP = 0;
@@ -1140,8 +1161,10 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("jetTotal", &jetTotal, &b_jetTotal);
    fChain->SetBranchAddress("jetFiredTrgs", &jetFiredTrgs, &b_jetFiredTrgs);
    fChain->SetBranchAddress("nBoostedTau", &nBoostedTau, &b_nBoostedTau);
+   fChain->SetBranchAddress("nTau", &nTau, &b_nTau);
    fChain->SetBranchAddress("nBoostedTauOrig", &nBoostedTauOrig, &b_nBoostedTauOrig);
    fChain->SetBranchAddress("boostedTaupfTausDiscriminationByDecayModeFinding", &boostedTaupfTausDiscriminationByDecayModeFinding, &b_boostedTaupfTausDiscriminationByDecayModeFinding);
+   fChain->SetBranchAddress("taupfTausDiscriminationByDecayModeFinding", &taupfTausDiscriminationByDecayModeFinding, &b_taupfTausDiscriminationByDecayModeFinding);
    fChain->SetBranchAddress("boostedTaupfTausDiscriminationByDecayModeFindingNewDMs", &boostedTaupfTausDiscriminationByDecayModeFindingNewDMs, &b_boostedTaupfTausDiscriminationByDecayModeFindingNewDMs);
    fChain->SetBranchAddress("boostedTauByMVA6LooseElectronRejection", &boostedTauByMVA6LooseElectronRejection, &b_boostedTauByMVA6LooseElectronRejection);
    fChain->SetBranchAddress("boostedTauByMVA6TightElectronRejection", &boostedTauByMVA6TightElectronRejection, &b_boostedTauByMVA6TightElectronRejection);
@@ -1152,6 +1175,7 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBoldDMwLT", &boostedTauByLooseIsolationMVArun2v1DBoldDMwLT, &b_boostedTauByLooseIsolationMVArun2v1DBoldDMwLT);
    fChain->SetBranchAddress("boostedTauByTightIsolationMVArun2v1DBoldDMwLT", &boostedTauByTightIsolationMVArun2v1DBoldDMwLT, &b_boostedTauByTightIsolationMVArun2v1DBoldDMwLT);
    fChain->SetBranchAddress("boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew", &boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew, &b_boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew);
+   fChain->SetBranchAddress("tauByIsolationMVArun2v1DBoldDMwLTrawNew", &tauByIsolationMVArun2v1DBoldDMwLTrawNew, &b_tauByIsolationMVArun2v1DBoldDMwLTrawNew);
    fChain->SetBranchAddress("boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew", &boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew, &b_boostedTauByVLooseIsolationMVArun2v1DBoldDMwLTNew);
    fChain->SetBranchAddress("boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew", &boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew, &b_boostedTauByLooseIsolationMVArun2v1DBoldDMwLTNew);
    fChain->SetBranchAddress("boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew", &boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew, &b_boostedTauByMediumIsolationMVArun2v1DBoldDMwLTNew);
@@ -1163,6 +1187,10 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("boostedTauByMediumIsolationMVArun2v1DBnewDMwLTNew", &boostedTauByMediumIsolationMVArun2v1DBnewDMwLTNew, &b_boostedTauByMediumIsolationMVArun2v1DBnewDMwLTNew);
    fChain->SetBranchAddress("boostedTauByTightIsolationMVArun2v1DBnewDMwLTNew", &boostedTauByTightIsolationMVArun2v1DBnewDMwLTNew, &b_boostedTauByTightIsolationMVArun2v1DBnewDMwLTNew);
    fChain->SetBranchAddress("boostedTauByVTightIsolationMVArun2v1DBnewDMwLTNew", &boostedTauByVTightIsolationMVArun2v1DBnewDMwLTNew, &b_boostedTauByVTightIsolationMVArun2v1DBnewDMwLTNew);
+   fChain->SetBranchAddress("tauEta", &tauEta, &b_tauEta);
+   fChain->SetBranchAddress("tauPhi", &tauPhi, &b_tauPhi);
+   fChain->SetBranchAddress("tauPt", &tauPt, &b_tauPt);
+   fChain->SetBranchAddress("tauEt", &tauEt, &b_tauEt);
    fChain->SetBranchAddress("boostedTauEta", &boostedTauEta, &b_boostedTauEta);
    fChain->SetBranchAddress("boostedTauPhi", &boostedTauPhi, &b_boostedTauPhi);
    fChain->SetBranchAddress("boostedTauPt", &boostedTauPt, &b_boostedTauPt);
@@ -1175,6 +1203,7 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("boostedTauVz", &boostedTauVz, &b_boostedTauVz);
    fChain->SetBranchAddress("boostedTauEnergy", &boostedTauEnergy, &b_boostedTauEnergy);
    fChain->SetBranchAddress("boostedTauMass", &boostedTauMass, &b_boostedTauMass);
+   fChain->SetBranchAddress("tauMass", &tauMass, &b_tauMass);
    fChain->SetBranchAddress("boostedTauDxy", &boostedTauDxy, &b_boostedTauDxy);
    fChain->SetBranchAddress("boostedTauZImpact", &boostedTauZImpact, &b_boostedTauZImpact);
    fChain->SetBranchAddress("boostedTauDecayMode", &boostedTauDecayMode, &b_boostedTauDecayMode);
