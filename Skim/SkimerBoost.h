@@ -273,6 +273,7 @@ public :
    vector<float>   *boostedTauDxy;
    vector<float>   *boostedTauZImpact;
    vector<int>     *boostedTauDecayMode;
+   vector<int>     *tauDecayMode;
    vector<bool>    *boostedTauLeadChargedHadronExists;
    vector<float>   *boostedTauLeadChargedHadronEta;
    vector<float>   *boostedTauLeadChargedHadronPhi;
@@ -551,6 +552,7 @@ public :
    TBranch        *b_jetTotal;   //!
    TBranch        *b_jetFiredTrgs;   //!
    TBranch        *b_nBoostedTau;   //!
+   TBranch        *b_nTau;   //!
    TBranch        *b_nBoostedTauOrig;   //!
    TBranch        *b_boostedTaupfTausDiscriminationByDecayModeFinding;   //!
    TBranch        *b_taupfTausDiscriminationByDecayModeFinding;   //!
@@ -592,9 +594,11 @@ public :
    TBranch        *b_boostedTauVz;   //!
    TBranch        *b_boostedTauEnergy;   //!
    TBranch        *b_boostedTauMass;   //!
+   TBranch        *b_tauMass;   //!
    TBranch        *b_boostedTauDxy;   //!
    TBranch        *b_boostedTauZImpact;   //!
    TBranch        *b_boostedTauDecayMode;   //!
+   TBranch        *b_tauDecayMode;   //!
    TBranch        *b_boostedTauLeadChargedHadronExists;   //!
    TBranch        *b_boostedTauLeadChargedHadronEta;   //!
    TBranch        *b_boostedTauLeadChargedHadronPhi;   //!
@@ -877,9 +881,11 @@ void SkimerBoost::Init(TTree *tree)
    boostedTauVz = 0;
    boostedTauEnergy = 0;
    boostedTauMass = 0;
+   tauMass = 0;
    boostedTauDxy = 0;
    boostedTauZImpact = 0;
    boostedTauDecayMode = 0;
+   tauDecayMode = 0;
    boostedTauLeadChargedHadronExists = 0;
    boostedTauLeadChargedHadronEta = 0;
    boostedTauLeadChargedHadronPhi = 0;
@@ -1207,6 +1213,7 @@ void SkimerBoost::Init(TTree *tree)
    fChain->SetBranchAddress("boostedTauDxy", &boostedTauDxy, &b_boostedTauDxy);
    fChain->SetBranchAddress("boostedTauZImpact", &boostedTauZImpact, &b_boostedTauZImpact);
    fChain->SetBranchAddress("boostedTauDecayMode", &boostedTauDecayMode, &b_boostedTauDecayMode);
+   fChain->SetBranchAddress("tauDecayMode", &tauDecayMode, &b_tauDecayMode);
    fChain->SetBranchAddress("boostedTauLeadChargedHadronExists", &boostedTauLeadChargedHadronExists, &b_boostedTauLeadChargedHadronExists);
    fChain->SetBranchAddress("boostedTauLeadChargedHadronEta", &boostedTauLeadChargedHadronEta, &b_boostedTauLeadChargedHadronEta);
    fChain->SetBranchAddress("boostedTauLeadChargedHadronPhi", &boostedTauLeadChargedHadronPhi, &b_boostedTauLeadChargedHadronPhi);
