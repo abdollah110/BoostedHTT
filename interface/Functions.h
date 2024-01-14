@@ -30,13 +30,14 @@
 #include <iostream>
 #include <map>
 #include "TLorentzVector.h"
-#include "../interface/boostHTT.h"
+//#include "../interface/boostHTT.h"
 #include "../interface/WeightCalculator.h"
 #include "../interface/Corrector.h"
 #include "../interface/makeHisto.h"
 #include "../interface/event_info.h"
 #include "../interface/ComputeWG1Unc.h"
 #include "../interface/bjet_weighter.h"
+#include "../interface/boostHTT_hps.h"
 
 
 float MuMass= 0.10565837;
