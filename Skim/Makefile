@@ -37,8 +37,8 @@ SkimerBoost_tt_HPS: SkimerBoost_tt_HPS.cc
 	g++ $(CPPFLAGS) $(LDFLAGS) -o $@ $^
 SkimerBoost_tt_Boosted: SkimerBoost_tt_Boosted.cc
 	g++ $(CPPFLAGS) $(LDFLAGS) -o $@ $^
-SkimerBoost_mt_Boosted: SkimerBoost_mt_Boosted
+SkimerBoost_mt_Boosted: SkimerBoost_mt_Boosted.cc
 	g++ $(CPPFLAGS) $(LDFLAGS) -o $@ $^
-SkimerBoost_mt_HPS: SkimerBoost_mt_HPS
+SkimerBoost_mt_HPS: SkimerBoost_mt_HPS.cc
 	g++ $(CPPFLAGS) $(LDFLAGS) -o $@ $^
 
