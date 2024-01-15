@@ -690,6 +690,7 @@ public :
    virtual void     Loop(TString outputFile);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
+   virtual bool     isMatchedToGenTau(TLorentzVector recoTau);
 };
 
 #endif
@@ -1323,6 +1324,25 @@ Int_t SkimerBoost::Cut(Long64_t entry)
 // returns -1 otherwise.
    return 1;
 }
+
+bool SkimerBoost::isMatchedToGenTau(TLorentzVector recoTau){
+    
+    bool hasMatchedToGenTau = false;
+    TLorentzVector genTau;
+    TLorentzVector SelectedGenTau;
+    float LowestDR=0.5;
+    for (int igen=0; igen < nMC; igen++){
+        
+        if ( fabs(mcPID->at(igen)) ==15){
+            genTau.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+            float dr_gen_reco= recoTau.DeltaR(genTau);
+            if (dr_gen_reco < LowestDR)
+                hasMatchedToGenTau= true;
+        }
+    }
+    return hasMatchedToGenTau;
+}
+
 #endif // #ifdef SkimerBoost_cxx
 
 
