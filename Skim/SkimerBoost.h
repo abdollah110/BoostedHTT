@@ -693,6 +693,8 @@ public :
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
    virtual bool     isMatchedToGenTau(TLorentzVector recoTau);
+   virtual bool     isMatchedToGenMu(TLorentzVector recoMu);
+   virtual bool     isMatchedToGenEle(TLorentzVector recoEle);
 };
 
 #endif
@@ -1332,7 +1334,7 @@ bool SkimerBoost::isMatchedToGenTau(TLorentzVector recoTau){
     bool hasMatchedToGenTau = false;
     TLorentzVector genTau;
     TLorentzVector SelectedGenTau;
-    float LowestDR=0.5;
+    float LowestDR=0.3;
     for (int igen=0; igen < nMC; igen++){
         
         if ( fabs(mcPID->at(igen)) ==15){
@@ -1343,6 +1345,40 @@ bool SkimerBoost::isMatchedToGenTau(TLorentzVector recoTau){
         }
     }
     return hasMatchedToGenTau;
+}
+bool SkimerBoost::isMatchedToGenMu(TLorentzVector recoMu){
+    
+    bool hasMatchedToGenMu = false;
+    TLorentzVector genMu;
+    TLorentzVector SelectedGenMu;
+    float LowestDR=0.3;
+    for (int igen=0; igen < nMC; igen++){
+        
+        if ( fabs(mcPID->at(igen)) ==13){
+            genMu.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+            float dr_gen_reco= recoMu.DeltaR(genMu);
+            if (dr_gen_reco < LowestDR)
+                hasMatchedToGenMu= true;
+        }
+    }
+    return hasMatchedToGenMu;
+}
+bool SkimerBoost::isMatchedToGenEle(TLorentzVector recoEle){
+    
+    bool hasMatchedToGenEle = false;
+    TLorentzVector genEle;
+    TLorentzVector SelectedGenEle;
+    float LowestDR=0.3;
+    for (int igen=0; igen < nMC; igen++){
+        
+        if ( fabs(mcPID->at(igen)) ==13){
+            genEle.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+            float dr_gen_reco= recoEle.DeltaR(genEle);
+            if (dr_gen_reco < LowestDR)
+                hasMatchedToGenEle= true;
+        }
+    }
+    return hasMatchedToGenEle;
 }
 
 #endif // #ifdef SkimerBoost_cxx
