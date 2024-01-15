@@ -102,7 +102,7 @@ for ifile in fileList:
 #      sample = sample.replace(prefix, '')
     tosample = ifile.replace(sample+suffix,'')
 
-    if 'DYJets' not in sample: continue # FIXME this is just to run on DY samples
+#    if 'DYJets' not in sample: continue # FIXME this is just to run on DY samples
     if 'DYJets' in sample:
 #        names = ['ZLL', 'ZTT']
 #        names = ['ZLL', 'ZTT','ZJ']
