@@ -1371,7 +1371,7 @@ bool SkimerBoost::isMatchedToGenEle(TLorentzVector recoEle){
     float LowestDR=0.3;
     for (int igen=0; igen < nMC; igen++){
         
-        if ( fabs(mcPID->at(igen)) ==13){
+        if ( fabs(mcPID->at(igen)) ==11){
             genEle.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
             float dr_gen_reco= recoEle.DeltaR(genEle);
             if (dr_gen_reco < LowestDR)
