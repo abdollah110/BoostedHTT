@@ -173,9 +173,9 @@ int main(int argc, char* argv[]) {
         
         if (LeadTau4Momentum.Pt() <= 30 || fabs(boostedTauEta->at(idx_leadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_leadtau) < 0.5 ) continue;
-        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_leadtau) < -0.5) continue;
-        if (boostedTauagainstElectronVLooseMVA62018->at(idx_leadtau) < 0.5) continue;
-        if (boostedTauByLooseMuonRejection3->at(idx_leadtau) < 0.5) continue;
+//        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_leadtau) < -0.5) continue;
+//        if (boostedTauagainstElectronVLooseMVA62018->at(idx_leadtau) < 0.5) continue;
+//        if (boostedTauByLooseMuonRejection3->at(idx_leadtau) < 0.5) continue;
         plotFill("cutFlowTable",3 ,15,0,15);
         
         //=========================================================================================================
@@ -187,9 +187,9 @@ int main(int argc, char* argv[]) {
 
         if (SubTau4Momentum.Pt() <= 30 || fabs(boostedTauEta->at(idx_subleadtau)) >= 2.3 ) continue;
         if (boostedTaupfTausDiscriminationByDecayModeFinding->at(idx_subleadtau) < 0.5 ) continue;
-        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_subleadtau) < -0.5) continue;
-        if (boostedTauagainstElectronVLooseMVA62018->at(idx_subleadtau) < 0.5) continue;
-        if (boostedTauByLooseMuonRejection3->at(idx_subleadtau) < 0.5) continue;
+//        if (boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_subleadtau) < -0.5) continue;
+//        if (boostedTauagainstElectronVLooseMVA62018->at(idx_subleadtau) < 0.5) continue;
+//        if (boostedTauByLooseMuonRejection3->at(idx_subleadtau) < 0.5) continue;
         plotFill("cutFlowTable",4 ,15,0,15);
         
         dR_lep_lep= SubTau4Momentum.DeltaR(LeadTau4Momentum);
@@ -204,8 +204,8 @@ int main(int argc, char* argv[]) {
         TLorentzVector higgs = SubTau4Momentum+LeadTau4Momentum +Met4Momentum;
         
         
-        if( dR_lep_lep > 0.8 || dR_lep_lep < 0.1) continue;
-        plotFill("cutFlowTable",8 ,15,0,15);
+//        if( dR_lep_lep > 0.8 || dR_lep_lep < 0.1) continue;
+//        plotFill("cutFlowTable",8 ,15,0,15);
         
         tmass = TMass_F(LeadTau4Momentum.Pt(), LeadTau4Momentum.Px(), LeadTau4Momentum.Py(),  Met,  Metphi);
         plotFill("cutFlowTable",9 ,15,0,15);
@@ -227,8 +227,13 @@ int main(int argc, char* argv[]) {
         if (SS) continue;
         if (!isGenTauSub || !isGenTauLead) continue;
 
-        plotFill("higgs_pT_denum", higgs_pT,10,0,1000);
-        if (lep1IsoPassL && lep2IsoPassL) plotFill("higgs_pT_num", higgs_pT,10,0,1000);
+        plotFill("higgs_pT_denum", higgs_pT,20,0,1000);
+        plotFill("dR_denum", dR_lep_lep,10,1,0);
+
+        if (lep1IsoPassL && lep2IsoPassL) {
+        plotFill("higgs_pT_num", higgs_pT,20,0,1000);
+        plotFill("dR_num", dR_lep_lep,10,1,0);
+        }
                 
         
         lep1Pt_=LeadTau4Momentum.Pt();
