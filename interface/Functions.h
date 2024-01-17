@@ -835,6 +835,40 @@ bool isMatchedToGenTau(TLorentzVector recoTau){
     return hasMatchedToGenTau;
 }
 
+bool isMatchedToGenMu(TLorentzVector recoMu){
+    
+    bool hasMatchedToGenMu = false;
+    TLorentzVector genMu;
+    TLorentzVector SelectedGenMu;
+    float LowestDR=0.3;
+    for (int igen=0; igen < nMC; igen++){
+        
+        if ( fabs(mcPID->at(igen)) ==13){
+            genMu.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+            float dr_gen_reco= recoMu.DeltaR(genMu);
+            if (dr_gen_reco < LowestDR)
+                hasMatchedToGenMu= true;
+        }
+    }
+    return hasMatchedToGenMu;
+}
+bool isMatchedToGenEle(TLorentzVector recoEle){
+    
+    bool hasMatchedToGenEle = false;
+    TLorentzVector genEle;
+    TLorentzVector SelectedGenEle;
+    float LowestDR=0.3;
+    for (int igen=0; igen < nMC; igen++){
+        
+        if ( fabs(mcPID->at(igen)) ==11){
+            genEle.SetPtEtaPhiM(mcPt->at(igen),mcEta->at(igen),mcPhi->at(igen),mcMass->at(igen));
+            float dr_gen_reco= recoEle.DeltaR(genEle);
+            if (dr_gen_reco < LowestDR)
+                hasMatchedToGenEle= true;
+        }
+    }
+    return hasMatchedToGenEle;
+}
 
 
 float GetHiggsPt(){
