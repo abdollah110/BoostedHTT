@@ -230,7 +230,7 @@ int main(int argc, char* argv[]) {
         plotFill("higgs_pT_denum", higgs_pT,20,0,1000);
         plotFill("dR_denum", dR_lep_lep,10,1,0);
 
-        if (lep1IsoPassL && tauIsoPassL) {
+        if (tauIsoPassL) {
         plotFill("higgs_pT_num", higgs_pT,20,0,1000);
         plotFill("dR_num", dR_lep_lep,10,1,0);
         }
