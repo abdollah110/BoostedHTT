@@ -229,10 +229,12 @@ int main(int argc, char* argv[]) {
 
         plotFill("higgs_pT_denum", higgs_pT,20,0,1000);
         plotFill("dR_denum", dR_lep_lep,10,1,0);
+        plotFill("Rivet_higgsPt_denum", Rivet_higgsPt,20,0,1000);
 
         if (lep1IsoPassL && lep2IsoPassL) {
         plotFill("higgs_pT_num", higgs_pT,20,0,1000);
         plotFill("dR_num", dR_lep_lep,10,1,0);
+        plotFill("Rivet_higgsPt_num", Rivet_higgsPt,20,0,1000);
         }
                 
         
