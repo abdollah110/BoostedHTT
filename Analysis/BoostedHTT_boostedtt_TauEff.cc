@@ -229,7 +229,7 @@ int main(int argc, char* argv[]) {
         
         
         plotFill("CorrelationIsoTot", lep1IsoPassL,lep2IsoPassL,20,0,2,20,0,2,);
-        if (higgs_pT < 400) plotFill("CorrelationIsoTotLowPt", lep1IsoPassL,lep2IsoPassL,2,0,2,2,0,2,);
+        if (higgs_pT < 400) plotFill("CorrelationIsoTotLowPt", lep1IsoPassL,lep2IsoPassL,2,0,2,2,0,2);
         if (higgs_pT > 400) plotFill("CorrelationIsoTotHighPt", lep1IsoPassL,lep2IsoPassL,2,0,2,2,0,2);
 
         plotFill("higgs_pT_denum", higgs_pT,20,0,1000);
