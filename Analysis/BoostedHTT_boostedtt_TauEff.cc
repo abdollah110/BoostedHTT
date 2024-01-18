@@ -229,8 +229,9 @@ int main(int argc, char* argv[]) {
         
         
         plotFill("CorrelationIsoTot", lep1IsoPassL,lep2IsoPassL,2,0,2,2,0,2);
-        if (higgs_pT < 400) plotFill("CorrelationIsoTotLowPt", lep1IsoPassL,lep2IsoPassL,2,0,2,2,0,2);
-        if (higgs_pT > 400) plotFill("CorrelationIsoTotHighPt", lep1IsoPassL,lep2IsoPassL,2,0,2,2,0,2);
+        plotFill("CorrelationRawIsoTot", boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_leadtau),boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_subleadtau),40,-1,1,40,-1,1);
+        if (higgs_pT < 400) plotFill("CorrelationIsoTotLowPt", boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_leadtau),boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_subleadtau),40,-1,1,40,-1,1);
+        if (higgs_pT > 400) plotFill("CorrelationIsoTotHighPt", boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_leadtau),boostedTauByIsolationMVArun2v1DBoldDMwLTrawNew->at(idx_subleadtau),40,-1,1,40,-1,1);
 
         plotFill("higgs_pT_denum", higgs_pT,20,0,1000);
         plotFill("dR_denum", dR_lep_lep,10,1,0);
