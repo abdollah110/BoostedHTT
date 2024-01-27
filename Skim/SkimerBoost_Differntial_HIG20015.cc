@@ -143,8 +143,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
 //      (status == 1 && ( abs(ip->pdgId()) >= 11 && abs(ip->pdgId()) <= 16 ) && ip->pt() > 3.0)  ||
 //      (status < 10 && abs(ip->pdgId()) == 15 && ip->pt() > 3.0);
       
-        TLorentzVector genTau,genTau2, genMu, genEle, genNuTau, genNuMu, genNuEle ;
-        vector<TLorentzVector> genTauVec,genTauVec2, genMuVec, genEleVec, genNuTauVec, genNuEleVec, genNuMuVec , genEMu, genETau, genMuTau, genTauTau;
+        TLorentzVector genTau,genTau2, genMu, genEle, genNuTau, genNuMu, genNuEle , genEMu;
+        vector<TLorentzVector> genTauVec,genTauVec2, genMuVec, genEleVec, genNuTauVec, genNuEleVec, genNuMuVec;
         
         for (int igen=0;igen < nMC; igen++){
             
