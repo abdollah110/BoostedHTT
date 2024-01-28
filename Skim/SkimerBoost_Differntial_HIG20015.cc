@@ -220,7 +220,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if ( !me_e && !e_mu) continue;
             
             genEMu=genMuVec[0]+genEleVec[0];
-            if (TMass_F(genEMu.Pt(), genEMu.Px(), genEMu.Py(), genMET, genMETPhi) < 60) continue;
+            if (TMass_F(genEMu.Pt(), genEMu.Px(), genEMu.Py(), genMET, genMETPhi) > 60) continue;
 
 
 
@@ -263,7 +263,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if ( VisibleTau.Pt() < 30 ) continue;
             bool looseMu = genMuVec[0].Pt() > 20;
             if (!looseMu ) continue;
-            if (TMass_F(genMuVec[0].Pt(), genMuVec[0].Px(), genMuVec[0].Py(), genMET, genMETPhi) < 50) continue;
+            if (TMass_F(genMuVec[0].Pt(), genMuVec[0].Px(), genMuVec[0].Py(), genMET, genMETPhi) > 50) continue;
 
 //            if (Rivet_higgsPt < 250) continue;
             
@@ -305,7 +305,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             bool looseEle = genEleVec[0].Pt() > 25 ;
 //            bool tightEle = genEleVec[0].Pt() >= 115;
             if (!looseEle) continue;
-            if (TMass_F(genEleVec[0].Pt(), genEleVec[0].Px(), genEleVec[0].Py(), genMET, genMETPhi) < 50) continue;
+            if (TMass_F(genEleVec[0].Pt(), genEleVec[0].Px(), genEleVec[0].Py(), genMET, genMETPhi) > 50) continue;
             
 //            if (Rivet_higgsPt < 250) continue;
             
