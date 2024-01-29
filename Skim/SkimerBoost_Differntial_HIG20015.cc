@@ -212,16 +212,16 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         //emu
         if (genMuVec.size() ==1  && genEleVec.size() ==1 ) {
                                     
-//            if (genMuVec[0].DeltaR(genEleVec[0]) > 0.8) continue;
-//            if (genMuVec[0].DeltaR(genEleVec[0]) < 0.1) continue;
-            if (fabs(genMuVec[0].Eta()) > 2.4 || fabs(genEleVec[0].Eta() ) > 2.5) continue;
-            bool me_e = genMuVec[0].Pt() > 24 && genEleVec[0].Pt() > 15 ;
-            bool e_mu = genEleVec[0].Pt() > 24 && genMuVec[0].Pt()> 15 ;
-            if ( !me_e && !e_mu) continue;
-            
-            genEMu=genMuVec[0]+genEleVec[0];
-            if (TMass_F(genEMu.Pt(), genEMu.Px(), genEMu.Py(), genMET, genMETPhi) > 60) continue;
-
+////            if (genMuVec[0].DeltaR(genEleVec[0]) > 0.8) continue;
+////            if (genMuVec[0].DeltaR(genEleVec[0]) < 0.1) continue;
+//            if (fabs(genMuVec[0].Eta()) > 2.4 || fabs(genEleVec[0].Eta() ) > 2.5) continue;
+//            bool me_e = genMuVec[0].Pt() > 24 && genEleVec[0].Pt() > 15 ;
+//            bool e_mu = genEleVec[0].Pt() > 24 && genMuVec[0].Pt()> 15 ;
+//            if ( !me_e && !e_mu) continue;
+//            
+//            genEMu=genMuVec[0]+genEleVec[0];
+//            if (TMass_F(genEMu.Pt(), genEMu.Px(), genEMu.Py(), genMET, genMETPhi) > 60) continue;
+//
 
 
 //            if (Rivet_higgsPt < 250) continue;
@@ -248,22 +248,22 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         else if (genMuVec.size() ==1 &&  genEleVec.size() ==0 ){
             
 
-            findDr fdMatch0 = FindClosetDr(genTauVec[0],genMuVec);
-            findDr fdMatch1 = FindClosetDr(genTauVec[1],genMuVec);
-                        
-            int tauCandOrder=fdMatch0.dR < fdMatch1.dR ?  1:0;
-            
-            findDr fdMatchNu = FindClosetDr(genTauVec[tauCandOrder],genNuTauVec);
-            TLorentzVector VisibleTau = genTauVec[tauCandOrder] - genNuTauVec[fdMatchNu.order];
-
-//            if (genMuVec[0].DeltaR(VisibleTau) > 0.8) continue;
-//            if (genMuVec[0].DeltaR(VisibleTau) < 0.1) continue;
-
-            if (fabs(genMuVec[0].Eta()) > 2.4 || fabs(VisibleTau.Eta()) > 2.3 ) continue;
-            if ( VisibleTau.Pt() < 30 ) continue;
-            bool looseMu = genMuVec[0].Pt() > 20;
-            if (!looseMu ) continue;
-            if (TMass_F(genMuVec[0].Pt(), genMuVec[0].Px(), genMuVec[0].Py(), genMET, genMETPhi) > 50) continue;
+//            findDr fdMatch0 = FindClosetDr(genTauVec[0],genMuVec);
+//            findDr fdMatch1 = FindClosetDr(genTauVec[1],genMuVec);
+//                        
+//            int tauCandOrder=fdMatch0.dR < fdMatch1.dR ?  1:0;
+//            
+//            findDr fdMatchNu = FindClosetDr(genTauVec[tauCandOrder],genNuTauVec);
+//            TLorentzVector VisibleTau = genTauVec[tauCandOrder] - genNuTauVec[fdMatchNu.order];
+//
+////            if (genMuVec[0].DeltaR(VisibleTau) > 0.8) continue;
+////            if (genMuVec[0].DeltaR(VisibleTau) < 0.1) continue;
+//
+//            if (fabs(genMuVec[0].Eta()) > 2.4 || fabs(VisibleTau.Eta()) > 2.3 ) continue;
+//            if ( VisibleTau.Pt() < 30 ) continue;
+//            bool looseMu = genMuVec[0].Pt() > 20;
+//            if (!looseMu ) continue;
+//            if (TMass_F(genMuVec[0].Pt(), genMuVec[0].Px(), genMuVec[0].Py(), genMET, genMETPhi) > 50) continue;
 
 //            if (Rivet_higgsPt < 250) continue;
             
@@ -288,24 +288,24 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         //etau
         else if (genMuVec.size() ==0 &&  genEleVec.size() ==1 ){
                         
-            findDr fdMatch0 = FindClosetDr(genTauVec[0],genEleVec);
-            findDr fdMatch1 = FindClosetDr(genTauVec[1],genEleVec);
-            
-            int tauCandOrder=fdMatch0.dR < fdMatch1.dR ?  1:0;
-            
-            findDr fdMatchNu = FindClosetDr(genTauVec[tauCandOrder],genNuTauVec);
-            TLorentzVector VisibleTau = genTauVec[tauCandOrder] - genNuTauVec[fdMatchNu.order];
-            
-//            if (genEleVec[0].DeltaR(VisibleTau) > 0.8) continue;
-//            if (genEleVec[0].DeltaR(VisibleTau) < 0.1) continue;
-
-            
-            if (fabs(genEleVec[0].Eta()) > 2.1 || fabs(VisibleTau.Eta()) > 2.3 ) continue;
-            if ( VisibleTau.Pt() < 30) continue;
-            bool looseEle = genEleVec[0].Pt() > 25 ;
-//            bool tightEle = genEleVec[0].Pt() >= 115;
-            if (!looseEle) continue;
-            if (TMass_F(genEleVec[0].Pt(), genEleVec[0].Px(), genEleVec[0].Py(), genMET, genMETPhi) > 50) continue;
+//            findDr fdMatch0 = FindClosetDr(genTauVec[0],genEleVec);
+//            findDr fdMatch1 = FindClosetDr(genTauVec[1],genEleVec);
+//            
+//            int tauCandOrder=fdMatch0.dR < fdMatch1.dR ?  1:0;
+//            
+//            findDr fdMatchNu = FindClosetDr(genTauVec[tauCandOrder],genNuTauVec);
+//            TLorentzVector VisibleTau = genTauVec[tauCandOrder] - genNuTauVec[fdMatchNu.order];
+//            
+////            if (genEleVec[0].DeltaR(VisibleTau) > 0.8) continue;
+////            if (genEleVec[0].DeltaR(VisibleTau) < 0.1) continue;
+//
+//            
+//            if (fabs(genEleVec[0].Eta()) > 2.1 || fabs(VisibleTau.Eta()) > 2.3 ) continue;
+//            if ( VisibleTau.Pt() < 30) continue;
+//            bool looseEle = genEleVec[0].Pt() > 25 ;
+////            bool tightEle = genEleVec[0].Pt() >= 115;
+//            if (!looseEle) continue;
+//            if (TMass_F(genEleVec[0].Pt(), genEleVec[0].Px(), genEleVec[0].Py(), genMET, genMETPhi) > 50) continue;
             
 //            if (Rivet_higgsPt < 250) continue;
             
@@ -329,20 +329,20 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         //tautau
             else if (genMuVec.size() ==0  && genEleVec.size() ==0 ){
             
-            findDr fdMatchNu0 = FindClosetDr(genTauVec[0],genNuTauVec);
-            findDr fdMatchNu1 = FindClosetDr(genTauVec[1],genNuTauVec);
-
-            TLorentzVector VisibleTau0 = genTauVec[0] - genNuTauVec[fdMatchNu0.order];
-            TLorentzVector VisibleTau1 = genTauVec[1] - genNuTauVec[fdMatchNu1.order];
-
-//            if (VisibleTau0.DeltaR(VisibleTau1) > 0.8) continue;
-//            if (VisibleTau0.DeltaR(VisibleTau1) < 0.1) continue;
-
-            if (VisibleTau0.Pt() < 40 || fabs(VisibleTau0.Eta()) > 2.1) continue;
-            if (VisibleTau1.Pt() < 40 || fabs(VisibleTau1.Eta()) > 2.1) continue;
-//            if (Rivet_higgsPt < 250) continue;
-            
-            
+//            findDr fdMatchNu0 = FindClosetDr(genTauVec[0],genNuTauVec);
+//            findDr fdMatchNu1 = FindClosetDr(genTauVec[1],genNuTauVec);
+//
+//            TLorentzVector VisibleTau0 = genTauVec[0] - genNuTauVec[fdMatchNu0.order];
+//            TLorentzVector VisibleTau1 = genTauVec[1] - genNuTauVec[fdMatchNu1.order];
+//
+////            if (VisibleTau0.DeltaR(VisibleTau1) > 0.8) continue;
+////            if (VisibleTau0.DeltaR(VisibleTau1) < 0.1) continue;
+//
+//            if (VisibleTau0.Pt() < 40 || fabs(VisibleTau0.Eta()) > 2.1) continue;
+//            if (VisibleTau1.Pt() < 40 || fabs(VisibleTau1.Eta()) > 2.1) continue;
+////            if (Rivet_higgsPt < 250) continue;
+//            
+//            
             
             
             
