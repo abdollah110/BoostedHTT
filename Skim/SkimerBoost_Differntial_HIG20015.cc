@@ -180,8 +180,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             
         }
         
-        cout<<"genEleVec="<<genEleVec.size()<<"  genMuVec="<<genMuVec.size() <<"  genTauVec="<<genTauVec.size()<<"\n"
-        cout<<"\t genNuEleVec="<<genNuEleVec.size()<<"  genNuMuVec="<<genNuMuVec.size() <<"  genNuTauVec="<<genNuTauVec.size()<<"\n\n"
+        cout<<"genEleVec="<<genEleVec.size()<<"  genMuVec="<<genMuVec.size() <<"  genTauVec="<<genTauVec.size()<<"\n";
+        cout<<"\t genNuEleVec="<<genNuEleVec.size()<<"  genNuMuVec="<<genNuMuVec.size() <<"  genNuTauVec="<<genNuTauVec.size()<<"\n\n";
         
         TauMul->Fill(genTauVec.size());
         if (genTauVec.size() < 2 ) {
