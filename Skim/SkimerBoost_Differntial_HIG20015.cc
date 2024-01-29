@@ -210,7 +210,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         float LeadJetPt= Rivet_j1pt;
         
         //emu
-        if (genMuVec.size() ==1  && genEleVec.size() ==1 ) {
+        if (genMuVec.size() >0  && genEleVec.size() >0 ) {
                                     
 ////            if (genMuVec[0].DeltaR(genEleVec[0]) > 0.8) continue;
 ////            if (genMuVec[0].DeltaR(genEleVec[0]) < 0.1) continue;
@@ -245,7 +245,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         }
         
         //mutau
-        else if (genMuVec.size() ==1 &&  genEleVec.size() ==0 ){
+        else if (genMuVec.size() >0 &&  genEleVec.size() ==0 ){
             
 
 //            findDr fdMatch0 = FindClosetDr(genTauVec[0],genMuVec);
@@ -286,7 +286,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         }
         
         //etau
-        else if (genMuVec.size() ==0 &&  genEleVec.size() ==1 ){
+        else if (genMuVec.size() ==0 &&  genEleVec.size() >1 ){
                         
 //            findDr fdMatch0 = FindClosetDr(genTauVec[0],genEleVec);
 //            findDr fdMatch1 = FindClosetDr(genTauVec[1],genEleVec);
