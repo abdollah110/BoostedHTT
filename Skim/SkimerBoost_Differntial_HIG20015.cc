@@ -111,6 +111,9 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
 
 
     TH1F * TauMul=new TH1F("TauMul","TauMul",5,0,5);
+    TH1F * NumMu=new TH1F("NumMu","NumMu",5,0,5);
+    TH1F * NumEle=new TH1F("NumEle","NumEle",5,0,5);
+    TH1F * NumTau=new TH1F("NumTau","NumTau",5,0,5);
     
     event_info event(Sys);
     
@@ -120,7 +123,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         if (ientry < 0) break;
         nb = fChain->GetEntry(jentry);   nbytes += nb;
         
-        if (nJet < 1) continue;
+//        if (nJet < 1) continue;
         if(jentry % 10000 == 0) cout << "Processed " << jentry << " events out of " <<nentries<<endl;
         
         TLorentzVector Mu4Momentum,Tau4Momentum, Z4Momentum, Met4Momentum,Ele4Momentum;
@@ -180,8 +183,13 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             
         }
         
-        cout<<"genEleVec="<<genEleVec.size()<<"  genMuVec="<<genMuVec.size() <<"  genTauVec="<<genTauVec.size()<<"\n";
-        cout<<"\t genNuEleVec="<<genNuEleVec.size()<<"  genNuMuVec="<<genNuMuVec.size() <<"  genNuTauVec="<<genNuTauVec.size()<<"\n\n";
+            NumMu->Fill(genMuVec.size());
+            NumEle->Fill(genEleVec.size());
+            NumTau->Fill(genTauVec.size());
+    
+//        cout<<"genEleVec="<<genEleVec.size()<<"  genMuVec="<<genMuVec.size() <<"  genTauVec="<<genTauVec.size()<<"\n";
+//        cout<<"\t genNuEleVec="<<genNuEleVec.size()<<"  genNuMuVec="<<genNuMuVec.size() <<"  genNuTauVec="<<genNuTauVec.size()<<"\n\n";
+        
         
         TauMul->Fill(genTauVec.size());
         if (genTauVec.size() < 2 ) {
@@ -429,6 +437,9 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
 
 
     TauMul->Write();
+    NumMu->Write();
+    NumEle->Write();
+    NumTau->Write();
 
 //    if (hPU) hPU->Write();
 //    if (hPUTrue) hPUTrue->Write();
