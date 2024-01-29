@@ -71,7 +71,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
     float eleMass= 0.000511;
 //    float xbin[5]={0,350,450,600,2000};
 //    float xbin_hpt[5]={250,350,450,600,2000};
-    float xbin_hpt[5]={0,45,80,120,200,350,450,600,2000};
+    float xbin_hpt[9]={0,45,80,120,200,350,450,600,2000};
     float xbin_jpt[5]={0,350,450,600,2000};
 //    float xbin[6]={0,350,450,600,800,2000};
 //    float xbin[6]={0,300,400,550,800,2000};
