@@ -180,6 +180,9 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             
         }
         
+        cout<<"genEleVec="<<genEleVec.size()<<"  genMuVec="<<genMuVec.size() <<"  genTauVec="<<genTauVec.size()<<"\n"
+        cout<<"\t genNuEleVec="<<genNuEleVec.size()<<"  genNuMuVec="<<genNuMuVec.size() <<"  genNuTauVec="<<genNuTauVec.size()<<"\n\n"
+        
         TauMul->Fill(genTauVec.size());
         if (genTauVec.size() < 2 ) {
 //        std:cout<<"There is no pair of genTau in this event and the size of getTauVector is "<<genTauVec.size()<< "  nu size="<< genNuTauVec.size()<< "  "<< genTauVec2.size() << "\n";
@@ -210,7 +213,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         float LeadJetPt= Rivet_j1pt;
         
         //emu
-        if (genMuVec.size() >0  && genEleVec.size() >0 ) {
+        if (genMuVec.size() ==1  && genEleVec.size() ==1 ) {
                                     
 ////            if (genMuVec[0].DeltaR(genEleVec[0]) > 0.8) continue;
 ////            if (genMuVec[0].DeltaR(genEleVec[0]) < 0.1) continue;
@@ -245,7 +248,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         }
         
         //mutau
-        else if (genMuVec.size() >0 &&  genEleVec.size() ==0 ){
+        else if (genMuVec.size() ==1 &&  genEleVec.size() ==0 ){
             
 
 //            findDr fdMatch0 = FindClosetDr(genTauVec[0],genMuVec);
@@ -286,7 +289,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         }
         
         //etau
-        else if (genMuVec.size() ==0 &&  genEleVec.size() >1 ){
+        else if (genMuVec.size() ==0 &&  genEleVec.size() ==1 ){
                         
 //            findDr fdMatch0 = FindClosetDr(genTauVec[0],genEleVec);
 //            findDr fdMatch1 = FindClosetDr(genTauVec[1],genEleVec);
