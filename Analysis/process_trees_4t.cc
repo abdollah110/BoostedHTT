@@ -28,9 +28,10 @@ int main(int argc, char *argv[]) {
     else (std::cout << "Year is not specificed in the outFile name !\n");
     
     
-    string channel, tree_name;
-    if (dir.find("_tt") != string::npos or dir.find("tt_") != string::npos ) {channel ="tt";tree_name="tautau_tree";}
-    else (std::cout << "channel is not specificed in the outFile name !\n");
+    string channel = "4t";
+    string tree_name = "tree_4tau";
+//    if (dir.find("_tt") != string::npos or dir.find("tt_") != string::npos ) {channel ="tt";tree_name="tautau_tree";}
+//    else (std::cout << "channel is not specificed in the outFile name !\n");
     string newChannelName= channel;
     
     // get the provided histogram binning
@@ -94,10 +95,11 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         bool lep1IsoPassV, lep2IsoPassV ,OS,SS, lep1IsoPassL, lep2IsoPassL;
         float tmass,ht,st,Met,weight, dR_lep_lep, Metphi;
         float NN_disc,MuMatchedIsolation,EleMatchedIsolation,NN_disc_ZTT,NN_disc_QCD;
-        float higgs_pT, higgs_m, m_sv, gen_higgs_pT, gen_leadjet_pT;
+        float higgs_pT, higgs_m, m_sv, gen_higgs_pT, gen_leadjet_pT,m_vis;
         bool isGenTauSub_, isGenTauLead_;
 
         tree->SetBranchAddress("isGenTauLead_",&isGenTauLead_);
+        tree->SetBranchAddress("m_vis",&m_vis);
         tree->SetBranchAddress("isGenTauSub_",&isGenTauSub_);
         tree->SetBranchAddress("lep1Pt",&lep1Pt_);
         tree->SetBranchAddress("lep2Pt",&lep2Pt_);
@@ -114,7 +116,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
         tree->SetBranchAddress("Met",&Met);
         tree->SetBranchAddress("LeadJetPt",&LeadJetPt);
         tree->SetBranchAddress("dR_lep_lep",&dR_lep_lep);
-        tree->SetBranchAddress("evtwt",&weight);
+        tree->SetBranchAddress("LumiWeight",&weight);
         tree->SetBranchAddress("NN_disc",&NN_disc);
         tree->SetBranchAddress("NN_disc_ZTT",&NN_disc_ZTT);
         tree->SetBranchAddress("NN_disc_QCD",&NN_disc_QCD);
@@ -132,6 +134,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
             tree->GetEntry(i);
             
             std::map<std::string, float>  ObsName {
+                {"m_vis",m_vis},
                 {"lep1Pt",lep1Pt_},
                 {"lep2Pt",lep2Pt_},
                 {"lep1IsoPassV",lep1IsoPassV},
@@ -165,6 +168,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, st
 // apply the cuts here
             if (1) { // final analysis
 //            if (OS != 0  && lep1IsoPassV) { // final analysis
+                cout<<"vbf_var1,  weight "<<vbf_var1 <<" "<< weight<<"\n";
                 hists_1d.at(categories.at(zeroJet)).back()->Fill(vbf_var1,  weight); // final analysis
             }
         }
