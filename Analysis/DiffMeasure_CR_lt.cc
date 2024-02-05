@@ -205,7 +205,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             };
             
             //            FIXME  this cut is for running the analysis in dr< 0.5
-//            if (dR_lep_lep > 0.5) continue;
+            if (dR_lep_lep > 0.5) continue;
             
             bool Chan_ltau, Chan_ltau_fid;
             
@@ -280,6 +280,8 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
 //                0.250638097525;
 
             float UncVal=0;
+            
+            
             if (runTauId.find("TauIdBin_1") != string::npos && year.find("2016") != string::npos) UncVal=
                 0.15;
             if (runTauId.find("TauIdBin_1") != string::npos && year.find("2017") != string::npos) UncVal=

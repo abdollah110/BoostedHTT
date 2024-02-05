@@ -201,7 +201,7 @@ void HistTool::histoLoop(std::string year , vector<string> files, string dir, TH
             };
             
             //            FIXME  this cut is for running the analysis in dr< 0.5
-//            if (dR_lep_lep > 0.5) continue;
+            if (dR_lep_lep > 0.5) continue;
 
             std::string reco_name="LeadJetPt";
             if (cut_name.find("gen_higgs_pT") !=string::npos) reco_name="higgs_pT";
