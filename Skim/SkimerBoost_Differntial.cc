@@ -131,8 +131,9 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         Met4Momentum.SetPtEtaPhiM(genMET, 0, genMETPhi, 0);
         // Lumi weight
         std::string sample       = file->GetName();
-//        float LumiWeight = XSection_Diff(InputFile)*1.0 / hEvents->GetBinContent(2);
-        float LumiWeight = 1; // made change after FR to set it to 1
+//        float LumiWeight = XSection_Diff(InputFile)*1.0 / hEvents->GetBinContent(2); //buggy, should not dived to total number of Ev, before hadding
+        float LumiWeight = XSection_Diff(InputFile)*1.0; //
+//        float LumiWeight = 1; // made change after FR to set it to 1
         
         //=========================================================================================================
         
@@ -222,6 +223,11 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if ( !me_loose && !me_tight && !em_loose && !em_tight ) continue;
             if (Rivet_higgsPt < 250) continue;
             
+            TLorentzVector genZ= genMuVec[0]+genEleVec[0];
+            float genTMass= TMass_F(genZ.Pt(), genZ.Px(), genZ.Py(), genMET, genMETPhi);
+            cout<<"em channel   genTmass "<<genTMass <<"\n";
+            
+            
 //            TLorentzVector LeadJet= getLeadJet(genEleVec[0],genMuVec[0], jentry);
             
 
@@ -261,6 +267,9 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             bool tightMu = genMuVec[0].Pt() >= 52;
             if (!looseMu && !tightMu) continue;
             if (Rivet_higgsPt < 250) continue;
+
+            float genTMass= TMass_F(genMuVec[0].Pt(), genMuVec[0].Px(), genMuVec[0].Py(), genMET, genMETPhi);
+            cout<<"mt channel   genTmass "<<genTMass <<"\n";
             
 //            TLorentzVector LeadJet= getLeadJet(VisibleTau , genMuVec[0], jentry);
             
@@ -301,7 +310,10 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             bool tightEle = genEleVec[0].Pt() >= 115;
             if (!looseEle && !tightEle) continue;
             if (Rivet_higgsPt < 250) continue;
-            
+
+            float genTMass= TMass_F(genEleVec[0].Pt(), genEleVec[0].Px(), genEleVec[0].Py(), genMET, genMETPhi);
+            cout<<"et channel   genTmass "<<genTMass <<"\n";
+
 //            TLorentzVector LeadJet= getLeadJet(VisibleTau , genEleVec[0], jentry);
 
             
@@ -358,8 +370,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if (nAK8Jet > 0) tt_ht = (AK8JetGenJetPt->at(0) > 450 );
 //            bool tt_met = ((year==2016 && genHT > 400 && genMET > 180) || (year>2016 && genHT > 700 && genMET > 120));
             bool tt_met = false;
-//            tt_met = ((year==2016 && genHT > 400 && genMET > 180) || (year>2016 && genHT > 700 && genMET > 120));
-            tt_met = (genHT > 500 && genMET > 100);
+            tt_met = ((year==2016 && genHT > 400 && genMET > 180) || (year>2016 && genHT > 700 && genMET > 140));
+//            tt_met = (genHT > 500 && genMET > 100);
             
             
             if (!tt_ht && !tt_met) continue;
