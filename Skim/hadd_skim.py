@@ -36,7 +36,7 @@ for gl in Lines:
 #    sample=gl.rpartition('/')[-1].replace('crab_','')
     sample=((gl.rpartition("crab_")[-1]).rpartition("/")[0]).rpartition("/")[0]
     print 'sample is {}'.format(sample)
-    outFile.write('hadd %s/%s.root    %s/*%s*.root \n'%(HaddLoc,sample,skimFiles,sample))
+    outFile.write('hadd %s/%s.root    /eos/uscms/%s/*%s*.root \n'%(HaddLoc,sample,skimFiles,sample))
 #    os.system('hadd %s/%s.root    %s/%s*.root'%(HaddLoc,sample,skimFiles,sample))
 
 outFile.close()

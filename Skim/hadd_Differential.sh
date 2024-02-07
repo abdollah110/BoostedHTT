@@ -19,6 +19,6 @@ hadd -f qqH_htt125.root qqH_htt125_*.root
 hadd -f WH_htt125.root WH_htt125_*.root
 hadd -f ZH_htt125.root ZH_htt125_*.root
 hadd -f ggZH_lep_htt125.root ggZH_lep_htt125_*.root
-hadd -f ggZH_had_htt125.root ZH_had_htt125_*.root
+hadd -f ggZH_had_htt125.root ggZH_had_htt125_*.root
 hadd -f ttH_htt125.root ttH_htt125_*.root
 
