@@ -154,26 +154,26 @@ systematics{
         std::cout <<"\t test 1   first directory is "<<it->first <<"\n";
         fout->cd();
     }
-    // make all of 2D the directories for templates
-    for (auto it = hists_2d.begin(); it != hists_2d.end(); it++) {
-        fout->cd();
-        fout->mkdir((it->first).c_str());
-        std::cout <<"\t test 2   first directory is "<<it->first <<"\n";
-        fout->cd();
-    }
-    // make all of the directories for templates
-    for (auto it = Histo_2DMatrix_Higgs.begin(); it != Histo_2DMatrix_Higgs.end(); it++) {
-        fout->cd();
-        fout->mkdir((it->first).c_str());
-        std::cout <<"\t test 1   first directory is "<<it->first <<"\n";
-        fout->cd();
-    }
-    for (auto it = Histo_2DMatrix_Jet.begin(); it != Histo_2DMatrix_Jet.end(); it++) {
-        fout->cd();
-        fout->mkdir((it->first).c_str());
-        std::cout <<"\t test 1   first directory is "<<it->first <<"\n";
-        fout->cd();
-    }
+//    // make all of 2D the directories for templates
+//    for (auto it = hists_2d.begin(); it != hists_2d.end(); it++) {
+//        fout->cd();
+//        fout->mkdir((it->first).c_str());
+//        std::cout <<"\t test 2   first directory is "<<it->first <<"\n";
+//        fout->cd();
+//    }
+//    // make all of the directories for templates
+//    for (auto it = Histo_2DMatrix_Higgs.begin(); it != Histo_2DMatrix_Higgs.end(); it++) {
+//        fout->cd();
+//        fout->mkdir((it->first).c_str());
+//        std::cout <<"\t test 1   first directory is "<<it->first <<"\n";
+//        fout->cd();
+//    }
+//    for (auto it = Histo_2DMatrix_Jet.begin(); it != Histo_2DMatrix_Jet.end(); it++) {
+//        fout->cd();
+//        fout->mkdir((it->first).c_str());
+//        std::cout <<"\t test 1   first directory is "<<it->first <<"\n";
+//        fout->cd();
+//    }
 }
 
 // change to the correct output directory then create a new TH1F that will be filled for the current input file
