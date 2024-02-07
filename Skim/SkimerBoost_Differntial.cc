@@ -225,7 +225,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             
             TLorentzVector genZ= genMuVec[0]+genEleVec[0];
             float genTMass= TMass_F(genZ.Pt(), genZ.Px(), genZ.Py(), genMET, genMETPhi);
-            cout<<"em channel   genTmass "<<genTMass <<"\n";
+            if (genTMass > 80) continue;
+            
             
             
 //            TLorentzVector LeadJet= getLeadJet(genEleVec[0],genMuVec[0], jentry);
@@ -269,7 +270,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if (Rivet_higgsPt < 250) continue;
 
             float genTMass= TMass_F(genMuVec[0].Pt(), genMuVec[0].Px(), genMuVec[0].Py(), genMET, genMETPhi);
-            cout<<"mt channel   genTmass "<<genTMass <<"\n";
+            if (genTMass > 80) continue;
             
 //            TLorentzVector LeadJet= getLeadJet(VisibleTau , genMuVec[0], jentry);
             
@@ -312,7 +313,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if (Rivet_higgsPt < 250) continue;
 
             float genTMass= TMass_F(genEleVec[0].Pt(), genEleVec[0].Px(), genEleVec[0].Py(), genMET, genMETPhi);
-            cout<<"et channel   genTmass "<<genTMass <<"\n";
+            if (genTMass > 80) continue;
 
 //            TLorentzVector LeadJet= getLeadJet(VisibleTau , genEleVec[0], jentry);
 
@@ -370,7 +371,7 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
             if (nAK8Jet > 0) tt_ht = (AK8JetGenJetPt->at(0) > 450 );
 //            bool tt_met = ((year==2016 && genHT > 400 && genMET > 180) || (year>2016 && genHT > 700 && genMET > 120));
             bool tt_met = false;
-            tt_met = ((year==2016 && genHT > 400 && genMET > 180) || (year>2016 && genHT > 700 && genMET > 140));
+            tt_met = ((year==2016 && genHT > 4000 && genMET > 180) || (year>2016 && genHT > 7000 && genMET > 140));
 //            tt_met = (genHT > 500 && genMET > 100);
             
             
