@@ -71,8 +71,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
     float eleMass= 0.000511;
 //    float xbin[5]={0,350,450,600,2000};
 //    float xbin_hpt[5]={250,350,450,600,2000};
-    float xbin_hpt[9]={0,45,80,120,200,350,450,600,2000};
-    float xbin_jpt[5]={0,350,450,600,2000};
+    float xbin_hpt[9]={0,45,80,120,250,350,450,600,2000};
+    float xbin_jpt[9]={0,45,80,120,250,350,450,600,2000};
 //    float xbin[6]={0,350,450,600,800,2000};
 //    float xbin[6]={0,300,400,550,800,2000};
 //    float jetbin[6]={0,300,400,550,800,2000};
@@ -132,7 +132,8 @@ void SkimerBoost::Loop(TString OutputFile,std::string InputFile,std::string Sys)
         Met4Momentum.SetPtEtaPhiM(genMET, 0, genMETPhi, 0);
         // Lumi weight
         std::string sample       = file->GetName();
-        float LumiWeight = XSection_Diff(InputFile)*1.0 / hEvents->GetBinContent(2);
+//        float LumiWeight = XSection_Diff(InputFile)*1.0 / hEvents->GetBinContent(2);
+        float LumiWeight = XSection_Diff(InputFile);
 //        float LumiWeight = 1;
         
         //=========================================================================================================
